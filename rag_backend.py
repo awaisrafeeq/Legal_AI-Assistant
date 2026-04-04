@@ -20,6 +20,7 @@ import logging
 from typing import List, Dict, Any, Optional
 from collections import Counter
 from dataclasses import dataclass, field
+import unicodedata
 from contextlib import asynccontextmanager
 
 
@@ -378,6 +379,7 @@ def generate_sas_url(
         container_name = parsed.path.strip("/").split("/")[-1]
         sas_token = parsed.query
 
+        blob_file_path = unicodedata.normalize("NFC", blob_file_path)
         encoded_path = quote(blob_file_path, safe="/")
         url = f"{base_url}/{container_name}/{encoded_path}?{sas_token}"
         logger.info(f"SAS URL generated | container={source_container} | path={blob_file_path}")

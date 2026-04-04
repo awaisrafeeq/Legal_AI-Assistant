@@ -1,11 +1,17 @@
 """
 Fix metadata (folder_path, file_name) in the external search index.
 Does NOT regenerate embeddings — only updates metadata fields via merge.
-Fixes broken source URLs caused by process_all_formats.py flattening folder paths.
+Handles:
+1. process_all_formats.py files (have Source: header) — extract original path from header
+2. ocr_to_blob.py files (no header) — derive path from blob path structure
+3. Unicode NFC normalization for French accented characters
+4. Leading spaces in folder names (e.g., "  Tableau de preuve...")
 """
 import os
+import sys
 import hashlib
 import logging
+import unicodedata
 from typing import Optional
 from urllib.parse import urlparse
 
@@ -15,7 +21,16 @@ from azure.storage.blob import BlobServiceClient
 from dotenv import load_dotenv
 from tqdm import tqdm
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+sys.stdout.reconfigure(encoding='utf-8')
+os.makedirs("logs", exist_ok=True)
+
+_log_fmt = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+_file_handler = logging.FileHandler("logs/fix_metadata.log", encoding="utf-8")
+_file_handler.setFormatter(_log_fmt)
+_console_handler = logging.StreamHandler()
+_console_handler.setFormatter(_log_fmt)
+
+logging.basicConfig(level=logging.INFO, handlers=[_console_handler, _file_handler])
 logger = logging.getLogger(__name__)
 
 load_dotenv()
@@ -28,26 +43,27 @@ def split_container_sas_url(url: str):
     return account_url, container, p.query
 
 
-def generate_doc_id(blob_path: str, chunk_index: int) -> str:
-    hash_input = f"{blob_path}:{chunk_index}"
-    return hashlib.md5(hash_input.encode()).hexdigest()
-
-
 def extract_source_from_content(content: str) -> Optional[str]:
-    """Extract original source path from process_all_formats.py header."""
-    first_line = content.split("\n", 1)[0].strip()
+    """Extract original source path from process_all_formats.py header.
+    Preserves leading spaces — some folder names start with spaces."""
+    first_line = content.split("\n", 1)[0].rstrip()
     if first_line.startswith("Source: "):
-        return first_line[len("Source: "):].strip()
+        return first_line[len("Source: "):]
     return None
 
 
 def extract_metadata_from_path(blob_path: str, input_prefix: str):
-    """Fallback: derive metadata from blob path (for ocr_to_blob.py files)."""
+    """Derive file_name and folder_path from the OCR blob path."""
     relative_path = blob_path[len(input_prefix):].lstrip("/")
     parts = relative_path.split("/")
     file_name = parts[-1].replace(".txt", "") if parts else relative_path.replace(".txt", "")
     folder_path = "/".join(parts[:-1]) if len(parts) > 1 else ""
     return file_name, folder_path
+
+
+def escape_odata(value: str) -> str:
+    """Escape single quotes for OData filter expressions."""
+    return value.replace("'", "''")
 
 
 def main():
@@ -78,40 +94,39 @@ def main():
 
     fixed = 0
     skipped = 0
+    errors = 0
     batch = []
     batch_size = 1000
 
     for blob_path in tqdm(txt_files, desc="Fixing metadata"):
         try:
-            # Read only first line to check for Source: header (fast - small range)
             blob_client = container_client.get_blob_client(blob_path)
-            # Download just first 500 bytes to get the Source: line
             first_bytes = blob_client.download_blob(offset=0, length=500).readall().decode("utf-8", errors="ignore")
 
             source_path = extract_source_from_content(first_bytes)
 
             if source_path:
-                # process_all_formats.py file — fix metadata from Source: header
+                # process_all_formats.py file — use Source: header
+                source_path = unicodedata.normalize("NFC", source_path)
                 parts = source_path.split("/")
                 file_name = parts[-1]
                 folder_path = "/".join(parts[:-1])
             else:
-                # ocr_to_blob.py file — derive from path (should already be correct)
+                # ocr_to_blob.py file — derive from blob path
                 file_name, folder_path = extract_metadata_from_path(blob_path, input_prefix)
-                skipped += 1
-                continue  # These are already correct, skip
+                file_name = unicodedata.normalize("NFC", file_name)
+                folder_path = unicodedata.normalize("NFC", folder_path)
 
-            # Find all chunk IDs for this blob and update them
-            # We need to know how many chunks exist — search for them
+            # Search for all chunks of this blob in the index
+            safe_blob_path = escape_odata(blob_path)
             results = search_client.search(
                 search_text="*",
-                filter=f"blob_path eq '{blob_path}'",
-                select=["id", "chunk_index", "file_name", "folder_path"],
+                filter=f"blob_path eq '{safe_blob_path}'",
+                select=["id", "file_name", "folder_path"],
                 top=1000
             )
 
             for doc in results:
-                # Only update if metadata is actually wrong
                 if doc["file_name"] != file_name or doc["folder_path"] != folder_path:
                     batch.append({
                         "@search.action": "merge",
@@ -124,11 +139,12 @@ def main():
                 result = search_client.upload_documents(documents=batch)
                 success = sum(1 for r in result if r.succeeded)
                 fixed += success
-                logger.info(f"Updated {success} documents")
+                logger.info(f"Batch updated: {success} documents")
                 batch = []
 
         except Exception as e:
-            logger.error(f"Error processing {blob_path}: {e}")
+            errors += 1
+            logger.error(f"Error: {blob_path[:80]}... | {e}")
             continue
 
     # Flush remaining
@@ -137,7 +153,7 @@ def main():
         success = sum(1 for r in result if r.succeeded)
         fixed += success
 
-    logger.info(f"Done! Fixed: {fixed} | Already correct: {skipped}")
+    logger.info(f"Done! Fixed: {fixed} | Skipped: {skipped} | Errors: {errors}")
 
 
 if __name__ == "__main__":

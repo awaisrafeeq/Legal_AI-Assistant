@@ -233,9 +233,9 @@ def extract_source_path_from_content(content: str) -> Optional[str]:
     reconstruct the correct folder_path / file_name for the search index.
     Returns None for plain OCR files (ocr_to_blob.py style) that have no header.
     """
-    first_line = content.split("\n", 1)[0].strip()
+    first_line = content.split("\n", 1)[0].rstrip()
     if first_line.startswith("Source: "):
-        return first_line[len("Source: "):].strip()
+        return first_line[len("Source: "):].rstrip()
     return None
 
 
