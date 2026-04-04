@@ -18,6 +18,7 @@ from cgitb import lookup
 import os
 import logging
 from typing import List, Dict, Any, Optional
+from collections import Counter
 from dataclasses import dataclass, field
 from contextlib import asynccontextmanager
 
@@ -40,6 +41,7 @@ from langchain_core.messages import HumanMessage, AIMessage
 from langchain_openai import AzureChatOpenAI
 from typing_extensions import TypedDict
 
+from sentence_transformers import CrossEncoder
 from logging.handlers import TimedRotatingFileHandler
 os.makedirs("logs", exist_ok=True)
 
@@ -222,7 +224,12 @@ class AzureClients:
             api_version="2024-02-01",
         )
 
-                                                                            
+        # Cross-encoder for re-ranking search results
+        logger.info("Loading cross-encoder model for re-ranking...")
+        self.cross_encoder = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-12-v2")
+        logger.info("Cross-encoder model loaded.")
+
+
         self.llm = AzureChatOpenAI(
             azure_endpoint=config.openai_endpoint,
             api_key=config.openai_key,
@@ -242,14 +249,19 @@ class RAGState(TypedDict, total=False):
     rewritten_query: str
     query_embedding: List[float]
     search_results: List[Dict]
-    winning_source: str                                                                                   
+    winning_source: str
     context: str
     answer: str
     sources: List[Dict]
     conversation_history: List[Dict]
-    source_mode: str                 
-    allowed_files: List[str]            
-    lookup_mode: str              
+    source_mode: str
+    allowed_files: List[str]
+    lookup_mode: str
+    retrieval_attempts: int
+    retrieval_sufficient: bool
+    sub_queries: List[str]
+    sub_results: List[Dict]
+    query_variants: List[str]              
 
 
                                                                               
@@ -439,6 +451,37 @@ def _search_one_index(
 
     return results_list
 
+def rerank_results(
+    cross_encoder: CrossEncoder,
+    query: str,
+    results: List[Dict],
+    top_n: int = 5
+) -> List[Dict]:
+    """
+    Re-rank search results using a cross-encoder model.
+    Scores each (query, chunk) pair jointly for much better precision
+    than independent BM25/vector scores.
+    """
+    if not results:
+        return results
+
+    pairs = [(query, r["content"][:512]) for r in results]
+    scores = cross_encoder.predict(pairs)
+
+    for result, score in zip(results, scores):
+        result["cross_encoder_score"] = float(score)
+
+    reranked = sorted(results, key=lambda r: r["cross_encoder_score"], reverse=True)
+
+    logger.info(
+        f"Cross-encoder re-ranking: {len(results)} → top {top_n} | "
+        f"best={reranked[0]['cross_encoder_score']:.4f}, "
+        f"worst kept={reranked[min(top_n, len(reranked)) - 1]['cross_encoder_score']:.4f}"
+    )
+
+    return reranked[:top_n]
+
+
 def hybrid_search_isolated(
     azure_clients: AzureClients,
     query: str,
@@ -495,31 +538,49 @@ def hybrid_search_isolated(
             allowed_files=list(allowed_files) if allowed_files else None            
         )
 
-       
-                                                           
-    ext_best = max((r["score"] for r in external_results), default=0.0)
-    int_best = max((r["score"] for r in internal_results), default=0.0)
+    # --- Cross-encoder re-ranking ---
+    # Re-rank each index's results independently using the cross-encoder.
+    # This jointly scores each (query, chunk) pair for much better precision
+    # than the independent BM25/vector scores from Azure.
+    RERANK_TOP_N = 5
+    if external_results:
+        logger.info(f"Re-ranking {len(external_results)} external results with cross-encoder...")
+        external_results = rerank_results(azure_clients.cross_encoder, query, external_results, top_n=RERANK_TOP_N)
+    if internal_results:
+        logger.info(f"Re-ranking {len(internal_results)} internal results with cross-encoder...")
+        internal_results = rerank_results(azure_clients.cross_encoder, query, internal_results, top_n=RERANK_TOP_N)
 
-    logger.info(f"Search scores — External: {ext_best:.4f} | Internal: {int_best:.4f} | Threshold: {MIN_SCORE}")
+    # Use cross-encoder scores for comparison (fall back to original score)
+    def _best_score(results):
+        return max((r.get("cross_encoder_score", r["score"]) for r in results), default=0.0)
 
-                                                            
-    if ext_best < MIN_SCORE and int_best < MIN_SCORE:
+    ext_best = _best_score(external_results)
+    int_best = _best_score(internal_results)
+
+    logger.info(f"Re-ranked scores — External best: {ext_best:.4f} | Internal best: {int_best:.4f}")
+
+    # Use original Azure scores for the MIN_SCORE threshold check
+    # (cross-encoder scores are on a different scale)
+    ext_azure_best = max((r["score"] for r in external_results), default=0.0)
+    int_azure_best = max((r["score"] for r in internal_results), default=0.0)
+
+    logger.info(f"Azure scores — External: {ext_azure_best:.4f} | Internal: {int_azure_best:.4f} | Threshold: {MIN_SCORE}")
+
+    if ext_azure_best < MIN_SCORE and int_azure_best < MIN_SCORE:
         logger.warning("Both sources below confidence threshold — returning no results")
         return [], "none"
 
-
-                                                                                                           
-                                           
+    # Filter by MIN_SCORE (on original Azure scores), then sort by cross-encoder score
     filtered_internal = sorted(
         [r for r in internal_results if r["score"] >= MIN_SCORE],
-        key=lambda r: r["score"], reverse=True
+        key=lambda r: r.get("cross_encoder_score", r["score"]), reverse=True
     )
     filtered_external = sorted(
         [r for r in external_results if r["score"] >= MIN_SCORE],
-        key=lambda r: r["score"], reverse=True
+        key=lambda r: r.get("cross_encoder_score", r["score"]), reverse=True
     )
 
-                                    
+    # Pick winning source by best cross-encoder score
     if int_best >= ext_best and filtered_internal:
         candidate_results = filtered_internal
         winning_source = "legal-documents-internal"
@@ -528,9 +589,8 @@ def hybrid_search_isolated(
         winning_source = "legal-documents"
     else:
         return [], "none"
-                                                                              
 
-    winning = sorted(candidate_results, key=lambda x: x["score"], reverse=True)[:10]
+    winning = candidate_results[:RERANK_TOP_N]
 
     for r in winning:
         r["source_url"] = generate_sas_url(
@@ -554,20 +614,32 @@ def hybrid_search_isolated(
                  
                                                                               
 
+def _parse_query_variants(response_text: str) -> List[str]:
+    """Parse V1:/V2:/V3: prefixed lines from LLM response into a list of query strings."""
+    variants = []
+    for line in response_text.strip().splitlines():
+        line = line.strip()
+        for prefix in ("V1:", "V2:", "V3:"):
+            if line.upper().startswith(prefix):
+                variant = line[len(prefix):].strip()
+                if variant:
+                    variants.append(variant)
+                break
+    return variants
+
+
 def rewrite_query_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
     """
-    NEW NODE: Rewrite user query into a better retrieval query.
+    Rewrite user query into multiple French keyword search variations.
+    Generates 3 query variants to maximize recall via multi-query retrieval.
     Also detects original query language so the answer is returned in the same language.
     """
     query = state.get("query", "")
     history = state.get("conversation_history", [])
 
-                                                                                  
     query_lang = detect_language(query, azure_clients.llm)
     logger.info(f"Detected query language: {query_lang}")
 
-
-                                                             
     allowed_files = state.get("allowed_files", [])
     if allowed_files:
         logger.info("Allowed files present — skipping aggressive rewrite")
@@ -575,15 +647,15 @@ def rewrite_query_node(state: RAGState, azure_clients: AzureClients) -> RAGState
             "query": query,
             "query_lang": query_lang,
             "rewritten_query": query,
+            "query_variants": [query],
             "conversation_history": history,
             "source_mode": state.get("source_mode", "all"),
             "allowed_files": allowed_files
         }
-                                                             
-                                            
+
     history_text = ""
     if history:
-        last_turns = history[-4:]                    
+        last_turns = history[-4:]
         history_text = "\n".join([f"{m['role'].upper()}: {m['content']}" for m in last_turns])
         history_text = f"\nRecent conversation:\n{history_text}\n"
 
@@ -597,7 +669,6 @@ def rewrite_query_node(state: RAGState, azure_clients: AzureClients) -> RAGState
     elif any(word in ql for word in ["invoice", "register", "supplier", "mutation", "project", "facture"]):
         query_type = "invoice/register"
 
-                                                 
     lookup_mode = "document" if any(
         term in ql for term in [
             "pdf", "pdfs", "pièce", "piece", "document original", "documents originaux",
@@ -606,57 +677,298 @@ def rewrite_query_node(state: RAGState, azure_clients: AzureClients) -> RAGState
             "exclude interrogatoires", "exclure les interrogatoires"
         ]
     ) else "answer"
-                                                 
 
-    prompt = prompts.get_rewrite_query_prompt(history_text, query_type, query)
-
+    # Generate 3 query variations
+    prompt = prompts.get_multi_query_rewrite_prompt(history_text, query_type, query)
     response = azure_clients.llm.invoke([("human", prompt)])
-    rewritten = response.content.strip()
-    logger.info(f"Query rewritten: '{query[:40]}' → '{rewritten[:60]}'")
+    variants = _parse_query_variants(response.content)
+
+    # Fallback: if parsing fails, use single rewrite
+    if len(variants) < 2:
+        logger.warning("Multi-query parsing failed — falling back to single rewrite")
+        fallback_prompt = prompts.get_rewrite_query_prompt(history_text, query_type, query)
+        fallback_resp = azure_clients.llm.invoke([("human", fallback_prompt)])
+        variants = [fallback_resp.content.strip()]
+
+    logger.info(f"Query variants ({len(variants)}): {[v[:50] for v in variants]}")
 
     return {
         "query": query,
         "query_lang": query_lang,
-        "rewritten_query": rewritten,
+        "rewritten_query": variants[0],  # Primary variant for backward compat
+        "query_variants": variants,
         "conversation_history": history,
-        "lookup_mode": lookup_mode,                                    
-        "source_mode": state.get("source_mode", "all"),                
-        "allowed_files": state.get("allowed_files", [])                
+        "lookup_mode": lookup_mode,
+        "source_mode": state.get("source_mode", "all"),
+        "allowed_files": state.get("allowed_files", [])
     }
 
 
 def retrieve_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
-    """Retrieve relevant documents using isolated dual-index search"""
-    search_query = state.get("rewritten_query") or state.get("query", "")
-    logger.info(f"Retrieving for: {search_query[:60]}...")
+    """
+    Multi-query retrieval: run all query variants against the index,
+    merge + deduplicate results, then let the cross-encoder re-ranker
+    (inside hybrid_search_isolated) pick the best chunks.
+    """
+    query_variants = state.get("query_variants", [])
+    fallback_query = state.get("rewritten_query") or state.get("query", "")
 
-    query_embedding = generate_embedding(azure_clients, search_query)
+    # If no variants, use the single rewritten query
+    if not query_variants:
+        query_variants = [fallback_query]
 
-    source_mode = state.get("source_mode", "all")             
-    allowed_files = state.get("allowed_files", [])            
+    source_mode = state.get("source_mode", "all")
+    allowed_files = state.get("allowed_files", [])
 
+    all_results = []
+    winning_sources = []
 
-                                                                              
-    search_results, winning_source = hybrid_search_isolated(
-        azure_clients,
-        search_query, 
-        query_embedding, 
-        top_k=15,
-        source_mode=source_mode,            
-        allowed_files=allowed_files            
+    for i, variant in enumerate(query_variants):
+        logger.info(f"Multi-query retrieval variant {i+1}/{len(query_variants)}: {variant[:60]}...")
+        variant_embedding = generate_embedding(azure_clients, variant)
+        results, winning_source = hybrid_search_isolated(
+            azure_clients, variant, variant_embedding,
+            top_k=20, source_mode=source_mode,
+            allowed_files=allowed_files
+        )
+        all_results.extend(results)
+        winning_sources.append(winning_source)
+
+    # Deduplicate by blob_path + chunk_index, keeping the highest-scored version
+    best_by_key = {}
+    for r in all_results:
+        key = (r.get("blob_path", ""), r.get("chunk_index", 0))
+        existing = best_by_key.get(key)
+        if existing is None:
+            best_by_key[key] = r
+        else:
+            # Keep the one with the higher cross-encoder score (or original score)
+            r_score = r.get("cross_encoder_score", r.get("score", 0))
+            e_score = existing.get("cross_encoder_score", existing.get("score", 0))
+            if r_score > e_score:
+                best_by_key[key] = r
+    deduped = list(best_by_key.values())
+
+    # Sort by cross-encoder score and take top results
+    deduped.sort(key=lambda r: r.get("cross_encoder_score", r.get("score", 0)), reverse=True)
+    search_results = deduped[:10]
+
+    # Determine winning source from the best results
+    source_counts = Counter(s for s in winning_sources if s != "none")
+    winning_source = source_counts.most_common(1)[0][0] if source_counts else "none"
+
+    logger.info(
+        f"Multi-query retrieval: {len(query_variants)} variants → "
+        f"{len(all_results)} raw → {len(deduped)} deduped → {len(search_results)} final | "
+        f"source: {winning_source}"
     )
 
-    logger.info(f"Found {len(search_results)} chunks from: {winning_source}")
     return {
         "query": state.get("query", ""),
-        "rewritten_query": search_query,
-        "query_embedding": query_embedding,
+        "rewritten_query": fallback_query,
+        "query_variants": query_variants,
+        "query_embedding": generate_embedding(azure_clients, fallback_query),
         "search_results": search_results,
         "winning_source": winning_source,
         "conversation_history": state.get("conversation_history", []),
-        "source_mode": source_mode,            
-        "allowed_files": allowed_files,            
+        "source_mode": source_mode,
+        "allowed_files": allowed_files,
         "lookup_mode": state.get("lookup_mode", "answer")
+    }
+
+
+MAX_RETRIEVAL_ATTEMPTS = 3
+
+
+def decompose_query_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
+    """
+    Check if the query needs to be decomposed into multiple sub-queries.
+    For example: "compare contract A and contract B" → two separate retrievals.
+    """
+    query = state.get("query", "")
+
+    prompt = prompts.get_decompose_query_prompt(query)
+    response = azure_clients.llm.invoke([("human", prompt)])
+    result = response.content.strip()
+
+    sub_queries = []
+    if result != "SINGLE":
+        for line in result.splitlines():
+            line = line.strip()
+            if line.startswith("SUB:"):
+                sub_queries.append(line[4:].strip())
+
+    if len(sub_queries) < 2:
+        sub_queries = []
+
+    if sub_queries:
+        logger.info(f"Query decomposed into {len(sub_queries)} sub-queries: {sub_queries}")
+    else:
+        logger.info("Query does not need decomposition — proceeding as single query")
+
+    return {
+        **state,
+        "sub_queries": sub_queries,
+        "retrieval_attempts": 0,
+    }
+
+
+def should_decompose(state: RAGState) -> str:
+    """Routing function: if sub-queries exist, go to multi-retrieve; otherwise single retrieve."""
+    sub_queries = state.get("sub_queries", [])
+    if len(sub_queries) >= 2:
+        return "multi_retrieve"
+    return "retrieve"
+
+
+def multi_retrieve_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
+    """
+    Handle decomposed queries: run a separate retrieval for each sub-query,
+    then merge all results.
+    """
+    sub_queries = state.get("sub_queries", [])
+    source_mode = state.get("source_mode", "all")
+    allowed_files = state.get("allowed_files", [])
+
+    all_results = []
+    winning_sources = []
+
+    for i, sq in enumerate(sub_queries):
+        logger.info(f"Multi-retrieve sub-query {i+1}/{len(sub_queries)}: {sq[:60]}...")
+
+        # Rewrite each sub-query to French keywords
+        history_text = ""
+        sq_lower = sq.lower()
+        query_type = "general legal"
+        if any(w in sq_lower for w in ["income", "revenue", "profit", "financial"]):
+            query_type = "financial"
+        elif any(w in sq_lower for w in ["email", "courriel", "sender", "recipient"]):
+            query_type = "email"
+
+        rewrite_prompt = prompts.get_rewrite_query_prompt(history_text, query_type, sq)
+        rewrite_resp = azure_clients.llm.invoke([("human", rewrite_prompt)])
+        rewritten_sq = rewrite_resp.content.strip()
+        logger.info(f"Sub-query {i+1} rewritten: '{sq[:40]}' → '{rewritten_sq[:60]}'")
+
+        sq_embedding = generate_embedding(azure_clients, rewritten_sq)
+        results, winning_source = hybrid_search_isolated(
+            azure_clients, rewritten_sq, sq_embedding,
+            top_k=20, source_mode=source_mode,
+            allowed_files=allowed_files
+        )
+
+        # Tag each result with its sub-query for context
+        for r in results:
+            r["sub_query"] = sq
+
+        all_results.extend(results)
+        winning_sources.append(winning_source)
+
+    # Deduplicate by blob_path + chunk_index
+    seen = set()
+    deduped = []
+    for r in all_results:
+        key = (r.get("blob_path", ""), r.get("chunk_index", 0))
+        if key not in seen:
+            seen.add(key)
+            deduped.append(r)
+
+    # Pick the most common winning source
+    source_counts = Counter(s for s in winning_sources if s != "none")
+    winning = source_counts.most_common(1)[0][0] if source_counts else "none"
+
+    logger.info(f"Multi-retrieve: {len(deduped)} unique chunks from {len(sub_queries)} sub-queries")
+
+    return {
+        **state,
+        "search_results": deduped,
+        "winning_source": winning,
+        "retrieval_attempts": 1,
+        "retrieval_sufficient": True,  # Skip evaluation for decomposed queries
+    }
+
+
+def evaluate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
+    """
+    Self-evaluation node: ask the LLM whether the retrieved chunks
+    are sufficient to answer the query. If not, trigger a re-retrieval
+    with a different query rewrite.
+    """
+    query = state.get("query", "")
+    search_results = state.get("search_results", [])
+    attempts = state.get("retrieval_attempts", 0) + 1
+
+    # If no results at all, mark as insufficient (unless max attempts reached)
+    if not search_results:
+        logger.info(f"Evaluate: no results found (attempt {attempts})")
+        return {
+            **state,
+            "retrieval_attempts": attempts,
+            "retrieval_sufficient": attempts >= MAX_RETRIEVAL_ATTEMPTS,
+        }
+
+    # Build a summary of retrieved chunks for the LLM to evaluate
+    chunks_summary = "\n".join(
+        f"[Chunk {i+1}] File: {r.get('file_name', 'unknown')} | "
+        f"Score: {r.get('cross_encoder_score', r.get('score', 0)):.4f}\n"
+        f"{r.get('content', '')[:300]}..."
+        for i, r in enumerate(search_results[:5])
+    )
+
+    prompt = prompts.get_evaluate_retrieval_prompt(query, chunks_summary)
+    response = azure_clients.llm.invoke([("human", prompt)])
+    evaluation = response.content.strip().upper()
+
+    is_sufficient = "SUFFICIENT" in evaluation
+    logger.info(f"Evaluate (attempt {attempts}): {evaluation} | sufficient={is_sufficient}")
+
+    if not is_sufficient and attempts >= MAX_RETRIEVAL_ATTEMPTS:
+        logger.warning(f"Max retrieval attempts ({MAX_RETRIEVAL_ATTEMPTS}) reached — proceeding with best results")
+        is_sufficient = True
+
+    return {
+        **state,
+        "retrieval_attempts": attempts,
+        "retrieval_sufficient": is_sufficient,
+    }
+
+
+def should_retry_retrieval(state: RAGState) -> str:
+    """Routing function: retry retrieval or proceed to generate."""
+    if state.get("retrieval_sufficient", False):
+        return "generate"
+    return "retry_rewrite"
+
+
+def retry_rewrite_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
+    """
+    Rewrite the query with a different strategy when previous retrieval was insufficient.
+    Generates 3 new variants using a completely different approach.
+    """
+    query = state.get("query", "")
+    previous_variants = state.get("query_variants", [])
+    attempts = state.get("retrieval_attempts", 1)
+
+    previous_variants_text = "\n".join(f"- {v}" for v in previous_variants)
+    prompt = prompts.get_multi_query_retry_prompt(query, previous_variants_text, attempts)
+    response = azure_clients.llm.invoke([("human", prompt)])
+    new_variants = _parse_query_variants(response.content)
+
+    # Fallback to single rewrite if parsing fails
+    if len(new_variants) < 2:
+        logger.warning("Retry multi-query parsing failed — falling back to single rewrite")
+        fallback_prompt = prompts.get_rewrite_retry_prompt(
+            query, previous_variants[0] if previous_variants else "", attempts
+        )
+        fallback_resp = azure_clients.llm.invoke([("human", fallback_prompt)])
+        new_variants = [fallback_resp.content.strip()]
+
+    logger.info(f"Retry rewrite (attempt {attempts}): {len(new_variants)} new variants: {[v[:50] for v in new_variants]}")
+
+    return {
+        **state,
+        "rewritten_query": new_variants[0],
+        "query_variants": new_variants,
     }
 
 
@@ -777,6 +1089,15 @@ def generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
     response = azure_clients.llm.invoke(messages)
     answer = response.content
 
+    confidence = "CONFIDENT"  # default
+    for tag in ["[NOT_FOUND]", "[PARTIAL]", "[CONFIDENT]"]:
+        if tag in answer:
+            confidence = tag.strip("[]")
+            answer = answer.replace(tag, "").strip()
+            break
+
+    logger.info(f"LLM confidence signal: {confidence}")
+
     logger.info(f"Generated answer ({len(answer)} chars)")
 
     seen = set()
@@ -804,18 +1125,52 @@ def generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
                                                                               
 
 def build_rag_graph(azure_clients: AzureClients):
-    """Build the RAG workflow graph with improved nodes"""
+    """
+    Build the agentic RAG workflow graph.
+
+    Flow:
+      rewrite_query → decompose_query ──┬── (SINGLE) ──→ retrieve ──→ evaluate ──┬── (SUFFICIENT) → generate → END
+                                         │                                        │
+                                         │                                        └── (INSUFFICIENT) → retry_rewrite → retrieve (loop up to 3x)
+                                         │
+                                         └── (MULTI) ───→ multi_retrieve ────────────→ generate → END
+    """
 
     workflow = StateGraph(RAGState)
 
-           
+    # Nodes
     workflow.add_node("rewrite_query", lambda state: rewrite_query_node(state, azure_clients))
+    workflow.add_node("decompose_query", lambda state: decompose_query_node(state, azure_clients))
     workflow.add_node("retrieve", lambda state: retrieve_node(state, azure_clients))
+    workflow.add_node("multi_retrieve", lambda state: multi_retrieve_node(state, azure_clients))
+    workflow.add_node("evaluate", lambda state: evaluate_node(state, azure_clients))
+    workflow.add_node("retry_rewrite", lambda state: retry_rewrite_node(state, azure_clients))
     workflow.add_node("generate", lambda state: generate_node(state, azure_clients))
 
-                                               
-    workflow.add_edge("rewrite_query", "retrieve")
-    workflow.add_edge("retrieve", "generate")
+    # Edges
+    workflow.add_edge("rewrite_query", "decompose_query")
+
+    # Conditional: decompose decides single vs multi retrieval
+    workflow.add_conditional_edges("decompose_query", should_decompose, {
+        "retrieve": "retrieve",
+        "multi_retrieve": "multi_retrieve",
+    })
+
+    # Single retrieval → evaluate
+    workflow.add_edge("retrieve", "evaluate")
+
+    # Multi retrieval → straight to generate (already combined results)
+    workflow.add_edge("multi_retrieve", "generate")
+
+    # Conditional: evaluate decides retry or generate
+    workflow.add_conditional_edges("evaluate", should_retry_retrieval, {
+        "generate": "generate",
+        "retry_rewrite": "retry_rewrite",
+    })
+
+    # Retry rewrite loops back to retrieve
+    workflow.add_edge("retry_rewrite", "retrieve")
+
     workflow.add_edge("generate", END)
 
     workflow.set_entry_point("rewrite_query")

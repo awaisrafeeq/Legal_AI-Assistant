@@ -48,8 +48,128 @@ English question: {query}
 
 French keyword search query:"""
 
+def get_multi_query_rewrite_prompt(history_text: str, query_type: str, query: str) -> str:
+    return f"""You are a search query optimizer for a French-language legal document database.
+The database contains French legal documents: loan files (dossiers de prêt), investor emails (courriels investisseur), notary mandates (mandats notaire), property evaluations (évaluations immobilières), and contracts.
+
+Your task: generate exactly 3 DIFFERENT French keyword search query variations for the user's question.
+Each variation should use different synonyms, phrasings, or angles to maximize recall.
+
+Rules:
+1. ALL THREE queries must be in FRENCH — all documents are in French
+2. Each query should be 6-12 dense French keywords — no full sentences
+3. Keep proper nouns and place names exactly as given (e.g., Brompton, Rawdon)
+4. Keep loan/file numbers exactly (e.g., DP-0372, P-14-365)
+5. Variation 1: the most direct translation with standard legal terms
+6. Variation 2: use alternative synonyms and related legal vocabulary
+7. Variation 3: broaden scope with contextual terms or narrower focus terms
+8. If query type is financial, prioritize financial vocabulary
+9. If query type is email, prioritize correspondence vocabulary
+10. If query type is invoice/register, prioritize supplier/billing vocabulary
+
+Document type disambiguation — add these terms when the question is about:
+- original PDF, source document → add: pièce pdf document original fichier
+- tenants, rents → add: locataires bail loyer
+- evaluation fees → add: offre service honoraires montant
+- notary billing → add: facture honoraires déboursés notaire
+{history_text}
+Query type: {query_type}
+English question: {query}
+
+Output EXACTLY 3 lines, each prefixed with "V1: ", "V2: ", "V3: ":"""
+
+
+def get_multi_query_retry_prompt(query: str, previous_variants: str, attempt: int) -> str:
+    return f"""You are a search query optimizer for a French-language legal document database.
+Previous search queries did not retrieve sufficiently relevant results.
+
+Original user question: {query}
+Previous search queries that failed:
+{previous_variants}
+Attempt number: {attempt}
+
+Generate 3 NEW and DIFFERENT French keyword search query variations.
+Use completely different angles, synonyms, and strategies from the failed queries.
+- Try broader or narrower scope
+- Use different French legal terminology
+- Consider alternative document types that might contain the answer
+
+Output EXACTLY 3 lines, each prefixed with "V1: ", "V2: ", "V3: ":"""
+
+
+def get_evaluate_retrieval_prompt(query: str, chunks_summary: str) -> str:
+    return f"""You are a retrieval quality evaluator for a legal document search system.
+
+Given the user's query and the retrieved document chunks, determine if there is enough relevant information to answer the query confidently.
+
+User query: {query}
+
+Retrieved chunks summary:
+{chunks_summary}
+
+Evaluate:
+1. Do the retrieved chunks contain information directly relevant to the query?
+2. Are key entities, dates, amounts, or facts mentioned in the query present in the chunks?
+3. Is there enough context to give a substantive answer?
+
+Respond with ONLY one of these two words:
+- SUFFICIENT — if the chunks contain enough relevant information to answer the query
+- INSUFFICIENT — if the chunks are mostly irrelevant or missing key information needed to answer
+
+Your evaluation:"""
+
+
+def get_rewrite_retry_prompt(query: str, previous_rewrite: str, attempt: int) -> str:
+    return f"""You are a search query optimizer for a French-language legal document database.
+The previous search query did not retrieve sufficiently relevant results.
+
+Original user question: {query}
+Previous search query that failed: {previous_rewrite}
+Attempt number: {attempt}
+
+Rewrite the query using a DIFFERENT strategy:
+- Try different French legal synonyms and alternative terms
+- Broaden or narrow the scope as appropriate
+- If the previous query was too specific, try more general terms
+- If the previous query was too broad, try more targeted terms
+- Include alternative spellings or related concepts
+
+Output ONLY 6-12 dense French keywords — no full sentences, no punctuation.
+
+New French keyword search query:"""
+
+
+def get_decompose_query_prompt(query: str) -> str:
+    return f"""You are a query analyzer for a legal document search system.
+
+Determine if this query requires searching for information about MULTIPLE SEPARATE entities, documents, or topics that should be retrieved independently.
+
+Examples that SHOULD be decomposed:
+- "Compare the liability clauses in contract A and contract B" → two separate searches
+- "What are the loan amounts for DP-0372 and DP-0341?" → two separate searches
+- "Compare the property evaluations for Brompton and Rawdon" → two separate searches
+
+Examples that should NOT be decomposed:
+- "What is the loan amount for DP-0372?" → single search
+- "List all creditors for this property" → single search
+- "What are the terms of the mortgage?" → single search
+
+Query: {query}
+
+If the query should be decomposed, respond with each sub-query on a separate line, prefixed with "SUB: ".
+If the query should NOT be decomposed, respond with exactly: SINGLE
+
+Response:"""
+
+
 def get_system_prompt(response_language: str, context: str) -> str:
-    return f"""You are an expert legal AI assistant for a French-language legal document system.
+    return f"""ABSOLUTE RULE — NEVER VIOLATE:
+If the retrieved context does not contain the answer, say:
+"I could not find this information in the available documents."
+Do NOT guess, infer, or generate information that is not explicitly present in the provided context.
+This is a legal system — inaccuracy has real consequences.
+
+You are an expert legal AI assistant for a French-language legal document system.
 You have access to confidential and external legal documents relating to a real estate financing case.
 
 LANGUAGE RULE — CRITICAL:
@@ -58,11 +178,21 @@ LANGUAGE RULE — CRITICAL:
 - Example: "'Montant du prêt : 700 000,00 $' (Loan amount: $700,000.00)"
 - Never respond in a different language than {response_language}.
 
+SCOPE:
+You only answer questions related to the legal documents in your context.
+For general legal advice, personal opinions, or topics outside the provided documents, politely decline and explain that you can only assist with document-based queries.
+
 SOURCE PRIORITY:
 - 🔴 Internal (Confidential) sources are the law firm's own authoritative files — always prefer these for definitive answers.
 - 📗 External sources are government or court records — use these when internal documents do not contain the answer.
 - When both sources contain relevant information, use internal as the primary answer and mention external as supporting evidence.
 - Always clearly state which source each fact comes from.
+
+MULTI-DOCUMENT RULES:
+- When combining facts from multiple documents, attribute EVERY fact to its specific source file.
+- If two documents contradict each other, present BOTH versions with their sources and flag the contradiction explicitly.
+- Never silently prefer one document over another without stating why.
+- You MAY use multiple documents ONLY when they clearly reference the same entity, case, property, or transaction. When in doubt, use fewer sources rather than more.
 
 EXTRACTION RULES — CRITICAL FOR ACCURACY:
 - Extract ALL numbers, amounts, loan numbers, dates, names EXACTLY as they appear in the source.
@@ -76,22 +206,30 @@ EXTRACTION RULES — CRITICAL FOR ACCURACY:
 
 RESPONSE FORMAT:
 1. Direct answer in 1-2 sentences with the key fact/number.
-2. Supporting details with exact quotes from the source (French original + English translation).
+2. Supporting details with exact quotes from the source (French original + {response_language} translation).
 3. Source references at the end.
+
+LENGTH RULE:
+- Keep total response under 500 words unless the user explicitly asks for a detailed breakdown.
+- Lead with the direct answer in the FIRST sentence.
+- Use bullet points only for listing multiple items (loans, dates, parties).
 
 CITATION FORMAT:
 - Internal documents: "⚠️ Confidential Source: [filename]"
 - External documents: "📗 External | [filename]"
 
-IMPORTANT RULES:
-- Base answers STRICTLY on the provided source documents — never fabricate.
-- If a specific fact is NOT in any provided source, say so clearly.
-- Keep responses concise — WhatsApp users need direct answers.
-- Prefer the most relevant sources first, but you MAY use multiple documents when needed.
-- If multiple documents clearly refer to the same subject, combine them carefully and explicitly mention the source file for each fact.
+DOCUMENT PREFERENCE RULES:
 - If original source files and transcripts both exist, prefer the original source files over transcripts.
 - If the user is asking to find documents, return the matching files and their links instead of summarizing from a transcript.
 - For financial questions, prefer documents whose title or content clearly indicates a financial report or financial statements.
 - For email questions, prefer documents whose title or content clearly indicates an email or correspondence.
+
+CONFIDENCE SIGNAL — MANDATORY:
+At the very end of your response, on its own line, add exactly one of these tags:
+- [CONFIDENT] — the answer is directly and clearly stated in the sources
+- [PARTIAL] — some relevant info was found but the answer may be incomplete
+- [NOT_FOUND] — the sources do not contain the answer
+This tag is for internal system use only.
+
 CURRENT CONTEXT FROM LEGAL DOCUMENTS:
 {context}"""

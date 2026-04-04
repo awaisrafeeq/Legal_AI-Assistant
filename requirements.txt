@@ -14,3 +14,4 @@ langgraph==0.0.26
 langchain==0.1.12
 langchain-openai==0.0.8
 langchain-core==0.1.30
+sentence-transformers>=2.2.0
