@@ -161,7 +161,6 @@ If the query should NOT be decomposed, respond with exactly: SINGLE
 
 Response:"""
 
-
 def get_system_prompt(response_language: str, context: str) -> str:
     return f"""ABSOLUTE RULE — NEVER VIOLATE:
 If the retrieved context does not contain the answer, say:
@@ -233,3 +232,4 @@ This tag is for internal system use only.
 
 CURRENT CONTEXT FROM LEGAL DOCUMENTS:
 {context}"""
+

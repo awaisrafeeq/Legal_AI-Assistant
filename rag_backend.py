@@ -1,18 +1,5 @@
 import prompts
-"""
-RAG Backend API - Improved Version
-FastAPI server with LangGraph workflow for legal document search and Q&A
 
-Key Improvements:
-- Professional, structured system prompt
-- Bilingual search (queries both EN + FR indexes simultaneously)
-- Larger context window per document chunk (800 → 1500 chars)
-- Lower temperature (0.3 → 0.1) for factual legal accuracy
-- Conversation history support
-- WhatsApp-friendly response formatting
-- Query rewriting node for better retrieval
-- Confidence scoring and "no answer" handling
-"""
 
 from cgitb import lookup
 import os
@@ -28,14 +15,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from dotenv import load_dotenv
 
-               
+
 from azure.core.credentials import AzureKeyCredential
 from azure.search.documents import SearchClient
 from azure.storage.blob import BlobServiceClient
 from openai import AzureOpenAI
 from datetime import datetime, timedelta
 
-                   
+
 from langgraph.graph import StateGraph, END
 from langchain_core.messages import HumanMessage, AIMessage
 from langchain_openai import AzureChatOpenAI
@@ -43,10 +30,13 @@ from typing_extensions import TypedDict
 
 from sentence_transformers import CrossEncoder
 from logging.handlers import TimedRotatingFileHandler
+
 os.makedirs("logs", exist_ok=True)
 
 _log_fmt = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-_file_handler = TimedRotatingFileHandler("logs/rag_backend.log", when="midnight", backupCount=30, encoding="utf-8")
+_file_handler = TimedRotatingFileHandler(
+    "logs/rag_backend.log", when="midnight", backupCount=30, encoding="utf-8"
+)
 _file_handler.setFormatter(_log_fmt)
 _console_handler = logging.StreamHandler()
 _console_handler.setFormatter(_log_fmt)
@@ -57,20 +47,19 @@ logger = logging.getLogger(__name__)
 load_dotenv()
 
 
-                                                                              
-               
-                                                                              
+# ============================================================================
+# CONFIG
+# ============================================================================
 
 @dataclass
 class Config:
     search_endpoint: str
     search_key: str
     search_index: str
-                                                                                 
     search_index_external: str
     search_index_internal: str
-                                                                                             
     min_search_score: float
+    cross_encoder_min_score: float
     openai_endpoint: str
     openai_key: str
     openai_chat_deployment: str
@@ -88,7 +77,8 @@ class Config:
             search_index=os.environ.get("SEARCH_INDEX", "legal-docs-index"),
             search_index_external=os.environ.get("SEARCH_INDEX_EXTERNAL", "legal-docs-external"),
             search_index_internal=os.environ.get("SEARCH_INDEX_INTERNAL", "legal-docs-internal"),
-            min_search_score=float(os.environ.get("MIN_SEARCH_SCORE", "0.02")),
+            min_search_score=float(os.environ.get("MIN_SEARCH_SCORE", "0.15")),
+            cross_encoder_min_score=float(os.environ.get("CROSS_ENCODER_MIN_SCORE", "0.5")),
             openai_endpoint=os.environ["OPENAI_ENDPOINT"],
             openai_key=os.environ["OPENAI_KEY"],
             openai_chat_deployment=os.environ.get("OPENAI_CHAT_DEPLOYMENT", "chat"),
@@ -100,9 +90,9 @@ class Config:
         )
 
 
-                                                                              
-                 
-                                                                              
+# ============================================================================
+# MODELS
+# ============================================================================
 
 class SearchRequest(BaseModel):
     query: str
@@ -121,7 +111,7 @@ class SearchResult(BaseModel):
 
 
 class ChatMessage(BaseModel):
-    role: str                          
+    role: str  # "user" or "assistant"
     content: str
 
 
@@ -129,9 +119,10 @@ class ChatRequest(BaseModel):
     query: str
     conversation_id: Optional[str] = None
     target_language: Optional[str] = "auto"
-    history: Optional[List[ChatMessage]] = []                              
-    source_mode: Optional[str] = "all"                                                    
-    allowed_files: Optional[List[str]] = []            
+    history: Optional[List[ChatMessage]] = []
+    source_mode: Optional[str] = "all"  # "all", "internal_only", "external_only"
+    allowed_files: Optional[List[str]] = []
+
 
 class ChatResponse(BaseModel):
     answer: str
@@ -140,9 +131,9 @@ class ChatResponse(BaseModel):
     detected_query_language: Optional[str] = None
 
 
-                                                                              
-                                  
-                                                                              
+# ============================================================================
+# LANGUAGE DETECTION
+# ============================================================================
 
 def detect_language(text: str, llm: AzureChatOpenAI) -> str:
     """
@@ -150,26 +141,31 @@ def detect_language(text: str, llm: AzureChatOpenAI) -> str:
     Returns a language code: 'en', 'fr', 'ur', 'ar', 'es', etc.
     Used to respond in the same language the user wrote in.
     """
-                                                                         
-    urdu_arabic_chars = sum(1 for c in text if '\u0600' <= c <= '\u06FF' or '\u0750' <= c <= '\u077F')
+    # Fast path: check for Urdu/Arabic unicode characters
+    urdu_arabic_chars = sum(
+        1 for c in text if '\u0600' <= c <= '\u06FF' or '\u0750' <= c <= '\u077F'
+    )
     if urdu_arabic_chars > 2:
-                                                                         
         urdu_specific = sum(1 for c in text if c in 'ے،ہھگڈڑ')
         return "ur" if urdu_specific > 0 else "ar"
 
-                                                       
-    french_indicators = ['le', 'la', 'les', 'un', 'une', 'des', 'et', 'est', 'dans',
-                         'pour', 'avec', 'qui', 'que', 'du', 'au', 'en', 'il', 'elle']
+    # Fast path: check for French indicators
+    french_indicators = [
+        'le', 'la', 'les', 'un', 'une', 'des', 'et', 'est', 'dans',
+        'pour', 'avec', 'qui', 'que', 'du', 'au', 'en', 'il', 'elle'
+    ]
     text_lower = text.lower()
-    french_word_count = sum(1 for word in french_indicators if f" {word} " in f" {text_lower} ")
+    french_word_count = sum(
+        1 for word in french_indicators if f" {word} " in f" {text_lower} "
+    )
     if french_word_count >= 2:
         return "fr"
 
-                                      
+    # Fallback: use LLM
     prompt = prompts.get_language_detection_prompt(text)
     response = llm.invoke([("human", prompt)])
     result = response.content.strip().lower().replace("'", "").replace('"', '')[:5]
-                                            
+
     import re
     match = re.search(r'\b([a-z]{2})\b', result)
     return match.group(1) if match else "en"
@@ -185,21 +181,19 @@ def translate_text(llm: AzureChatOpenAI, text: str, source_lang: str, target_lan
     target_name = lang_names.get(target_lang, target_lang)
 
     prompt = prompts.get_translation_prompt(source_name, target_name, text)
-
     response = llm.invoke([("human", prompt)])
     return response.content.strip()
 
 
-                                                                              
-               
-                                                                              
+# ============================================================================
+# AZURE CLIENTS
+# ============================================================================
 
 class AzureClients:
     def __init__(self, config: Config):
         self.config = config
 
-                                                         
-                                                                      
+        # Dual-index search clients
         self.search_client_external = SearchClient(
             endpoint=config.search_endpoint,
             index_name=config.search_index_external,
@@ -229,7 +223,6 @@ class AzureClients:
         self.cross_encoder = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-12-v2")
         logger.info("Cross-encoder model loaded.")
 
-
         self.llm = AzureChatOpenAI(
             azure_endpoint=config.openai_endpoint,
             api_key=config.openai_key,
@@ -239,9 +232,9 @@ class AzureClients:
         )
 
 
-                                                                              
-                         
-                                                                              
+# ============================================================================
+# RAG STATE
+# ============================================================================
 
 class RAGState(TypedDict, total=False):
     query: str
@@ -261,12 +254,12 @@ class RAGState(TypedDict, total=False):
     retrieval_sufficient: bool
     sub_queries: List[str]
     sub_results: List[Dict]
-    query_variants: List[str]              
+    query_variants: List[str]
 
 
-                                                                              
-                  
-                                                                              
+# ============================================================================
+# UTILITY FUNCTIONS
+# ============================================================================
 
 def send_email_acs(config, recipient_email: str, subject: str, body: str) -> bool:
     """
@@ -346,7 +339,6 @@ def generate_sas_url(
         if is_internal and azure_clients.config.internal_container_sas_url:
             sas_url = azure_clients.config.internal_container_sas_url
 
-                                                                           
             if blob_path.startswith("extracted-text/internal/"):
                 blob_file_path = blob_path[len("extracted-text/internal/"):]
             else:
@@ -356,15 +348,11 @@ def generate_sas_url(
                 blob_file_path = blob_file_path[:-4]
 
         else:
-                                                                          
             sas_url = azure_clients.config.container_sas_url
 
             if folder_path and file_name:
-                                                                                  
-                                                                                         
                 blob_file_path = f"{folder_path}/{file_name}"
             elif blob_path:
-                                                                                       
                 blob_file_path = blob_path
                 if blob_file_path.startswith("extracted-text/"):
                     blob_file_path = blob_file_path[len("extracted-text/"):]
@@ -387,25 +375,28 @@ def generate_sas_url(
         logger.warning(f"Failed to generate URL for {blob_path}: {e}")
         return None
 
+
+# ============================================================================
+# SEARCH & RE-RANKING
+# ============================================================================
+
 def _search_one_index(
     search_client: SearchClient,
     query: str,
     query_embedding: List[float],
     top_k: int,
-    allowed_files: Optional[List[str]] = None            
+    allowed_files: Optional[List[str]] = None
 ) -> List[Dict]:
     """
     Run hybrid search (BM25 + vector) on a single index.
     Returns raw results without SAS URLs (filled later for the winning source only).
     """
-
-                                                 
     search_query = query
 
     if allowed_files:
         file_hint = " ".join(allowed_files)
         search_query = f"{query} {file_hint}"
-                                               
+
     vector_query = {
         "kind": "vector",
         "vector": query_embedding,
@@ -414,15 +405,16 @@ def _search_one_index(
         "exhaustive": True
     }
 
-               
-                                                                            
     results = search_client.search(
-    search_text=search_query,
-    vector_queries=[vector_query],
-    query_type="semantic",
-    semantic_configuration_name="semantic-config",
-    select=["content", "file_name", "folder_path", "blob_path", "chunk_index", "source_container"],
-    top=top_k * 2
+        search_text=search_query,
+        vector_queries=[vector_query],
+        query_type="semantic",
+        semantic_configuration_name="semantic-config",
+        select=[
+            "content", "file_name", "folder_path",
+            "blob_path", "chunk_index", "source_container"
+        ],
+        top=top_k * 2
     )
 
     results_list = [
@@ -441,7 +433,7 @@ def _search_one_index(
         for r in results
     ]
 
-                                                                        
+    # Filter to allowed files if specified
     if allowed_files:
         allowed_terms = [x.strip().lower() for x in allowed_files if x.strip()]
         results_list = [
@@ -450,6 +442,7 @@ def _search_one_index(
         ]
 
     return results_list
+
 
 def rerank_results(
     cross_encoder: CrossEncoder,
@@ -487,11 +480,11 @@ def hybrid_search_isolated(
     query: str,
     query_embedding: List[float],
     top_k: int = 7,
-    source_mode: str = "all",              
-    allowed_files: Optional[List[str]] = None            
+    source_mode: str = "all",
+    allowed_files: Optional[List[str]] = None
 ) -> tuple:
     """
-    FIX: Search BOTH indices separately, pick the winner by highest score.
+    Search BOTH indices separately, pick the winner by highest score.
 
     CRITICAL BEHAVIOUR:
     - External index searched independently
@@ -500,71 +493,91 @@ def hybrid_search_isolated(
     - If both sources score below min_search_score → return ([], "none")
       → no GPT-4 call → no hallucination possible
 
+    Pipeline order:
+    1. Search both indices (BM25 + vector)
+    2. Re-rank with cross-encoder (sets cross_encoder_score)
+    3. Filter by cross-encoder minimum threshold
+    4. Filter by Azure MIN_SCORE threshold
+    5. Pick winning source by best cross-encoder score
+
     Returns: (results: List[Dict], winning_source: str)
     """
     MIN_SCORE = azure_clients.config.min_search_score
-    if allowed_files:             
-        MIN_SCORE = 0.0  
-                                           
-                                                                             
-       
-                                           
-                                                                             
-                                     
+    CROSS_ENCODER_MIN = azure_clients.config.cross_encoder_min_score
+    RERANK_TOP_N = 5
 
+    if allowed_files:
+        MIN_SCORE = 0.01  # Reduced but not zero — prevents total garbage
 
-
-                                                           
-    allowed_files = set(allowed_files or [])
+    allowed_files_set = set(allowed_files or [])
 
     external_results = []
     internal_results = []
 
+    # --- Step 1: Search both indices ---
     if source_mode in ("all", "external_only"):
         external_results = _search_one_index(
-            azure_clients.search_client_external, 
-            query, 
-            query_embedding, 
-            top_k,
-            allowed_files=list(allowed_files) if allowed_files else None            
+            azure_clients.search_client_external,
+            query, query_embedding, top_k,
+            allowed_files=list(allowed_files_set) if allowed_files_set else None
         )
 
     if source_mode in ("all", "internal_only"):
         internal_results = _search_one_index(
-            azure_clients.search_client_internal, 
-            query, 
-            query_embedding, 
-            top_k,
-            allowed_files=list(allowed_files) if allowed_files else None            
+            azure_clients.search_client_internal,
+            query, query_embedding, top_k,
+            allowed_files=list(allowed_files_set) if allowed_files_set else None
         )
 
-    # --- Cross-encoder re-ranking ---
-    # Re-rank each index's results independently using the cross-encoder.
-    # This jointly scores each (query, chunk) pair for much better precision
-    # than the independent BM25/vector scores from Azure.
-    RERANK_TOP_N = 5
+    # --- Step 2: Re-rank with cross-encoder (this SETS cross_encoder_score) ---
     if external_results:
         logger.info(f"Re-ranking {len(external_results)} external results with cross-encoder...")
-        external_results = rerank_results(azure_clients.cross_encoder, query, external_results, top_n=RERANK_TOP_N)
+        external_results = rerank_results(
+            azure_clients.cross_encoder, query, external_results, top_n=RERANK_TOP_N
+        )
     if internal_results:
         logger.info(f"Re-ranking {len(internal_results)} internal results with cross-encoder...")
-        internal_results = rerank_results(azure_clients.cross_encoder, query, internal_results, top_n=RERANK_TOP_N)
+        internal_results = rerank_results(
+            azure_clients.cross_encoder, query, internal_results, top_n=RERANK_TOP_N
+        )
 
-    # Use cross-encoder scores for comparison (fall back to original score)
+    # --- Step 3: Filter by cross-encoder score (AFTER re-ranking set the scores) ---
+    if external_results:
+        external_results = [
+            r for r in external_results
+            if r.get("cross_encoder_score", 0) >= CROSS_ENCODER_MIN
+        ]
+    if internal_results:
+        internal_results = [
+            r for r in internal_results
+            if r.get("cross_encoder_score", 0) >= CROSS_ENCODER_MIN
+        ]
+
+    logger.info(
+        f"After cross-encoder filtering (threshold={CROSS_ENCODER_MIN}): "
+        f"{len(external_results)} external, {len(internal_results)} internal"
+    )
+
+    # --- Step 4: Check Azure score thresholds ---
     def _best_score(results):
-        return max((r.get("cross_encoder_score", r["score"]) for r in results), default=0.0)
+        return max(
+            (r.get("cross_encoder_score", r["score"]) for r in results),
+            default=0.0
+        )
 
     ext_best = _best_score(external_results)
     int_best = _best_score(internal_results)
 
-    logger.info(f"Re-ranked scores — External best: {ext_best:.4f} | Internal best: {int_best:.4f}")
-
-    # Use original Azure scores for the MIN_SCORE threshold check
-    # (cross-encoder scores are on a different scale)
     ext_azure_best = max((r["score"] for r in external_results), default=0.0)
     int_azure_best = max((r["score"] for r in internal_results), default=0.0)
 
-    logger.info(f"Azure scores — External: {ext_azure_best:.4f} | Internal: {int_azure_best:.4f} | Threshold: {MIN_SCORE}")
+    logger.info(
+        f"Re-ranked scores — External best: {ext_best:.4f} | Internal best: {int_best:.4f}"
+    )
+    logger.info(
+        f"Azure scores — External: {ext_azure_best:.4f} | "
+        f"Internal: {int_azure_best:.4f} | Threshold: {MIN_SCORE}"
+    )
 
     if ext_azure_best < MIN_SCORE and int_azure_best < MIN_SCORE:
         logger.warning("Both sources below confidence threshold — returning no results")
@@ -573,14 +586,16 @@ def hybrid_search_isolated(
     # Filter by MIN_SCORE (on original Azure scores), then sort by cross-encoder score
     filtered_internal = sorted(
         [r for r in internal_results if r["score"] >= MIN_SCORE],
-        key=lambda r: r.get("cross_encoder_score", r["score"]), reverse=True
+        key=lambda r: r.get("cross_encoder_score", r["score"]),
+        reverse=True
     )
     filtered_external = sorted(
         [r for r in external_results if r["score"] >= MIN_SCORE],
-        key=lambda r: r.get("cross_encoder_score", r["score"]), reverse=True
+        key=lambda r: r.get("cross_encoder_score", r["score"]),
+        reverse=True
     )
 
-    # Pick winning source by best cross-encoder score
+    # --- Step 5: Pick winning source by best cross-encoder score ---
     if int_best >= ext_best and filtered_internal:
         candidate_results = filtered_internal
         winning_source = "legal-documents-internal"
@@ -592,6 +607,7 @@ def hybrid_search_isolated(
 
     winning = candidate_results[:RERANK_TOP_N]
 
+    # Generate SAS URLs only for winning results
     for r in winning:
         r["source_url"] = generate_sas_url(
             azure_clients,
@@ -601,18 +617,18 @@ def hybrid_search_isolated(
             r.get("file_name", "")
         )
 
-
     logger.info(
-    f"Multi-doc mode: {len(winning)} chunks | "
-    f"Source: {winning_source} | "
-    f"Best score: {winning[0]['score']:.4f}"
+        f"Final: {len(winning)} chunks | Source: {winning_source} | "
+        f"Best CE: {winning[0].get('cross_encoder_score', 0):.4f} | "
+        f"Best Azure: {winning[0]['score']:.4f}"
     )
 
     return winning, winning_source
 
-                                                                              
-                 
-                                                                              
+
+# ============================================================================
+# GRAPH NODES
+# ============================================================================
 
 def _parse_query_variants(response_text: str) -> List[str]:
     """Parse V1:/V2:/V3: prefixed lines from LLM response into a list of query strings."""
@@ -656,24 +672,36 @@ def rewrite_query_node(state: RAGState, azure_clients: AzureClients) -> RAGState
     history_text = ""
     if history:
         last_turns = history[-4:]
-        history_text = "\n".join([f"{m['role'].upper()}: {m['content']}" for m in last_turns])
+        history_text = "\n".join(
+            [f"{m['role'].upper()}: {m['content']}" for m in last_turns]
+        )
         history_text = f"\nRecent conversation:\n{history_text}\n"
 
     ql = query.lower()
 
     query_type = "general legal"
-    if any(word in ql for word in ["income", "revenue", "profit", "financial", "creditors", "bilan", "benefit", "net income"]):
+    if any(word in ql for word in [
+        "income", "revenue", "profit", "financial",
+        "creditors", "bilan", "benefit", "net income"
+    ]):
         query_type = "financial"
-    elif any(word in ql for word in ["email", "courriel", "sender", "recipient", "subject", "message", "sent"]):
+    elif any(word in ql for word in [
+        "email", "courriel", "sender", "recipient",
+        "subject", "message", "sent"
+    ]):
         query_type = "email"
-    elif any(word in ql for word in ["invoice", "register", "supplier", "mutation", "project", "facture"]):
+    elif any(word in ql for word in [
+        "invoice", "register", "supplier", "mutation",
+        "project", "facture"
+    ]):
         query_type = "invoice/register"
 
     lookup_mode = "document" if any(
         term in ql for term in [
-            "pdf", "pdfs", "pièce", "piece", "document original", "documents originaux",
-            "fichier", "fichiers", "source", "sources", "lien", "liens",
-            "trouve les pdf", "retourne les fichiers", "original file", "original files",
+            "pdf", "pdfs", "pièce", "piece", "document original",
+            "documents originaux", "fichier", "fichiers", "source",
+            "sources", "lien", "liens", "trouve les pdf",
+            "retourne les fichiers", "original file", "original files",
             "exclude interrogatoires", "exclure les interrogatoires"
         ]
     ) else "answer"
@@ -695,7 +723,7 @@ def rewrite_query_node(state: RAGState, azure_clients: AzureClients) -> RAGState
     return {
         "query": query,
         "query_lang": query_lang,
-        "rewritten_query": variants[0],  # Primary variant for backward compat
+        "rewritten_query": variants[0],
         "query_variants": variants,
         "conversation_history": history,
         "lookup_mode": lookup_mode,
@@ -713,7 +741,6 @@ def retrieve_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
     query_variants = state.get("query_variants", [])
     fallback_query = state.get("rewritten_query") or state.get("query", "")
 
-    # If no variants, use the single rewritten query
     if not query_variants:
         query_variants = [fallback_query]
 
@@ -724,7 +751,9 @@ def retrieve_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
     winning_sources = []
 
     for i, variant in enumerate(query_variants):
-        logger.info(f"Multi-query retrieval variant {i+1}/{len(query_variants)}: {variant[:60]}...")
+        logger.info(
+            f"Multi-query retrieval variant {i+1}/{len(query_variants)}: {variant[:60]}..."
+        )
         variant_embedding = generate_embedding(azure_clients, variant)
         results, winning_source = hybrid_search_isolated(
             azure_clients, variant, variant_embedding,
@@ -742,7 +771,6 @@ def retrieve_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
         if existing is None:
             best_by_key[key] = r
         else:
-            # Keep the one with the higher cross-encoder score (or original score)
             r_score = r.get("cross_encoder_score", r.get("score", 0))
             e_score = existing.get("cross_encoder_score", existing.get("score", 0))
             if r_score > e_score:
@@ -750,7 +778,10 @@ def retrieve_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
     deduped = list(best_by_key.values())
 
     # Sort by cross-encoder score and take top results
-    deduped.sort(key=lambda r: r.get("cross_encoder_score", r.get("score", 0)), reverse=True)
+    deduped.sort(
+        key=lambda r: r.get("cross_encoder_score", r.get("score", 0)),
+        reverse=True
+    )
     search_results = deduped[:10]
 
     # Determine winning source from the best results
@@ -759,8 +790,8 @@ def retrieve_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
 
     logger.info(
         f"Multi-query retrieval: {len(query_variants)} variants → "
-        f"{len(all_results)} raw → {len(deduped)} deduped → {len(search_results)} final | "
-        f"source: {winning_source}"
+        f"{len(all_results)} raw → {len(deduped)} deduped → "
+        f"{len(search_results)} final | source: {winning_source}"
     )
 
     return {
@@ -884,21 +915,20 @@ def multi_retrieve_node(state: RAGState, azure_clients: AzureClients) -> RAGStat
         "search_results": deduped,
         "winning_source": winning,
         "retrieval_attempts": 1,
-        "retrieval_sufficient": True,  # Skip evaluation for decomposed queries
+        "retrieval_sufficient": True,
     }
 
 
 def evaluate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
     """
-    Self-evaluation node: ask the LLM whether the retrieved chunks
-    are sufficient to answer the query. If not, trigger a re-retrieval
-    with a different query rewrite.
+    Self-evaluation node: check retrieval quality using both score-based
+    pre-checks AND LLM judgment. If insufficient, trigger re-retrieval.
     """
     query = state.get("query", "")
     search_results = state.get("search_results", [])
     attempts = state.get("retrieval_attempts", 0) + 1
 
-    # If no results at all, mark as insufficient (unless max attempts reached)
+    # Gate 1: No results at all
     if not search_results:
         logger.info(f"Evaluate: no results found (attempt {attempts})")
         return {
@@ -907,7 +937,24 @@ def evaluate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
             "retrieval_sufficient": attempts >= MAX_RETRIEVAL_ATTEMPTS,
         }
 
-    # Build a summary of retrieved chunks for the LLM to evaluate
+    # Gate 2: Score-based pre-check — don't waste an LLM call on garbage
+    best_cross_score = max(
+        (r.get("cross_encoder_score", 0) for r in search_results), default=0
+    )
+    ce_threshold = azure_clients.config.cross_encoder_min_score
+
+    if best_cross_score < ce_threshold:
+        logger.info(
+            f"Evaluate: best cross-encoder score {best_cross_score:.4f} "
+            f"below threshold {ce_threshold} — marking insufficient (attempt {attempts})"
+        )
+        return {
+            **state,
+            "retrieval_attempts": attempts,
+            "retrieval_sufficient": attempts >= MAX_RETRIEVAL_ATTEMPTS,
+        }
+
+    # Gate 3: LLM-based evaluation for borderline cases
     chunks_summary = "\n".join(
         f"[Chunk {i+1}] File: {r.get('file_name', 'unknown')} | "
         f"Score: {r.get('cross_encoder_score', r.get('score', 0)):.4f}\n"
@@ -923,7 +970,10 @@ def evaluate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
     logger.info(f"Evaluate (attempt {attempts}): {evaluation} | sufficient={is_sufficient}")
 
     if not is_sufficient and attempts >= MAX_RETRIEVAL_ATTEMPTS:
-        logger.warning(f"Max retrieval attempts ({MAX_RETRIEVAL_ATTEMPTS}) reached — proceeding with best results")
+        logger.warning(
+            f"Max retrieval attempts ({MAX_RETRIEVAL_ATTEMPTS}) reached — "
+            f"proceeding with best results"
+        )
         is_sufficient = True
 
     return {
@@ -963,7 +1013,10 @@ def retry_rewrite_node(state: RAGState, azure_clients: AzureClients) -> RAGState
         fallback_resp = azure_clients.llm.invoke([("human", fallback_prompt)])
         new_variants = [fallback_resp.content.strip()]
 
-    logger.info(f"Retry rewrite (attempt {attempts}): {len(new_variants)} new variants: {[v[:50] for v in new_variants]}")
+    logger.info(
+        f"Retry rewrite (attempt {attempts}): {len(new_variants)} new variants: "
+        f"{[v[:50] for v in new_variants]}"
+    )
 
     return {
         **state,
@@ -972,38 +1025,64 @@ def retry_rewrite_node(state: RAGState, azure_clients: AzureClients) -> RAGState
     }
 
 
+# ============================================================================
+# NOT-FOUND RESPONSE (shared across generate_node gates)
+# ============================================================================
+
+NOT_FOUND_RESPONSE = {
+    "answer": (
+        "I was unable to find relevant information in the available legal documents "
+        "to answer this question accurately.\n\n"
+        "This may mean:\n"
+        "• The relevant document has not been indexed yet\n"
+        "• The question refers to information not present in the loaded documents\n\n"
+        "Please consult a qualified legal professional for authoritative guidance."
+    ),
+    "sources": [],
+    "context": "",
+    "winning_source": "none"
+}
+
+
 def generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
     """
     Generate a structured, professional legal answer from a single trusted source.
-    FIX: zero-results guard prevents GPT-4 from being called when nothing was found.
-    FIX: source label now matches actual stored value "legal-documents-internal".
+
+    Guards:
+    1. No results → return not-found
+    2. All results below cross-encoder quality threshold → return not-found
+    3. Lookup mode "document" → return file links instead of generated answer
+    4. Normal mode → generate answer with GPT-4 + confidence signal
     """
     query = state.get("query", "")
     search_results = state.get("search_results", [])
     history = state.get("conversation_history", [])
     winning_source = state.get("winning_source", "unknown")
-    lookup_mode = state.get("lookup_mode", "answer")         
-    
+    lookup_mode = state.get("lookup_mode", "answer")
 
-                                                                            
-                                                                                     
+    # --- Guard 1: No results at all ---
     if not search_results:
         logger.info("No results above confidence threshold — returning not-found response")
-        return {
-            "answer": (
-                "I was unable to find relevant information in the available legal documents "
-                "to answer this question accurately.\n\n"
-                "This may mean:\n"
-                "• The relevant document has not been indexed yet\n"
-                "• The question refers to information not present in the loaded documents\n\n"
-                "Please consult a qualified legal professional for authoritative guidance."
-            ),
-            "sources": [],
-            "context": "",
-            "winning_source": "none"
-        }
+        return dict(NOT_FOUND_RESPONSE)
 
-    
+    # --- Guard 2: Filter out low-quality results before sending to GPT-4 ---
+    ce_threshold = azure_clients.config.cross_encoder_min_score
+    quality_results = [
+        r for r in search_results
+        if r.get("cross_encoder_score", r.get("score", 0)) >= ce_threshold
+    ]
+
+    if not quality_results:
+        logger.info(
+            f"All {len(search_results)} results below quality threshold "
+            f"({ce_threshold}) — returning not-found response"
+        )
+        return dict(NOT_FOUND_RESPONSE)
+
+    # Use only quality results from here on
+    search_results = quality_results
+
+    # --- Guard 3: Document lookup mode ---
     if lookup_mode == "document":
         seen = set()
         unique_sources = []
@@ -1012,7 +1091,7 @@ def generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
             fname = s.get("file_name", "")
             lower_name = fname.lower()
 
-                                                                                          
+            # Skip interrogatoire transcripts
             if "interrogatoire" in lower_name:
                 continue
 
@@ -1029,38 +1108,38 @@ def generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
             return {
                 "answer": (
                     "I could not find original source PDF files matching your request. "
-                    "The available results appear to be transcript/reference documents rather than the original source files."
+                    "The available results appear to be transcript/reference documents "
+                    "rather than the original source files."
                 ),
                 "sources": [],
-                "context": ""
+                "context": "",
+                "winning_source": "none"
             }
 
         return {
             "answer": "I found the most relevant source documents matching your request.",
             "sources": unique_sources[:10],
-            "context": ""
+            "context": "",
+            "winning_source": winning_source
         }
-    
-                                                                                                                                                      
-                        
-                                                   
-                                                                                        
-    
-                                                                        
-                                                                                         
+
+    # --- Normal mode: Generate answer with GPT-4 ---
     context_parts = []
     for i, result in enumerate(search_results, 1):
-        source_type = "🔴 Internal (Confidential)" if result.get("source_container") == "legal-documents-internal" else "📗 External"
+        source_type = (
+            "🔴 Internal (Confidential)"
+            if result.get("source_container") == "legal-documents-internal"
+            else "📗 External"
+        )
         context_parts.append(
             f"[Source {i}] {source_type} | File: {result['file_name']}\n"
             f"{result['content'][:3000]}\n"
         )
     context = "\n---\n".join(context_parts)
 
-                                            
+    # Build messages
     messages = []
 
-                                                              
     query_lang = state.get("query_lang", "en")
     lang_names = {
         "en": "English", "fr": "French", "ur": "Urdu",
@@ -1068,12 +1147,10 @@ def generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
     }
     response_language = lang_names.get(query_lang, "English")
 
-                                                     
     system_prompt = prompts.get_system_prompt(response_language, context)
-
     messages.append(("system", system_prompt))
 
-                                                          
+    # Add conversation history
     if history:
         for msg in history[-6:]:
             role = msg.get("role", "user")
@@ -1083,13 +1160,14 @@ def generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
             else:
                 messages.append(("ai", content))
 
-                          
+    # Add current query
     messages.append(("human", query))
 
     response = azure_clients.llm.invoke(messages)
     answer = response.content
 
-    confidence = "CONFIDENT"  # default
+    # Extract and strip confidence signal before sending to user
+    confidence = "CONFIDENT"
     for tag in ["[NOT_FOUND]", "[PARTIAL]", "[CONFIDENT]"]:
         if tag in answer:
             confidence = tag.strip("[]")
@@ -1097,12 +1175,11 @@ def generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
             break
 
     logger.info(f"LLM confidence signal: {confidence}")
-
     logger.info(f"Generated answer ({len(answer)} chars)")
 
+    # Deduplicate sources for the response
     seen = set()
     unique_sources = []
-
     for s in search_results:
         key = (
             s.get("source_container", ""),
@@ -1116,26 +1193,26 @@ def generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
     return {
         "answer": answer,
         "sources": unique_sources,
-        "context": context
+        "context": context,
+        "winning_source": winning_source
     }
 
 
-                                                                              
-                          
-                                                                              
+# ============================================================================
+# GRAPH BUILDER
+# ============================================================================
 
 def build_rag_graph(azure_clients: AzureClients):
     """
     Build the agentic RAG workflow graph.
 
     Flow:
-      rewrite_query → decompose_query ──┬── (SINGLE) ──→ retrieve ──→ evaluate ──┬── (SUFFICIENT) → generate → END
-                                         │                                        │
-                                         │                                        └── (INSUFFICIENT) → retry_rewrite → retrieve (loop up to 3x)
-                                         │
-                                         └── (MULTI) ───→ multi_retrieve ────────────→ generate → END
+      rewrite_query → decompose_query ─┬─ (SINGLE) → retrieve → evaluate ─┬─ (SUFFICIENT) → generate → END
+                                        │                                   │
+                                        │                                   └─ (INSUFFICIENT) → retry_rewrite → retrieve (loop up to 3x)
+                                        │
+                                        └─ (MULTI) → multi_retrieve → generate → END
     """
-
     workflow = StateGraph(RAGState)
 
     # Nodes
@@ -1150,27 +1227,20 @@ def build_rag_graph(azure_clients: AzureClients):
     # Edges
     workflow.add_edge("rewrite_query", "decompose_query")
 
-    # Conditional: decompose decides single vs multi retrieval
     workflow.add_conditional_edges("decompose_query", should_decompose, {
         "retrieve": "retrieve",
         "multi_retrieve": "multi_retrieve",
     })
 
-    # Single retrieval → evaluate
     workflow.add_edge("retrieve", "evaluate")
-
-    # Multi retrieval → straight to generate (already combined results)
     workflow.add_edge("multi_retrieve", "generate")
 
-    # Conditional: evaluate decides retry or generate
     workflow.add_conditional_edges("evaluate", should_retry_retrieval, {
         "generate": "generate",
         "retry_rewrite": "retry_rewrite",
     })
 
-    # Retry rewrite loops back to retrieve
     workflow.add_edge("retry_rewrite", "retrieve")
-
     workflow.add_edge("generate", END)
 
     workflow.set_entry_point("rewrite_query")
@@ -1178,9 +1248,9 @@ def build_rag_graph(azure_clients: AzureClients):
     return workflow.compile()
 
 
-                                                                              
-             
-                                                                              
+# ============================================================================
+# FASTAPI APP
+# ============================================================================
 
 azure_clients: Optional[AzureClients] = None
 rag_graph = None
@@ -1226,8 +1296,9 @@ async def search_documents(request: SearchRequest):
     """Search legal documents using isolated dual-index search"""
     try:
         query_embedding = generate_embedding(azure_clients, request.query)
-                                                   
-        results, _ = hybrid_search_isolated(azure_clients, request.query, query_embedding, top_k=request.top_k)
+        results, _ = hybrid_search_isolated(
+            azure_clients, request.query, query_embedding, top_k=request.top_k
+        )
         return [SearchResult(**r) for r in results]
     except Exception as e:
         logger.error(f"Search error: {e}")
@@ -1238,49 +1309,45 @@ async def search_documents(request: SearchRequest):
 async def chat(request: ChatRequest, background_tasks: BackgroundTasks):
     """
     Chat with the legal AI assistant.
-    Supports multilingual queries and optional email delivery via ACS.
 
     FLOW:
-    1. Check email intent — if user wants to email the answer somewhere
-    2. Detect query language → respond in same language
-    3. Rewrite query to French keywords for retrieval
-    4. Hybrid search (internal-first)
-    5. Generate structured answer
-    6. If email requested → send answer via ACS in background
+    1. Detect query language → respond in same language
+    2. Rewrite query to French keywords for retrieval
+    3. Decompose if multi-entity question
+    4. Hybrid search with cross-encoder re-ranking
+    5. Evaluate retrieval quality (retry up to 3x if insufficient)
+    6. Generate structured answer
+    7. If email requested → send answer via ACS in background
     """
     try:
-                                 
         detected_lang = detect_language(request.query, azure_clients.llm)
         logger.info(f"Detected language: {detected_lang}")
 
-                                             
         target_lang = request.target_language
         if target_lang == "auto":
             target_lang = detected_lang
 
-                                                                                    
-                                                                                
         history_dicts = [msg.model_dump() for msg in (request.history or [])]
 
         state: RAGState = {
             "query": request.query,
             "query_lang": detected_lang,
             "conversation_history": history_dicts,
-            "source_mode": request.source_mode or "all",             
-            "allowed_files": request.allowed_files or []            
+            "source_mode": request.source_mode or "all",
+            "allowed_files": request.allowed_files or []
         }
         final_state = rag_graph.invoke(state)
 
         answer = final_state.get("answer", "")
         sources = final_state.get("sources", [])
 
-                                      
+        # Translate if needed
         if target_lang == "fr" and detected_lang == "en":
             answer = translate_text(azure_clients.llm, answer, "en", "fr")
         elif target_lang == "en" and detected_lang == "fr":
             answer = translate_text(azure_clients.llm, answer, "fr", "en")
 
-                                                                       
+        # Check for email intent
         recipient_email, wants_email = extract_email_intent(request.query)
         if wants_email:
             background_tasks.add_task(
@@ -1311,12 +1378,10 @@ async def whatsapp_webhook(payload: Dict[Any, Any], background_tasks: Background
     return {"status": "received"}
 
 
-                                                                              
-      
-                                                                              
+# ============================================================================
+# MAIN
+# ============================================================================
 
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
-  
-  
