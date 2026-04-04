@@ -1,0 +1,10 @@
+Hi [Client Name],
+
+We are currently processing your legal documents for OCR and indexing. To verify search accuracy, please send us:
+
+• 5-10 sample questions you'd ask the AI assistant
+• The expected/correct answers for each
+
+This will help us test and fine-tune the system before delivery.
+
+Thanks!

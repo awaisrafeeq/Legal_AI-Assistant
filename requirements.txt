@@ -1,0 +1,16 @@
+azure-storage-blob==12.19.1
+azure-ai-formrecognizer==3.3.3
+azure-core==1.30.2
+tenacity==8.2.3
+tqdm==4.66.2
+python-dotenv==1.0.1
+azure-search-documents==11.4.0
+openai==1.14.3
+tiktoken==0.6.0
+fastapi==0.110.0
+uvicorn==0.27.1
+pydantic==2.6.4
+langgraph==0.0.26
+langchain==0.1.12
+langchain-openai==0.0.8
+langchain-core==0.1.30
