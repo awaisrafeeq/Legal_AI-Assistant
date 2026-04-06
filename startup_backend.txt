@@ -1,3 +1,3 @@
 python -m pip install --upgrade pip
 pip install -r requirements.txt
-gunicorn rag_backend:app --bind 0.0.0.0:8000 --timeout 120 --workers 1 --threads 4
+uvicorn rag_backend:app --host 0.0.0.0 --port 8000 --timeout-keep-alive 120
