@@ -1,3 +1,3 @@
 python -m pip install --upgrade pip
 pip install -r requirements.txt
-uvicorn rag_backend:app --host 0.0.0.0 --port 8000 --timeout-keep-alive 120
+python -m uvicorn rag_backend:app --host 0.0.0.0 --port 8000 --timeout-keep-alive 120
