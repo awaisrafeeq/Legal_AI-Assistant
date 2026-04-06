@@ -159,9 +159,17 @@ class WhisperTranscriber:
     Falls back to standard OpenAI Whisper if Azure deployment not configured.
     """
     def __init__(self):
+        whisper_endpoint = os.environ.get("WHISPER_ENDPOINT", "")
+        openai_endpoint = os.environ.get("OPENAI_ENDPOINT", "")
+        azure_endpoint = whisper_endpoint if whisper_endpoint else openai_endpoint
+        
+        whisper_key = os.environ.get("WHISPER_KEY", "")
+        openai_key = os.environ.get("OPENAI_KEY", "")
+        api_key = whisper_key if whisper_key else openai_key
+        
         self.client = AzureOpenAI(
-            azure_endpoint=os.environ.get("WHISPER_ENDPOINT", os.environ["OPENAI_ENDPOINT"]),
-            api_key=os.environ.get("WHISPER_KEY", os.environ["OPENAI_KEY"]),
+            azure_endpoint=azure_endpoint,
+            api_key=api_key,
             api_version="2024-02-01",
         )
         self.whisper_deployment = os.environ.get("OPENAI_WHISPER_DEPLOYMENT", "whisper")
