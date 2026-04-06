@@ -5,7 +5,7 @@ on:
     branches: [ main, master, task/code-refactor ]
     paths:
       - 'whatsapp_bot.py'
-      - 'requirements.txt'
+      - 'requirements-whatsapp.txt'
       - 'startup_whatsapp.txt'
       - '.github/workflows/deploy-whatsapp.yml'
   workflow_dispatch:
@@ -32,7 +32,7 @@ jobs:
         python -m venv antenv
         source antenv/bin/activate
         pip install --upgrade pip
-        pip install -r requirements.txt
+        pip install -r requirements-whatsapp.txt
         deactivate
 
     - name: Create deployment package
@@ -40,7 +40,7 @@ jobs:
         zip -r deploy.zip \
           antenv/ \
           whatsapp_bot.py \
-          requirements.txt \
+          requirements-whatsapp.txt \
           startup_whatsapp.txt \
           logs/ \
           -x "*.pyc" "__pycache__/*" "venv/*" ".venv/*"
