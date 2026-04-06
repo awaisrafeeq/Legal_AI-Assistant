@@ -27,9 +27,18 @@ jobs:
       with:
         python-version: ${{ env.PYTHON_VERSION }}
 
+    - name: Create virtual environment and install dependencies
+      run: |
+        python -m venv antenv
+        source antenv/bin/activate
+        pip install --upgrade pip
+        pip install -r requirements.txt
+        deactivate
+
     - name: Create deployment package
       run: |
         zip -r deploy.zip \
+          antenv/ \
           rag_backend.py \
           prompts.py \
           requirements.txt \
