@@ -2,7 +2,7 @@ name: Deploy RAG Backend to Azure
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main, master, task/code-refactor ]
     paths:
       - 'rag_backend.py'
       - 'prompts.py'
