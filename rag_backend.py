@@ -367,7 +367,8 @@ def generate_sas_url(
         container_name = parsed.path.strip("/").split("/")[-1]
         sas_token = parsed.query
 
-        blob_file_path = unicodedata.normalize("NFC", blob_file_path)
+        unicode_form = "NFC" if is_internal else "NFD"
+        blob_file_path = unicodedata.normalize(unicode_form, blob_file_path)
         encoded_path = quote(blob_file_path, safe="/")
         url = f"{base_url}/{container_name}/{encoded_path}?{sas_token}"
         logger.info(f"SAS URL generated | container={source_container} | path={blob_file_path}")
@@ -597,19 +598,27 @@ def hybrid_search_isolated(
         reverse=True
     )
 
-    # --- Step 5: Pick winning source by best cross-encoder score ---
-    if int_best >= ext_best and filtered_internal:
-        candidate_results = filtered_internal
-        winning_source = "legal-documents-internal"
-    elif filtered_external:
-        candidate_results = filtered_external
-        winning_source = "legal-documents"
-    else:
+    # --- Step 5: Merge both sources, sort by cross-encoder score, take top N ---
+    merged = filtered_internal + filtered_external
+    if not merged:
         return [], "none"
 
-    winning = candidate_results[:RERANK_TOP_N]
+    merged.sort(
+        key=lambda r: r.get("cross_encoder_score", r.get("score", 0)),
+        reverse=True
+    )
+    winning = merged[:RERANK_TOP_N]
 
-    # Generate SAS URLs only for winning results
+    # Determine winning_source label from what actually made it into top N
+    sources_in_winning = set(r.get("source_container", "") for r in winning)
+    if "legal-documents-internal" in sources_in_winning and len(sources_in_winning) > 1:
+        winning_source = "both"
+    elif "legal-documents-internal" in sources_in_winning:
+        winning_source = "legal-documents-internal"
+    else:
+        winning_source = "legal-documents"
+
+    # Generate SAS URLs for each result based on its own container
     for r in winning:
         r["source_url"] = generate_sas_url(
             azure_clients,
@@ -1126,8 +1135,48 @@ def generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
         }
 
     # --- Normal mode: Generate answer with GPT-4 ---
+    # Step 1: Select top unique files FIRST — these become the grounded source set.
+    #         GPT will ONLY see chunks from these files, so every citation is displayable.
+    #         Sort by cross-encoder score first to ensure best files win regardless of variant order.
+    MAX_SOURCE_FILES = 5
+    sorted_results = sorted(
+        search_results,
+        key=lambda r: r.get("cross_encoder_score", r.get("score", 0)),
+        reverse=True
+    )
+    seen_files = set()
+    seen_basenames = {}  # basename -> count, to limit near-duplicate files
+    grounded_sources = []
+    for r in sorted_results:
+        key = (r.get("source_container", ""), r.get("blob_path", ""), r.get("file_name", ""))
+        if key in seen_files:
+            continue
+        # Limit files with very similar basenames (e.g. 4 interrogatoire variants)
+        # Allow max 2 files sharing the same first 30 chars of filename
+        fname = r.get("file_name", "")
+        base_prefix = fname[:30] if fname else ""
+        prefix_count = seen_basenames.get(base_prefix, 0)
+        if prefix_count >= 2:
+            continue
+        seen_files.add(key)
+        seen_basenames[base_prefix] = prefix_count + 1
+        grounded_sources.append(r)
+        if len(grounded_sources) >= MAX_SOURCE_FILES:
+            break
+
+    # Step 2: Build context ONLY from chunks belonging to grounded source files
+    grounded_file_keys = set(
+        (r.get("source_container", ""), r.get("blob_path", ""), r.get("file_name", ""))
+        for r in grounded_sources
+    )
+    grounded_chunks = [
+        r for r in search_results
+        if (r.get("source_container", ""), r.get("blob_path", ""), r.get("file_name", ""))
+        in grounded_file_keys
+    ]
+
     context_parts = []
-    for i, result in enumerate(search_results, 1):
+    for i, result in enumerate(grounded_chunks, 1):
         source_type = (
             "🔴 Internal (Confidential)"
             if result.get("source_container") == "legal-documents-internal"
@@ -1139,7 +1188,7 @@ def generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
         )
     context = "\n---\n".join(context_parts)
 
-    # Build messages
+    # Step 3: Build messages for GPT
     messages = []
 
     query_lang = state.get("query_lang", "en")
@@ -1152,7 +1201,6 @@ def generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
     system_prompt = prompts.get_system_prompt(response_language, context)
     messages.append(("system", system_prompt))
 
-    # Add conversation history
     if history:
         for msg in history[-6:]:
             role = msg.get("role", "user")
@@ -1162,7 +1210,6 @@ def generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
             else:
                 messages.append(("ai", content))
 
-    # Add current query
     messages.append(("human", query))
 
     response = azure_clients.llm.invoke(messages)
@@ -1177,24 +1224,11 @@ def generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
             break
 
     logger.info(f"LLM confidence signal: {confidence}")
-    logger.info(f"Generated answer ({len(answer)} chars)")
-
-    # Deduplicate sources for the response
-    seen = set()
-    unique_sources = []
-    for s in search_results:
-        key = (
-            s.get("source_container", ""),
-            s.get("blob_path", ""),
-            s.get("file_name", "")
-        )
-        if key not in seen:
-            seen.add(key)
-            unique_sources.append(s)
+    logger.info(f"Generated answer ({len(answer)} chars) | grounded on {len(grounded_sources)} files")
 
     return {
         "answer": answer,
-        "sources": unique_sources,
+        "sources": grounded_sources,
         "context": context,
         "winning_source": winning_source
     }

@@ -1,0 +1,45 @@
+name: Deploy RAG Backend to Azure
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'rag_backend.py'
+      - 'prompts.py'
+      - 'requirements.txt'
+      - '.github/workflows/deploy-backend.yml'
+  workflow_dispatch:
+
+env:
+  AZURE_WEBAPP_NAME: legal-ai-backend
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+
+    - name: Create deployment package
+      run: |
+        zip -r deploy.zip \
+          rag_backend.py \
+          prompts.py \
+          requirements.txt \
+          startup_backend.txt \
+          logs/ \
+          -x "*.pyc" "__pycache__/*" "venv/*" ".venv/*"
+
+    - name: Deploy to Azure Web App
+      uses: azure/webapps-deploy@v3
+      with:
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        publish-profile: ${{ secrets.AZURE_BACKEND_PUBLISH_PROFILE }}
+        package: deploy.zip

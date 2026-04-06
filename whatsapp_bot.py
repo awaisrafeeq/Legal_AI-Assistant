@@ -569,7 +569,7 @@ class WhatsAppHandler:
             count = 0
             for source in sources:
                 fname = source.get("file_name", "Unknown")
-                if fname in seen or count >= 3:
+                if fname in seen or count >= 5:
                     continue
                 seen.add(fname)
                 count += 1
@@ -581,7 +581,9 @@ class WhatsAppHandler:
                 label = "Internal (Confidential)" if container == "legal-documents-internal" else "Legal Documents"
                 source_url = source.get("source_url", "")
 
-                sources_text += f"\n{count}. {icon} `{fname}`\n"
+                folder = source.get("folder_path", "")
+                full_path = f"{folder}/{fname}" if folder else fname
+                sources_text += f"\n{count}. {icon} {full_path}\n"
                 sources_text += f"   _{label}_\n"
                 if source_url:
                     sources_text += f"   🔗 {source_url}\n"

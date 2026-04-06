@@ -9,7 +9,8 @@ sys.path.insert(0, r'e:\Jeff')
 
 from index_to_search import (
     load_config, create_search_index_if_not_exists,
-    generate_embeddings, chunk_text, index_documents_batch
+    generate_embeddings, chunk_text, index_documents_batch,
+    extract_source_path_from_content, strip_metadata_header,
 )
 from azure.storage.blob import BlobServiceClient
 from azure.search.documents import SearchClient
@@ -97,10 +98,21 @@ def main_internal():
                 logging.warning(f"Empty content in {blob_path}, skipping")
                 continue
 
+            # If OCR file has Source: header (from updated ocr_internal.py),
+            # extract original path for correct metadata and strip header before chunking
+            meta = extract_metadata_from_path(blob_path, cfg.input_prefix)
+            source_path = extract_source_path_from_content(content)
+            if source_path:
+                parts = source_path.split("/")
+                meta = {
+                    "file_name": parts[-1],
+                    "folder_path": "/".join(parts[:-1]),
+                    "blob_path": blob_path,
+                }
+                content = strip_metadata_header(content)
+
             chunks = chunk_text(content, cfg.max_chunk_size, cfg.chunk_overlap)
             total_chunks = len(chunks)
-
-            meta = extract_metadata_from_path(blob_path, cfg.input_prefix)
 
             for i in range(0, len(chunks), batch_size):
                 batch_chunks = chunks[i:i + batch_size]
