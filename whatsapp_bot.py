@@ -137,8 +137,9 @@ class RAGBackendClient:
             "source_mode": "all"
         }
         try:
+            base_url = self.base_url.rstrip('/')
             response = requests.post(
-                f"{self.base_url}/chat",
+                f"{base_url}/chat",
                 json=payload,
                 timeout=90     # Increased timeout for complex queries
             )
