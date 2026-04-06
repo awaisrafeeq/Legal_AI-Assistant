@@ -6,6 +6,7 @@ on:
     paths:
       - 'whatsapp_bot.py'
       - 'requirements.txt'
+      - 'startup_whatsapp.txt'
       - '.github/workflows/deploy-whatsapp.yml'
   workflow_dispatch:
 
