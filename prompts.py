@@ -161,6 +161,61 @@ If the query should NOT be decomposed, respond with exactly: SINGLE
 
 Response:"""
 
+def get_discovery_intent_prompt(query: str) -> str:
+    return f"""You are a query intent classifier for a legal document search system.
+
+Determine if the user wants to DISCOVER/FIND documents (list matching files) or get a specific ANSWER from documents.
+
+DISCOVERY queries — user wants a LIST of matching documents:
+- "find all declarations from Denise Bélanger"
+- "give me all invoices from 2023"
+- "show me documents related to project Couvent"
+- "list all emails from Jean Tremblay"
+- "quels documents mentionnent Rawdon"
+- "trouve toutes les déclarations de remise volontaire"
+- "all documents about hypothèque"
+- "find every contract with Blache"
+
+ANSWER queries — user wants specific information extracted:
+- "what is the loan amount for DP-0372?"
+- "who are the creditors for this property?"
+- "what was the date of the mortgage?"
+- "summarize the evaluation report"
+- "what does the contract say about liability?"
+
+Analyze this query: {query}
+
+Respond with ONLY one of these two words:
+- DISCOVERY — if the user wants to find/list matching documents
+- ANSWER — if the user wants specific information extracted from documents
+
+Your classification:"""
+
+
+def get_discovery_filter_prompt(query: str) -> str:
+    return f"""You are a search filter extractor for a French legal document search system.
+The user wants to find/list documents matching certain criteria.
+
+Available filter fields:
+- document_type: one of [Déclaration, Interrogatoire, Courriel, Facture, Contrat, Mandat, Évaluation, Rapport, Hypothèque, Acte notarié, Résolution, Procuration, Quittance, Mise en demeure, Bilan financier, État de compte, Offre de service, Convention, Jugement, Ordonnance, Requête, Avis, Procès-verbal, Certificat, Permis, Sommaire, Pièce justificative, Relevé bancaire, Tableau, Correspondance, Plan, Photo/Image, Annexe, Document technique, Autre]
+- persons: person names mentioned in the document (e.g., "Denise Bélanger", "Jean Tremblay")
+- organizations: organization names (e.g., "Banque Nationale", "Ville de Rawdon")
+- projects: project names (e.g., "Couvent", "St-Augustin", "Brompton")
+
+From this query, extract the filters. Output valid JSON only:
+{{
+    "document_type": "exact type from list above or null",
+    "person": "person name or null",
+    "organization": "organization name or null",
+    "project": "project name or null",
+    "keyword": "any remaining search keywords in French, or null"
+}}
+
+Query: {query}
+
+JSON:"""
+
+
 def get_system_prompt(response_language: str, context: str) -> str:
     return f"""ABSOLUTE RULE — NEVER VIOLATE:
 If the retrieved context does not contain the answer, say:

@@ -169,6 +169,27 @@ def create_search_index_if_not_exists(
             vector_search_dimensions=vector_dimensions,
             vector_search_profile_name="default-vector-config",
         ),
+        # Classification metadata (populated by classify_documents.py)
+        SearchableField(name="document_type", type=SearchFieldDataType.String,
+                        filterable=True, facetable=True),
+        SearchableField(name="document_subtype", type=SearchFieldDataType.String,
+                        filterable=True, facetable=True),
+        SearchField(name="persons",
+                    type=SearchFieldDataType.Collection(SearchFieldDataType.String),
+                    filterable=True, searchable=True),
+        SearchField(name="organizations",
+                    type=SearchFieldDataType.Collection(SearchFieldDataType.String),
+                    filterable=True, searchable=True),
+        SearchField(name="projects",
+                    type=SearchFieldDataType.Collection(SearchFieldDataType.String),
+                    filterable=True, searchable=True),
+        SearchField(name="key_dates",
+                    type=SearchFieldDataType.Collection(SearchFieldDataType.String),
+                    filterable=True, searchable=True),
+        SearchField(name="key_amounts",
+                    type=SearchFieldDataType.Collection(SearchFieldDataType.String),
+                    filterable=True, searchable=True),
+        SearchableField(name="summary", type=SearchFieldDataType.String),
     ]
 
     vector_search = VectorSearch(

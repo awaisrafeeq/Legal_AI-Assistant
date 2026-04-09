@@ -1,0 +1,719 @@
+================================================================================
+  LEGAL DOCUMENT DATA AUDIT REPORT
+================================================================================
+
+Total files across all containers: 24,319
+
+
+────────────────────────────────────────────────────────────────────────────────
+  CONTAINER: External (legal-documents)
+  Total files: 22,527
+────────────────────────────────────────────────────────────────────────────────
+
+📁 FILE TYPE BREAKDOWN (by extension):
+--------------------------------------------------
+  pdf                  18,791  ( 83.4%) █████████████████████████████████████████
+  image                 2,231  (  9.9%) ████
+  other (.pdf)           333  (  1.5%) 
+  excel                   207  (  0.9%) 
+  other (.css)            169  (  0.8%) 
+  word                    152  (  0.7%) 
+  other (.msg)            148  (  0.7%) 
+  other (.js)             122  (  0.5%) 
+  text                    102  (  0.5%) 
+  other (.psd)             36  (  0.2%) 
+  audio                    30  (  0.1%) 
+  other (.url)             24  (  0.1%) 
+  archive                  21  (  0.1%) 
+  other (.bak)             20  (  0.1%) 
+  other (.dwg)             20  (  0.1%) 
+  other (.mht)             17  (  0.1%) 
+  other (.vob)             17  (  0.1%) 
+  video                    13  (  0.1%) 
+  other (.bup)              9  (  0.0%) 
+  other (.ifo)              9  (  0.0%) 
+  other (.pspimage)         8  (  0.0%) 
+  other (.aspx)             7  (  0.0%) 
+  csv                       6  (  0.0%) 
+  other (.ico)              5  (  0.0%) 
+  system                    4  (  0.0%) 
+  other (.inf)              4  (  0.0%) 
+  other (.jsb)              4  (  0.0%) 
+  other (.hta)              4  (  0.0%) 
+  other (.ax5)              3  (  0.0%) 
+  other (.arcacheitem)      2  (  0.0%) 
+  other (.lnk)              2  (  0.0%) 
+  no_extension              1  (  0.0%) 
+  other (.xlsx)            1  (  0.0%) 
+  other (.xspf)             1  (  0.0%) 
+  other (.eot)              1  (  0.0%) 
+  other (.ttf)              1  (  0.0%) 
+  other (.id 33)            1  (  0.0%) 
+  other (.bat)              1  (  0.0%) 
+
+📋 LEGAL DOCUMENT TYPES (from filename patterns):
+--------------------------------------------------
+  unclassified                   19,293  ( 85.6%)
+    └─ Bordereau indiquant un virement du 28 janvier 2015 d'Olivier Gaudet de son compte en CAD à son compte en USD(30 000$ à 25 577,53$ USD).pdf
+    └─ Bordereau virement 11 mars 2015 d'Olivier Gaudet de son compte en CAD à son compte en USD(1246,99$ à 963$ USD).pdf
+    └─ Bordereau virement 30 mars 2015 OGaudet compte en CAD à un compte USD Olivier Gaudet (1292,90$ à 1000$ USD).pdf
+  courriel/email                    674  (  3.0%)
+    └─ 10_Courriel du 21 octobre 2014_DBélanger à GTremblay cc JFD projet Ste-Julienne (1219-1221 route 125) doc révisé_Courriel investisseur_prêt no DP-0323.pdf
+    └─ 11_Courriel du 23 octobre 2014 de Benoit Charron à Stéphane Alary.pdf
+    └─ 12_Courriel du 27 octobre 2014 de Denise Bélanger à Guy Tremblay incluant le document courriel investisseur pour le projet de St-Lin.pdf
+  remise volontaire                 667  (  3.0%)
+    └─ 140929 - Courriel à Tremblay - Devimo - Pages de 08031.01G - 170331 - Remise volontaire - Documents.pdf
+    └─ 08021.01G - 170123 - Remise volontaire - Documents [p.801 et 802].pdf
+    └─ 08021.01G - 170123 - Remise volontaire - Documents [p.371 à 415].pdf
+  relevé                            255  (  1.1%)
+    └─ 16-2812 Relevés de compte Benoit Charron GIBC inc. du 21 décembre 2014 au 20 janvier 2015 carte American Express no 3733 235677 12000 (Lot 16-2812 item 002).pdf
+    └─ Relevés de compte chèques d'Olivier Gaudet, no 2106 3982-227  (Lot 16-1594 item 003).pdf
+    └─ Relevé bancaire du 16 janvier 2015 du compte 2106 4797-778 d’Olivier Gaudet à la Banque de Montréal.pdf
+  rapport/report                    220  (  1.0%)
+    └─ Rapport de dépôt du 26 avril 2016 de 250 000$ de Lamoureux Aubin au compte de Benoit Charron.pdf
+    └─ Rapport de dépôt du 26 avril 2016 de 55 000$ de Lamoureux Aubin au compte de Benoit Charron.pdf
+    └─ Rapport paiement 30 000$ Olivier Gaudet à Lamoureux, Aubin et Ass. via compte #01901-5004890 de la Banque Royale le 19 avril 2015.pdf
+  acte notarié                      185  (  0.8%)
+    └─ 61_Courriels du 18 et 19 février 2016 entre Lucie Lafontaine et Guy Tremblay au sujet de l'acte de cautionnement.pdf
+    └─ 62_Courriels du 19 février 2016 de Lucie Lafontaine à Patrick Moryoussef_projets acte de cautionnement_cessions de créance_en liasse.pdf
+    └─ Acte de gestion et analyse prêt hypothécaire privé du 12 décembre 2014.pdf
+  photo/scan                        179  (  0.8%)
+    └─ Photos_2 chèques_30 mars 2015 de 1 300 150,56$ de Lamoureux Aubin à Ghyslaine et Louise Pichette (15A02800005).pdf
+    └─ Scan - a remplacer.pdf
+    └─ Image.pdf
+  cession                           167  (  0.7%)
+    └─ 4_Courriel du 7 octobre 2014 de Denise Bélanger à Guy Tremblay cc Jean-François Desormeaux avec cession promesse d'achat.pdf
+    └─ 62_Courriels du 19 février 2016 de Lucie Lafontaine à Patrick Moryoussef_projets acte de cautionnement_cessions de créance_en liasse.pdf
+    └─ Cession_créance_100 000D_16 juillet 2015_lot 4 079 951_9320-0731 Qc inc_NBeaulieu_21_707_699.pdf
+  facture/invoice                   129  (  0.6%)
+    └─ Paiement en ligne par Idéal Développement de factures du 8 juillet 2016 au 13 décembre 2016.pdf
+    └─ État de compte de taxes 2015 et facture de Broward County pour la propriété sise au 840 NE 17 Way.pdf
+    └─ État de compte de taxes 2015 et facture de de Broward County pour la propriété sise au 2209 Sunrise Key Blvd.pdf
+  lettre                            123  (  0.5%)
+    └─ Lettre de la Banque Laurentienne et documents relatifs au compte 007-86222-2 (lot 24-0931, item 2).pdf
+    └─ Lettre et affidavit du 22 février 2017 de Danielle Mainville de la Banque Laurentienne.pdf
+    └─ Lettre du 12 juillet 2016 et affidavit en lien avec le compte 81500007-204070 appartenant à Olivier Gaudet.pdf
+  déclaration/affidavit              99  (  0.4%)
+    └─ 16-2812 Affidavit du 25 novembre 2016 de Sophie Nushis de la Banque Amex.pdf
+    └─ Affidavit du 19 mai 2016 de Olga Kyrkunova de la Banque de Montréal.pdf
+    └─ Affidavit du 29 juin 2016 de Olga Kyrkunova de la Banque de Montréal.pdf
+  jugement                           96  (  0.4%)
+    └─ 181211 -Demande déf JFD en annulation d'un bref de saisie avant-jugement .pdf
+    └─ 500-11-057525-194  Jugement 23-06-22.pdf
+    └─ 500-11-057525-194 - jugement du 8 juin 2020.pdf
+  notaire/notarial                   87  (  0.4%)
+    └─ Relevé de dépôt du 2 décembre 2014 et chèque du 1er décembre 2014 de 569 940.69$ de Raymond et Desrosiers notaires  à Olivier Gaudet.pdf
+    └─ Traite bancaire du 2 mars 2015 de 35 000$ à Notaire O’Connor.pdf
+    └─ Chèque du 27 octobre 2014 de 200 000$ de Anik Comtois, notaire à Benoit Charron.pdf
+  certificat                         67  (  0.3%)
+    └─ Certificat d'actions no 6 du 8 mars 2016, 608 575 actions de 9333-9356 Québec inc.pdf
+    └─ Certificat d'actions du 9 mars 2016 de 7327587 Canada inc. pour 9333-9356 Qc inc.pdf
+    └─ Certificat d'actions du 9 mars 2016 de Yves Blache pour 9333-9356 Qc inc.pdf
+  plan                               61  (  0.3%)
+    └─ Document_Courriel partenaire_prêt no DP-0372 du 15 juillet 2015 au nom de Manlio Del Negro et plan d'un terrain à Brompton.pdf
+    └─ Dépliant qui présente un plan du projet du 1992, route 125 à Ste-Julienne.pdf
+    └─ Plan-074 080 691  plan 1219 route 125 STe-Julienne.pdf
+  contrat                            60  (  0.3%)
+    └─ Contrat de location du 12 décembre 2014 entre Holand Leasing et Benoit Charron pour une Cadillac Escalade ESV 2015_chèque 180 000D.pdf
+    └─ Contrat de location du 19 décembre 2014 entre Holand Leasing et Benoit Charron pour une Mercedes SLS 2015_cheque 180 000D Aubin_Lamoureux.pdf
+    └─ Contrat de location_23 décembre 2014 entreHoland Leasing et 9281-4110 Québec inc. (Benoit Charron) pour un GMC Denali 2500 2015_chaque remboursement.pdf
+  interrogatoire                     48  (  0.2%)
+    └─ P-47 - Interrogatoire de M. Olivier Gaudet par Me Alerte - 540-17-012712-179.pdf
+    └─ P-47 - Interrogatoire de M. Olivier Gaudet par Me Alerte - 540-17-012712-179.pdf
+    └─ 2019-11-29   Avis de déposition d'un interrogatoire.pdf
+  convention                         45  (  0.2%)
+    └─ Acte de convention entre Leandro Delli Fraine et Jean-François Désormeaux, signé les 17 et 15 février 2016 respectivement.pdf
+    └─ Convention du 17 février 2016 entre Jean-François Désormeaux et L Delli Fraine_remboursement d'une partie du prêt dû par O Gaudet.pdf
+    └─ Convention des actionnaires de 9333-9356 Québec inc datée du 9 mars 2016.pdf
+  bail/lease                         38  (  0.2%)
+    └─ Bail de location d'une Mercedes GLE350 2016 avec Royal Leasing.pdf
+    └─ D-15 - Bail Mercedes GLE350 2016.pdf
+    └─ 140801 - Spring tide apartments - Assignment of Stockholder's Lease, apt 304.pdf
+  déclaration/serment                36  (  0.2%)
+    └─ 30 - déclaration sous serment pour bref de saisie, JFD.pdf
+    └─ K dec sous serment bref saise.pdf
+    └─ 08009.03M - 161206 - Déclaration - Assermentation LARIVIÈRE France - 6 décembre 2016.pdf
+  mandat                             34  (  0.2%)
+    └─ Lettre de mandat pour la vente d'un immeuble, lot 3 102 123, du 20 septembre 2016.pdf
+    └─ 141111 - MANDAT LIMITÉ Ste-Ju (1219-1221) - ME LEBLANC - 08031.01G - 170331 - RV - TREMBLAYG.pdf
+    └─ Courriel Bélanger+contrat mandat+acte gestion.pdf
+  preuve/evidence                    32  (  0.1%)
+    └─ TAB_preuve_proces_20260205_DEFENSE.xlsm
+    └─ Preuve de paiement du 12 juillet 2016 de 300 000$ de Patrick Moryoussef à Jean-François Désormeaux.pdf
+    └─ Preuve du déboursé de la somme de 250 000$ effectué le 4 septembre 2015.pdf
+  pièce/exhibit                      31  (  0.1%)
+    └─ 2023-04-05-Avis de communication d_une piece additionnelle des défendeurs Pierre Aubin et Lamoureux, Lamoureux et Associes_9006320.PDF
+    └─ Piece D-1.pdf
+    └─ Piece P-4.pdf
+  motion                             26  (  0.1%)
+    └─ Documents promotionnel pour le projet de St-Lin préparé par Idéal Développement.pdf
+    └─ Document d'un ordre du jour daté du 7 juin 2016_document promotionnel au sujet du projet_l'attraction.pdf
+    └─ Document promotionnel de Idéal Développment de février 2016_La place du Marché.pdf
+  divulgation                        22  (  0.1%)
+    └─ Promesse d'achat_30 mars 2015_BCharron à Roger Cayouette_lot 3 102 123_annexe finacement et avis de divulgation.pdf
+    └─ Divulgation OneNote SE Couillard.pdf
+    └─ 240219 - Démarches divulgation - COUILLARD M.-O. (12916).pdf
+  requête                            14  (  0.1%)
+    └─ Requete introductive et Bref de saisi.pdf
+    └─ Requete en approbation (part 2).pdf
+    └─ Requete introductive d'instance.pdf
+  mise en demeure                    14  (  0.1%)
+    └─ MISE EN DEMEURE de reprendre l'instance 2020-09-24.pdf
+    └─ 2019-01-14_Mise en demeure - Reprise d_instance - Défense FARPCNQ (Lavery)_12353432_1.pdf
+    └─ Mise en demeure Actionaires St-Lin 2017-04-03.pdf
+  ordonnance                         13  (  0.1%)
+    └─ _ORIBUS - Tableau des ordonnances judiciaires.xls
+    └─ 08137H - 201020 - Ordonnance de préservation de données.pdf
+    └─ 11001.16A - 181107 - Ordonnance de remise des biens saisies.pdf
+  défense                            12  (  0.1%)
+    └─ TAB_preuve_proces_20260205_DEFENSE.xlsm
+    └─ 2023-04-05-Defense modifiee des defendeurs Pierre Aubin et Lamoureux, Lamoureux et associes_9006304.PDF
+    └─ Defense et demande reconventionnelle.pdf
+  cahier                             11  (  0.0%)
+    └─ 2022-02-03 - Cahier des Pièces des Demandeurs R-1 à R-9 (objections).pdf
+    └─ 2022-02-03-Cahier des Autorités des Demandeurs (objections).pdf
+    └─ 13002.04F - 190801 - Lot 19-1332 Cahier de preuves CNQ.pdf
+  bilan financier                    10  (  0.0%)
+    └─ Bilan Sylvain Bérubé.pdf
+    └─ Bilan alain chayer.pdf
+    └─ Bilan Sylvain Bérubé.pdf
+  prêt/loan                           7  (  0.0%)
+    └─ Virement de fonds du 9 juin 2015 de 225 000$ d'Olivier Gaudet à Claudine Mireault pour_INV_PRET PERSONNEL.pdf
+    └─ 05_demande_pret.html
+    └─ 05_exemples_pret.html
+  hypothèque/mortgage                 7  (  0.0%)
+    └─ Acte_hypothèque_9 253 199D_31 mars 2015_lot 2 540 230_Corporation Investissements I.I.C._TTC Mortgage Holding inc_OGaudet_21 429 711.pdf
+    └─ REQ_TCC Mortgage Holding inc_certif.pdf
+    └─ 5.224 Registre des entreprises pour TCC Mortgage Holdings Inc.pdf
+  déclaration                         7  (  0.0%)
+    └─ 08009.07M - 220608 - Declaration - LARIVIERE France - 8 juin 2022.pdf
+    └─ 2023-04-10 - Projet Declaration commune de dossier complet en matiere commerciale - 500-11-057525-194 - Lavery.doc
+    └─ 2023-04-10 - Projet Declaration commune de dossier complet en matiere commerciale - 500-11-057525-194 - Lavery.doc
+  évaluation                          7  (  0.0%)
+    └─ Rapport evaluation environnementale (part 1).pdf
+    └─ Rapport evaluation environnementale (part 2).pdf
+    └─ Rapport evaluation environnementale (part 1).pdf
+  offre                               6  (  0.0%)
+    └─ PETHEL 1ER VERSEMENT OFFRE DE SERVICE.pdf
+    └─ PETHEL 1ER VERSEMENT OFFRE DE SERVICE.pdf
+    └─ PETHEL 1ER VERSEMENT OFFRE DE SERVICE.pdf
+  assignation/subpoena                6  (  0.0%)
+    └─ Subpoena agent immobilier.pdf
+    └─ Assignation a comparaitre.pdf
+    └─ Subpoena agent immobilier.pdf
+  procès-verbal                       6  (  0.0%)
+    └─ 19 - 20  Proces verbal.pdf
+    └─ 23 - 24 - Proces verbal.pdf
+    └─ 15 - Proces verbal.pdf
+  chèque                              4  (  0.0%)
+    └─ Contrat de location du 19 décembre 2014 entre Holand Leasing et Benoit Charron pour une Mercedes SLS 2015_cheque 180 000D Aubin_Lamoureux.pdf
+    └─ Facture 2936_cheque 54743_paiement 1467 en liasse.pdf
+    └─ factures 3009_3009C_cheque 54742_paiement 1468.pdf
+  procuration                         3  (  0.0%)
+    └─ 2015-05-12  Fwd Rawdon procuration et reçu permis..suivi.eml.msg
+    └─ 2015-05-12  Fwd Rawdon procuration et reçu permis..suivi.eml.msg
+    └─ C  PROCURATION.pdf
+  état de compte                      3  (  0.0%)
+    └─ J Etat de compte 2016-07-26.pdf
+    └─ J Index des immeubles + etat de compte.pdf
+    └─ N Etat de compte + p-10 à P-12.pdf
+  résolution                          2  (  0.0%)
+    └─ RL-01_resolutionConseil17déc2014 pages 1-2,19.pdf
+    └─ 20- Resolution TCC mortgage.pdf
+
+📝 LEGAL DOCUMENT TYPES (from OCR content, 200 sampled):
+--------------------------------------------------
+  unclassified                       86  ( 43.0%)
+    └─ 16-2812 Relevés de compte Benoit Charron GIBC inc. du 21 décembre 2014 au 20 janvier 2015 carte American Express no 3733 235677 12000 (Lot 16-2812 item 002).pdf
+    └─ Relevés de compte chèques d'Olivier Gaudet, no 2106 3982-227  (Lot 16-1594 item 003).pdf
+    └─ Affidavit 24 décembre 2024_George Romios_Banque Laurentienne_transmission document suivi RN803355937CA.pdf
+  courriel/email                     80  ( 40.0%)
+    └─ Lettre de la Banque Laurentienne et documents relatifs au compte 007-86222-2 (lot 24-0931, item 2).pdf
+    └─ Lettre de la Banque Laurentienne et documents relatifs au compte 007-86222-2 (lot 24-0931, item 2).pdf
+    └─ Lettre et affidavit du 22 février 2017 de Danielle Mainville de la Banque Laurentienne.pdf
+  rapport/report                     42  ( 21.0%)
+    └─ 13_Courriels du 28 octobre 2014 de Denise Bélanger à Guy Tremblay_rapports d'évaluation de la valeur marchande_en liasse.pdf
+    └─ Pièce 106 - Rapport expert .pdf
+    └─ Pages de 13784 mezzanine-7.pdf
+  déclaration/affidavit              10  (  5.0%)
+    └─ 16-2812 Affidavit du 25 novembre 2016 de Sophie Nushis de la Banque Amex.pdf
+    └─ Affidavit du 19 mai 2016 de Olga Kyrkunova de la Banque de Montréal.pdf
+    └─ Affidavit du 15 juin 2016 de Natalia Danalachi de la Banque Royale, compte RBC Idéal Finance.pdf
+  jugement                            6  (  3.0%)
+    └─ 30 - déclaration sous serment pour bref de saisie, JFD.pdf
+    └─ K dec sous serment bref saise.pdf
+    └─ Requete introductive et Bref de saisi.pdf
+  notaire/notarial                    5  (  2.5%)
+    └─ 18_Courriel du 21 novembre 2014 de Diane Leblanc à François Rivest transférant sa réception du courriel de Pierre Aubin.pdf
+    └─ 22_Courriel du 10 décembre 2014 de Denise Bélanger à Guy Tremblay cc JFD  incluant courriel investisseur révisé.pdf
+    └─ Pièce 109 - Motifs contestation JFD et 8181772 Canada Inc .pdf
+  ordonnance                          4  (  2.0%)
+    └─ Lettre de la Banque Laurentienne et documents relatifs au compte 007-86222-2 (lot 24-0931, item 2).pdf
+    └─ Lettre et affidavit du 22 février 2017 de Danielle Mainville de la Banque Laurentienne.pdf
+    └─ 12010.04C - 240318 - Notes pers. PRATTE Y. (11154).pdf
+  hypothèque/mortgage                 4  (  2.0%)
+    └─ 13_Courriels du 28 octobre 2014 de Denise Bélanger à Guy Tremblay_rapports d'évaluation de la valeur marchande_en liasse.pdf
+    └─ 14_Courriels du 30 octobre 2014 de Denise Bélanger à Guy Tremblay_incluant un plan.pdf
+    └─ 31_Courriel du 24 février 2015 de Véronique Charton à Vincent TREMBLAY et Pierre PAPILLON (Capital Transit) avec Jean-François DÉSORMEAUX.pdf
+  mandat/procuration                  4  (  2.0%)
+    └─ (H).pdf
+    └─ Lettre Me Leblanc.pdf
+    └─ 12010.01F - 170320 - Lot 17-0753 - Documents.pdf
+  déclaration                         2  (  1.0%)
+    └─ 30 - déclaration sous serment pour bref de saisie, JFD.pdf
+    └─ K dec sous serment bref saise.pdf
+  interrogatoire                      1  (  0.5%)
+    └─ Onglet 3 - 221108 - Transcript interro préalable JFD .pdf
+  certificat                          1  (  0.5%)
+    └─ Requete introductive et Bref de saisi.pdf
+  bail/lease                          1  (  0.5%)
+    └─ Pages de 13784 mezzanine.pdf
+  requête                             1  (  0.5%)
+    └─ précision affidavit de Yannick Pratte.pdf
+  divulgation                         1  (  0.5%)
+    └─ précision affidavit de Yannick Pratte.pdf
+
+📂 TOP-LEVEL FOLDER BREAKDOWN:
+--------------------------------------------------
+  Divulgation                                        15,799  ( 70.1%)
+    ├─ unclassified: 14645
+    ├─ photo/scan: 152
+    ├─ courriel/email: 117
+    ├─ rapport/report: 108
+    ├─ remise volontaire: 108
+  Antérieur                                          5,301  ( 23.5%)
+    ├─ unclassified: 3718
+    ├─ remise volontaire: 469
+    ├─ courriel/email: 389
+    ├─ acte notarié: 113
+    ├─ relevé: 99
+  Tableau de preuve - Février 2026                   1,004  (  4.5%)
+    ├─ unclassified: 560
+    ├─ courriel/email: 160
+    ├─ relevé: 79
+    ├─ déclaration/affidavit: 38
+    ├─ acte notarié: 32
+  Analyse des projets                                   423  (  1.9%)
+    ├─ unclassified: 370
+    ├─ rapport/report: 20
+    ├─ courriel/email: 8
+    ├─ photo/scan: 7
+    ├─ facture/invoice: 7
+
+⚠️  FILENAME vs CONTENT TYPE MISMATCHES (11 found):
+--------------------------------------------------
+  File: Lettre de la Banque Laurentienne et documents relatifs au compte 007-86222-2 (lot 24-0931, item 2).pdf
+    Filename says: lettre
+    Content says:  courriel/email, courriel/email, ordonnance
+
+  File: Lettre et affidavit du 22 février 2017 de Danielle Mainville de la Banque Laurentienne.pdf
+    Filename says: déclaration/affidavit, lettre
+    Content says:  courriel/email, ordonnance
+
+  File: 30 - déclaration sous serment pour bref de saisie, JFD.pdf
+    Filename says: déclaration/serment
+    Content says:  déclaration, jugement
+
+  File: K dec sous serment bref saise.pdf
+    Filename says: déclaration/serment
+    Content says:  déclaration, jugement
+
+  File: Lettre Me Leblanc.pdf
+    Filename says: lettre
+    Content says:  courriel/email, mandat/procuration
+
+  File: Requete introductive et Bref de saisi.pdf
+    Filename says: requête
+    Content says:  courriel/email, jugement, certificat
+
+  File: Lettre Francis Alerte 20dec2017.pdf
+    Filename says: lettre
+    Content says:  courriel/email, courriel/email
+
+  File: 08039.04N - 240322 - Identification photo PAQUIN M.pdf
+    Filename says: photo/scan
+    Content says:  rapport/report
+
+  File: 01001L - 260106 - Affidavit Hydro-Québec.pdf
+    Filename says: déclaration/affidavit
+    Content says:  rapport/report
+
+  File: 01002L - 260107 - Affidavit État Civil_biffé.pdf
+    Filename says: déclaration/affidavit
+    Content says:  rapport/report
+
+  File: 01005L - 260106 - Affidavit Hydro-Québec.pdf
+    Filename says: déclaration/affidavit
+    Content says:  rapport/report
+
+
+────────────────────────────────────────────────────────────────────────────────
+  CONTAINER: Internal (legal-documents-internal)
+  Total files: 1,792
+────────────────────────────────────────────────────────────────────────────────
+
+📁 FILE TYPE BREAKDOWN (by extension):
+--------------------------------------------------
+  pdf                   1,695  ( 94.6%) ███████████████████████████████████████████████
+  excel                    44  (  2.5%) █
+  image                    42  (  2.3%) █
+  word                     10  (  0.6%) 
+  archive                   1  (  0.1%) 
+
+📋 LEGAL DOCUMENT TYPES (from filename patterns):
+--------------------------------------------------
+  unclassified                    1,200  ( 67.0%)
+    └─ 08002.27J - 250131 - Notes pers. PRATTE Y. (11154).pdf
+    └─ 09003D - 251210 - Notes pers . PICHÉ C. (13932)_biffé.pdf
+    └─ 141023-ID-Charron à l'équipe Zone humide ST-LIN.pdf
+  facture/invoice                   106  (  5.9%)
+    └─ 160304-ID-JFD à Lemieux Beaulieu factures décontamination erreur Aubin.pdf
+    └─ 160404-ID-Registre des factures par sites.pdf
+    └─ 15041-ID-Facture Paris Ladouceur 694489 Brompton.pdf
+  plan                               79  (  4.4%)
+    └─ 150204-ID-Charron à l'équipe Plan Tim Horton MARIEN.pdf
+    └─ 150406-ID-Charron à l'équipe plan Rawdon.pdf
+    └─ 150408-ID-Charron à l'équipe plan St-AUG.pdf
+  courriel/email                     78  (  4.4%)
+    └─ 150522-ID-Charron à l'équipe courriel intérêt Metro ST-LIN.pdf
+    └─ 151001-ID-Charron à l'équipe courriel de Subway ST-ESPRIT.pdf
+    └─ 160516-ID-I Tchoulack à Notaire PJ au courriel St-Esprit.pdf
+  notaire/notarial                   70  (  3.9%)
+    └─ 141126-ID-D Bélanger à notaire demande d'état de compte de tous les projets Charron pour JFD Général.pdf
+    └─ 141127-ID-D Bélanger à Charron question sur déboursés du notaire Général.pdf
+    └─ 141201-ID-D Bélanger à Notaire instructions déboursé Rawdon.pdf
+  prêt/loan                          57  (  3.2%)
+    └─ 141216-ID-D Bélanger à Charron instructions lettre acceptation prêt ST-LIN.pdf
+    └─ 150225-ID-Charron à l'équipe page 3 prêt Croll_Gaudet ST-LIN.JPG
+    └─ 150225-ID-Charron à l'équipe page 3 prêt Croll_Gaudet ST-LIN.pdf
+  mandat                             53  (  3.0%)
+    └─ Mandat d'enquête GAUDET.pdf
+    └─ Mandat d'enquête GAUDET.pdf
+    └─ 150715-ID-Mandat notaire Caon 700K Brompton.pdf
+  pièce/exhibit                      34  (  1.9%)
+    └─ 160623-ID-ITchoulack à Collette pour pièces jointes MARIEN.pdf
+    └─ LISTE des PIÈCES AMENDÉES 2018-03-13.pdf
+    └─ Pièces Caon.pdf
+  acte notarié                       30  (  1.7%)
+    └─ Acte de gestion et analyse de prêt hypothécaire.pdf
+    └─ EP3.83. Acte de cession de créance 21 585 893 du 4 juin 2015 entre 8181772 Canada inc et Gilles Lehoux et Gestion Gilles Leh  (15A02800074) (Conflit lié au codage Unicode).pdf
+    └─ 121001-ID-Acte de prêt Masterdev à 8181.pdf
+  cession                            29  (  1.6%)
+    └─ 150223-ID-Cession MVoyer à OGaudet lots 2 et 3 (3 569 771 et 3 570 014).pdf
+    └─ 150225-ID-Charron à JFD Cession Voyer Gaudet ST-LIN.pdf
+    └─ 150225-ID-Charron à l'équipe page 1 cession Voyer_Gaudet ST-LIN.JPG
+  bail/lease                         24  (  1.3%)
+    └─ 150426-ID-Charron à l'équipe Harnois bail St-Esprit.pdf
+    └─ 150825-ID-Charron à l'équipe Bail Harnois sous bail Subway_projet_St-Esprit.pdf
+    └─ 150904-ID-Charron à l'équipe bail Harnois ST-ESPRIT.pdf
+  interrogatoire                     19  (  1.1%)
+    └─ INTERROGATOIRE LEHOUX partie 1.pdf
+    └─ INTERROGATOIRE LEHOUX.pdf
+    └─ 705-17-007541-178 Interrogatoire de M. Noël Beaulieu par Me Larocque.pdf
+  lettre                             16  (  0.9%)
+    └─ 141216-ID-D Bélanger à Charron instructions lettre acceptation prêt ST-LIN.pdf
+    └─ 150408-ID-Charron à l'équipe demande lettre approbation Ste-Julienne.pdf
+    └─ 150408-ID-Charron à l'équipe lettre intérêt Sobeys RAWDON.pdf
+  évaluation                         15  (  0.8%)
+    └─ 150413-ID-Évaluation Paris Ladouceur-BRTON.pdf
+    └─ 151015-ID-Évaluation BBD-BRTON.pdf
+    └─ 140305-ID-Évaluation FARRIER Meadows.pdf
+  contrat                            12  (  0.7%)
+    └─ 141117-ID-Contrat cheval doc LEXWIRE signé P Aubin.pdf
+    └─ 150413-ID-Charron à JFD de signer contrat architecte ST-AUG.pdf
+    └─ 151204-ID-Charron à l'équipe contrat bail Planète Poutine MARIEN.pdf
+  divulgation                        12  (  0.7%)
+    └─ 251204 - Divulgation dossier 54001111050236  document de PierreLuc Gaudreault.pdf
+    └─ 260119 - Divulgation additionnelle copie.pdf
+    └─ 260123 - Divulgation des notes de rencontre de témoins  R c Charron et als  54001111050236 copie.pdf
+  offre                              12  (  0.7%)
+    └─ offre de service BBD.pdf
+    └─ offre de service BBD.pdf
+    └─ offre de service BBD.pdf
+  rapport/report                     10  (  0.6%)
+    └─ 160430-ID-9301-7291 Qc rapport FED 2016.pdf
+    └─ 160430-ID-93017291 Qc rapport PROV 2016.pdf
+    └─ 170430-ID- 9301-7291 Qc rapport PROV 2017.pdf
+  hypothèque/mortgage                 7  (  0.4%)
+    └─ 160506-ID-I Tchoulack à Notaire tableau hypothèques et ententes Général.pdf
+    └─ EP3.84. Acte d'hypothèque 21 672 593 publié le 3 juillet 2015 pour 720 000$ (15A02800084).pdf
+    └─ IJFD 12 - Acte d'hypothèque du 12 décembre 2014 relativement au projet de Saint-Charles-Borromée sur la rue de la Visitation.pdf
+  convention                          5  (  0.3%)
+    └─ 150220-ID-JFD à Charron envoi Convention Gaudet Général.pdf
+    └─ 160428-ID-Colette à JFD envoi conventions_prête nom.pdf
+    └─ 13. Convention entre actionnaires.pdf
+  chèque                              5  (  0.3%)
+    └─ 140825-ID-Lucie chèque conteneurs et Patrick Morin Couvent.pdf
+    └─ 140825-ID-Lucie chèque remboursement C Charron Couvent.pdf
+    └─ 140825-ID-Lucie chèque à Claude Charron Couvent.pdf
+  reçu/receipt                        4  (  0.2%)
+    └─ 141114-ID-Confirmation transaction cheval virement reçu le 2014-11-13.pdf
+    └─ Recu clef Oribus.pdf
+    └─ Facture Michel Brisson 2015-031 - Trois-Rivières Thibeau - reçue 2015-02-14.pdf
+  photo/scan                          4  (  0.2%)
+    └─ 151117-ID-Charron à JFD photo page signature Gaudet d'un bail.pdf.JPG
+    └─ 151117-ID-Charron à JFD photo page signature Gaudet d'un bail.pdf.pdf
+    └─ 4. Brompton - Hypothèque -9 juillet 2015 AL_21_685_983_image_001.pdf
+  état de compte                      3  (  0.2%)
+    └─ 11-7 État de compte-3RV (112) Janson 2017-05-29.pdf
+    └─ 141126-ID-D Bélanger à notaire demande d'état de compte de tous les projets Charron pour JFD Général.pdf
+    └─ 140000-ID-État de compte Jade Couvent.pdf
+  résolution                          2  (  0.1%)
+    └─ 150831-ID-Charron à l'Équipe résolution de la cie de Voyer NON SIGNÉE.pdf
+    └─ 160530-ID-Collette à Notaire et JFD résolution pour Lucie signée Général.pdf
+  déclaration                         2  (  0.1%)
+    └─ Déclaration assermentée Deli Freine 2017-10-20.pdf
+    └─ Déclaration sous serment.pdf
+  déclaration/serment                 2  (  0.1%)
+    └─ Déclaration assermentée Deli Freine 2017-10-20.pdf
+    └─ Déclaration sous serment.pdf
+  jugement                            2  (  0.1%)
+    └─ 171221-ID-Jugement Beaulieu Lemieux contre Aubin.pdf
+    └─ 140327-ID-jugement faveur 8181 Masterdev Inc.pdf
+  déclaration/affidavit               1  (  0.1%)
+    └─ Rétractation d'affidavit COLLETTE 2018-05-17.pdf
+  preuve/evidence                     1  (  0.1%)
+    └─ 150402-ID-Éval Paris Ladouceur 69445 Ste-Julienne et preuve de paiement.pdf
+
+📝 LEGAL DOCUMENT TYPES (from OCR content, 1,766 sampled):
+--------------------------------------------------
+  courriel/email                    870  ( 49.3%)
+    └─ 08002.27J - 250131 - Notes pers. PRATTE Y. (11154).pdf
+    └─ 09003D - 251210 - Notes pers . PICHÉ C. (13932)_biffé.pdf
+    └─ 09003D - 251210 - Notes pers . PICHÉ C. (13932)_biffé.pdf
+  unclassified                      767  ( 43.4%)
+    └─ 141117-ID-Contrat cheval doc LEXWIRE signé P Aubin.pdf
+    └─ 150203-ID-Charron à l'équipe montants de financements Général.pdf
+    └─ 150223-ID-Cession MVoyer à OGaudet lots 2 et 3 (3 569 771 et 3 570 014).pdf
+  notaire/notarial                  320  ( 18.1%)
+    └─ 09003D - 251210 - Notes pers . PICHÉ C. (13932)_biffé.pdf
+    └─ 11-7 État de compte-3RV (112) Janson 2017-05-29.pdf
+    └─ 141126-ID-D Bélanger à notaire demande d'état de compte de tous les projets Charron pour JFD Général.pdf
+  hypothèque/mortgage               135  (  7.6%)
+    └─ 11-7 État de compte-3RV (112) Janson 2017-05-29.pdf
+    └─ 150113-ID-F Larivière à V Charton comptabilité Couvent et St-Alphonse.pdf
+    └─ 150225-ID-Charron à l'équipe page 3 cession Voyer_Gaudet ST-LIN.JPG
+  bail/lease                        132  (  7.5%)
+    └─ 150310-ID-Charron à l'équipe critères Benny&Co.pdf
+    └─ 150426-ID-Charron à l'équipe Harnois bail St-Esprit.pdf
+    └─ 150517-ID-Charron à l'équipe montants locatifs MARIEN.pdf
+  mandat/procuration                 76  (  4.3%)
+    └─ AGENDA JF Desormeaux 120 à 150 pair.pdf
+    └─ Tableau de suivi de projets 2017-10-08.pdf
+    └─ Tableau de suivi de projets 2017-10-16.pdf
+  facture/invoice                    70  (  4.0%)
+    └─ 160324-ID-Facture Paré (16-315)Brompton.pdf
+    └─ 170502-ID-BBD FACTURE 16136 Brompton.pdf
+    └─ 140916-ID-Lucie envoi facts Contracteurs Mak_Jade Couvent.pdf
+  rapport/report                     52  (  2.9%)
+    └─ 08002.27J - 250131 - Notes pers. PRATTE Y. (11154).pdf
+    └─ 2025-12-03 - Oribus - Précisions-signed.pdf
+    └─ 251120 - Rencontre Pascale Parent - Notes pers. LEDOUX M. (14367).pdf
+  interrogatoire                     23  (  1.3%)
+    └─ 705-17-007541-178 Interrogatoire de M. Noël Beaulieu par Me Larocque.pdf
+    └─ 705-17-007541-178 Interrogatoire de M. Noël Beaulieu par Me Poulin (pour Me Alerte).pdf
+    └─ 705-17-007541-178 Interrogatoire de M. Noël Beaulieu par Me Poulin.pdf
+  divulgation                        17  (  1.0%)
+    └─ 251204 - Divulgation dossier 54001111050236  document de PierreLuc Gaudreault.pdf
+    └─ 260119 - Divulgation additionnelle copie.pdf
+    └─ 260123 - Divulgation des notes de rencontre de témoins  R c Charron et als  54001111050236 copie.pdf
+  certificat                         12  (  0.7%)
+    └─ 150813-ID-SOLI à Charron ST-LIN.pdf
+    └─ 160526-ID-Collette à JFD Lettre intention financement construction Général.pdf
+    └─ Pièce PM-09_Courriel Denise Bélanger du 4 mai 2015 - Projet Rawdon.pdf
+  résolution                         11  (  0.6%)
+    └─ 150831-ID-Charron à l'Équipe résolution de la cie de Voyer NON SIGNÉE.pdf
+    └─ 160530-ID-Collette à Notaire et JFD résolution pour Lucie signée Général.pdf
+    └─ AGENDA JF Desormeaux 120 à 150 pair.pdf
+  état de compte                      9  (  0.5%)
+    └─ 11-7 État de compte-3RV (112) Janson 2017-05-29.pdf
+    └─ 150401-ID- comptabilité 3RVS Thibeau.pdf
+    └─ 151001-ID- comptabilité St-Lin.pdf
+  ordonnance                          8  (  0.5%)
+    └─ 540-01-111050-236 (26 aou╠ét 2024).pdf
+    └─ 540-01-111050-236 (27 aou╠ét 2024).pdf
+    └─ 540-01-111050-236 (28 aou╠ét 2024).pdf
+  requête                             5  (  0.3%)
+    └─ 260217 - Décision - Lignes 29 à 31.docx
+    └─ 140327-ID-jugement faveur 8181 Masterdev Inc.pdf
+    └─ 20210326-A  PARTIE 2.pdf
+  évaluation                          5  (  0.3%)
+    └─ 150325-ID-Facture taxes Muni Couvent.pdf
+    └─ 140924-ID-Taxes Municipales Couvent.pdf
+    └─ 170511-ID-Éval BBD St-Esprit.pdf
+  jugement                            4  (  0.2%)
+    └─ 260217 - Décision - Lignes 29 à 31.docx
+    └─ 171221-ID-Jugement Beaulieu Lemieux contre Aubin.pdf
+    └─ 140327-ID-jugement faveur 8181 Masterdev Inc.pdf
+  mise en demeure                     3  (  0.2%)
+    └─ Pièce PM-20 Courriel et registre.PDF
+    └─ Pièce PM-20_Courriel de Moryoussef du 16 février 2016.pdf
+    └─ 170131-ID-Avocat Guindon 3099 St-Lin.pdf
+  déclaration/affidavit               1  (  0.1%)
+    └─ Rétractation d'affidavit COLLETTE 2018-05-17.pdf
+  acte notarié                        1  (  0.1%)
+    └─ 180411-ID-Acte de vente  à 9367-7896 Qc Piedmont_Masterdev.pdf
+
+📂 TOP-LEVEL FOLDER BREAKDOWN:
+--------------------------------------------------
+  PROJETS                                             1,086  ( 60.6%)
+    ├─ unclassified: 726
+    ├─ facture/invoice: 102
+    ├─ plan: 69
+    ├─ courriel/email: 53
+    ├─ notaire/notarial: 45
+  (root)                                                220  ( 12.3%)
+    ├─ unclassified: 131
+    ├─ notaire/notarial: 18
+    ├─ bail/lease: 14
+    ├─ cession: 12
+    ├─ plan: 10
+  LEGAL 3                                               158  (  8.8%)
+    ├─ unclassified: 69
+    ├─ acte notarié: 26
+    ├─ courriel/email: 20
+    ├─ interrogatoire: 17
+    ├─ pièce/exhibit: 11
+  AUTRES                                                104  (  5.8%)
+    ├─ unclassified: 104
+  GESTION DE PROJETS-GÉNÉRAL                             89  (  5.0%)
+    ├─ unclassified: 87
+    ├─ facture/invoice: 1
+    ├─ notaire/notarial: 1
+  Courriels de Lucie avec comptabilité_déboursé          39  (  2.2%)
+    ├─ unclassified: 38
+    ├─ prêt/loan: 1
+  DOCUMENTS DEMANDES PAR JFD                             36  (  2.0%)
+    ├─ unclassified: 10
+    ├─ prêt/loan: 8
+    ├─ acte notarié: 4
+    ├─ pièce/exhibit: 3
+    ├─ interrogatoire: 2
+  PREUVE                                                 26  (  1.5%)
+    ├─ unclassified: 18
+    ├─ divulgation: 5
+    ├─ lettre: 1
+    ├─ mandat: 1
+    ├─ reçu/receipt: 1
+  Prêt Croll_Gaudet                                       7  (  0.4%)
+    ├─ prêt/loan: 7
+  EF IF                                                   6  (  0.3%)
+    ├─ unclassified: 6
+  IMPÔTS ID                                               6  (  0.3%)
+    ├─ rapport/report: 4
+    ├─ unclassified: 2
+  IMPÔTS IF                                               5  (  0.3%)
+    ├─ rapport/report: 5
+  EF ID                                                   4  (  0.2%)
+    ├─ unclassified: 4
+  GL ID                                                   3  (  0.2%)
+    ├─ unclassified: 3
+  EMPLOYÉS                                                2  (  0.1%)
+    ├─ unclassified: 2
+  Pièces CAON                                             1  (  0.1%)
+    ├─ pièce/exhibit: 1
+
+⚠️  FILENAME vs CONTENT TYPE MISMATCHES (50 found):
+--------------------------------------------------
+  File: 141114-ID-Confirmation transaction cheval virement reçu le 2014-11-13.pdf
+    Filename says: reçu/receipt
+    Content says:  courriel/email
+
+  File: 141216-ID-D Bélanger à Charron instructions lettre acceptation prêt ST-LIN.pdf
+    Filename says: lettre, prêt/loan
+    Content says:  courriel/email
+
+  File: 150204-ID-Charron à l'équipe Plan Tim Horton MARIEN.pdf
+    Filename says: plan
+    Content says:  courriel/email
+
+  File: 150220-ID-JFD à Charron envoi Convention Gaudet Général.pdf
+    Filename says: convention
+    Content says:  courriel/email
+
+  File: 150225-ID-Charron à JFD Cession Voyer Gaudet ST-LIN.pdf
+    Filename says: cession
+    Content says:  courriel/email
+
+  File: 150225-ID-Charron à l'équipe page 3 cession Voyer_Gaudet ST-LIN.JPG
+    Filename says: cession
+    Content says:  hypothèque/mortgage
+
+  File: 150225-ID-Charron à l'équipe page 3 cession Voyer_Gaudet ST-LIN.pdf
+    Filename says: cession
+    Content says:  hypothèque/mortgage
+
+  File: 150225-ID-Charron à l'équipe page 4 cession Voyer_Gaudet ST-LIN.JPG
+    Filename says: cession
+    Content says:  hypothèque/mortgage
+
+  File: 150225-ID-Charron à l'équipe page 4 cession Voyer_Gaudet ST-LIN.pdf
+    Filename says: cession
+    Content says:  hypothèque/mortgage
+
+  File: 150406-ID-Charron à l'équipe plan Rawdon.pdf
+    Filename says: plan
+    Content says:  courriel/email
+
+  File: 150408-ID-Charron à l'équipe demande lettre approbation Ste-Julienne.pdf
+    Filename says: lettre
+    Content says:  courriel/email
+
+  File: 150408-ID-Charron à l'équipe lettre intérêt Sobeys RAWDON.pdf
+    Filename says: lettre
+    Content says:  courriel/email
+
+  File: 150408-ID-Charron à l'équipe plan St-AUG.pdf
+    Filename says: plan
+    Content says:  courriel/email
+
+  File: 150413-ID-Charron à JFD de signer contrat architecte ST-AUG.pdf
+    Filename says: contrat
+    Content says:  courriel/email
+
+  File: 150812-ID-Charron à l'équipe envoi plan Jutras ST-LIN.pdf
+    Filename says: plan
+    Content says:  courriel/email
+
+  File: 150817-ID-Charron à l'équipe plan ST-LIN.pdf
+    Filename says: plan
+    Content says:  courriel/email
+
+  File: 150818-ID-Charron à JFD montants à débourser prêt de 1.6M.pdf
+    Filename says: prêt/loan
+    Content says:  courriel/email
+
+  File: 150904-ID-Charron à l'équipe bail Harnois ST-ESPRIT.pdf
+    Filename says: bail/lease
+    Content says:  courriel/email, courriel/email
+
+  File: 150904-ID-Charron à l'équipe plan Harnois St-Esprit.pdf
+    Filename says: plan
+    Content says:  courriel/email
+
+  File: 150915-ID-Charron à l'équipe Bail Subway St-Esprit.pdf
+    Filename says: bail/lease
+    Content says:  courriel/email
+
+
+================================================================================
+  SUMMARY & RECOMMENDATIONS
+================================================================================
+
+  External:
+    - Files classifiable by filename: 3,234 / 22,527 (14.4%)
+    - Unclassifiable by filename: 19,293 (85.6%)
+    - Classifiable by content (of 200 sampled): 114 (57.0%)
+    - Filename/content mismatches: 11
+
+  Internal:
+    - Files classifiable by filename: 592 / 1,792 (33.0%)
+    - Unclassifiable by filename: 1,200 (67.0%)
+    - Classifiable by content (of 1,766 sampled): 999 (56.6%)
+    - Filename/content mismatches: 50
+
+  Recommendation notes:
+    - If >70% classifiable by filename → rule-based classification is viable
+    - If many unclassified → GPT-based content classification needed at indexing time
+    - If many mismatches → filename alone is unreliable, content analysis required
+    - High 'unclassified' in content → may need more patterns or GPT fallback

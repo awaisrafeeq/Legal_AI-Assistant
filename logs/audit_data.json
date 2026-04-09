@@ -1,0 +1,785 @@
+[
+  {
+    "label": "External",
+    "container": "legal-documents",
+    "total_files": 22527,
+    "content_sampled": 200,
+    "ext_counts": {
+      "pdf": 18791,
+      "excel": 207,
+      "word": 152,
+      "audio": 30,
+      "text": 102,
+      "other (.aspx)": 7,
+      "image": 2231,
+      "other (.bak)": 20,
+      "other (.dwg)": 20,
+      "other (.ax5)": 3,
+      "other (.url)": 24,
+      "archive": 21,
+      "other (.msg)": 148,
+      "system": 4,
+      "no_extension": 1,
+      "other (.pdf)": 333,
+      "other (.xlsx)": 1,
+      "other (.mht)": 17,
+      "csv": 6,
+      "other (.inf)": 4,
+      "other (.js)": 122,
+      "other (.css)": 169,
+      "other (.psd)": 36,
+      "other (.pspimage)": 8,
+      "other (.jsb)": 4,
+      "other (.ico)": 5,
+      "other (.hta)": 4,
+      "video": 13,
+      "other (.xspf)": 1,
+      "other (.bup)": 9,
+      "other (.ifo)": 9,
+      "other (.vob)": 17,
+      "other (.arcacheitem)": 2,
+      "other (.lnk)": 2,
+      "other (.eot)": 1,
+      "other (.ttf)": 1,
+      "other (.id 33)": 1,
+      "other (.bat)": 1
+    },
+    "filename_type_counts": {
+      "déclaration/affidavit": 99,
+      "relevé": 255,
+      "unclassified": 19293,
+      "notaire/notarial": 87,
+      "lettre": 123,
+      "facture/invoice": 129,
+      "rapport/report": 220,
+      "prêt/loan": 7,
+      "courriel/email": 674,
+      "cession": 167,
+      "acte notarié": 185,
+      "contrat": 60,
+      "chèque": 4,
+      "hypothèque/mortgage": 7,
+      "défense": 12,
+      "preuve/evidence": 32,
+      "certificat": 67,
+      "mandat": 34,
+      "motion": 26,
+      "plan": 61,
+      "divulgation": 22,
+      "bail/lease": 38,
+      "convention": 45,
+      "photo/scan": 179,
+      "jugement": 96,
+      "déclaration/serment": 36,
+      "requête": 14,
+      "remise volontaire": 667,
+      "déclaration": 7,
+      "bilan financier": 10,
+      "procuration": 3,
+      "offre": 6,
+      "interrogatoire": 48,
+      "mise en demeure": 14,
+      "cahier": 11,
+      "pièce/exhibit": 31,
+      "ordonnance": 13,
+      "résolution": 2,
+      "évaluation": 7,
+      "assignation/subpoena": 6,
+      "procès-verbal": 6,
+      "état de compte": 3
+    },
+    "content_type_counts": {
+      "déclaration/affidavit": 10,
+      "unclassified": 86,
+      "courriel/email": 80,
+      "ordonnance": 4,
+      "hypothèque/mortgage": 4,
+      "rapport/report": 42,
+      "notaire/notarial": 5,
+      "mandat/procuration": 4,
+      "déclaration": 2,
+      "jugement": 6,
+      "interrogatoire": 1,
+      "certificat": 1,
+      "bail/lease": 1,
+      "requête": 1,
+      "divulgation": 1
+    },
+    "folder_counts": {
+      "Tableau de preuve - Février 2026": 1004,
+      "Analyse des projets": 423,
+      "Antérieur": 5301,
+      "Divulgation": 15799
+    },
+    "mismatches": [
+      {
+        "file": "  Tableau de preuve - Février 2026/BANQUE LAURENTIENNE/Lettre de la Banque Laurentienne et documents relatifs au compte 007-86222-2 (lot 24-0931, item 2).pdf",
+        "filename_types": [
+          "lettre"
+        ],
+        "content_types": [
+          "courriel/email",
+          "courriel/email",
+          "ordonnance"
+        ]
+      },
+      {
+        "file": "  Tableau de preuve - Février 2026/BANQUE LAURENTIENNE/Lettre et affidavit du 22 février 2017 de Danielle Mainville de la Banque Laurentienne.pdf",
+        "filename_types": [
+          "déclaration/affidavit",
+          "lettre"
+        ],
+        "content_types": [
+          "courriel/email",
+          "ordonnance"
+        ]
+      },
+      {
+        "file": "Analyse des projets/Déclarations JFD/30 - déclaration sous serment pour bref de saisie, JFD.pdf",
+        "filename_types": [
+          "déclaration/serment"
+        ],
+        "content_types": [
+          "déclaration",
+          "jugement"
+        ]
+      },
+      {
+        "file": "Analyse des projets/Déclarations JFD/K dec sous serment bref saise.pdf",
+        "filename_types": [
+          "déclaration/serment"
+        ],
+        "content_types": [
+          "déclaration",
+          "jugement"
+        ]
+      },
+      {
+        "file": "Analyse des projets/Déclarations JFD/Lettre Me Leblanc.pdf",
+        "filename_types": [
+          "lettre"
+        ],
+        "content_types": [
+          "courriel/email",
+          "mandat/procuration"
+        ]
+      },
+      {
+        "file": "Analyse des projets/Déclarations JFD/Requete introductive et Bref de saisi.pdf",
+        "filename_types": [
+          "requête"
+        ],
+        "content_types": [
+          "courriel/email",
+          "jugement",
+          "certificat"
+        ]
+      },
+      {
+        "file": "Antérieur/Lettre Francis Alerte 20dec2017.pdf",
+        "filename_types": [
+          "lettre"
+        ],
+        "content_types": [
+          "courriel/email",
+          "courriel/email"
+        ]
+      },
+      {
+        "file": "Divulgation/  ORIBUS - DIVULGATION 3/08 - PLAIGNANT - VICTIME - TÉMOIN/08039.04N - 240322 - Identification photo PAQUIN M.pdf",
+        "filename_types": [
+          "photo/scan"
+        ],
+        "content_types": [
+          "rapport/report"
+        ]
+      },
+      {
+        "file": "Divulgation/Divulgation du 13 février 2026/01001L - 260106 - Affidavit Hydro-Québec.pdf",
+        "filename_types": [
+          "déclaration/affidavit"
+        ],
+        "content_types": [
+          "rapport/report"
+        ]
+      },
+      {
+        "file": "Divulgation/Divulgation du 13 février 2026/01002L - 260107 - Affidavit État Civil_biffé.pdf",
+        "filename_types": [
+          "déclaration/affidavit"
+        ],
+        "content_types": [
+          "rapport/report"
+        ]
+      },
+      {
+        "file": "Divulgation/Divulgation du 13 février 2026/01005L - 260106 - Affidavit Hydro-Québec.pdf",
+        "filename_types": [
+          "déclaration/affidavit"
+        ],
+        "content_types": [
+          "rapport/report"
+        ]
+      }
+    ]
+  },
+  {
+    "label": "Internal",
+    "container": "legal-documents-internal",
+    "total_files": 1792,
+    "content_sampled": 1766,
+    "ext_counts": {
+      "pdf": 1695,
+      "image": 42,
+      "word": 10,
+      "excel": 44,
+      "archive": 1
+    },
+    "filename_type_counts": {
+      "unclassified": 1200,
+      "état de compte": 3,
+      "reçu/receipt": 4,
+      "contrat": 12,
+      "notaire/notarial": 70,
+      "lettre": 16,
+      "prêt/loan": 57,
+      "plan": 79,
+      "convention": 5,
+      "cession": 29,
+      "bail/lease": 24,
+      "courriel/email": 78,
+      "résolution": 2,
+      "photo/scan": 4,
+      "hypothèque/mortgage": 7,
+      "pièce/exhibit": 34,
+      "divulgation": 12,
+      "acte notarié": 30,
+      "déclaration": 2,
+      "déclaration/serment": 2,
+      "interrogatoire": 19,
+      "facture/invoice": 106,
+      "jugement": 2,
+      "déclaration/affidavit": 1,
+      "rapport/report": 10,
+      "mandat": 53,
+      "évaluation": 15,
+      "chèque": 5,
+      "offre": 12,
+      "preuve/evidence": 1
+    },
+    "content_type_counts": {
+      "courriel/email": 870,
+      "rapport/report": 52,
+      "notaire/notarial": 320,
+      "état de compte": 9,
+      "hypothèque/mortgage": 135,
+      "unclassified": 767,
+      "bail/lease": 132,
+      "certificat": 12,
+      "résolution": 11,
+      "divulgation": 17,
+      "jugement": 4,
+      "requête": 5,
+      "mandat/procuration": 76,
+      "déclaration/affidavit": 1,
+      "acte notarié": 1,
+      "interrogatoire": 23,
+      "mise en demeure": 3,
+      "ordonnance": 8,
+      "facture/invoice": 70,
+      "évaluation": 5
+    },
+    "folder_counts": {
+      "(root)": 220,
+      "AUTRES": 104,
+      "Courriels de Lucie avec comptabilité_déboursé": 39,
+      "DOCUMENTS DEMANDES PAR JFD": 36,
+      "EF ID": 4,
+      "EF IF": 6,
+      "EMPLOYÉS": 2,
+      "GESTION DE PROJETS-GÉNÉRAL": 89,
+      "GL ID": 3,
+      "IMPÔTS ID": 6,
+      "IMPÔTS IF": 5,
+      "LEGAL 3": 158,
+      "PREUVE": 26,
+      "PROJETS": 1086,
+      "Pièces CAON": 1,
+      "Prêt Croll_Gaudet": 7
+    },
+    "mismatches": [
+      {
+        "file": "141114-ID-Confirmation transaction cheval virement reçu le 2014-11-13.pdf",
+        "filename_types": [
+          "reçu/receipt"
+        ],
+        "content_types": [
+          "courriel/email"
+        ]
+      },
+      {
+        "file": "141216-ID-D Bélanger à Charron instructions lettre acceptation prêt ST-LIN.pdf",
+        "filename_types": [
+          "lettre",
+          "prêt/loan"
+        ],
+        "content_types": [
+          "courriel/email"
+        ]
+      },
+      {
+        "file": "150204-ID-Charron à l'équipe Plan Tim Horton MARIEN.pdf",
+        "filename_types": [
+          "plan"
+        ],
+        "content_types": [
+          "courriel/email"
+        ]
+      },
+      {
+        "file": "150220-ID-JFD à Charron envoi Convention Gaudet Général.pdf",
+        "filename_types": [
+          "convention"
+        ],
+        "content_types": [
+          "courriel/email"
+        ]
+      },
+      {
+        "file": "150225-ID-Charron à JFD Cession Voyer Gaudet ST-LIN.pdf",
+        "filename_types": [
+          "cession"
+        ],
+        "content_types": [
+          "courriel/email"
+        ]
+      },
+      {
+        "file": "150225-ID-Charron à l'équipe page 3 cession Voyer_Gaudet ST-LIN.JPG",
+        "filename_types": [
+          "cession"
+        ],
+        "content_types": [
+          "hypothèque/mortgage"
+        ]
+      },
+      {
+        "file": "150225-ID-Charron à l'équipe page 3 cession Voyer_Gaudet ST-LIN.pdf",
+        "filename_types": [
+          "cession"
+        ],
+        "content_types": [
+          "hypothèque/mortgage"
+        ]
+      },
+      {
+        "file": "150225-ID-Charron à l'équipe page 4 cession Voyer_Gaudet ST-LIN.JPG",
+        "filename_types": [
+          "cession"
+        ],
+        "content_types": [
+          "hypothèque/mortgage"
+        ]
+      },
+      {
+        "file": "150225-ID-Charron à l'équipe page 4 cession Voyer_Gaudet ST-LIN.pdf",
+        "filename_types": [
+          "cession"
+        ],
+        "content_types": [
+          "hypothèque/mortgage"
+        ]
+      },
+      {
+        "file": "150406-ID-Charron à l'équipe plan Rawdon.pdf",
+        "filename_types": [
+          "plan"
+        ],
+        "content_types": [
+          "courriel/email"
+        ]
+      },
+      {
+        "file": "150408-ID-Charron à l'équipe demande lettre approbation Ste-Julienne.pdf",
+        "filename_types": [
+          "lettre"
+        ],
+        "content_types": [
+          "courriel/email"
+        ]
+      },
+      {
+        "file": "150408-ID-Charron à l'équipe lettre intérêt Sobeys RAWDON.pdf",
+        "filename_types": [
+          "lettre"
+        ],
+        "content_types": [
+          "courriel/email"
+        ]
+      },
+      {
+        "file": "150408-ID-Charron à l'équipe plan St-AUG.pdf",
+        "filename_types": [
+          "plan"
+        ],
+        "content_types": [
+          "courriel/email"
+        ]
+      },
+      {
+        "file": "150413-ID-Charron à JFD de signer contrat architecte ST-AUG.pdf",
+        "filename_types": [
+          "contrat"
+        ],
+        "content_types": [
+          "courriel/email"
+        ]
+      },
+      {
+        "file": "150812-ID-Charron à l'équipe envoi plan Jutras ST-LIN.pdf",
+        "filename_types": [
+          "plan"
+        ],
+        "content_types": [
+          "courriel/email"
+        ]
+      },
+      {
+        "file": "150817-ID-Charron à l'équipe plan ST-LIN.pdf",
+        "filename_types": [
+          "plan"
+        ],
+        "content_types": [
+          "courriel/email"
+        ]
+      },
+      {
+        "file": "150818-ID-Charron à JFD montants à débourser prêt de 1.6M.pdf",
+        "filename_types": [
+          "prêt/loan"
+        ],
+        "content_types": [
+          "courriel/email"
+        ]
+      },
+      {
+        "file": "150904-ID-Charron à l'équipe bail Harnois ST-ESPRIT.pdf",
+        "filename_types": [
+          "bail/lease"
+        ],
+        "content_types": [
+          "courriel/email",
+          "courriel/email"
+        ]
+      },
+      {
+        "file": "150904-ID-Charron à l'équipe plan Harnois St-Esprit.pdf",
+        "filename_types": [
+          "plan"
+        ],
+        "content_types": [
+          "courriel/email"
+        ]
+      },
+      {
+        "file": "150915-ID-Charron à l'équipe Bail Subway St-Esprit.pdf",
+        "filename_types": [
+          "bail/lease"
+        ],
+        "content_types": [
+          "courriel/email"
+        ]
+      },
+      {
+        "file": "151002-ID-Charron à l'équipe plan 3RVS des Prairies.pdf",
+        "filename_types": [
+          "plan"
+        ],
+        "content_types": [
+          "courriel/email"
+        ]
+      },
+      {
+        "file": "151002-ID-Charron à l'équipe plan Familiprix 3RVS des Prairies Massé.pdf",
+        "filename_types": [
+          "plan"
+        ],
+        "content_types": [
+          "courriel/email"
+        ]
+      },
+      {
+        "file": "151117-ID-Charron à JFD page signature Gaudet d'un bail.pdf",
+        "filename_types": [
+          "bail/lease"
+        ],
+        "content_types": [
+          "courriel/email"
+        ]
+      },
+      {
+        "file": "151204-ID-Charron à JFD plan CLA ST-AUG.pdf",
+        "filename_types": [
+          "plan"
+        ],
+        "content_types": [
+          "courriel/email"
+        ]
+      },
+      {
+        "file": "151204-ID-Charron à JFD plan pour permis ingénieur ST-AUG.pdf",
+        "filename_types": [
+          "plan"
+        ],
+        "content_types": [
+          "courriel/email"
+        ]
+      },
+      {
+        "file": "151213-ID-Charron à Notaire instructions montants ST-AUG.pdf",
+        "filename_types": [
+          "notaire/notarial"
+        ],
+        "content_types": [
+          "courriel/email"
+        ]
+      },
+      {
+        "file": "151215-ID-Charron à Notaire instructions 3RVS Thibeau.pdf",
+        "filename_types": [
+          "notaire/notarial"
+        ],
+        "content_types": [
+          "courriel/email"
+        ]
+      },
+      {
+        "file": "160428-ID-Colette à JFD envoi conventions_prête nom.pdf",
+        "filename_types": [
+          "convention",
+          "prêt/loan"
+        ],
+        "content_types": [
+          "courriel/email"
+        ]
+      },
+      {
+        "file": "160518-ID-I Tchoulack à Notaire réponse pour tableau prêts projets Général.pdf",
+        "filename_types": [
+          "notaire/notarial",
+          "prêt/loan"
+        ],
+        "content_types": [
+          "courriel/email",
+          "hypothèque/mortgage"
+        ]
+      },
+      {
+        "file": "160526-ID-Collette à JFD Lettre intention financement construction Général.pdf",
+        "filename_types": [
+          "lettre"
+        ],
+        "content_types": [
+          "courriel/email",
+          "certificat"
+        ]
+      },
+      {
+        "file": "160623-ID-ITchoulack à Collette pour pièces jointes MARIEN.pdf",
+        "filename_types": [
+          "pièce/exhibit"
+        ],
+        "content_types": [
+          "courriel/email"
+        ]
+      },
+      {
+        "file": "ACTEPRÊT-3RV 112-janson 2013-03-22.pdf",
+        "filename_types": [
+          "prêt/loan"
+        ],
+        "content_types": [
+          "notaire/notarial",
+          "hypothèque/mortgage"
+        ]
+      },
+      {
+        "file": "DOCUMENTS DEMANDES PAR JFD/Acte de gestion et analyse de prêt hypothécaire.pdf",
+        "filename_types": [
+          "acte notarié",
+          "prêt/loan"
+        ],
+        "content_types": [
+          "notaire/notarial"
+        ]
+      },
+      {
+        "file": "DOCUMENTS DEMANDES PAR JFD/MILLES ILES_Ste-Lucie Beaulieu_Lemieux/130711-ID-F Larivière à Beaulieu Lemieux prêt Mille Iles.pdf",
+        "filename_types": [
+          "prêt/loan"
+        ],
+        "content_types": [
+          "courriel/email",
+          "courriel/email"
+        ]
+      },
+      {
+        "file": "DOCUMENTS DEMANDES PAR JFD/MILLES ILES_Ste-Lucie Beaulieu_Lemieux/160304-ID-JFD à Lemieux Beaulieu factures décontamination erreur Aubin.pdf",
+        "filename_types": [
+          "facture/invoice"
+        ],
+        "content_types": [
+          "courriel/email"
+        ]
+      },
+      {
+        "file": "DOCUMENTS DEMANDES PAR JFD/PIÈCES/Pièces CAON/Pièces Caon.pdf",
+        "filename_types": [
+          "pièce/exhibit"
+        ],
+        "content_types": [
+          "courriel/email"
+        ]
+      },
+      {
+        "file": "DOCUMENTS DEMANDES PAR JFD/Pièces CAON/Pièces Caon.pdf",
+        "filename_types": [
+          "pièce/exhibit"
+        ],
+        "content_types": [
+          "courriel/email"
+        ]
+      },
+      {
+        "file": "DOCUMENTS DEMANDES PAR JFD/Prêt Croll_Gaudet/150225-ID-Charron à l'équipe page 2 prêt Croll_Gaudet ST-LIN.JPG",
+        "filename_types": [
+          "prêt/loan"
+        ],
+        "content_types": [
+          "hypothèque/mortgage"
+        ]
+      },
+      {
+        "file": "DOCUMENTS DEMANDES PAR JFD/Prêt Croll_Gaudet/150225-ID-Charron à l'équipe page 4 prêt Croll_Gaudet ST-LIN.JPG",
+        "filename_types": [
+          "prêt/loan"
+        ],
+        "content_types": [
+          "hypothèque/mortgage"
+        ]
+      },
+      {
+        "file": "DOCUMENTS DEMANDES PAR JFD/Prêt Croll_Gaudet/150225-ID-Charron à l'équipe page 6 prêt Croll_Gaudet ST-LIN.JPG",
+        "filename_types": [
+          "prêt/loan"
+        ],
+        "content_types": [
+          "hypothèque/mortgage"
+        ]
+      },
+      {
+        "file": "DOCUMENTS DEMANDES PAR JFD/VIEUX DOSSIER MASTERDEV/121001-ID-Acte de prêt Masterdev à 8181.pdf",
+        "filename_types": [
+          "acte notarié",
+          "prêt/loan"
+        ],
+        "content_types": [
+          "notaire/notarial",
+          "hypothèque/mortgage"
+        ]
+      },
+      {
+        "file": "LEGAL 3/INTERRO ST-LIN LEON RAYMOND/INTERROGATOIRE JFD/IJFD 11 - Acte de vente du 4 décembre 2015.pdf",
+        "filename_types": [
+          "acte notarié"
+        ],
+        "content_types": [
+          "notaire/notarial"
+        ]
+      },
+      {
+        "file": "LEGAL 3/INTERRO ST-LIN LEON RAYMOND/INTERROGATOIRE JFD/IJFD 14 - Acte de prêt daté du 11 décembre 2014 au montant de 700 000�.pdf",
+        "filename_types": [
+          "acte notarié",
+          "prêt/loan"
+        ],
+        "content_types": [
+          "notaire/notarial",
+          "hypothèque/mortgage"
+        ]
+      },
+      {
+        "file": "LEGAL 3/INTERRO ST-LIN LEON RAYMOND/INTERROGATOIRE JFD/IJFD 15 - Deux cessions de créances datées du 10 mars 2016.pdf",
+        "filename_types": [
+          "cession"
+        ],
+        "content_types": [
+          "notaire/notarial",
+          "résolution"
+        ]
+      },
+      {
+        "file": "LEGAL 3/INTERRO ST-LIN LEON RAYMOND/INTERROGATOIRE JFD/IJFD 17 - Acte de prêt daté du 30 mai 2016 don le débiteur est Olivier Gaudet pour la somme de 300 000�.pdf",
+        "filename_types": [
+          "acte notarié",
+          "prêt/loan"
+        ],
+        "content_types": [
+          "notaire/notarial",
+          "hypothèque/mortgage"
+        ]
+      },
+      {
+        "file": "LEGAL 3/INTERRO ST-LIN LEON RAYMOND/INTERROGATOIRE JFD/IJFD 22 - Acte de prêt daté du 1er juin 2015.pdf",
+        "filename_types": [
+          "acte notarié",
+          "prêt/loan"
+        ],
+        "content_types": [
+          "notaire/notarial",
+          "hypothèque/mortgage"
+        ]
+      },
+      {
+        "file": "LEGAL 3/INTERRO ST-LIN LEON RAYMOND/INTERROGATOIRE JFD/IJFD 24 - Acte de prêt du 2 juin 2015.pdf",
+        "filename_types": [
+          "acte notarié",
+          "prêt/loan"
+        ],
+        "content_types": [
+          "notaire/notarial",
+          "hypothèque/mortgage"
+        ]
+      },
+      {
+        "file": "LEGAL 3/INTERRO ST-LIN LEON RAYMOND/INTERROGATOIRE JFD/IJFD 32 - Cession de créance d'Anne-Sophie Leduc à l'onglet 7.1 daté du 10 juin 2015.pdf",
+        "filename_types": [
+          "cession"
+        ],
+        "content_types": [
+          "notaire/notarial",
+          "mandat/procuration"
+        ]
+      },
+      {
+        "file": "LEGAL 3/INTERRO ST-LIN LEON RAYMOND/INTERROGATOIRE JFD/IJFD 34 - Deux cessions de créances datées du 16 juillet 2015 relativement au projet de Saint-Julienne.pdf",
+        "filename_types": [
+          "cession"
+        ],
+        "content_types": [
+          "notaire/notarial"
+        ]
+      },
+      {
+        "file": "LEGAL 3/INTERRO ST-LIN LEON RAYMOND/INTERROGATOIRE JFD/IJFD 35 - Acte de cession de créances du 18 avril 2016.pdf",
+        "filename_types": [
+          "acte notarié",
+          "cession"
+        ],
+        "content_types": [
+          "notaire/notarial"
+        ]
+      }
+    ]
+  }
+]

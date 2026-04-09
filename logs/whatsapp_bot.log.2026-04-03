@@ -1,0 +1,187 @@
+2026-04-03 01:39:19,648 - INFO - WhatsApp handler initialized (Improved v2.0)
+2026-04-03 15:28:02,403 - INFO - WEBHOOK | type=incomingMessageReceived | chat=120363405725998465@g.us
+2026-04-03 15:28:02,443 - INFO - Incoming from Jeff GroupLand Dev | chat: 120363405725998465@g.us
+2026-04-03 15:28:02,444 - INFO - Bot not mentioned, skipping: 'Ok , I think the answer is good . 
+But I'
+2026-04-03 15:29:46,326 - INFO - WEBHOOK | type=incomingMessageReceived | chat=19548878885@c.us
+2026-04-03 15:29:46,328 - INFO - Incoming from Jeff GroupLand Dev | chat: 19548878885@c.us
+2026-04-03 15:29:46,329 - INFO - Follow-up query detected | using short history: 0 msgs
+2026-04-03 15:29:46,329 - INFO - Querying RAG: 'Donne moi les reproche que tremblay guy me fait' | mode=follow_up | history=0 msgs
+2026-04-03 15:29:58,564 - INFO - Response sent to 19548878885@c.us
+2026-04-03 15:31:30,486 - INFO - WEBHOOK | type=incomingMessageReceived | chat=19548878885@c.us
+2026-04-03 15:31:30,487 - INFO - Incoming from Jeff GroupLand Dev | chat: 19548878885@c.us
+2026-04-03 15:31:30,488 - INFO - Fresh query detected | ignoring history
+2026-04-03 15:31:30,488 - INFO - Querying RAG: 'Tu devrais avoir trouver des échange de courriel et savoir q' | mode=fresh | history=0 msgs
+2026-04-03 15:31:40,128 - INFO - Response sent to 19548878885@c.us
+2026-04-03 15:32:56,030 - INFO - WEBHOOK | type=incomingMessageReceived | chat=19548878885@c.us
+2026-04-03 15:32:56,032 - INFO - Incoming from Jeff GroupLand Dev | chat: 19548878885@c.us
+2026-04-03 15:32:56,032 - INFO - Fresh query detected | ignoring history
+2026-04-03 15:32:56,033 - INFO - Querying RAG: 'Donne-moi des contradictions de blache' | mode=fresh | history=0 msgs
+2026-04-03 15:33:04,349 - INFO - Response sent to 19548878885@c.us
+2026-04-03 15:33:27,903 - INFO - WEBHOOK | type=incomingMessageReceived | chat=19548878885@c.us
+2026-04-03 15:33:27,904 - INFO - Incoming from Jeff GroupLand Dev | chat: 19548878885@c.us
+2026-04-03 15:33:27,904 - INFO - Fresh query detected | ignoring history
+2026-04-03 15:33:27,905 - INFO - Querying RAG: 'Alors versus la preuve' | mode=fresh | history=0 msgs
+2026-04-03 15:33:35,773 - INFO - Response sent to 19548878885@c.us
+2026-04-03 15:35:22,973 - INFO - WEBHOOK | type=incomingMessageReceived | chat=19548878885@c.us
+2026-04-03 15:35:22,974 - INFO - Incoming from Jeff GroupLand Dev | chat: 19548878885@c.us
+2026-04-03 15:35:22,974 - INFO - Follow-up query detected | using short history: 2 msgs
+2026-04-03 15:35:22,974 - INFO - Querying RAG: 'Si tu analyse les déclaration à la police , les interrogatoi' | mode=follow_up | history=2 msgs
+2026-04-03 15:35:31,488 - INFO - Response sent to 19548878885@c.us
+2026-04-03 15:36:21,020 - INFO - WEBHOOK | type=incomingMessageReceived | chat=19548878885@c.us
+2026-04-03 15:36:21,021 - INFO - Incoming from Jeff GroupLand Dev | chat: 19548878885@c.us
+2026-04-03 15:36:21,022 - INFO - Fresh query detected | ignoring history
+2026-04-03 15:36:21,022 - INFO - Querying RAG: 'Tu as déclaration plusieurs police et intero ..' | mode=fresh | history=0 msgs
+2026-04-03 15:36:24,216 - ERROR - RAG backend request failed: 500 Server Error: Internal Server Error for url: http://localhost:8000/chat
+2026-04-03 15:36:24,216 - ERROR - RAG error: 500 Server Error: Internal Server Error for url: http://localhost:8000/chat
+Traceback (most recent call last):
+  File "e:\Jeff\whatsapp_bot.py", line 839, in _query_and_respond
+    response = self.rag_backend.chat(
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "e:\Jeff\whatsapp_bot.py", line 144, in chat
+    response.raise_for_status()
+  File "E:\Jeff\.venv\Lib\site-packages\requests\models.py", line 1026, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/chat
+2026-04-03 15:36:43,830 - INFO - WEBHOOK | type=incomingMessageReceived | chat=19548878885@c.us
+2026-04-03 15:36:43,831 - INFO - Incoming from Jeff GroupLand Dev | chat: 19548878885@c.us
+2026-04-03 15:36:43,831 - INFO - Fresh query detected | ignoring history
+2026-04-03 15:36:43,832 - INFO - Querying RAG: 'Tu as plusieurs déclaration et un intero' | mode=fresh | history=0 msgs
+2026-04-03 15:37:13,837 - INFO - Response sent to 19548878885@c.us
+2026-04-03 15:38:53,212 - INFO - WEBHOOK | type=incomingMessageReceived | chat=19548878885@c.us
+2026-04-03 15:38:53,214 - INFO - Incoming from Jeff GroupLand Dev | chat: 19548878885@c.us
+2026-04-03 15:38:53,216 - INFO - Follow-up query detected | using short history: 2 msgs
+2026-04-03 15:38:53,216 - INFO - Querying RAG: 'Tu as plusieurs déclaration à la police et aussi un interrog' | mode=follow_up | history=2 msgs
+2026-04-03 15:39:03,703 - INFO - Response sent to 19548878885@c.us
+2026-04-03 15:40:23,406 - INFO - WEBHOOK | type=incomingMessageReceived | chat=19548878885@c.us
+2026-04-03 15:40:23,408 - INFO - Incoming from Jeff GroupLand Dev | chat: 19548878885@c.us
+2026-04-03 15:40:23,408 - INFO - Follow-up query detected | using short history: 2 msgs
+2026-04-03 15:40:23,408 - INFO - Querying RAG: 'Tu as plusieurs déclaration à la police et aussi un interrog' | mode=follow_up | history=2 msgs
+2026-04-03 15:40:32,545 - INFO - Response sent to 19548878885@c.us
+2026-04-03 15:41:40,734 - INFO - WEBHOOK | type=incomingMessageReceived | chat=19548878885@c.us
+2026-04-03 15:41:40,736 - INFO - Incoming from Jeff GroupLand Dev | chat: 19548878885@c.us
+2026-04-03 15:41:40,737 - INFO - Fresh query detected | ignoring history
+2026-04-03 15:41:40,737 - INFO - Querying RAG: 'Oui tu a plein de déclaration à la police ( déclaration volo' | mode=fresh | history=0 msgs
+2026-04-03 15:41:49,719 - ERROR - RAG backend request failed: 500 Server Error: Internal Server Error for url: http://localhost:8000/chat
+2026-04-03 15:41:49,720 - ERROR - RAG error: 500 Server Error: Internal Server Error for url: http://localhost:8000/chat
+Traceback (most recent call last):
+  File "e:\Jeff\whatsapp_bot.py", line 839, in _query_and_respond
+    response = self.rag_backend.chat(
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "e:\Jeff\whatsapp_bot.py", line 144, in chat
+    response.raise_for_status()
+  File "E:\Jeff\.venv\Lib\site-packages\requests\models.py", line 1026, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 500 Server Error: Internal Server Error for url: http://localhost:8000/chat
+2026-04-03 15:42:05,868 - INFO - WEBHOOK | type=incomingMessageReceived | chat=19548878885@c.us
+2026-04-03 15:42:05,869 - INFO - Incoming from Jeff GroupLand Dev | chat: 19548878885@c.us
+2026-04-03 15:42:05,869 - INFO - Fresh query detected | ignoring history
+2026-04-03 15:42:05,869 - INFO - Querying RAG: 'Oui tu a plein de déclaration à la police ( déclaration volo' | mode=fresh | history=0 msgs
+2026-04-03 15:42:13,914 - INFO - Response sent to 19548878885@c.us
+2026-04-03 15:42:55,836 - INFO - WEBHOOK | type=incomingMessageReceived | chat=19548878885@c.us
+2026-04-03 15:42:55,837 - INFO - Incoming from Jeff GroupLand Dev | chat: 19548878885@c.us
+2026-04-03 15:42:55,837 - INFO - Fresh query detected | ignoring history
+2026-04-03 15:42:55,837 - INFO - Querying RAG: 'Dans le cahier de preuve' | mode=fresh | history=0 msgs
+2026-04-03 15:43:03,579 - INFO - Response sent to 19548878885@c.us
+2026-04-03 15:43:51,087 - INFO - WEBHOOK | type=incomingMessageReceived | chat=19548878885@c.us
+2026-04-03 15:43:51,088 - INFO - Incoming from Jeff GroupLand Dev | chat: 19548878885@c.us
+2026-04-03 15:43:51,088 - INFO - Fresh query detected | ignoring history
+2026-04-03 15:43:51,088 - INFO - Querying RAG: 'Tu ne peux pas trouver les déclaration à la police de Delneg' | mode=fresh | history=0 msgs
+2026-04-03 15:43:58,155 - INFO - Response sent to 19548878885@c.us
+2026-04-03 15:55:31,888 - INFO - WEBHOOK | type=incomingMessageReceived | chat=120363405725998465@g.us
+2026-04-03 15:55:31,890 - INFO - Incoming from Awais Rafeeq | Ai Data House | chat: 120363405725998465@g.us
+2026-04-03 18:34:39,936 - INFO - WEBHOOK | type=incomingMessageReceived | chat=923322551960@c.us
+2026-04-03 18:34:39,947 - INFO - Incoming from . | chat: 923322551960@c.us
+2026-04-03 18:34:39,947 - INFO - Fresh query detected | ignoring history
+2026-04-03 18:34:39,949 - INFO - Querying RAG: 'Donne-moi uniquement les PDF originaux des courriels investi' | mode=fresh | history=0 msgs
+2026-04-03 18:34:51,489 - INFO - Response sent to 923322551960@c.us
+2026-04-03 18:35:54,190 - INFO - WEBHOOK | type=incomingMessageReceived | chat=923322551960@c.us
+2026-04-03 18:35:54,190 - INFO - Incoming from . | chat: 923322551960@c.us
+2026-04-03 18:35:54,191 - INFO - Fresh query detected | ignoring history
+2026-04-03 18:35:54,191 - INFO - Querying RAG: 'Je veux les documents PDF originaux des courriels investisse' | mode=fresh | history=0 msgs
+2026-04-03 18:36:01,559 - INFO - Response sent to 923322551960@c.us
+2026-04-03 18:48:58,644 - INFO - WEBHOOK | type=incomingMessageReceived | chat=923322551960@c.us
+2026-04-03 18:48:58,645 - INFO - Incoming from . | chat: 923322551960@c.us
+2026-04-03 18:49:08,812 - INFO - WEBHOOK | type=incomingMessageReceived | chat=923322551960@c.us
+2026-04-03 18:49:08,814 - INFO - Incoming from . | chat: 923322551960@c.us
+2026-04-03 18:49:08,815 - INFO - Fresh query detected | ignoring history
+2026-04-03 18:49:08,815 - INFO - Querying RAG: 'Trouve les documents PDF originaux des pièces IYB-5, IYB-6 e' | mode=fresh | history=0 msgs
+2026-04-03 18:49:23,751 - INFO - Response sent to 923322551960@c.us
+2026-04-03 18:50:16,866 - INFO - WEBHOOK | type=incomingMessageReceived | chat=923322551960@c.us
+2026-04-03 18:50:16,867 - INFO - Incoming from . | chat: 923322551960@c.us
+2026-04-03 18:51:19,397 - INFO - WEBHOOK | type=incomingMessageReceived | chat=923322551960@c.us
+2026-04-03 18:51:19,399 - INFO - Incoming from . | chat: 923322551960@c.us
+2026-04-03 18:51:19,399 - INFO - Fresh query detected | ignoring history
+2026-04-03 18:51:19,399 - INFO - Querying RAG: 'Trouve les courriels investisseurs DP0321, DP0326 et DP0350 ' | mode=fresh | history=0 msgs
+2026-04-03 18:51:44,046 - INFO - Response sent to 923322551960@c.us
+2026-04-03 19:00:14,446 - INFO - WEBHOOK | type=incomingMessageReceived | chat=923322551960@c.us
+2026-04-03 19:00:14,447 - INFO - Incoming from . | chat: 923322551960@c.us
+2026-04-03 19:00:14,447 - INFO - Fresh query detected | ignoring history
+2026-04-03 19:00:14,447 - INFO - Querying RAG: 'Trouve dans tout le corpus les PDF originaux correspondant a' | mode=fresh | history=0 msgs
+2026-04-03 19:00:24,749 - INFO - Response sent to 923322551960@c.us
+2026-04-03 19:20:21,173 - INFO - WEBHOOK | type=incomingMessageReceived | chat=923322551960@c.us
+2026-04-03 19:20:21,176 - INFO - Incoming from . | chat: 923322551960@c.us
+2026-04-03 19:20:21,177 - INFO - Fresh query detected | ignoring history
+2026-04-03 19:20:21,177 - INFO - Querying RAG: 'Trouve les PDF originaux des pièces IYB-5 et IYB-6, ou des c' | mode=fresh | history=0 msgs
+2026-04-03 19:20:30,875 - INFO - Response sent to 923322551960@c.us
+2026-04-03 20:18:27,973 - INFO - WEBHOOK | type=incomingMessageReceived | chat=923322551960@c.us
+2026-04-03 20:18:27,980 - INFO - Incoming from . | chat: 923322551960@c.us
+2026-04-03 20:18:27,980 - INFO - Fresh query detected | ignoring history
+2026-04-03 20:18:27,980 - INFO - Querying RAG: 'Donne-moi uniquement les PDF originaux des courriels investi' | mode=fresh | history=0 msgs
+2026-04-03 20:18:36,888 - INFO - Response sent to 923322551960@c.us
+2026-04-03 20:26:57,870 - INFO - WEBHOOK | type=incomingMessageReceived | chat=923322551960@c.us
+2026-04-03 20:26:57,873 - INFO - Incoming from . | chat: 923322551960@c.us
+2026-04-03 20:26:57,873 - INFO - Fresh query detected | ignoring history
+2026-04-03 20:26:57,873 - INFO - Querying RAG: 'Done moi tout les courriels investisseurs ou courriel parten' | mode=fresh | history=0 msgs
+2026-04-03 20:27:16,654 - INFO - Response sent to 923322551960@c.us
+2026-04-03 22:18:53,572 - INFO - WEBHOOK | type=incomingMessageReceived | chat=19548878885@c.us
+2026-04-03 22:18:53,591 - INFO - Incoming from Jeff GroupLand Dev | chat: 19548878885@c.us
+2026-04-03 22:18:53,593 - INFO - Processing voice message from Jeff GroupLand Dev
+2026-04-03 22:18:55,156 - ERROR - GreenAPI request failed: 400 Client Error: Bad Request for url: https://7103.api.greenapi.com/waInstance7103553770/downloadFile/35df0635b1bb4e23a65a7a17d12001cb5418f5b5b14a474086
+2026-04-03 22:18:55,157 - ERROR - Media download failed: 400 Client Error: Bad Request for url: https://7103.api.greenapi.com/waInstance7103553770/downloadFile/35df0635b1bb4e23a65a7a17d12001cb5418f5b5b14a474086
+2026-04-03 22:19:36,662 - INFO - WEBHOOK | type=incomingMessageReceived | chat=19548878885@c.us
+2026-04-03 22:19:36,664 - INFO - Incoming from Jeff GroupLand Dev | chat: 19548878885@c.us
+2026-04-03 22:19:36,665 - INFO - Fresh query detected | ignoring history
+2026-04-03 22:19:36,665 - INFO - Querying RAG: 'Hello, est-ce que tu peux me donner tous les courriels inves' | mode=fresh | history=0 msgs
+2026-04-03 22:19:51,532 - INFO - Response sent to 19548878885@c.us
+2026-04-03 22:20:32,699 - INFO - WEBHOOK | type=incomingMessageReceived | chat=19548878885@c.us
+2026-04-03 22:20:32,700 - INFO - Incoming from Jeff GroupLand Dev | chat: 19548878885@c.us
+2026-04-03 22:20:32,700 - INFO - Fresh query detected | ignoring history
+2026-04-03 22:20:32,701 - INFO - Querying RAG: 'Peux-tu me donner chacun des PDF?' | mode=fresh | history=0 msgs
+2026-04-03 22:20:40,970 - INFO - Response sent to 19548878885@c.us
+2026-04-03 22:37:07,415 - INFO - Shutting down WhatsApp bot...
+2026-04-03 22:37:11,114 - INFO - WhatsApp handler initialized (Improved v2.0)
+2026-04-03 22:37:50,249 - INFO - WEBHOOK | type=incomingMessageReceived | chat=923322551960@c.us
+2026-04-03 22:37:50,257 - INFO - Incoming from . | chat: 923322551960@c.us
+2026-04-03 22:37:50,257 - INFO - Processing voice message from .
+2026-04-03 22:37:51,865 - ERROR - Media download failed: 401 Client Error: Unauthorized for url: https://7103.api.greenapi.com/waInstance7103553770/downloadFile/3EB03A681434276E7D7912/35df0635b1bb4e23a65a7a17d12001cb5418f5b5b14a474086
+2026-04-03 22:39:02,667 - INFO - Shutting down WhatsApp bot...
+2026-04-03 22:39:04,876 - INFO - WhatsApp handler initialized (Improved v2.0)
+2026-04-03 22:39:20,758 - INFO - WEBHOOK | type=incomingMessageReceived | chat=923322551960@c.us
+2026-04-03 22:39:20,762 - INFO - Incoming from . | chat: 923322551960@c.us
+2026-04-03 22:39:20,762 - INFO - Processing voice message from .
+2026-04-03 22:39:24,866 - INFO - HTTP Request: POST https://legal-openai-ca.openai.azure.com/openai/deployments/whisper/audio/transcriptions?api-version=2024-02-01 "HTTP/1.1 404 DeploymentNotFound"
+2026-04-03 22:39:24,871 - ERROR - Whisper transcription failed: Error code: 404 - {'error': {'code': 'DeploymentNotFound', 'message': 'The API deployment for this resource does not exist. If you created the deployment within the last 5 minutes, please wait a moment and try again.'}}
+2026-04-03 22:49:17,030 - INFO - WEBHOOK | type=incomingMessageReceived | chat=923322551960@c.us
+2026-04-03 22:49:17,032 - INFO - Incoming from . | chat: 923322551960@c.us
+2026-04-03 22:49:17,032 - INFO - Processing voice message from .
+2026-04-03 22:49:20,338 - INFO - HTTP Request: POST https://legal-openai-ca.openai.azure.com/openai/deployments/whisper/audio/transcriptions?api-version=2024-02-01 "HTTP/1.1 404 DeploymentNotFound"
+2026-04-03 22:49:20,340 - ERROR - Whisper transcription failed: Error code: 404 - {'error': {'code': 'DeploymentNotFound', 'message': 'The API deployment for this resource does not exist. If you created the deployment within the last 5 minutes, please wait a moment and try again.'}}
+2026-04-03 22:49:30,102 - INFO - Shutting down WhatsApp bot...
+2026-04-03 22:49:35,923 - INFO - WhatsApp handler initialized (Improved v2.0)
+2026-04-03 22:50:43,359 - INFO - WEBHOOK | type=incomingMessageReceived | chat=923322551960@c.us
+2026-04-03 22:50:43,366 - INFO - Incoming from . | chat: 923322551960@c.us
+2026-04-03 22:50:43,366 - INFO - Processing voice message from .
+2026-04-03 22:50:46,997 - INFO - HTTP Request: POST https://legal-openai-ca.openai.azure.com/openai/deployments/whisper/audio/transcriptions?api-version=2024-02-01 "HTTP/1.1 404 DeploymentNotFound"
+2026-04-03 22:50:46,998 - ERROR - Whisper transcription failed: Error code: 404 - {'error': {'code': 'DeploymentNotFound', 'message': 'The API deployment for this resource does not exist. If you created the deployment within the last 5 minutes, please wait a moment and try again.'}}
+2026-04-03 23:16:15,304 - INFO - Shutting down WhatsApp bot...
+2026-04-03 23:16:18,471 - INFO - WhatsApp handler initialized (Improved v2.0)
+2026-04-03 23:16:30,973 - INFO - WEBHOOK | type=incomingMessageReceived | chat=923322551960@c.us
+2026-04-03 23:16:30,980 - INFO - Incoming from . | chat: 923322551960@c.us
+2026-04-03 23:16:30,981 - INFO - Processing voice message from .
+2026-04-03 23:16:35,041 - INFO - HTTP Request: POST https://veron-mnj6yx8t-eastus2.services.ai.azure.com/openai/deployments/whisper/audio/transcriptions?api-version=2024-02-01 "HTTP/1.1 200 OK"
+2026-04-03 23:16:35,043 - INFO - Transcription: 'you'
+2026-04-03 23:16:35,043 - INFO - Transcription: 'you'
+2026-04-03 23:16:35,694 - INFO - Fresh query detected | ignoring history
+2026-04-03 23:16:35,694 - INFO - Querying RAG: 'you' | mode=fresh | history=0 msgs
+2026-04-03 23:16:49,489 - INFO - Response sent to 923322551960@c.us

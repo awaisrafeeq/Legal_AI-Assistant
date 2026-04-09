@@ -3,6 +3,7 @@ import prompts
 
 from cgitb import lookup
 import os
+import json
 import logging
 from typing import List, Dict, Any, Optional
 from collections import Counter
@@ -256,6 +257,8 @@ class RAGState(TypedDict, total=False):
     sub_queries: List[str]
     sub_results: List[Dict]
     query_variants: List[str]
+    query_intent: str  # "discovery" or "answer"
+    discovery_filters: Dict
 
 
 # ============================================================================
@@ -415,7 +418,10 @@ def _search_one_index(
         semantic_configuration_name="semantic-config",
         select=[
             "content", "file_name", "folder_path",
-            "blob_path", "chunk_index", "source_container"
+            "blob_path", "chunk_index", "source_container",
+            "document_type", "document_subtype", "persons",
+            "organizations", "projects", "key_dates",
+            "key_amounts", "summary"
         ],
         top=top_k * 2
     )
@@ -638,6 +644,199 @@ def hybrid_search_isolated(
 
 
 # ============================================================================
+# DISCOVERY SEARCH (metadata-filtered, high-recall)
+# ============================================================================
+
+def _build_odata_filter(filters: Dict[str, Any]) -> str:
+    """Build OData filter string from discovery filter dict."""
+    parts = []
+
+    doc_type = filters.get("document_type")
+    if doc_type:
+        escaped = doc_type.replace("'", "''")
+        parts.append(f"document_type eq '{escaped}'")
+
+    person = filters.get("person")
+    if person:
+        escaped = person.replace("'", "''")
+        parts.append(f"persons/any(p: p eq '{escaped}')")
+
+    org = filters.get("organization")
+    if org:
+        escaped = org.replace("'", "''")
+        parts.append(f"organizations/any(o: o eq '{escaped}')")
+
+    project = filters.get("project")
+    if project:
+        escaped = project.replace("'", "''")
+        parts.append(f"projects/any(p: p eq '{escaped}')")
+
+    return " and ".join(parts) if parts else ""
+
+
+def _build_fuzzy_person_filters(person: str) -> List[str]:
+    """
+    Generate multiple OData filter variations for a person name to handle
+    accent differences, case, and partial matches.
+    E.g., 'Denise Bélanger' → also try 'Denise Belanger', search in content too.
+    """
+    import unicodedata as _ud
+
+    variations = [person]
+
+    # Strip accents version
+    nfkd = _ud.normalize("NFKD", person)
+    no_accents = "".join(c for c in nfkd if not _ud.combining(c))
+    if no_accents != person:
+        variations.append(no_accents)
+
+    # Upper case version
+    upper = person.upper()
+    if upper != person:
+        variations.append(upper)
+
+    filters = []
+    for v in variations:
+        escaped = v.replace("'", "''")
+        filters.append(f"persons/any(p: p eq '{escaped}')")
+
+    return filters
+
+
+def discovery_search(
+    azure_clients: AzureClients,
+    query: str,
+    filters: Dict[str, Any],
+    source_mode: str = "all",
+    max_results: int = 50
+) -> List[Dict]:
+    """
+    High-recall search using metadata filters from classification.
+    Returns document-level results (deduped by file), not chunk-level.
+    """
+    odata_filter = _build_odata_filter(filters)
+
+    # Also build fuzzy person filters for broader recall
+    person = filters.get("person")
+    person_filters = _build_fuzzy_person_filters(person) if person else []
+
+    keyword = filters.get("keyword")
+    search_text = keyword if keyword else query
+
+    all_results = []
+
+    def _run_filtered_search(search_client: SearchClient, filter_str: str, container_label: str):
+        """Run a single filtered search and collect results."""
+        try:
+            results = search_client.search(
+                search_text=search_text,
+                filter=filter_str if filter_str else None,
+                query_type="semantic",
+                semantic_configuration_name="semantic-config",
+                select=[
+                    "content", "file_name", "folder_path",
+                    "blob_path", "chunk_index", "source_container",
+                    "document_type", "document_subtype", "persons",
+                    "organizations", "projects", "key_dates",
+                    "key_amounts", "summary"
+                ],
+                top=max_results
+            )
+            for r in results:
+                all_results.append({
+                    "content": r.get("content", ""),
+                    "file_name": r.get("file_name", ""),
+                    "folder_path": r.get("folder_path", ""),
+                    "blob_path": r.get("blob_path", ""),
+                    "chunk_index": r.get("chunk_index", 0),
+                    "source_container": r.get("source_container", container_label),
+                    "score": r.get("@search.score", 0),
+                    "document_type": r.get("document_type", ""),
+                    "document_subtype": r.get("document_subtype", ""),
+                    "persons": r.get("persons", []),
+                    "organizations": r.get("organizations", []),
+                    "projects": r.get("projects", []),
+                    "key_dates": r.get("key_dates", []),
+                    "key_amounts": r.get("key_amounts", []),
+                    "summary": r.get("summary", ""),
+                    "source_url": None,
+                })
+        except Exception as e:
+            logger.error(f"Discovery search error on {container_label}: {e}")
+
+    # Search with primary OData filter
+    if source_mode in ("all", "external_only"):
+        _run_filtered_search(azure_clients.search_client_external, odata_filter, "legal-documents")
+    if source_mode in ("all", "internal_only"):
+        _run_filtered_search(azure_clients.search_client_internal, odata_filter, "legal-documents-internal")
+
+    # If person filter exists, also try fuzzy variations (broader recall)
+    if person_filters and odata_filter:
+        for pf in person_filters:
+            # Combine person variation with other filters (excluding the original person filter)
+            other_parts = []
+            doc_type = filters.get("document_type")
+            if doc_type:
+                other_parts.append(f"document_type eq '{doc_type.replace(chr(39), chr(39)*2)}'")
+            project = filters.get("project")
+            if project:
+                other_parts.append(f"projects/any(p: p eq '{project.replace(chr(39), chr(39)*2)}')")
+
+            fuzzy_filter = " and ".join([pf] + other_parts) if other_parts else pf
+
+            if source_mode in ("all", "external_only"):
+                _run_filtered_search(azure_clients.search_client_external, fuzzy_filter, "legal-documents")
+            if source_mode in ("all", "internal_only"):
+                _run_filtered_search(azure_clients.search_client_internal, fuzzy_filter, "legal-documents-internal")
+
+    # Also do a text search without OData filter as fallback (catches unclassified docs)
+    if odata_filter:
+        # Build a keyword-rich search text from the filters
+        filter_keywords = []
+        if filters.get("document_type"):
+            filter_keywords.append(filters["document_type"])
+        if person:
+            filter_keywords.append(person)
+        if filters.get("organization"):
+            filter_keywords.append(filters["organization"])
+        if filters.get("project"):
+            filter_keywords.append(filters["project"])
+        fallback_text = " ".join(filter_keywords + ([keyword] if keyword else []))
+
+        if source_mode in ("all", "external_only"):
+            _run_filtered_search(azure_clients.search_client_external, "", "legal-documents")
+        if source_mode in ("all", "internal_only"):
+            _run_filtered_search(azure_clients.search_client_internal, "", "legal-documents-internal")
+
+    # Deduplicate by file (keep best chunk per file)
+    best_by_file = {}
+    for r in all_results:
+        file_key = (r.get("source_container", ""), r.get("blob_path", ""), r.get("file_name", ""))
+        existing = best_by_file.get(file_key)
+        if existing is None or r.get("score", 0) > existing.get("score", 0):
+            best_by_file[file_key] = r
+
+    deduped = sorted(best_by_file.values(), key=lambda r: r.get("score", 0), reverse=True)
+
+    # Generate SAS URLs
+    for r in deduped:
+        r["source_url"] = generate_sas_url(
+            azure_clients,
+            r["blob_path"],
+            r.get("source_container", ""),
+            r.get("folder_path", ""),
+            r.get("file_name", "")
+        )
+
+    logger.info(
+        f"Discovery search: {len(all_results)} raw → {len(deduped)} unique files | "
+        f"filter: {odata_filter or '(text only)'}"
+    )
+
+    return deduped
+
+
+# ============================================================================
 # GRAPH NODES
 # ============================================================================
 
@@ -731,6 +930,35 @@ def rewrite_query_node(state: RAGState, azure_clients: AzureClients) -> RAGState
 
     logger.info(f"Query variants ({len(variants)}): {[v[:50] for v in variants]}")
 
+    # --- Intent detection: discovery vs answer ---
+    query_intent = "answer"
+    discovery_filters = {}
+
+    intent_prompt = prompts.get_discovery_intent_prompt(query)
+    intent_resp = azure_clients.llm.invoke([("human", intent_prompt)])
+    intent_text = intent_resp.content.strip().upper()
+
+    if "DISCOVERY" in intent_text:
+        query_intent = "discovery"
+        # Extract structured filters for discovery search
+        filter_prompt = prompts.get_discovery_filter_prompt(query)
+        filter_resp = azure_clients.llm.invoke([("human", filter_prompt)])
+        try:
+            # Clean up the response — strip markdown fences if present
+            raw = filter_resp.content.strip()
+            if raw.startswith("```"):
+                raw = raw.split("\n", 1)[-1].rsplit("```", 1)[0].strip()
+            discovery_filters = json.loads(raw)
+            # Remove null values
+            discovery_filters = {k: v for k, v in discovery_filters.items() if v is not None}
+        except (json.JSONDecodeError, Exception) as e:
+            logger.warning(f"Failed to parse discovery filters: {e} | raw: {filter_resp.content}")
+            discovery_filters = {}
+
+        logger.info(f"Query intent: DISCOVERY | filters: {discovery_filters}")
+    else:
+        logger.info(f"Query intent: ANSWER")
+
     return {
         "query": query,
         "query_lang": query_lang,
@@ -739,7 +967,115 @@ def rewrite_query_node(state: RAGState, azure_clients: AzureClients) -> RAGState
         "conversation_history": history,
         "lookup_mode": lookup_mode,
         "source_mode": state.get("source_mode", "all"),
-        "allowed_files": state.get("allowed_files", [])
+        "allowed_files": state.get("allowed_files", []),
+        "query_intent": query_intent,
+        "discovery_filters": discovery_filters,
+    }
+
+
+def discovery_retrieve_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
+    """
+    Discovery mode: use metadata filters (document_type, persons, etc.)
+    for high-recall document listing. Returns document-level results.
+    """
+    query = state.get("query", "")
+    filters = state.get("discovery_filters", {})
+    source_mode = state.get("source_mode", "all")
+
+    results = discovery_search(
+        azure_clients, query, filters,
+        source_mode=source_mode, max_results=50
+    )
+
+    # Determine winning source
+    sources_in_results = set(r.get("source_container", "") for r in results)
+    if "legal-documents-internal" in sources_in_results and len(sources_in_results) > 1:
+        winning_source = "both"
+    elif "legal-documents-internal" in sources_in_results:
+        winning_source = "legal-documents-internal"
+    elif results:
+        winning_source = "legal-documents"
+    else:
+        winning_source = "none"
+
+    logger.info(f"Discovery retrieve: {len(results)} documents found | source: {winning_source}")
+
+    return {
+        **state,
+        "search_results": results,
+        "winning_source": winning_source,
+    }
+
+
+def discovery_generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
+    """
+    Generate a document listing response for discovery queries.
+    Lists all matching documents with their metadata instead of extracting answers.
+    """
+    query = state.get("query", "")
+    search_results = state.get("search_results", [])
+    query_lang = state.get("query_lang", "en")
+    winning_source = state.get("winning_source", "unknown")
+    filters = state.get("discovery_filters", {})
+
+    if not search_results:
+        filter_desc = ", ".join(f"{k}={v}" for k, v in filters.items()) if filters else "none"
+        return {
+            "answer": (
+                f"No documents found matching your criteria (filters: {filter_desc}).\n\n"
+                "This may mean:\n"
+                "- The relevant documents have not been classified yet\n"
+                "- The document type or person name may be spelled differently\n"
+                "- Try a broader search with fewer filters"
+            ),
+            "sources": [],
+            "context": "",
+            "winning_source": "none"
+        }
+
+    # Build a structured document listing
+    lang_names = {
+        "en": "English", "fr": "French", "ur": "Urdu",
+        "ar": "Arabic", "es": "Spanish"
+    }
+    resp_lang = lang_names.get(query_lang, "English")
+
+    # Group by document_type for organized output
+    doc_list_parts = []
+    for i, r in enumerate(search_results[:30], 1):
+        doc_type = r.get("document_type", "Unknown")
+        subtype = r.get("document_subtype", "")
+        file_name = r.get("file_name", "unknown")
+        persons = r.get("persons", [])
+        summary = r.get("summary", "")
+        source_type = "🔴 Internal" if r.get("source_container") == "legal-documents-internal" else "📗 External"
+
+        entry = f"{i}. **{file_name}**\n"
+        entry += f"   Type: {doc_type}"
+        if subtype:
+            entry += f" — {subtype}"
+        entry += f" | {source_type}\n"
+        if persons:
+            entry += f"   Persons: {', '.join(persons[:5])}\n"
+        if summary:
+            entry += f"   Summary: {summary[:150]}...\n" if len(summary) > 150 else f"   Summary: {summary}\n"
+
+        doc_list_parts.append(entry)
+
+    total = len(search_results)
+    shown = min(total, 30)
+    filter_desc = ", ".join(f"**{k}**: {v}" for k, v in filters.items()) if filters else "no specific filters"
+
+    answer = f"Found **{total}** documents matching your criteria ({filter_desc}).\n\n"
+    if shown < total:
+        answer += f"Showing top {shown} results:\n\n"
+    answer += "\n".join(doc_list_parts)
+
+    return {
+        "answer": answer,
+        "sources": search_results[:30],
+        "context": "",
+        "winning_source": winning_source
     }
 
 
@@ -1238,21 +1574,32 @@ def generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
 # GRAPH BUILDER
 # ============================================================================
 
+def should_route_intent(state: RAGState) -> str:
+    """Route based on query intent: discovery queries skip decompose and go straight to filtered search."""
+    if state.get("query_intent") == "discovery":
+        return "discovery_retrieve"
+    return "decompose_query"
+
+
 def build_rag_graph(azure_clients: AzureClients):
     """
     Build the agentic RAG workflow graph.
 
     Flow:
-      rewrite_query → decompose_query ─┬─ (SINGLE) → retrieve → evaluate ─┬─ (SUFFICIENT) → generate → END
-                                        │                                   │
-                                        │                                   └─ (INSUFFICIENT) → retry_rewrite → retrieve (loop up to 3x)
-                                        │
-                                        └─ (MULTI) → multi_retrieve → generate → END
+      rewrite_query ─┬─ (DISCOVERY) → discovery_retrieve → discovery_generate → END
+                      │
+                      └─ (ANSWER) → decompose_query ─┬─ (SINGLE) → retrieve → evaluate ─┬─ (SUFFICIENT) → generate → END
+                                                      │                                   │
+                                                      │                                   └─ (INSUFFICIENT) → retry_rewrite → retrieve (loop up to 3x)
+                                                      │
+                                                      └─ (MULTI) → multi_retrieve → generate → END
     """
     workflow = StateGraph(RAGState)
 
     # Nodes
     workflow.add_node("rewrite_query", lambda state: rewrite_query_node(state, azure_clients))
+    workflow.add_node("discovery_retrieve", lambda state: discovery_retrieve_node(state, azure_clients))
+    workflow.add_node("discovery_generate", lambda state: discovery_generate_node(state, azure_clients))
     workflow.add_node("decompose_query", lambda state: decompose_query_node(state, azure_clients))
     workflow.add_node("retrieve", lambda state: retrieve_node(state, azure_clients))
     workflow.add_node("multi_retrieve", lambda state: multi_retrieve_node(state, azure_clients))
@@ -1260,9 +1607,17 @@ def build_rag_graph(azure_clients: AzureClients):
     workflow.add_node("retry_rewrite", lambda state: retry_rewrite_node(state, azure_clients))
     workflow.add_node("generate", lambda state: generate_node(state, azure_clients))
 
-    # Edges
-    workflow.add_edge("rewrite_query", "decompose_query")
+    # Edges — intent routing after rewrite
+    workflow.add_conditional_edges("rewrite_query", should_route_intent, {
+        "discovery_retrieve": "discovery_retrieve",
+        "decompose_query": "decompose_query",
+    })
 
+    # Discovery path
+    workflow.add_edge("discovery_retrieve", "discovery_generate")
+    workflow.add_edge("discovery_generate", END)
+
+    # Answer path (existing)
     workflow.add_conditional_edges("decompose_query", should_decompose, {
         "retrieve": "retrieve",
         "multi_retrieve": "multi_retrieve",
