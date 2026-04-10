@@ -40,8 +40,8 @@ env/
 *~
 
 # Logs
-# logs/
-# *.log
+logs/
+*.log
 
 # Test files
 Test/*.txt

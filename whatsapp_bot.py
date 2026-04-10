@@ -570,7 +570,7 @@ class WhatsAppHandler:
         header = "🤖 *Legal AI Assistant*\n" + "─" * 28 + "\n\n"
         body = answer.strip()
 
-        # Sources section (top 3 only)
+        # Sources section (all unique sources)
         sources_text = ""
         if sources:
             sources_text = "\n\n" + "─" * 28 + "\n📚 *Sources:*\n"
@@ -578,7 +578,7 @@ class WhatsAppHandler:
             count = 0
             for source in sources:
                 fname = source.get("file_name", "Unknown")
-                if fname in seen or count >= 5:
+                if fname in seen:
                     continue
                 seen.add(fname)
                 count += 1

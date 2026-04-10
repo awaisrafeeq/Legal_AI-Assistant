@@ -1474,7 +1474,6 @@ def generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
     # Step 1: Select top unique files FIRST — these become the grounded source set.
     #         GPT will ONLY see chunks from these files, so every citation is displayable.
     #         Sort by cross-encoder score first to ensure best files win regardless of variant order.
-    MAX_SOURCE_FILES = 5
     sorted_results = sorted(
         search_results,
         key=lambda r: r.get("cross_encoder_score", r.get("score", 0)),
@@ -1497,8 +1496,6 @@ def generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
         seen_files.add(key)
         seen_basenames[base_prefix] = prefix_count + 1
         grounded_sources.append(r)
-        if len(grounded_sources) >= MAX_SOURCE_FILES:
-            break
 
     # Step 2: Build context ONLY from chunks belonging to grounded source files
     grounded_file_keys = set(
