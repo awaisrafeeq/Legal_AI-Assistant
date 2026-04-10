@@ -391,7 +391,8 @@ def _search_one_index(
     query: str,
     query_embedding: List[float],
     top_k: int,
-    allowed_files: Optional[List[str]] = None
+    allowed_files: Optional[List[str]] = None,
+    odata_filter: Optional[str] = None
 ) -> List[Dict]:
     """
     Run hybrid search (BM25 + vector) on a single index.
@@ -414,6 +415,7 @@ def _search_one_index(
     results = search_client.search(
         search_text=search_query,
         vector_queries=[vector_query],
+        filter=odata_filter if odata_filter else None,
         query_type="semantic",
         semantic_configuration_name="semantic-config",
         select=[
@@ -490,7 +492,8 @@ def hybrid_search_isolated(
     query_embedding: List[float],
     top_k: int = 7,
     source_mode: str = "all",
-    allowed_files: Optional[List[str]] = None
+    allowed_files: Optional[List[str]] = None,
+    odata_filter: Optional[str] = None
 ) -> tuple:
     """
     Search BOTH indices separately, pick the winner by highest score.
@@ -513,7 +516,7 @@ def hybrid_search_isolated(
     """
     MIN_SCORE = azure_clients.config.min_search_score
     CROSS_ENCODER_MIN = azure_clients.config.cross_encoder_min_score
-    RERANK_TOP_N = 5
+    RERANK_TOP_N = 15
 
     if allowed_files:
         MIN_SCORE = 0.01  # Reduced but not zero — prevents total garbage
@@ -523,19 +526,21 @@ def hybrid_search_isolated(
     external_results = []
     internal_results = []
 
-    # --- Step 1: Search both indices ---
+    # --- Step 1: Search both indices (with optional metadata filter) ---
     if source_mode in ("all", "external_only"):
         external_results = _search_one_index(
             azure_clients.search_client_external,
             query, query_embedding, top_k,
-            allowed_files=list(allowed_files_set) if allowed_files_set else None
+            allowed_files=list(allowed_files_set) if allowed_files_set else None,
+            odata_filter=odata_filter
         )
 
     if source_mode in ("all", "internal_only"):
         internal_results = _search_one_index(
             azure_clients.search_client_internal,
             query, query_embedding, top_k,
-            allowed_files=list(allowed_files_set) if allowed_files_set else None
+            allowed_files=list(allowed_files_set) if allowed_files_set else None,
+            odata_filter=odata_filter
         )
 
     # --- Step 2: Re-rank with cross-encoder (this SETS cross_encoder_score) ---
@@ -789,8 +794,8 @@ def discovery_search(
             if source_mode in ("all", "internal_only"):
                 _run_filtered_search(azure_clients.search_client_internal, fuzzy_filter, "legal-documents-internal")
 
-    # Also do a text search without OData filter as fallback (catches unclassified docs)
-    if odata_filter:
+    # Only do a text-only fallback if OData-filtered search returned 0 results
+    if odata_filter and len(all_results) == 0:
         # Build a keyword-rich search text from the filters
         filter_keywords = []
         if filters.get("document_type"):
@@ -803,10 +808,51 @@ def discovery_search(
             filter_keywords.append(filters["project"])
         fallback_text = " ".join(filter_keywords + ([keyword] if keyword else []))
 
+        logger.info(f"Discovery: OData filter returned 0 results, falling back to text search: {fallback_text}")
+
+        # Use the keyword-rich text (not generic search_text) for fallback
+        def _run_fallback_search(search_client: SearchClient, container_label: str):
+            try:
+                results = search_client.search(
+                    search_text=fallback_text,
+                    filter=None,
+                    query_type="semantic",
+                    semantic_configuration_name="semantic-config",
+                    select=[
+                        "content", "file_name", "folder_path",
+                        "blob_path", "chunk_index", "source_container",
+                        "document_type", "document_subtype", "persons",
+                        "organizations", "projects", "key_dates",
+                        "key_amounts", "summary"
+                    ],
+                    top=max_results
+                )
+                for r in results:
+                    all_results.append({
+                        "content": r.get("content", ""),
+                        "file_name": r.get("file_name", ""),
+                        "folder_path": r.get("folder_path", ""),
+                        "blob_path": r.get("blob_path", ""),
+                        "chunk_index": r.get("chunk_index", 0),
+                        "source_container": r.get("source_container", container_label),
+                        "score": r.get("@search.score", 0),
+                        "document_type": r.get("document_type", ""),
+                        "document_subtype": r.get("document_subtype", ""),
+                        "persons": r.get("persons", []),
+                        "organizations": r.get("organizations", []),
+                        "projects": r.get("projects", []),
+                        "key_dates": r.get("key_dates", []),
+                        "key_amounts": r.get("key_amounts", []),
+                        "summary": r.get("summary", ""),
+                        "source_url": None,
+                    })
+            except Exception as e:
+                logger.error(f"Discovery fallback search error on {container_label}: {e}")
+
         if source_mode in ("all", "external_only"):
-            _run_filtered_search(azure_clients.search_client_external, "", "legal-documents")
+            _run_fallback_search(azure_clients.search_client_external, "legal-documents")
         if source_mode in ("all", "internal_only"):
-            _run_filtered_search(azure_clients.search_client_internal, "", "legal-documents-internal")
+            _run_fallback_search(azure_clients.search_client_internal, "legal-documents-internal")
 
     # Deduplicate by file (keep best chunk per file)
     best_by_file = {}
@@ -940,24 +986,22 @@ def rewrite_query_node(state: RAGState, azure_clients: AzureClients) -> RAGState
 
     if "DISCOVERY" in intent_text:
         query_intent = "discovery"
-        # Extract structured filters for discovery search
-        filter_prompt = prompts.get_discovery_filter_prompt(query)
-        filter_resp = azure_clients.llm.invoke([("human", filter_prompt)])
-        try:
-            # Clean up the response — strip markdown fences if present
-            raw = filter_resp.content.strip()
-            if raw.startswith("```"):
-                raw = raw.split("\n", 1)[-1].rsplit("```", 1)[0].strip()
-            discovery_filters = json.loads(raw)
-            # Remove null values
-            discovery_filters = {k: v for k, v in discovery_filters.items() if v is not None}
-        except (json.JSONDecodeError, Exception) as e:
-            logger.warning(f"Failed to parse discovery filters: {e} | raw: {filter_resp.content}")
-            discovery_filters = {}
 
-        logger.info(f"Query intent: DISCOVERY | filters: {discovery_filters}")
-    else:
-        logger.info(f"Query intent: ANSWER")
+    # Extract structured filters for ALL queries (used in both discovery and answer modes)
+    filter_prompt = prompts.get_discovery_filter_prompt(query)
+    filter_resp = azure_clients.llm.invoke([("human", filter_prompt)])
+    try:
+        raw = filter_resp.content.strip()
+        if raw.startswith("```"):
+            raw = raw.split("\n", 1)[-1].rsplit("```", 1)[0].strip()
+        discovery_filters = json.loads(raw)
+        # Remove null values
+        discovery_filters = {k: v for k, v in discovery_filters.items() if v is not None}
+    except (json.JSONDecodeError, Exception) as e:
+        logger.warning(f"Failed to parse discovery filters: {e} | raw: {filter_resp.content}")
+        discovery_filters = {}
+
+    logger.info(f"Query intent: {query_intent.upper()} | filters: {discovery_filters}")
 
     return {
         "query": query,
@@ -1097,11 +1141,30 @@ def retrieve_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
     all_results = []
     winning_sources = []
 
+    # Build OData filter from discovery_filters for ANSWER mode too
+    discovery_filters = state.get("discovery_filters", {})
+    answer_odata_filter = _build_odata_filter(discovery_filters) if discovery_filters else None
+    if answer_odata_filter:
+        logger.info(f"ANSWER mode using metadata filter: {answer_odata_filter}")
+
     for i, variant in enumerate(query_variants):
         logger.info(
             f"Multi-query retrieval variant {i+1}/{len(query_variants)}: {variant[:60]}..."
         )
         variant_embedding = generate_embedding(azure_clients, variant)
+
+        # First search WITH metadata filter (high precision)
+        if answer_odata_filter:
+            filtered_results, filtered_source = hybrid_search_isolated(
+                azure_clients, variant, variant_embedding,
+                top_k=20, source_mode=source_mode,
+                allowed_files=allowed_files,
+                odata_filter=answer_odata_filter
+            )
+            all_results.extend(filtered_results)
+            winning_sources.append(filtered_source)
+
+        # Also search WITHOUT filter (catches unclassified docs + broader context)
         results, winning_source = hybrid_search_isolated(
             azure_clients, variant, variant_embedding,
             top_k=20, source_mode=source_mode,
@@ -1129,7 +1192,7 @@ def retrieve_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
         key=lambda r: r.get("cross_encoder_score", r.get("score", 0)),
         reverse=True
     )
-    search_results = deduped[:10]
+    search_results = deduped[:20]
 
     # Determine winning source from the best results
     source_counts = Counter(s for s in winning_sources if s != "none")
@@ -1151,7 +1214,8 @@ def retrieve_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
         "conversation_history": state.get("conversation_history", []),
         "source_mode": source_mode,
         "allowed_files": allowed_files,
-        "lookup_mode": state.get("lookup_mode", "answer")
+        "lookup_mode": state.get("lookup_mode", "answer"),
+        "discovery_filters": state.get("discovery_filters", {}),
     }
 
 

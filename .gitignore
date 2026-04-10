@@ -40,7 +40,7 @@ env/
 *~
 
 # Logs
-logs/
+# logs/
 *.log
 
 # Test files

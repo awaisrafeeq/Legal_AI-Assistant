@@ -1,0 +1,1244 @@
+
+################################################################################
+# TEST 1
+################################################################################
+QUERY: Tu as plusieurs déclaration à la police et aussi un interrogatoire de Delnegro et Caon Tu peux faire une analyse micro détail des affirmation qui change ou voir si tout se qu'il dit peux être remis en question.
+
+INTENT: answer
+ANSWER (2314 chars):
+  Je ne peux pas fournir une analyse détaillée des contradictions ou des incohérences dans les déclarations de Del Negro et Susan Caon, car les documents disponibles dans le contexte ne contiennent pas d'interrogatoire direct de Del Negro, et les informations sur l'interrogatoire de Susan Caon sont limitées. Voici ce que je peux confirmer :
+  
+  1. **Interrogatoire de Susan Caon (19 décembre 2019)** :
+     - Le document intitulé *"Pièce 89 - Suite - Interro CAON - 191219.pdf"* contient un interrogatoire préalable de Susan Caon mené par Me Stéphanie Chartray et Me Elizabeth Martin-Chartrand. Cependant, le contenu précis des déclarations faites par Susan Caon lors de cet interrogatoire n'est pas inclus dans le contexte fourni.
+     - Source : 📗 External | Pièce 89 - Suite - Interro CAON - 191219.pdf
+  
+  2. **Déclaration sous serment de Susan Caon (21 septembre 2016)** :
+     - Le document intitulé *"08003.02M - 160921 - Déclaration - Assermentation CAON Susan.pdf"* contient une déclaration sous serment de Susan Caon dans le cadre d'une enquête policière sur une affaire de fraude (article 380 du Code criminel). Cependant, le contenu détaillé de cette déclaration n'est pas inclus dans le contexte fourni.
+     - Source : 📗 External | 08003.02M - 160921 - Déclaration - Assermentation CAON Susan.pdf
+  
+  3. **Références à Del Negro** :
+     - Plusieurs documents mentionnent des prêts privés effectués par Del Negro via Ideal Finance, mais aucun interrogatoire ou déclaration directe de Del Negro n'est inclus dans le contexte. Par exemple :
+       - Un prêt privé de $158,000.00 effectué par Del Negro via Ideal Finance, remboursé, est mentionné dans le document *"08002.01F - 160212 - Lot 16-0411 - Documents.pdf"*.
+       - Un prêt hypothécaire concernant un terrain à Bromptonville, impliquant Del Negro et Susan Caon, est également mentionné dans ce document.
+     - Source : 📗 External | 08002.01F - 160212 - Lot 16-0411 - Documents.pdf
+  
+  ### Conclusion
+  Je ne peux pas effectuer une analyse détaillée des contradictions ou des incohérences dans les déclarations de Del Negro et Susan Caon, car les documents disponibles ne contiennent pas suffisamment d'informations spécifiques sur leurs affirmations respectives. Si vous avez accès à des documents supplémentaires ou plus détaillés, je pourrais vous aider à les analyser.
+
+--- SOURCE DOCUMENTS CONTENT ---
+  Claim keywords extracted: ['Me Stéphanie Chartray', '21 septembre 2016', '$158000.00', 'Susan Caon', '19 décembre 2019', '08002.01F - 160212 - Lot 16-0411 - Docum', 'Del Negro', 'Me Elizabeth Martin', 'Conclusion\nJe', '08003.02M - 160921 - Déclaration - Asser', 'Ideal Finance', 'Pièce 89 - Suite - Interro CAON - 191219', 'Lot 16']
+  Content budget: 10000 chars/file for 10 files
+
+  FILE: 08002.01F - 160212 - Lot 16-0411 - Documents.pdf
+  Type: 
+  Blob: extracted-text/Divulgation_  ORIBUS - DIVULGATION 2_09002B - Documents utilisés_Pièces 1-20_Pièce 1 - 08002 - DEL NEGRO Manlio_08002.01F - 160212 - Lot 16-0411 - Documents.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Divulgation/%20%20ORIBUS%20-%20DIVULGATION%202/09002B%20-%20Documents%20utilise%CC%81s/Pie%CC%80ces%201-20/Pie%CC%80ce%201%20-%2008002%20-%20DEL%20NEGRO%20Manlio/08002.01F%20-%20160212%20-%20Lot%2016-0411%20-%20Documents.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 50 found, total 85054 chars (smart selected 10006 chars)
+  Content preview (first 300 chars):
+    | Source: Divulgation/  ORIBUS - DIVULGATION 2/09002B - Documents utilisés/Pièces 1-20/Pièce 1 - 08002 - DEL NEGRO Manlio/08002.01F - 160212 - Lot 16-0411 - Documents.pdf
+    | Type: PDF
+    | ============================================================
+    | 
+    | SURI BEC SUIVINULL ULUI ) , Numéro de lot 2016 - 00411 N
+
+  FILE: 08002.01F - 160212 - Lot 16-0411 - Documents [p.37 et 38].pdf
+  Type: 
+  Blob: extracted-text/Antérieur_Analyse_45. DEL NEGRO, Manlio_Pièces_08002.01F - 160212 - Lot 16-0411 Courriel investisseur daté du 5 mars 2015_08002.01F - 160212 - Lot 16-0411 - Documents [p.37 et 38].pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Ante%CC%81rieur/Analyse/45.%20DEL%20NEGRO%2C%20Manlio/Pie%CC%80ces/08002.01F%20-%20160212%20-%20Lot%2016-0411%20Courriel%20investisseur%20date%CC%81%20du%205%20mars%202015/08002.01F%20-%20160212%20-%20Lot%2016-0411%20-%20Documents%20%5Bp.37%20et%2038%5D.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 50 found, total 85037 chars (smart selected 10006 chars)
+  Content preview (first 300 chars):
+    | Source: Antérieur/Analyse/45. DEL NEGRO, Manlio/Pièces/08002.01F - 160212 - Lot 16-0411 Courriel investisseur daté du 5 mars 2015/08002.01F - 160212 - Lot 16-0411 - Documents [p.37 et 38].pdf
+    | Type: PDF
+    | ============================================================
+    | 
+    | SURI BEC SUIVINULL ULUI ) , Numér
+
+  FILE: 2016-0411 - PAC.pdf
+  Type: 
+  Blob: extracted-text/Divulgation_  ORIBUS - DIVULGATION 1_18 - DOSSIER SECONDAIRES_18012A - 295-180731-002 - Notaire Aubin_DÉCLARATIONS_DEL NEGRO, Manlio_Déclarations_2016-0411 - PAC.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Divulgation/%20%20ORIBUS%20-%20DIVULGATION%201/18%20-%20DOSSIER%20SECONDAIRES/18012A%20-%20295-180731-002%20-%20Notaire%20Aubin/DE%CC%81CLARATIONS/DEL%20NEGRO%2C%20Manlio/De%CC%81clarations/2016-0411%20-%20PAC.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 5 found, total 6669 chars (smart selected 6673 chars)
+  Content preview (first 300 chars):
+    |  AUBIN en date du 11 août 2015 à laquelle sont jointes des copies conformes de l'acte de cession de créance et de l'acte de convention, actes notariés ayant été publiés au Registre foncier, acte de quittance publié et au registre foncier et acte de quittance dans le dossier de Me AUBIN qui ne corres
+
+  FILE: 150601-ID-VCharton Courriel Inv Rawdon.pdf
+  Type: 
+  Blob: extracted-text/internal/PROJETS/RAWDON-3511,3515 et 3517 rue Queen/COMUNICATIONS/2- Communications avec le bureau du notaire/150601-ID-VCharton Courriel Inv Rawdon.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents-internal/PROJETS/RAWDON-3511%2C3515%20et%203517%20rue%20Queen/COMUNICATIONS/2-%20Communications%20avec%20le%20bureau%20du%20notaire/150601-ID-VCharton%20Courriel%20Inv%20Rawdon.pdf?sp=rwl&st=2026-03-19T15:21:21Z&se=2026-04-19T23:36:21Z&spr=https&sv=2024-11-04&sr=c&sig=vKrMJFzFtoM%2FdtW6N%2BbhNypEgn2l58ffkoC3tVg4yCs%3D
+  Index chunks: 1 found, total 780 chars (smart selected 780 chars)
+  Content preview (first 300 chars):
+    | De : Ideal Finance À : Lucie Lafontaine <lucie@lamoureuxnotaires.ca> (lucie@lamoureuxnotaires.ca) Objet : Olivier Gaudet 52 Date : 1 juin 2015 09:59:00 Pièces jointes : Courriel investisseur - Gaudet (52) - DP-0378 - Rawdon 3511-3515-3517, rue Queen - Gaston Leduc 75K premier et deuxième rang 2015-0
+
+  FILE: 10-13 Courriel investisseur-Charron Benoît-Chalifoux.pdf
+  Type: 
+  Blob: extracted-text/Divulgation_  ORIBUS - DIVULGATION 1_18 - DOSSIER SECONDAIRES_18003A - Dossiers cour civile - Criminelle & pénale_Palais de justice Laval_540-17-012632-179_P-31_DVD P-31_Pièces en demande_P-05_Anciens Prêt Charron_10-13 Courriel investisseur-Charron Benoît-Chalifoux.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Divulgation/%20%20ORIBUS%20-%20DIVULGATION%201/18%20-%20DOSSIER%20SECONDAIRES/18003A%20-%20Dossiers%20cour%20civile%20-%20Criminelle%20%26%20pe%CC%81nale/Palais%20de%20justice%20Laval/540-17-012632-179/P-31/DVD%20P-31/Pie%CC%80ces%20en%20demande/P-05/Anciens%20Pre%CC%82t%20Charron/10-13%20Courriel%20investisseur-Charron%20Benoi%CC%82t-Chalifoux.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 2 found, total 1848 chars (smart selected 1849 chars)
+  Content preview (first 300 chars):
+    | Source: Divulgation/  ORIBUS - DIVULGATION 1/18 - DOSSIER SECONDAIRES/18003A - Dossiers cour civile - Criminelle & pénale/Palais de justice Laval/540-17-012632-179/P-31/DVD P-31/Pièces en demande/P-05/Anciens Prêt Charron/10-13 Courriel investisseur-Charron Benoît-Chalifoux.pdf
+    | Type: PDF
+    | =======
+
+  FILE: 150217-ID-VCharton Mandat et Courriel Inv Trois-Riv Thibeau Resto.pdf
+  Type: 
+  Blob: extracted-text/internal/PROJETS/TROIS-RIVIÈRES-  THIBEAU et DUVERNAY (RESTO)/COMMUNICATIONS/2- Communications avec le bureau du notaire/150217-ID-VCharton Mandat et Courriel Inv Trois-Riv Thibeau Resto.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents-internal/PROJETS/TROIS-RIVI%C3%88RES-%20%20THIBEAU%20et%20DUVERNAY%20%28RESTO%29/COMMUNICATIONS/2-%20Communications%20avec%20le%20bureau%20du%20notaire/150217-ID-VCharton%20Mandat%20et%20Courriel%20Inv%20Trois-Riv%20Thibeau%20Resto.pdf?sp=rwl&st=2026-03-19T15:21:21Z&se=2026-04-19T23:36:21Z&spr=https&sv=2024-11-04&sr=c&sig=vKrMJFzFtoM%2FdtW6N%2BbhNypEgn2l58ffkoC3tVg4yCs%3D
+  Index chunks: 1 found, total 685 chars (smart selected 685 chars)
+  Content preview (first 300 chars):
+    | De : Ideal Finance À : Lucie Lafontaine <lucie@lamoureuxnotaires.ca> (lucie@lamoureuxnotaires.ca) Cc : Desoremaux Jean-Francois (jfdesormeaux@idealfinance.ca); dbelanger@idealfinance.ca Objet : Trois Rivières-Thibeau Date : 17 février 2015 15:41:00 Pièces jointes : Courriel investisseur - rue Thibea
+
+  FILE: 151023-ID-VCharton Mandat et Courriel Inv modif2  3RVS Prairies Resto.pdf
+  Type: 
+  Blob: extracted-text/internal/PROJETS/TROIS-RIVIÈRES- Des PRAIRIES et Massé (PETRO)/COMMUNICATIONS/2- Communications avec le bureau du notaire/151023-ID-VCharton Mandat et Courriel Inv modif2  3RVS Prairies Resto.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents-internal/PROJETS/TROIS-RIVI%C3%88RES-%20Des%20PRAIRIES%20et%20Mass%C3%A9%20%28PETRO%29/COMMUNICATIONS/2-%20Communications%20avec%20le%20bureau%20du%20notaire/151023-ID-VCharton%20Mandat%20et%20Courriel%20Inv%20modif2%20%203RVS%20Prairies%20Resto.pdf?sp=rwl&st=2026-03-19T15:21:21Z&se=2026-04-19T23:36:21Z&spr=https&sv=2024-11-04&sr=c&sig=vKrMJFzFtoM%2FdtW6N%2BbhNypEgn2l58ffkoC3tVg4yCs%3D
+  Index chunks: 1 found, total 618 chars (smart selected 618 chars)
+  Content preview (first 300 chars):
+    | De : Ideal Finance À : Lucie Lafontaine <lucie@lamoureuxnotaires.ca> (lucie@lamoureuxnotaires.ca) Objet : Stéphane Gaudet Date : 23 octobre 2015 13:03:00 Pièces jointes : Courriel investisseur - Trois-Rivières boul. des Prairies - S Goulet 2015-10-21.pdf Mandat notaire - 1175 des Prairies , Trois Ri
+
+  FILE: 151023-ID-VCharton Mandat et Courriel Inv 3RVS Prairies Resto.pdf
+  Type: 
+  Blob: extracted-text/internal/PROJETS/TROIS-RIVIÈRES- Des PRAIRIES et Massé (PETRO)/COMMUNICATIONS/2- Communications avec le bureau du notaire/151023-ID-VCharton Mandat et Courriel Inv 3RVS Prairies Resto.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents-internal/PROJETS/TROIS-RIVI%C3%88RES-%20Des%20PRAIRIES%20et%20Mass%C3%A9%20%28PETRO%29/COMMUNICATIONS/2-%20Communications%20avec%20le%20bureau%20du%20notaire/151023-ID-VCharton%20Mandat%20et%20Courriel%20Inv%203RVS%20Prairies%20Resto.pdf?sp=rwl&st=2026-03-19T15:21:21Z&se=2026-04-19T23:36:21Z&spr=https&sv=2024-11-04&sr=c&sig=vKrMJFzFtoM%2FdtW6N%2BbhNypEgn2l58ffkoC3tVg4yCs%3D
+  Index chunks: 1 found, total 848 chars (smart selected 848 chars)
+  Content preview (first 300 chars):
+    | De : Ideal Finance À : Lucie Lafontaine <lucie@lamoureuxnotaires.ca> (lucie@lamoureuxnotaires.ca) Cc : Desoremaux Jean-Francois (jfdesormeaux@idealfinance.ca) Objet : Dossier Trois-ivières des Prairies Date : 23 octobre 2015 11:23:00 Pièces jointes : Courriel investisseur - Trois-Rivières boul. des 
+
+  FILE: Pièce 89 - Suite - Interro CAON  - 191219.pdf
+  Type: 
+  Blob: extracted-text/Divulgation_  ORIBUS - DIVULGATION 1_18 - DOSSIER SECONDAIRES_18003A - Dossiers cour civile - Criminelle & pénale_Palais de justice Laval_231117 - Dossier cour Laval_540-17-012542-170_Pièce 89 - Suite - Interro CAON  - 191219.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Divulgation/%20%20ORIBUS%20-%20DIVULGATION%201/18%20-%20DOSSIER%20SECONDAIRES/18003A%20-%20Dossiers%20cour%20civile%20-%20Criminelle%20%26%20pe%CC%81nale/Palais%20de%20justice%20Laval/231117%20-%20Dossier%20cour%20Laval/540-17-012542-170/Pie%CC%80ce%2089%20-%20Suite%20-%20Interro%20CAON%20%20-%20191219.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 50 found, total 69826 chars (smart selected 10007 chars)
+  Content preview (first 300 chars):
+    | Source: Divulgation/  ORIBUS - DIVULGATION 1/18 - DOSSIER SECONDAIRES/18003A - Dossiers cour civile - Criminelle & pénale/Palais de justice Laval/231117 - Dossier cour Laval/540-17-012542-170/Pièce 89 - Suite - Interro CAON  - 191219.pdf
+    | Type: PDF
+    | ==================================================
+
+  FILE: 08003.02M - 160921 - Déclaration - Assermentation CAON Susan.pdf
+  Type: 
+  Blob: extracted-text/Divulgation_  ORIBUS - DIVULGATION 1_08 - PLAIGNANT - VICTIME - TÉMOIN_08003 - CAON, Susan_08003.02M - 160921 - Déclaration - Assermentation CAON Susan.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Divulgation/%20%20ORIBUS%20-%20DIVULGATION%201/08%20-%20PLAIGNANT%20-%20VICTIME%20-%20TE%CC%81MOIN/08003%20-%20CAON%2C%20Susan/08003.02M%20-%20160921%20-%20De%CC%81claration%20-%20Assermentation%20CAON%20Susan.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 3 found, total 4389 chars (smart selected 4391 chars)
+  Content preview (first 300 chars):
+    | en caractères d'imprimerie) Aouchiche Mustapha Titre Date (aaaa-mm-) 2016-09-21 SSAIRE À L'ASSE Déclaré sous serment devant moi à (lieu) Montréal le (date : jour de la semaine, jour, mois, année) COA Mustapha Aouchicho 203811 Signature Am. Domliche District judiciain Numéro de commission 5. POLICIER
+
+--- END SOURCE CONTENT ---
+
+--- GROUNDING VERIFICATION ---
+  Status: NOT GROUNDED (confidence: medium)
+  Verified claims (3):
+    + Le document intitulé 'Pièce 89 - Suite - Interro CAON - 191219.pdf' contient un interrogatoire préalable de Susan Caon mené par Me Stéphanie Chartray et Me Elizabeth Martin-Chartrand.
+    + Le document intitulé '08003.02M - 160921 - Déclaration - Assermentation CAON Susan.pdf' contient une déclaration sous serment de Susan Caon dans le cadre d'une enquête policière sur une affaire de fraude (article 380 du Code criminel).
+    + Un prêt privé de $158,000.00 effectué par Del Negro via Ideal Finance est mentionné dans le document '08002.01F - 160212 - Lot 16-0411 - Documents.pdf'.
+  UNVERIFIED claims (3):
+    ? Le contenu précis des déclarations faites par Susan Caon lors de l'interrogatoire du 19 décembre 2019 n'est pas inclus dans le contexte fourni.
+    ? Le contenu détaillé de la déclaration sous serment de Susan Caon du 21 septembre 2016 n'est pas inclus dans le contexte fourni.
+    ? Un prêt hypothécaire concernant un terrain à Bromptonville, impliquant Del Negro et Susan Caon, est mentionné dans le document '08002.01F - 160212 - Lot 16-0411 - Documents.pdf'.
+  HALLUCINATIONS (1):
+    X Plusieurs documents mentionnent des prêts privés effectués par Del Negro via Ideal Finance, mais aucun interrogatoire ou déclaration directe de Del Negro n'est inclus dans le contexte.
+  Missing info from source (1):
+    - Les détails spécifiques des déclarations ou interrogatoires de Susan Caon et Del Negro, qui permettraient une analyse des contradictions ou incohérences, ne sont pas fournis dans les sources.
+  Notes: Certaines affirmations de l'AI sont partiellement vérifiées, mais les détails nécessaires pour confirmer ou infirmer les incohérences ou contradictions dans les déclarations ne sont pas présents dans les documents fournis. L'affirmation concernant l'absence d'interrogatoire ou de déclaration directe de Del Negro est incorrecte, car les sources ne permettent pas de conclure cela avec certitude.
+
+--- END VERIFICATION ---
+
+################################################################################
+# TEST 2
+################################################################################
+QUERY: est-ce que tu peux me donner tous les courriels investisseurs que Yves Blach a reçus?
+
+INTENT: discovery
+ANSWER (11932 chars):
+  Found **58** documents matching your criteria (**document_type**: Courriel, **person**: Yves Blach, **keyword**: investisseurs).
+  
+  Showing top 30 results:
+  
+  1. **EP3.162. Courriel du 10 décembre 2015 d'Isabelle Tchoulack à Yves Lanctôt sur le projet de Saint-Lin-Laurentides.pdf**
+     Type: courriel — investisseur | 📗 External
+     Persons: Isabelle Tchoulack, Yves Lanctôt, Stéphanie Poirier, Jean-François Desormeaux
+     Summary: Ce courriel, envoyé par Isabelle Tchoulack à Yves Lanctôt le 10 décembre 2015, concerne le projet de développement immobilier et commercial à Saint-Li...
+  
+  2. **EP3.163. Courriel du 10 décembre 2015 d'Isabelle Tchoulack à Yves Lanctôt sur diverses offres de location.pdf**
+     Type: courriel — partenaire | 📗 External
+     Persons: Isabelle Tchoulack, Yves Lanctôt, Jean-François Désormeaux, Maxime Cousineau, Benoit Charron
+     Summary: Ce courriel, envoyé par Isabelle Tchoulack à Yves Lanctôt le 10 décembre 2015, contient des offres de location pour des projets immobiliers à Saint-Li...
+  
+  3. **EP3.228. Courriel daté du 10 décembre 2015, de Isabelle Tchoulack à Yves Lanctôt, et diverses offres de location, en liasse.pdf**
+     Type: courriel — investisseur | 📗 External
+     Persons: Isabelle Tchoulack, Yves Lanctôt, Jean-François Désormeaux, Maxime Cousineau, Benoit Charron
+     Summary: Ce document est un courriel daté du 10 décembre 2015, envoyé par Isabelle Tchoulack à Yves Lanctôt, concernant des offres de location à Saint-Lin. Il ...
+  
+  4. **EP3.163. Courriel du 10 décembre 2015 d'Isabelle Tchoulack à Yves Lanctôt sur diverses offres de location.pdf**
+     Type: courriel — partenaire | 📗 External
+     Persons: Isabelle Tchoulack, Yves Lanctôt, Stéphanie Poirier, Jean-François Désormeaux, Maxime Cousineau
+     Summary: Ce document est un courriel envoyé par Isabelle Tchoulack à Yves Lanctôt le 10 décembre 2015, contenant des offres de location pour des projets à Sain...
+  
+  5. **EP3.163. Courriel du 10 décembre 2015 d'Isabelle Tchoulack à Yves Lanctôt sur diverses offres de location.pdf**
+     Type: courriel | 📗 External
+     Persons: Isabelle Tchoulack, Yves Lanctôt, Stéphanie Poirier, Jean-François Désormeaux, Maxime Cousineau
+     Summary: Ce document est un courriel contenant des échanges sur des offres de location à Saint-Lin, incluant des contrats de bail pour des locaux commerciaux. ...
+  
+  6. **EP3.162. Courriel du 10 décembre 2015 d'Isabelle Tchoulack à Yves Lanctôt sur le projet de Saint-Lin-Laurentides.pdf**
+     Type: courriel — investisseur | 📗 External
+     Persons: Isabelle Tchoulack, Yves Lanctôt, Stéphanie Poirier, Jean-François Desormeaux
+     Summary: Ce courriel d'Isabelle Tchoulack à Yves Lanctôt, daté du 10 décembre 2015, concerne le projet de développement immobilier et commercial à Saint-Lin-La...
+  
+  7. **EP3.228. Courriel daté du 10 décembre 2015, de Isabelle Tchoulack à Yves Lanctôt, et diverses offres de location, en liasse.pdf**
+     Type: courriel — investisseur | 📗 External
+     Persons: Isabelle Tchoulack, Yves Lanctôt, Jean-François Désormeaux, Maxime Cousineau, Pierre St-Cyr
+     Summary: Ce document est un courriel envoyé par Isabelle Tchoulack à Yves Lanctôt le 10 décembre 2015, contenant des offres de location pour des projets immobi...
+  
+  8. **EP3.228. Courriel daté du 10 décembre 2015, de Isabelle Tchoulack à Yves Lanctôt, et diverses offres de location, en liasse.pdf**
+     Type: courriel — investisseur | 📗 External
+     Persons: Isabelle Tchoulack, Yves Lanctôt, Jean-François Désormeaux, Maxime Cousineau, Benoit Charron
+     Summary: Ce document contient un courriel d'Isabelle Tchoulack à Yves Lanctôt concernant des offres de location à Saint-Lin, accompagné de contrats de bail et ...
+  
+  9. **141113-ID-D Bélanger Courriel Inv Rawdon.pdf**
+     Type: courriel — investisseur | 🔴 Internal
+     Persons: Denise Bélanger, Jean-Francois Desormeaux, Olivier Gaudet, Léon Raymond, Yves Lanctôt
+     Summary: Courriel de Denise Bélanger à Lamoureux et Lamoureux concernant le dossier de financement immobilier à Rawdon pour Olivier Gaudet. Le prêt DP-0330 s'é...
+  
+  10. **08041.02M - 170614 - Déclaration - BARETTE Yves - 14 juin 2017.pdf**
+     Type: déclaration — sous_serment | 📗 External
+     Persons: Yves Barrette, Jean-François Désormeaux, Pierre Désormeau, Laurent Bélanger, Ruben Croll
+     Summary: Cette déclaration sous serment de Yves Barrette détaille des activités frauduleuses présumées au sein d'Idéal Finance et Idéal Développement, dirigées...
+  
+  11. **08041.02M - 170614 - Déclaration - BARETTE Yves - 14 juin 2017.pdf**
+     Type: déclaration — sous_serment | 📗 External
+     Persons: Yves Barrette, Jean-François Désormeaux, Pierre Désormeau, Laurent Bélanger, Ruben Croll
+     Summary: Yves Barrette, ancien employé d'Idéal Finance, témoigne sur des pratiques frauduleuses impliquant Jean-François Désormeaux et Benoît Charron. Idéal Fi...
+  
+  12. **Courriel_10 décembre 2015_Isabelle Tchoulack à Yves Lanctôt sur_offres de location Saint-Lin_.pdf**
+     Type: courriel — partenaire | 📗 External
+     Persons: Yves Lanctot, Isabelle Tchoulack, Jean-François Désormeaux, Maxime Cousineau, Pierre St-Cyr
+     Summary: Ce courriel, envoyé par Isabelle Tchoulack à Yves Lanctot, concerne des offres de location à Saint-Lin. Il inclut des documents annexes tels qu'un con...
+  
+  13. **Courriels et documents.pdf**
+     Type: courriel — investisseur | 📗 External
+     Persons: Olivier Gaudet, Jean-François Désormeaux, Yves Lanctôt, Maxime Cousineau, Me Natale Screnci
+     Summary: Ce document contient des échanges de courriels et des informations sur des projets immobiliers à Saint-Lin et Saint-Esprit, impliquant plusieurs parti...
+  
+  14. **Courriel_10 décembre 2015_Isabelle Tchoulack à Yves Lanctôt sur le projet de Saint-Lin-Laurentides cc JFD.pdf**
+     Type: courriel — investisseur | 📗 External
+     Persons: Yves Lanctot, Stéphanie Poirier, Isabelle Tchoulack, J.F. Desormeaux
+     Summary: Ce courriel, envoyé par Isabelle Tchoulack à Yves Lanctôt le 10 décembre 2015, concerne le projet immobilier de Saint-Lin-Laurentides. Il inclut des i...
+  
+  15. **08011.01M - 161227 - Déclaration - BLACHE Yves - 27 décembre 2016.pdf**
+     Type: déclaration — sous_serment | 📗 External
+     Persons: Yves Blache, Marc Di Menna, Jean-François Désormeaux, M. Viel, Jean Chalifoux
+     Summary: Yves Blache décrit ses investissements immobiliers via Idéal Finance et Jean-François Désormeaux (JFD). Il mentionne plusieurs projets (Ste-Catherine,...
+  
+  16. **Courriels du 18 au 22 février 2016 entre Yves Lanctôt et Lucie Lafontaine au sujet du terrain de St-Lin.pdf**
+     Type: courriel — notaire | 📗 External
+     Persons: Yves Lanctôt, Lucie Lafontaine, Natale Screnci, Pierre Aubin, Alain Lamoureux
+     Summary: Courriels échangés entre Yves Lanctôt, Lucie Lafontaine et Natale Screnci concernant un acte de cautionnement hypothécaire pour une propriété à St-Lin...
+  
+  17. **Courriels et documents [p.252 à 279].pdf**
+     Type: courriel — investisseur | 📗 External
+     Persons: Yves Lanctôt, Natale Screnci, Jean-François Désormeaux, Lucie Lafontaine, Pierre Aubin
+     Summary: Ce document regroupe des courriels et documents relatifs à des projets immobiliers et des litiges financiers impliquant plusieurs parties, dont Yves L...
+  
+  18. **Courriels et documents [p.104 à 158].pdf**
+     Type: courriel — investisseur | 📗 External
+     Persons: Olivier Gaudet, Jean-François Désormeaux, Yves Lanctôt, Maxime Cousineau, Natale Screnci
+     Summary: Ce document regroupe des courriels et des pièces jointes concernant des projets immobiliers à Saint-Lin et Saint-Esprit, incluant des baux commerciaux...
+  
+  19. **150511-ID-D Bélanger Courriel Inv et instructions Couvent.pdf**
+     Type: courriel — investisseur | 🔴 Internal
+     Persons: Denise Bélanger, Jean-Yves St-Pierre, Noël Beaulieu, Solange Paquette, Gaston Leduc
+     Summary: Ce courriel de Denise Bélanger, directrice chez Idéal Finance, traite de la cession d'une créance de deuxième rang sur le projet Trois-Rivières des Pr...
+  
+  20. **150226-ID-D Bélanger Courriel Inv St-Lin.pdf**
+     Type: courriel — investisseur | 🔴 Internal
+     Persons: Denise Bélanger, Lucie Lamoureux, Jean-François Desormeaux, Olivier Gaudet, Guy Tremblay
+     Summary: Courriel de Denise Bélanger à Lucie Lamoureux concernant un prêt pour un projet à Saint-Lin-Laurentides. Le prêt implique plusieurs investisseurs avec...
+  
+  21. **150226-ID-D Bélanger Courriel Inv St-Lin.pdf**
+     Type: courriel — investisseur | 🔴 Internal
+     Persons: Denise Bélanger, Jean-François Desormeaux, Olivier Gaudet, Lucie Lamoureux, Guy Tremblay
+     Summary: Courriel de Denise Bélanger à Lucie Lamoureux concernant un prêt immobilier à Saint-Lin-Laurentides. Le prêt implique plusieurs investisseurs avec des...
+  
+  22. **141030-ID-D Bélanger à Lucie Courriel Inv St-Lin.pdf**
+     Type: courriel — investisseur | 🔴 Internal
+     Persons: Denise Bélanger, Lucie Lafontaine, Jean-Francois Desoremaux, Yves Lanctôt, Mikael Voyer
+     Summary: Courriel de Denise Bélanger à Lucie Lafontaine concernant le rachat d'une créance de 295 000 $ par Yves Lanctôt via 9145-3639 Québec inc. sur le lot 3...
+  
+  23. **141030-ID-D Bélanger à Lucie Courriel Inv St-Lin.pdf**
+     Type: courriel — investisseur | 🔴 Internal
+     Persons: Denise Bélanger, Lucie Lafontaine, Jean-Francois Desoremaux, Yves Lanctôt, Mikael Voyer
+     Summary: Courriel de Denise Bélanger à Lucie Lafontaine concernant la cession de créance sur le lot 3 570 017 à Saint-Lin-Laurentides. Yves Lanctôt, via 9145-3...
+  
+  24. **150219-ID-D Bélanger Mandat et Courriel Inv St-Augustin.pdf**
+     Type: courriel — investisseur | 🔴 Internal
+     Persons: Denise Bélanger, Lucie Lamoureux, Solange Paquette, M. Desormeaux
+     Summary: Courriel envoyé par Denise Bélanger à Lucie Lamoureux concernant la mise à jour des courriels investisseurs pour des transactions à Saint-Augustin-de-...
+  
+  25. **170321-ID-à Lucie Mandat et Courriel Inv St-Augustin.pdf**
+     Type: courriel — investisseur | 🔴 Internal
+     Persons: Lucie Lafontaine, Véronique, Me Pierre Aubin, Me Alain Lamoureux, Laurent Belanger
+     Summary: Courriel envoyé par Lucie Lafontaine à Véronique le 21 mars 2017 concernant un prêt pour un projet à St-Augustin (partie Hotel). Le message inclut des...
+  
+  26. **150513-ID-D Bélanger Mandat Courriel Inv Acceptation et Instruction 3RVS Prairies.pdf**
+     Type: courriel — investisseur | 🔴 Internal
+     Persons: Denise Bélanger, Lucie Lamoureux, Olivier Gaudet, Yves Lanctôt, Patrick Moryoussef
+     Summary: Courriel de Denise Bélanger à Lucie Lamoureux concernant deux prêts (DP-0378 et DP-0379) pour des propriétés à Rawdon. Les prêts totalisent 600 000 $ ...
+  
+  27. **Pièce SG-08_en liasse - Courriel et courriel rartenaire_21 octobre 2.pdf**
+     Type: courriel — investisseur | 🔴 Internal
+     Persons: Stéphane Goulet, Jean-François Desormeaux, Véronique Charton, Olivier Gaudet
+     Summary: Courriel envoyé par Idéal Finance le 21 octobre 2015 concernant le projet immobilier Trois-Rivières des Prairies. Le prêt de 500 000 $ est garanti par...
+  
+  28. **160128-ID-L Bélanger Mandat et Courriel Inv St-Augustin.pdf**
+     Type: courriel — investisseur | 🔴 Internal
+     Persons: Laurent Bélanger, Lucie Lafontaine, Michel Villeneuve, Jean-François Desormeaux
+     Summary: Courriel envoyé par Laurent Bélanger à Lucie Lafontaine le 28 janvier 2016 concernant un prêt pour un projet à St-Augustin (partie Hotel). Le courriel...
+  
+  29. **150227-ID-D Bélanger Courriel Inv lot 5 St-Lin.pdf**
+     Type: courriel — investisseur | 🔴 Internal
+     Persons: Denise Bélanger, Jean-Francois Desormeaux
+     Summary: Courriel envoyé par Denise Bélanger à Lucie de Lamoureux Notaires, avec copie à Jean-Francois Desormeaux, concernant des courriels liés aux investisse...
+  
+  30. **150227-ID-D Bélanger Courriel Inv lot 5 St-Lin.pdf**
+     Type: courriel — investisseur | 🔴 Internal
+     Persons: Denise Bélanger, Lucie Lamoureux, Jean-Francois Desormeaux
+     Summary: Courriel envoyé par Denise Bélanger à Lucie Lamoureux concernant des courriels liés aux investisseurs pour le Lot 5 à Saint-Lin-Laurentides. Le courri...
+  
+
+--- SOURCE DOCUMENTS CONTENT ---
+  Claim keywords extracted: ['600000$', 'Bélanger Courriel Inv St', 'Maxime Cousineau\n   Summary', 'Jean Chalifoux\n   Summary', 'Me Pierre Aubin', '$', 'Francois Desormeaux', 'Yves St', 'Laurent Bélanger', 'Natale Screnci\n   Summary', 'Benoît Charron', 'Stéphanie Poirier', 'Yves Lanctôt', 'Lucie Mandat', 'Bélanger Mandat Courriel Inv Acceptation', 'Maxime Cousineau', 'DP-0379', 'Véronique Charton', 'Denise Bélanger', 'Olivier Gaudet']
+  Content budget: 6666 chars/file for 15 files
+
+  FILE: EP3.162. Courriel du 10 décembre 2015 d'Isabelle Tchoulack à Yves Lanctôt sur le projet de Saint-Lin-Laurentides.pdf
+  Type: courriel
+  Blob: extracted-text/Antérieur_Analyse_23. LANCTÔT, Yves_Pièces_EP3.162. Courriel du 10 décembre 2015 d'Isabelle Tchoulack à Yves Lanctôt sur le projet de Saint-Lin-Laurentides.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Ante%CC%81rieur/Analyse/23.%20LANCTO%CC%82T%2C%20Yves/Pie%CC%80ces/EP3.162.%20Courriel%20du%2010%20de%CC%81cembre%202015%20d%27Isabelle%20Tchoulack%20a%CC%80%20Yves%20Lancto%CC%82t%20sur%20le%20projet%20de%20Saint-Lin-Laurentides.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 11 found, total 17335 chars (smart selected 6670 chars)
+  Content preview (first 300 chars):
+    | De: Yves Lanctot Envoyé: 29 décembre 2016 10:14 À: Poirier,Stéphanie Objet: Fwd: Saint-Lin Pièces jointes: Présentation Saint-Lin (9145-3639 Québec Inc).pdf Envoyé de mon iPad Début du message transféré : Expéditeur: Yves Lanctot Date: 28 décembre 2016 à 17:49:30 UTC-5 Destinataire: yveslanctot Obje
+
+  FILE: EP3.163. Courriel du 10 décembre 2015 d'Isabelle Tchoulack à Yves Lanctôt sur diverses offres de location.pdf
+  Type: courriel
+  Blob: extracted-text/Antérieur_Pièces EP_EPDBC-3_EP-3 - Enquête préliminaire_1 - Pièces à déposer_EP3.163. Courriel du 10 décembre 2015 d'Isabelle Tchoulack à Yves Lanctôt sur diverses offres de location.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Ante%CC%81rieur/Pie%CC%80ces%20EP/EPDBC-3/EP-3%20-%20Enque%CC%82te%20pre%CC%81liminaire/1%20-%20Pie%CC%80ces%20a%CC%80%20de%CC%81poser/EP3.163.%20Courriel%20du%2010%20de%CC%81cembre%202015%20d%27Isabelle%20Tchoulack%20a%CC%80%20Yves%20Lancto%CC%82t%20sur%20diverses%20offres%20de%20location.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 50 found, total 90624 chars (smart selected 6670 chars)
+  Content preview (first 300 chars):
+    |  (5) ans; Pour toutes les périodes suivantes et les reconductions, le loyer sera établi en fonction du loyer de la période précédente multiplié par le cumul de l'IPC des 5 années précédentes (min. 5 %, max .: 10 %); HGP sera responsable des frais d'exploitation correspondant à la portion louée, incl
+
+  FILE: EP3.228. Courriel daté du 10 décembre 2015, de Isabelle Tchoulack à Yves Lanctôt, et diverses offres de location, en liasse.pdf
+  Type: courriel
+  Blob: extracted-text/Antérieur_Analyse_23. LANCTÔT, Yves_Pièces_EP3.228. Courriel daté du 10 décembre 2015, de Isabelle Tchoulack à Yves Lanctôt, et diverses offres de location, en liasse.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Ante%CC%81rieur/Analyse/23.%20LANCTO%CC%82T%2C%20Yves/Pie%CC%80ces/EP3.228.%20Courriel%20date%CC%81%20du%2010%20de%CC%81cembre%202015%2C%20de%20Isabelle%20Tchoulack%20a%CC%80%20Yves%20Lancto%CC%82t%2C%20et%20diverses%20offres%20de%20location%2C%20en%20liasse.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 50 found, total 90927 chars (smart selected 6640 chars)
+  Content preview (first 300 chars):
+    |  le déneigement, l'entretien du terrain, les taxes foncière et scolaire et l'entretien normal de la propriété. 3.2 Pétrole : Loyer fixe de 63 000$/année; Loyer variable de 0.015$/litre pour les ventes de carburant annuel entre 3 250 000 litres et 5 500 000 litres plus 0.01$/L. pour les ventes de car
+
+  FILE: 141113-ID-D Bélanger Courriel Inv Rawdon.pdf
+  Type: courriel
+  Blob: extracted-text/internal/PROJETS/ST-ESPRIT- 120 rue St-ISIDORE/COMMUNICATIONS/141113-ID-D Bélanger Courriel Inv Rawdon.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents-internal/PROJETS/ST-ESPRIT-%20120%20rue%20St-ISIDORE/COMMUNICATIONS/141113-ID-D%20B%C3%A9langer%20Courriel%20Inv%20Rawdon.pdf?sp=rwl&st=2026-03-19T15:21:21Z&se=2026-04-19T23:36:21Z&spr=https&sv=2024-11-04&sr=c&sig=vKrMJFzFtoM%2FdtW6N%2BbhNypEgn2l58ffkoC3tVg4yCs%3D
+  Index chunks: 2 found, total 2301 chars (smart selected 2302 chars)
+  Content preview (first 300 chars):
+    | De : Denise Bélanger À : Lamoureux et Lamoureux Cc : Desoremaux Jean-Francois Objet : RE: Dossier Rawdon - Olivier Gaudet 8 - DP-0330 Date : 13 novembre 2014 18:30:11 Pièces jointes : Courriel investisseur - Rawdon Couche-Tard - Lanctot deuxième rang v2 2014-11-13.pdf Courriel investisseur - Rawdon 
+
+  FILE: 08041.02M - 170614 - Déclaration - BARETTE Yves - 14 juin 2017.pdf
+  Type: déclaration
+  Blob: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_D - Témoins > Idéal développement et Idéal finance_I. Les compagnies Idéal_6. Yves BARRETTE_Déclarations_08041.02M - 170614 - Déclaration - BARETTE Yves - 14 juin 2017.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Ante%CC%81rieur/231219%20-%20Cahier%20de%20preuve%20Oribus/D%20-%20Te%CC%81moins%20%3E%20Ide%CC%81al%20de%CC%81veloppement%20et%20Ide%CC%81al%20finance/I.%20Les%20compagnies%20Ide%CC%81al/6.%20Yves%20BARRETTE/De%CC%81clarations/08041.02M%20-%20170614%20-%20De%CC%81claration%20-%20BARETTE%20Yves%20-%2014%20juin%202017.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 39 found, total 63587 chars (smart selected 6662 chars)
+  Content preview (first 300 chars):
+    | ois rencontré Mikael Voyer. Il a été recruté par Benoît 567 Charron pour agir à titre de prête-nom dans leurs activités de développement immobilier. 568 Olivier Gaudet demeurait à Sainte-Julienne. 569 C'est lui qui va au bat, qui fait tous les emprunts sur 10-12 terrains pour Idéal Développement. Le
+
+  FILE: Courriel_10 décembre 2015_Isabelle Tchoulack à Yves Lanctôt sur_offres de location Saint-Lin_.pdf
+  Type: courriel
+  Blob: extracted-text/  Tableau de preuve - Février 2026_TÉMOINS_LANCTÔT, YVES_Courriel_10 décembre 2015_Isabelle Tchoulack à Yves Lanctôt sur_offres de location Saint-Lin_.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/%20%20Tableau%20de%20preuve%20-%20Fe%CC%81vrier%202026/TE%CC%81MOINS/LANCTO%CC%82T%2C%20YVES/Courriel_10%20de%CC%81cembre%202015_Isabelle%20Tchoulack%20a%CC%80%20Yves%20Lancto%CC%82t%20sur_offres%20de%20location%20Saint-Lin_.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 50 found, total 90984 chars (smart selected 6617 chars)
+  Content preview (first 300 chars):
+    |  climatisation, le déneigement, l'entretien du terrain, les taxes foncière et scolaire et l'entretien normal de la propriété. 3.2 Pétrole : Loyer fixe de 63 000$/année; Loyer variable de 0.015$/litre pour les ventes de carburant annuel entre 3 250 000 litres et 5 500 000 litres plus 0.01$/L. pour le
+
+  FILE: Courriels et documents.pdf
+  Type: courriel
+  Blob: extracted-text/Antérieur_Analyse_23. LANCTÔT, Yves_Documents_08007.01G - 161229 - Remise volontaire - Courriels et Documents_Courriels et documents.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Ante%CC%81rieur/Analyse/23.%20LANCTO%CC%82T%2C%20Yves/Documents/08007.01G%20-%20161229%20-%20Remise%20volontaire%20-%20Courriels%20et%20Documents/Courriels%20et%20documents.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 50 found, total 76413 chars (smart selected 6670 chars)
+  Content preview (first 300 chars):
+    | HIS HAMON SCRENCI AVOCATS - LAWYERS 1400, boul. Grande-Allee, Bureau 203, Boisbriand, J7G 2Z8 Tel : 514-252-0550 Fax : 450-437-9122 Courriel : C1 Nominatif Boisbriand, le 25 février 2016 «Par huissier» OLIVIER GAUDET 9310-0022 QUÉBEC INC. 722, boulevard de l'Industrie Saint-Paul (Québec) J0K 3E0 ET 
+
+  FILE: Courriel_10 décembre 2015_Isabelle Tchoulack à Yves Lanctôt sur le projet de Saint-Lin-Laurentides cc JFD.pdf
+  Type: courriel
+  Blob: extracted-text/  Tableau de preuve - Février 2026_TÉMOINS_LANCTÔT, YVES_Courriel_10 décembre 2015_Isabelle Tchoulack à Yves Lanctôt sur le projet de Saint-Lin-Laurentides cc JFD.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/%20%20Tableau%20de%20preuve%20-%20Fe%CC%81vrier%202026/TE%CC%81MOINS/LANCTO%CC%82T%2C%20YVES/Courriel_10%20de%CC%81cembre%202015_Isabelle%20Tchoulack%20a%CC%80%20Yves%20Lancto%CC%82t%20sur%20le%20projet%20de%20Saint-Lin-Laurentides%20cc%20JFD.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 11 found, total 17334 chars (smart selected 6596 chars)
+  Content preview (first 300 chars):
+    | De: Yves Lanctot Envoyé: 29 décembre 2016 10:14 À: Poirier,Stéphanie Objet: Fwd: Saint-Lin Pièces jointes: Présentation Saint-Lin (9145-3639 Québec Inc).pdf Envoyé de mon iPad Début du message transféré : Expéditeur: Yves Lanctot Date: 28 décembre 2016 à 17:49:30 UTC-5 Destinataire: yveslanctot Obje
+
+  FILE: 08011.01M - 161227 - Déclaration - BLACHE Yves - 27 décembre 2016.pdf
+  Type: déclaration
+  Blob: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_E - Témoins > Les projets immobiliers_IV. Les investisseurs_30. Yves BLACHE_Déclarations_08011.01M - 161227 - Déclaration - BLACHE Yves - 27 décembre 2016.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Ante%CC%81rieur/231219%20-%20Cahier%20de%20preuve%20Oribus/E%20-%20Te%CC%81moins%20%3E%20Les%20projets%20immobiliers/IV.%20Les%20investisseurs/30.%20Yves%20BLACHE/De%CC%81clarations/08011.01M%20-%20161227%20-%20De%CC%81claration%20-%20BLACHE%20Yves%20-%2027%20de%CC%81cembre%202016.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 16 found, total 24403 chars (smart selected 6670 chars)
+  Content preview (first 300 chars):
+    | E DU POLICE icar MAT DÉCLARATION Numéro d'événement (dossier) 5 0 ,1 |1 ,5 |1 2 |0 3 |0 0 1 Nom BLACHE Prénom Yves Date de naissance (a-m-j) Il y a environ 3 ans, Marc Di Menna m'a parlé de ses investissements en immobilier, via la société Idéal Finance et son représentant, Jean-François Désormeaux.
+
+  FILE: Courriels du 18 au 22 février 2016 entre Yves Lanctôt et Lucie Lafontaine au sujet du terrain de St-Lin.pdf
+  Type: courriel
+  Blob: extracted-text/  Tableau de preuve - Février 2026_TÉMOINS_LANCTÔT, YVES_Courriels du 18 au 22 février 2016 entre Yves Lanctôt et Lucie Lafontaine au sujet du terrain de St-Lin.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/%20%20Tableau%20de%20preuve%20-%20Fe%CC%81vrier%202026/TE%CC%81MOINS/LANCTO%CC%82T%2C%20YVES/Courriels%20du%2018%20au%2022%20fe%CC%81vrier%202016%20entre%20Yves%20Lancto%CC%82t%20et%20Lucie%20Lafontaine%20au%20sujet%20du%20terrain%20de%20St-Lin.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 3 found, total 3691 chars (smart selected 3693 chars)
+  Content preview (first 300 chars):
+    | és pour préparer un acte de cautionnement hypothécaire en faveur de plusieurs créanciers à être publié contre la propriété de St-Lin. Suite à la publication du cautionnement, la caution fera cession de l'immeuble en faveur de tous les créanciers, lesquels par la suite se verront accorder des actions
+
+  FILE: Courriels et documents [p.252 à 279].pdf
+  Type: courriel
+  Blob: extracted-text/Antérieur_Analyse_23. LANCTÔT, Yves_Documents_08007.01G - 161229 Diverses confirmations du versement de la somme de 892.50$ par 8181772 Canada inc, dans le compte de Yves Lanctôt_Courriels et documents [p.252 à 279].pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Ante%CC%81rieur/Analyse/23.%20LANCTO%CC%82T%2C%20Yves/Documents/08007.01G%20-%20161229%20Diverses%20confirmations%20du%20versement%20de%20la%20somme%20de%20892.50%24%20par%208181772%20Canada%20inc%2C%20dans%20le%20compte%20de%20Yves%20Lancto%CC%82t/Courriels%20et%20documents%20%5Bp.252%20a%CC%80%20279%5D.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 50 found, total 76413 chars (smart selected 6670 chars)
+  Content preview (first 300 chars):
+    | HIS HAMON SCRENCI AVOCATS - LAWYERS 1400, boul. Grande-Allee, Bureau 203, Boisbriand, J7G 2Z8 Tel : 514-252-0550 Fax : 450-437-9122 Courriel : C1 Nominatif Boisbriand, le 25 février 2016 «Par huissier» OLIVIER GAUDET 9310-0022 QUÉBEC INC. 722, boulevard de l'Industrie Saint-Paul (Québec) J0K 3E0 ET 
+
+  FILE: Courriels et documents [p.104 à 158].pdf
+  Type: courriel
+  Blob: extracted-text/Antérieur_Analyse_23. LANCTÔT, Yves_Documents_08007.01G - 161229 Courriel daté du 10 décembre 2015, de Isabelle Tchoulack à Yves Lanctôt, et diverses offres de location, en liasse_Courriels et documents [p.104 à 158].pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Ante%CC%81rieur/Analyse/23.%20LANCTO%CC%82T%2C%20Yves/Documents/08007.01G%20-%20161229%20Courriel%20date%CC%81%20du%2010%20de%CC%81cembre%202015%2C%20de%20Isabelle%20Tchoulack%20a%CC%80%20Yves%20Lancto%CC%82t%2C%20et%20diverses%20offres%20de%20location%2C%20en%20liasse/Courriels%20et%20documents%20%5Bp.104%20a%CC%80%20158%5D.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 50 found, total 76413 chars (smart selected 6670 chars)
+  Content preview (first 300 chars):
+    | HIS HAMON SCRENCI AVOCATS - LAWYERS 1400, boul. Grande-Allee, Bureau 203, Boisbriand, J7G 2Z8 Tel : 514-252-0550 Fax : 450-437-9122 Courriel : C1 Nominatif Boisbriand, le 25 février 2016 «Par huissier» OLIVIER GAUDET 9310-0022 QUÉBEC INC. 722, boulevard de l'Industrie Saint-Paul (Québec) J0K 3E0 ET 
+
+  FILE: 150511-ID-D Bélanger Courriel Inv et instructions Couvent.pdf
+  Type: courriel
+  Blob: extracted-text/internal/PROJETS/COUVENT ST-PAUL/COMMUNICATIONS/2- Communications avec le bureau du notaire/150511-ID-D Bélanger Courriel Inv et instructions Couvent.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents-internal/PROJETS/COUVENT%20ST-PAUL/COMMUNICATIONS/2-%20Communications%20avec%20le%20bureau%20du%20notaire/150511-ID-D%20B%C3%A9langer%20Courriel%20Inv%20et%20instructions%20Couvent.pdf?sp=rwl&st=2026-03-19T15:21:21Z&se=2026-04-19T23:36:21Z&spr=https&sv=2024-11-04&sr=c&sig=vKrMJFzFtoM%2FdtW6N%2BbhNypEgn2l58ffkoC3tVg4yCs%3D
+  Index chunks: 3 found, total 3939 chars (smart selected 3941 chars)
+  Content preview (first 300 chars):
+    | De : Denise Bélanger À : lucie@lamoureuxnotaires.ca Cc : info@idealfinance.ca Objet : TR: Cession d'une partie de la créance de 2e rang d"Idéal Finance - Trois-Rivières des Prairies 2 Date : 13 mai 2015 09:11:31 Pièces jointes : 10-13 Courriel investisseur - DP-0377 Gaudet (51) Trois-Rivières NOUVEA
+
+  FILE: 150226-ID-D Bélanger Courriel Inv St-Lin.pdf
+  Type: courriel
+  Blob: extracted-text/internal/PROJETS/ST-LIN-des-LAURENTIDES- 0,route 135/COMMUNICATIONS/2- Communications avec le bureau du notaire/150226-ID-D Bélanger Courriel Inv St-Lin.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents-internal/PROJETS/ST-LIN-des-LAURENTIDES-%200%2Croute%20135/COMMUNICATIONS/2-%20Communications%20avec%20le%20bureau%20du%20notaire/150226-ID-D%20B%C3%A9langer%20Courriel%20Inv%20St-Lin.pdf?sp=rwl&st=2026-03-19T15:21:21Z&se=2026-04-19T23:36:21Z&spr=https&sv=2024-11-04&sr=c&sig=vKrMJFzFtoM%2FdtW6N%2BbhNypEgn2l58ffkoC3tVg4yCs%3D
+  Index chunks: 2 found, total 2588 chars (smart selected 2589 chars)
+  Content preview (first 300 chars):
+    | De : Denise Bélanger À : lucie@lamoureuxnotaires.ca Cc : Desormeaux Jean-Francois; info@idealfinance.ca Objet : TR: Prêt DP-0349 Olivier Gaudet 18 - Saint-Lin-Laurentides Date : 26 février 2015 17:50:19 Pièces jointes : image002.emz image001.png et =2818=29 - Saint-Lin -= Laurentides lot 5 deuxième 
+
+  FILE: 141030-ID-D Bélanger à Lucie Courriel Inv St-Lin.pdf
+  Type: courriel
+  Blob: extracted-text/internal/PROJETS/ST-LIN-des-LAURENTIDES- 0,route 135/COMMUNICATIONS/2- Communications avec le bureau du notaire/141030-ID-D Bélanger à Lucie Courriel Inv St-Lin.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents-internal/PROJETS/ST-LIN-des-LAURENTIDES-%200%2Croute%20135/COMMUNICATIONS/2-%20Communications%20avec%20le%20bureau%20du%20notaire/141030-ID-D%20B%C3%A9langer%20%C3%A0%20Lucie%20Courriel%20Inv%20St-Lin.pdf?sp=rwl&st=2026-03-19T15:21:21Z&se=2026-04-19T23:36:21Z&spr=https&sv=2024-11-04&sr=c&sig=vKrMJFzFtoM%2FdtW6N%2BbhNypEgn2l58ffkoC3tVg4yCs%3D
+  Index chunks: 1 found, total 1301 chars (smart selected 1301 chars)
+  Content preview (first 300 chars):
+    | De : Denise Bélanger À : "Lucie Lafontaine" Cc : Desoremaux Jean-Francois Objet : Cession de créance - Saint-Lin-Laurentides Date : 30 octobre 2014 22:23:45 Pièces jointes : so-8859-1010-13 Courriel investisseur - Gaudet =286=29 - Saint-Lin -= Lanctôt premier rang 2014-10- 30.pdf Bonjour, Je vous en
+
+--- END SOURCE CONTENT ---
+
+--- GROUNDING VERIFICATION ---
+  Mode: DISCOVERY — checking metadata consistency (not content grounding)
+  Documents listed in answer: ~34
+  Actual sources returned: 21
+  Status: DISCOVERY_VALID (confidence: medium)
+  Note: Discovery mode lists documents by metadata. Content grounding not applicable.
+
+--- END VERIFICATION ---
+
+################################################################################
+# TEST 3
+################################################################################
+QUERY: Je veux la date de l acte notarier des 4 lots
+
+INTENT: answer
+ANSWER (235 chars):
+  Je n'ai pas trouvé d'information spécifique sur un acte notarié concernant "4 lots" dans les documents disponibles. Si vous pouvez préciser les numéros de lots ou fournir plus de détails, je pourrai effectuer une recherche plus ciblée.
+
+--- SOURCE DOCUMENTS CONTENT ---
+  Claim keywords extracted: []
+  Content budget: 6666 chars/file for 15 files
+
+  FILE: Engagements JFD.pdf
+  Type: 
+  Blob: extracted-text/Antérieur_Analyse_11. LEHOUX, Gilles_500-11-057525-194 Gilles LEHOUX_ENGAGEMENTS_Engagements JFD_MARS 2019_Engagements JFD.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Ante%CC%81rieur/Analyse/11.%20LEHOUX%2C%20Gilles/500-11-057525-194%20Gilles%20LEHOUX/ENGAGEMENTS/Engagements%20JFD/MARS%202019/Engagements%20JFD.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 50 found, total 79886 chars (smart selected 6670 chars)
+  Content preview (first 300 chars):
+    | E-3
+    | 
+    | RAPPORT D'ÉVALUATION Projet à être construit À l'intersection de la route 125 et de l'autoroute 25 Sainte-Julienne (Québec) Notre dossier : 594433C 594433C PARIS, LADOUCEUR & ASSOCIÉS INC.
+    | 
+    | PARIS, LADOUCEUR & ASSOCIÉS INC. ÉVALUATEURS AGRÉÉS · REAL ESTATE APPRAISERS Vincent Ladouceur É.A., AACI
+
+  FILE: 140923-ID-Évaluation Devimo Ste-Julienne Petro.pdf
+  Type: 
+  Blob: extracted-text/internal/PROJETS/ST-JULIENNE 1- 1219-1221, route 125 (PETRO)/DÉVELOPPEMENT/2- ÉVALUATION/140923-ID-Évaluation Devimo Ste-Julienne Petro.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents-internal/PROJETS/ST-JULIENNE%201-%201219-1221%2C%20route%20125%20%28PETRO%29/D%C3%89VELOPPEMENT/2-%20%C3%89VALUATION/140923-ID-%C3%89valuation%20Devimo%20Ste-Julienne%20Petro.pdf?sp=rwl&st=2026-03-19T15:21:21Z&se=2026-04-19T23:36:21Z&spr=https&sv=2024-11-04&sr=c&sig=vKrMJFzFtoM%2FdtW6N%2BbhNypEgn2l58ffkoC3tVg4yCs%3D
+  Index chunks: 50 found, total 85663 chars (smart selected 6516 chars)
+  Content preview (first 300 chars):
+    | DEVIMO inc. Consultation et développement immobilier Rapport d'évaluation de la valeur marchande
+    | 
+    | DEVIMO inc. L'expertise d'une équipe novatrice Consultation et développement immobilier ÉVALUATION DE LA VALEUR MARCHANDE POTENTIELLE RAPPORT D'ÉVALUATION DE TYPE NARRATIF ABRÉGÉ PROPRIÉTÉ SOUS ÉTUDE : 
+
+  FILE: Éval-RAWDON DEVIMO - RAPPORT 4071D-4475.pdf
+  Type: 
+  Blob: extracted-text/Antérieur_Analyse_11. LEHOUX, Gilles_500-11-057525-194 Gilles LEHOUX_ENGAGEMENTS_Engagements JFD_DÉCEMBRE 2022_E-1_Éval-RAWDON DEVIMO - RAPPORT 4071D-4475.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Ante%CC%81rieur/Analyse/11.%20LEHOUX%2C%20Gilles/500-11-057525-194%20Gilles%20LEHOUX/ENGAGEMENTS/Engagements%20JFD/DE%CC%81CEMBRE%202022/E-1/E%CC%81val-RAWDON%20DEVIMO%20-%20RAPPORT%204071D-4475.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 50 found, total 85894 chars (smart selected 6670 chars)
+  Content preview (first 300 chars):
+    | DEVIMO inc. Consultation et développement immobilier Rapport d'évaluation de la valeur marchande
+    | 
+    | DEVIMO inc. L'expertise d'une équipe novatrice Consultation et développement immobilier ÉVALUATION DE LA VALEUR MARCHANDE POTENTIELLE RAPPORT D'ÉVALUATION DE TYPE NARRATIF ABRÉGÉ Marges de construction 
+
+  FILE: RAPPORT 4071D-4406.pdf
+  Type: 
+  Blob: extracted-text/Analyse des projets_Ste-Julienne #1 - 1219-1221, route 125_Évaluation du terrain_4071D-4406 STE-JULIENNE 1219-1221 ROUTE 125 (VMP) LSB_RAPPORT_ANT_RAPPORT 4071D-4406.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Analyse%20des%20projets/Ste-Julienne%20%231%20-%201219-1221%2C%20route%20125/E%CC%81valuation%20du%20terrain/4071D-4406%20STE-JULIENNE%201219-1221%20ROUTE%20125%20%28VMP%29%20LSB/RAPPORT/ANT/RAPPORT%204071D-4406.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 50 found, total 86018 chars (smart selected 6499 chars)
+  Content preview (first 300 chars):
+    | DEVIMO inc. Consultation et développement immobilier Rapport d'évaluation de la valeur marchande
+    | 
+    | DEVIMO inc. L'expertise d'une équipe novatrice Consultation et développement immobilier ÉVALUATION DE LA VALEUR MARCHANDE POTENTIELLE RAPPORT D'ÉVALUATION DE TYPE NARRATIF ABRÉGÉ PROPRIÉTÉ SOUS ÉTUDE : 
+
+  FILE: RAPPORT 4071D-4406 - S.pdf
+  Type: 
+  Blob: extracted-text/Analyse des projets_Ste-Julienne #1 - 1219-1221, route 125_Évaluation du terrain_4071D-4406 STE-JULIENNE 1219-1221 ROUTE 125 (VMP) LSB_RAPPORT_ANT_RAPPORT 4071D-4406 - S.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Analyse%20des%20projets/Ste-Julienne%20%231%20-%201219-1221%2C%20route%20125/E%CC%81valuation%20du%20terrain/4071D-4406%20STE-JULIENNE%201219-1221%20ROUTE%20125%20%28VMP%29%20LSB/RAPPORT/ANT/RAPPORT%204071D-4406%20-%20S.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 50 found, total 86018 chars (smart selected 6499 chars)
+  Content preview (first 300 chars):
+    | DEVIMO inc. Consultation et développement immobilier Rapport d'évaluation de la valeur marchande
+    | 
+    | DEVIMO inc. L'expertise d'une équipe novatrice Consultation et développement immobilier ÉVALUATION DE LA VALEUR MARCHANDE POTENTIELLE RAPPORT D'ÉVALUATION DE TYPE NARRATIF ABRÉGÉ PROPRIÉTÉ SOUS ÉTUDE : 
+
+  FILE: 231204 - Notes pers. PRATTE Y. (11154) - Yannick Pratte - 15 décembre 2023.pdf
+  Type: 
+  Blob: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_F - Rapports d'expertise_49. Me Tommy FRÉCHETTE (Notaire)_Déclarations_09003D - 231204 - Demande de rapport d'expert notaire_231204 - Notes pers. PRATTE Y. (11154) - Yannick Pratte - 15 décembre 2023.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Ante%CC%81rieur/231219%20-%20Cahier%20de%20preuve%20Oribus/F%20-%20Rapports%20d%27expertise/49.%20Me%20Tommy%20FRE%CC%81CHETTE%20%28Notaire%29/De%CC%81clarations/09003D%20-%20231204%20-%20Demande%20de%20rapport%20d%27expert%20notaire/231204%20-%20Notes%20pers.%20PRATTE%20Y.%20%2811154%29%20-%20Yannick%20Pratte%20-%2015%20de%CC%81cembre%202023.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 13 found, total 19146 chars (smart selected 6670 chars)
+  Content preview (first 300 chars):
+    | Confidentialité : 2 (Confidentiel) TEL DU QU POLICE RÉDACTION SERVICE INTÉGRITÉ JUSTICE Nº d'événement (dossier) 5 0 115 1 2 0 3 0 0 1 de narration du formulaire Enquête sur la capacité de conduite affaiblie (SQ-o-221) de narration additionnelle du formulaire Rapport d'événement (SQ-0-400) - Rapport
+
+  FILE: 23 654 465 RAD.pdf
+  Type: 
+  Blob: extracted-text/Divulgation_  ORIBUS - DIVULGATION 1_03 - ENQUÊTE DE FAITS_03007 - 0 DES PRAIRIES, TROIS-RIVIÈRES_03007C - propriété - Actes transactionnels_23 654 465 RAD.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Divulgation/%20%20ORIBUS%20-%20DIVULGATION%201/03%20-%20ENQUE%CC%82TE%20DE%20FAITS/03007%20-%200%20DES%20PRAIRIES%2C%20TROIS-RIVIE%CC%80RES/03007C%20-%20proprie%CC%81te%CC%81%20-%20Actes%20transactionnels/23%20654%20465%20RAD.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 50 found, total 77484 chars (smart selected 6670 chars)
+  Content preview (first 300 chars):
+    | Source: Divulgation/  ORIBUS - DIVULGATION 1/03 - ENQUÊTE DE FAITS/03007 - 0 DES PRAIRIES, TROIS-RIVIÈRES/03007C - propriété - Actes transactionnels/23 654 465 RAD.pdf
+    | Type: PDF
+    | ============================================================
+    | 
+    | Registre des mentions Numéro inscription : 23 654 465 DH
+
+  FILE: Pièce P-46 - Demande introductive instance Cour Sup 540-17-012712-179 (Gaudet c. Désormeaux, Aubin).pdf
+  Type: 
+  Blob: extracted-text/Divulgation_  ORIBUS - DIVULGATION 1_18 - DOSSIER SECONDAIRES_18003A - Dossiers cour civile - Criminelle & pénale_Palais de justice Montréal_231116 - 500-11-057525-194_Pièce 279 ( suite de 278 Pièce-25 )_Pièce P-46 - Demande introductive instance Cour Sup 540-17-012712-179 (Gaudet c. Désormeaux, Aubin).pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Divulgation/%20%20ORIBUS%20-%20DIVULGATION%201/18%20-%20DOSSIER%20SECONDAIRES/18003A%20-%20Dossiers%20cour%20civile%20-%20Criminelle%20%26%20pe%CC%81nale/Palais%20de%20justice%20Montre%CC%81al/231116%20-%20500-11-057525-194/Pie%CC%80ce%20279%20%28%20suite%20de%20278%20Pie%CC%80ce-25%20%29/Pie%CC%80ce%20P-46%20-%20Demande%20introductive%20instance%20Cour%20Sup%20540-17-012712-179%20%28Gaudet%20c.%20De%CC%81sormeaux%2C%20Aubin%29.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 43 found, total 69168 chars (smart selected 6670 chars)
+  Content preview (first 300 chars):
+    | Source: Divulgation/  ORIBUS - DIVULGATION 1/18 - DOSSIER SECONDAIRES/18003A - Dossiers cour civile - Criminelle & pénale/Palais de justice Montréal/231116 - 500-11-057525-194/Pièce 279 ( suite de 278 Pièce-25 )/Pièce P-46 - Demande introductive instance Cour Sup 540-17-012712-179 (Gaudet c. De
+
+  FILE: Pièce 9 -Demande introductive d'instance.pdf
+  Type: 
+  Blob: extracted-text/Divulgation_  ORIBUS - DIVULGATION 1_18 - DOSSIER SECONDAIRES_18003A - Dossiers cour civile - Criminelle & pénale_Palais de justice Joliette_231115 - 705-17-007541-178_Pièce 9 -Demande introductive d'instance.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Divulgation/%20%20ORIBUS%20-%20DIVULGATION%201/18%20-%20DOSSIER%20SECONDAIRES/18003A%20-%20Dossiers%20cour%20civile%20-%20Criminelle%20%26%20pe%CC%81nale/Palais%20de%20justice%20Joliette/231115%20-%20705-17-007541-178/Pie%CC%80ce%209%20-Demande%20introductive%20d%27instance.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 43 found, total 68778 chars (smart selected 6670 chars)
+  Content preview (first 300 chars):
+    | Source: Divulgation/  ORIBUS - DIVULGATION 1/18 - DOSSIER SECONDAIRES/18003A - Dossiers cour civile - Criminelle & pénale/Palais de justice Joliette/231115 - 705-17-007541-178/Pièce 9 -Demande introductive d'instance.pdf
+    | Type: PDF
+    | ============================================================
+    | 
+    | : PIÈ
+
+  FILE: DP-0322 - Mandat au notaire - Gaudet (4) Saint-Lin 2014-10-27.pdf
+  Type: 
+  Blob: extracted-text/Antérieur_705-17-007541-178 ST-LIN RAYMOND ET AL_PROCÉDURES_DÉFENSE FRANCIS ALERTE_Mandat au notaire_DP-0322 - Mandat au notaire - Gaudet (4) Saint-Lin 2014-10-27.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Ante%CC%81rieur/705-17-007541-178%20ST-LIN%20RAYMOND%20ET%20AL/PROCE%CC%81DURES/DE%CC%81FENSE%20FRANCIS%20ALERTE/Mandat%20au%20notaire/DP-0322%20-%20Mandat%20au%20notaire%20-%20Gaudet%20%284%29%20Saint-Lin%202014-10-27.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 4 found, total 5949 chars (smart selected 5952 chars)
+  Content preview (first 300 chars):
+    | IdéalFinance HYPOTHÈQUES ALTERNATIVES ALTERNATIVE MORTGAGE À : Saint-Jérôme Date : 27 octobre 2014 # prêt : DP-0322 Infos emprunteur (s) Emprunteur : Olivier Gaudet (4) Emprunteur : Infos notaire Notaire : Me Pierre Aubin Détails de l'hypothèque Montant : 1 150 000.00 $ Fréquence : Capitalisation me
+
+  FILE: 150715-ID-Mandat notaire Caon 700K Brompton.pdf
+  Type: 
+  Blob: extracted-text/internal/PROJETS/BROMPTON/COMMUNICATIONS/2- Communications avec le bureau du notaire/150715-ID-Mandat notaire Caon 700K Brompton.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents-internal/PROJETS/BROMPTON/COMMUNICATIONS/2-%20Communications%20avec%20le%20bureau%20du%20notaire/150715-ID-Mandat%20notaire%20Caon%20700K%20Brompton.pdf?sp=rwl&st=2026-03-19T15:21:21Z&se=2026-04-19T23:36:21Z&spr=https&sv=2024-11-04&sr=c&sig=vKrMJFzFtoM%2FdtW6N%2BbhNypEgn2l58ffkoC3tVg4yCs%3D
+  Index chunks: 4 found, total 5849 chars (smart selected 5852 chars)
+  Content preview (first 300 chars):
+    | IF IdéalFinance HYPOTHÈQUES ALTERNATIVES ALTERNATIVE MORTGAGE Mandat au notaire Prêt hypothécaire - à terme À : Saint-Jérôme Date : 15 juillet 2015 # prêt : DP-0372 DDH : Jean-François Desormeaux Souscripteur : Jean-François Desormeaux Infos emprunteur (s) Emprunteur : Caution: 9320-0715 Québec inc 
+
+  FILE: 150304-ID-10-19 suivi déboursé (Raymond) St-Alphonse.pdf
+  Type: 
+  Blob: extracted-text/internal/PROJETS/ST-ALPHONSE DE RODRIGUEZ/GESTION DU PROJETS/4- Dossier de suivi de prêts_prêteurs/150304-ID-10-19 suivi déboursé (Raymond) St-Alphonse.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents-internal/PROJETS/ST-ALPHONSE%20DE%20RODRIGUEZ/GESTION%20DU%20PROJETS/4-%20Dossier%20de%20suivi%20de%20pr%C3%AAts_pr%C3%AAteurs/150304-ID-10-19%20suivi%20d%C3%A9bours%C3%A9%20%28Raymond%29%20St-Alphonse.pdf?sp=rwl&st=2026-03-19T15:21:21Z&se=2026-04-19T23:36:21Z&spr=https&sv=2024-11-04&sr=c&sig=vKrMJFzFtoM%2FdtW6N%2BbhNypEgn2l58ffkoC3tVg4yCs%3D
+  Index chunks: 1 found, total 683 chars (smart selected 683 chars)
+  Content preview (first 300 chars):
+    | Suivi Déboursé(s) Investisseur Investisseur: 9000-3153 Québec Inc.(Raymond Léon) Emprunteur: 9303-6234 Québec Inc.(2) (terrains Saint-Alphonse) Échéance: 04-03-16 Date: 27 mars 2015 # PRÊT ADRESSE DP-0347 Saint-Alphonse (terrains) ACTE PRÊT 284 000,00 $ DATE DÉBOURSÉ NOTAIRE 284 000,00 $ 04-03-15 DA
+
+  FILE: 151002-ID-VCharton Mandat et Courriel Inv St-Esprit.pdf
+  Type: 
+  Blob: extracted-text/internal/PROJETS/ST-ESPRIT- 120 rue St-ISIDORE/COMMUNICATIONS/2- Communications avec le bureau du notaire/151002-ID-VCharton Mandat et Courriel Inv St-Esprit.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents-internal/PROJETS/ST-ESPRIT-%20120%20rue%20St-ISIDORE/COMMUNICATIONS/2-%20Communications%20avec%20le%20bureau%20du%20notaire/151002-ID-VCharton%20Mandat%20et%20Courriel%20Inv%20St-Esprit.pdf?sp=rwl&st=2026-03-19T15:21:21Z&se=2026-04-19T23:36:21Z&spr=https&sv=2024-11-04&sr=c&sig=vKrMJFzFtoM%2FdtW6N%2BbhNypEgn2l58ffkoC3tVg4yCs%3D
+  Index chunks: 1 found, total 914 chars (smart selected 914 chars)
+  Content preview (first 300 chars):
+    | De : Ideal Finance À : Lucie Lafontaine <lucie@lamoureuxnotaires.ca> (lucie@lamoureuxnotaires.ca) Cc : Desoremaux Jean-Francois (jfdesormeaux@idealfinance.ca) Objet : Documents M Blache Date : 2 octobre 2015 12:46:00 Pièces jointes : Mandat notaire St-Esprit-construction-Blache-2015-10-02.pdf image0
+
+  FILE: 170321-ID-à Lucie Mandat St-Augustin.pdf
+  Type: 
+  Blob: extracted-text/internal/PROJETS/ST-AUGUSTIN DESMAURES/COMMUNICATIONS/2- Communications avec le bureau du notaire/170321-ID-à Lucie Mandat St-Augustin.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents-internal/PROJETS/ST-AUGUSTIN%20DESMAURES/COMMUNICATIONS/2-%20Communications%20avec%20le%20bureau%20du%20notaire/170321-ID-%C3%A0%20Lucie%20Mandat%20St-Augustin.pdf?sp=rwl&st=2026-03-19T15:21:21Z&se=2026-04-19T23:36:21Z&spr=https&sv=2024-11-04&sr=c&sig=vKrMJFzFtoM%2FdtW6N%2BbhNypEgn2l58ffkoC3tVg4yCs%3D
+  Index chunks: 1 found, total 892 chars (smart selected 892 chars)
+  Content preview (first 300 chars):
+    | De : Lucie Lafontaine À : Véronique Objet : TR: mandat notaire corrigé prêt St-Augustin. Date : 21 mars 2017 09:55:16 Pièces jointes : Mandat notaire St-Augustin.xlsx Lucie Lafontaine, adjointe Me Pierre Aubin, notaire Me Alain Lamoureux, notaire 333, boul. St-Martin Ouest - bureau 214 Laval, Québec
+
+  FILE: 20210713-091 Me Choinière Désormeaux.pdf
+  Type: 
+  Blob: extracted-text/internal/LEGAL 3/INTERRO ST-LIN LEON RAYMOND/INTERROGATOIRE JFD/20210713-091 Me Choinière Désormeaux.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents-internal/LEGAL%203/INTERRO%20ST-LIN%20LEON%20RAYMOND/INTERROGATOIRE%20JFD/20210713-091%20Me%20Choini%C3%A8re%20D%C3%A9sormeaux.pdf?sp=rwl&st=2026-03-19T15:21:21Z&se=2026-04-19T23:36:21Z&spr=https&sv=2024-11-04&sr=c&sig=vKrMJFzFtoM%2FdtW6N%2BbhNypEgn2l58ffkoC3tVg4yCs%3D
+  Index chunks: 50 found, total 73597 chars (smart selected 6670 chars)
+  Content preview (first 300 chars):
+    | CANADA PROVINCE DE QUÉBEC DISTRICT DE JOLIETTE Nº: 705-17-007541-178 COUR SUPÉRIEURE ( Chambre civile) LÉON RAYMOND -et- GASTON LEDUC -et- ANNE-SOPHIE LEDUC -et- 7327587 CANADA INC. -et- YVES BLACHE -et- 9145-3639 QUÉBEC INC. -et- 9228-6459 QUÉBEC INC. -et- NOËL BEAULIEU -et- PATRICK MORYOUSSEF, dem
+
+--- END SOURCE CONTENT ---
+
+--- GROUNDING VERIFICATION ---
+  Status: GROUNDED (confidence: high)
+  Verified claims (1):
+    + The AI did not find specific information about a notarized act concerning '4 lots' in the provided documents.
+  Missing info from source (1):
+    - The source documents contain references to specific lots and dates, such as lot 4 079 951 and the date March 31, 2015, but the AI did not mention these details in its response.
+  Notes: The AI's response is accurate in stating that no specific information about a notarized act for '4 lots' was found in the provided documents. However, the source documents do mention specific lots and dates that could be relevant to the user's query, which the AI did not include in its response.
+
+--- END VERIFICATION ---
+
+################################################################################
+# TEST 4
+################################################################################
+QUERY: Donne moi le courriel investisseurs ou partenaire envoyer à Solange paquette pour Saint-Charles de borome pour 240,000$.
+
+INTENT: answer
+ANSWER (1073 chars):
+  Le courriel envoyé à Solange Paquette concernant son investissement de $240,000.00 dans le projet de Saint-Charles-Borromée est le suivant :
+  
+  **Contenu du courriel :**  
+  > **Objet :** Dossier Joliette/Saint-Charles-Borromée  
+  > **Expéditeur :** Denise Bélanger <dbelanger@idealfinance.ca>  
+  > **Destinataire :** Solange Paquette <angepaq55@hotmail.com>  
+  > **Date :** 5 décembre 2014, 11:18  
+  >  
+  > Bonjour Madame Paquette,  
+  >  
+  > Pour faire suite à vos discussions avec M. Jean-François Desormeaux, je vous fais parvenir le courriel investisseur correspondant à votre investissement de 240 500 $ dans notre projet de Joliette (lot 2 901 481).  
+  >  
+  > Merci et bonne journée.  
+  >  
+  > Denise Bélanger  
+  > Directrice, exploitation et administration  
+  > TÉL. : 450 438-6492  
+  > FAX : 450 438-8798  
+  > 7, rue John-F. Kennedy, local 11  
+  > Saint-Jérôme (Québec) J7Y 4B4  
+  
+  **Sources :**  
+  - 🔴 Confidential Source: "150216-ID-D Bélanger à Paquette 9201-5155 St-Charles 13-15.pdf"  
+  - 📗 External | "20_Courriel du 5 décembre 2014 de Denise Bélanger à Solange Paquette cc JFD.pdf"
+
+--- SOURCE DOCUMENTS CONTENT ---
+  Claim keywords extracted: ['5 décembre 2014', 'angepaq55@hotmail.com', 'lot 2 901 481', '20_Courriel du 5 décembre 2014 de Denise', 'dbelanger@idealfinance.ca', 'Confidential Source', 'François Desormeaux', '$240000.00', 'Solange Paquette', '150216-ID-D Bélanger à Paquette 9201-515', 'Bonjour Madame Paquette', 'Dossier Joliette', '$', '240500$', 'Denise Bélanger']
+  Content budget: 7142 chars/file for 14 files
+
+  FILE: 12002.03K - 181120 - Analyse - Lot 16-2772.pdf
+  Type: 
+  Blob: extracted-text/Divulgation_  ORIBUS - DIVULGATION 1_12 - PERQUISITION ENTREPRISE_12002 - IDÉAL DÉVELOPPEMENT_12002.03K - 181120 - Analyse - Lot 16-2772.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Divulgation/%20%20ORIBUS%20-%20DIVULGATION%201/12%20-%20PERQUISITION%20ENTREPRISE/12002%20-%20IDE%CC%81AL%20DE%CC%81VELOPPEMENT/12002.03K%20-%20181120%20-%20Analyse%20-%20Lot%2016-2772.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 50 found, total 77740 chars (smart selected 7146 chars)
+  Content preview (first 300 chars):
+    | ant Olivier GAUDET : > Le 2015-12-23, un avis de bail (22 051 868) est inscrit ayant comme locataire Subway Franchise. > Le 2016-02-08, un avis de bail excédant 40 ans (22 115 271) est inscrit par le Groupe Harnois. Item 31 (pp. 484-492) Par 91486 p.1 Pour enquête seulement Dossier clos ou Date de r
+
+  FILE: 150216-ID-D Bélanger à Paquette 9201-5155 St-Charles 13-15.pdf
+  Type: 
+  Blob: extracted-text/internal/PROJETS/ST-ESPRIT- 120 rue St-ISIDORE/COMMUNICATIONS/150216-ID-D Bélanger à Paquette 9201-5155 St-Charles 13-15.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents-internal/PROJETS/ST-ESPRIT-%20120%20rue%20St-ISIDORE/COMMUNICATIONS/150216-ID-D%20B%C3%A9langer%20%C3%A0%20Paquette%209201-5155%20St-Charles%2013-15.pdf?sp=rwl&st=2026-03-19T15:21:21Z&se=2026-04-19T23:36:21Z&spr=https&sv=2024-11-04&sr=c&sig=vKrMJFzFtoM%2FdtW6N%2BbhNypEgn2l58ffkoC3tVg4yCs%3D
+  Index chunks: 4 found, total 5545 chars (smart selected 5548 chars)
+  Content preview (first 300 chars):
+    |  11:42, Denise Bélanger <dbelanger@idealfinance.ca> a écrit : Bonjour Madame Paquette, La présente est pour confirmer votre conversation de ce matin avec M. Desormeaux. L'acte de prêt concernant notre projet de Saint-Charles- Borromée indique que les intérêts sont payables à la réalisation du projet
+
+  FILE: 08018.01N - 170124 -  Analyse - Remise volontaire 170119.pdf
+  Type: 
+  Blob: extracted-text/Antérieur_Analyse_42. PAQUETTE, Solange_08018.01N - 170124 -  Analyse - Remise volontaire 170119.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Ante%CC%81rieur/Analyse/42.%20PAQUETTE%2C%20Solange/08018.01N%20-%20170124%20-%20%20Analyse%20-%20Remise%20volontaire%20170119.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 13 found, total 18454 chars (smart selected 7146 chars)
+  Content preview (first 300 chars):
+    |  5 0 1 |1 ,5 |1 2 |0 3 |00 11 500 000$, le 15 septembre 2014. Cet argent provient de la vente des parts de Mme PAQUETTE dans une résidence pour personnes âgées selon sa déclaration. o Le deuxième relevé est pour la période du 1er octobre au 31 octobre 2014. L'on voit un retrait de 200 002,00$, le 17
+
+  FILE: Courriel.pdf
+  Type: 
+  Blob: extracted-text/Antérieur_Analyse_42. PAQUETTE, Solange_08018.02G - 170119 - Remise volontaire - Courriels - Documents_Courriel 2015-02-16_Courriel.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Ante%CC%81rieur/Analyse/42.%20PAQUETTE%2C%20Solange/08018.02G%20-%20170119%20-%20Remise%20volontaire%20-%20Courriels%20-%20Documents/Courriel%202015-02-16/Courriel.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 4 found, total 5692 chars (smart selected 5695 chars)
+  Content preview (first 300 chars):
+    | 8 7, rue John-F .- Kennedy, local 11 Saint-Jérôme (Québec) J7Y 4B4 De : Denise Bélanger C1 Nominatif Envoyé : 5 décembre 2014 11:18 À : C1 Nominatif Cc : Desoremaux Jean-François (jfdesormeaux@idealfinance.ca) Objet : Dossier Joliette/Saint-Charles-Borromée Bonjour Madame Paquette, Pour faire suite 
+
+  FILE: 141211-ID-D Bélanger à Paquette 9201-5155 St-Charles 13-15.pdf
+  Type: 
+  Blob: extracted-text/internal/PROJETS/ST-ESPRIT- 120 rue St-ISIDORE/COMMUNICATIONS/141211-ID-D Bélanger à Paquette 9201-5155 St-Charles 13-15.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents-internal/PROJETS/ST-ESPRIT-%20120%20rue%20St-ISIDORE/COMMUNICATIONS/141211-ID-D%20B%C3%A9langer%20%C3%A0%20Paquette%209201-5155%20St-Charles%2013-15.pdf?sp=rwl&st=2026-03-19T15:21:21Z&se=2026-04-19T23:36:21Z&spr=https&sv=2024-11-04&sr=c&sig=vKrMJFzFtoM%2FdtW6N%2BbhNypEgn2l58ffkoC3tVg4yCs%3D
+  Index chunks: 2 found, total 2380 chars (smart selected 2381 chars)
+  Content preview (first 300 chars):
+    |  local 11 Saint-Jérôme (Québec) J7Y 4B4 De : Denise Bélanger [mailto:dbelanger@idealfinance.ca] Envoyé : 5 décembre 2014 11:18 À : 'angepaq55@hotmail.com' Cc : Desoremaux Jean-François (jfdesormeaux@idealfinance.ca) Objet : Dossier Joliette/Saint-Charles-Borromée Bonjour Madame Paquette, Pour faire 
+
+  FILE: 540-01-111050-236 2025-01-28 (Benoit Charron et Als).pdf
+  Type: 
+  Blob: extracted-text/internal/LEGAL 3/Transcriptions/540-01-111050-236 2025-01-28 (Benoit Charron et Als).pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents-internal/LEGAL%203/Transcriptions/540-01-111050-236%202025-01-28%20%28Benoit%20Charron%20et%20Als%29.pdf?sp=rwl&st=2026-03-19T15:21:21Z&se=2026-04-19T23:36:21Z&spr=https&sv=2024-11-04&sr=c&sig=vKrMJFzFtoM%2FdtW6N%2BbhNypEgn2l58ffkoC3tVg4yCs%3D
+  Index chunks: 50 found, total 75682 chars (smart selected 7146 chars)
+  Content preview (first 300 chars):
+    | elin STENOGRAPHE OFFICIELLE
+    | 
+    | - 13 - STÉPHANE GOULET Interrogatoire Me VINCENT BERNIER 540-01-111050-236 28 janvier 2025 1 investissiez? 2 R. C'est Jean-François Desormeaux. 3 Q. O.K. Parfait. Je ne vous garderai pas très très longtemps, Monsieur Goulet, compte tenu justement du fait que votre déclar
+
+  FILE: 150219-ID-D Bélanger Mandat et Courriel Inv St-Augustin b.pdf
+  Type: 
+  Blob: extracted-text/internal/PROJETS/ST-AUGUSTIN DESMAURES/COMMUNICATIONS/2- Communications avec le bureau du notaire/150219-ID-D Bélanger Mandat et Courriel Inv St-Augustin b.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents-internal/PROJETS/ST-AUGUSTIN%20DESMAURES/COMMUNICATIONS/2-%20Communications%20avec%20le%20bureau%20du%20notaire/150219-ID-D%20B%C3%A9langer%20Mandat%20et%20Courriel%20Inv%20St-Augustin%20b.pdf?sp=rwl&st=2026-03-19T15:21:21Z&se=2026-04-19T23:36:21Z&spr=https&sv=2024-11-04&sr=c&sig=vKrMJFzFtoM%2FdtW6N%2BbhNypEgn2l58ffkoC3tVg4yCs%3D
+  Index chunks: 1 found, total 1145 chars (smart selected 1145 chars)
+  Content preview (first 300 chars):
+    | De : Denise Bélanger À : lucie@lamoureuxnotaires.ca Cc : info@idealfinance.ca; flariviere@idealfinance.ca Objet : Nouveaux courriels investisseurs pour Saint-Charles-Borromée - 170, de la Visitation (Olivier Gaudet 11, DP- 0342) Date : 19 février 2015 16:12:17 Pièces jointes : =2811=29 - = Saint-Cha
+
+  FILE: 20_Courriel du 5 décembre 2014 de Denise Bélanger à Solange Paquette cc JFD.pdf
+  Type: 
+  Blob: extracted-text/  Tableau de preuve - Février 2026/COURRIELS/20_Courriel du 5 décembre 2014 de Denise Bélanger à Solange Paquette cc JFD.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/%20%20Tableau%20de%20preuve%20-%20Fe%CC%81vrier%202026/COURRIELS/20_Courriel%20du%205%20de%CC%81cembre%202014%20de%20Denise%20Be%CC%81langer%20a%CC%80%20Solange%20Paquette%20cc%20JFD.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 1 found, total 884 chars (smart selected 884 chars)
+  Content preview (first 300 chars):
+    | Dallaire,Sophie
+    | De:
+    | solange paquette
+    | Envoyé:
+    | 19 janvier 2017 13:20
+    | À:
+    | Dallaire,Sophie
+    | Objet:
+    | Fwd: Dossier Joliette/Saint-Charles-Borromée
+    | Pièces jointes:
+    | image001.jpg; ATT00001.htm; Courriel investisseur - DP-0335 Gaudet (15) - Joliette -
+    | Paquette premier rang 1,55M - 2014-12-05.pdf; ATT00002.htm
+    | En
+
+  FILE: Courriel révisé du 10 décembre 2014 de Denise Bélanger à Solange Paquette cc JFD.pdf
+  Type: 
+  Blob: extracted-text/  Tableau de preuve - Février 2026_TÉMOINS_PAQUETTTE, SOLANGE_Courriel révisé du 10 décembre 2014 de Denise Bélanger à Solange Paquette cc JFD.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/%20%20Tableau%20de%20preuve%20-%20Fe%CC%81vrier%202026/TE%CC%81MOINS/PAQUETTTE%2C%20SOLANGE/Courriel%20re%CC%81vise%CC%81%20du%2010%20de%CC%81cembre%202014%20de%20Denise%20Be%CC%81langer%20a%CC%80%20Solange%20Paquette%20cc%20JFD.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 1 found, total 828 chars (smart selected 828 chars)
+  Content preview (first 300 chars):
+    | Dallaire,Sophie De: solange paquette Envoyé: 19 janvier 2017 13:20 À: Dallaire,Sophie Objet: Fwd: Dossier Joliette/Saint-Charles-Borromée Pièces jointes: image001.jpg; ATT00001.htm; image001.jpg; ATT00002.htm; Courriel_investisseur _-_ DP-0336_Gaudet _= 2821=29 _-_ Joliette= - Paquette deuxième rang
+
+  FILE: 23_Courriel révisé du 10 décembre 2014 de Denise Bélanger à Solange Paquette cc JFD.pdf
+  Type: 
+  Blob: extracted-text/  Tableau de preuve - Février 2026_COURRIELS_23_Courriel révisé du 10 décembre 2014 de Denise Bélanger à Solange Paquette cc JFD.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/%20%20Tableau%20de%20preuve%20-%20Fe%CC%81vrier%202026/COURRIELS/23_Courriel%20re%CC%81vise%CC%81%20du%2010%20de%CC%81cembre%202014%20de%20Denise%20Be%CC%81langer%20a%CC%80%20Solange%20Paquette%20cc%20JFD.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 1 found, total 828 chars (smart selected 828 chars)
+  Content preview (first 300 chars):
+    | Dallaire,Sophie De: solange paquette Envoyé: 19 janvier 2017 13:20 À: Dallaire,Sophie Objet: Fwd: Dossier Joliette/Saint-Charles-Borromée Pièces jointes: image001.jpg; ATT00001.htm; image001.jpg; ATT00002.htm; Courriel_investisseur _-_ DP-0336_Gaudet _= 2821=29 _-_ Joliette= - Paquette deuxième rang
+
+  FILE: Documents [p.274 à 283].pdf
+  Type: 
+  Blob: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_E - Témoins > Les projets immobiliers_IV. Les investisseurs_32. Stéphane GOULET_Pièces_08032.01G - 170223 Document promotionnel de Idéal Développment de novembre 2015, au sujet de Saint-Lin-Laurentides_Documents [p.274 à 283].pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Ante%CC%81rieur/231219%20-%20Cahier%20de%20preuve%20Oribus/E%20-%20Te%CC%81moins%20%3E%20Les%20projets%20immobiliers/IV.%20Les%20investisseurs/32.%20Ste%CC%81phane%20GOULET/Pie%CC%80ces/08032.01G%20-%20170223%20Document%20promotionnel%20de%20Ide%CC%81al%20De%CC%81veloppment%20de%20novembre%202015%2C%20au%20sujet%20de%20Saint-Lin-Laurentides/Documents%20%5Bp.274%20a%CC%80%20283%5D.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 50 found, total 80876 chars (smart selected 7146 chars)
+  Content preview (first 300 chars):
+    | Stéphane Goulet De: France La Rivière C1 Nominatif Envoyé: 6 octobre 2014 13:30 À: C1 Nominatif Cc: Desormeaux Jean-François Objet: dossier papineau Pièces jointes: 10-13 Courriel investisseur-papineau-goulet.pdf; Évaluation RAPPORT 4071D-4212 - S.pdf; éval-inspection- RAPPORT 4071D-4370 - S.pdf Bon
+
+  FILE: Documents [p.304 et 305].pdf
+  Type: 
+  Blob: extracted-text/Antérieur_Analyse_41. GOULET, Stéphane_Pièces_08032.01G - 170223 Courriel de Véronique Charton intitué "Suivi rencontre du 7 juin dernier", daté du 15 juin 2016_Documents [p.304 et 305].pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Ante%CC%81rieur/Analyse/41.%20GOULET%2C%20Ste%CC%81phane/Pie%CC%80ces/08032.01G%20-%20170223%20Courriel%20de%20Ve%CC%81ronique%20Charton%20intitue%CC%81%20%22Suivi%20rencontre%20du%207%20juin%20dernier%22%2C%20date%CC%81%20du%2015%20juin%202016/Documents%20%5Bp.304%20et%20305%5D.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 50 found, total 80876 chars (smart selected 7146 chars)
+  Content preview (first 300 chars):
+    | Stéphane Goulet De: France La Rivière C1 Nominatif Envoyé: 6 octobre 2014 13:30 À: C1 Nominatif Cc: Desormeaux Jean-François Objet: dossier papineau Pièces jointes: 10-13 Courriel investisseur-papineau-goulet.pdf; Évaluation RAPPORT 4071D-4212 - S.pdf; éval-inspection- RAPPORT 4071D-4370 - S.pdf Bon
+
+  FILE: Documents [p.51 et 52].pdf
+  Type: 
+  Blob: extracted-text/Antérieur_Analyse_41. GOULET, Stéphane_Pièces_08032.01G - 170223 Document de Idéal Développement en titre "Différentes alternatives", avec notes manuscrites_Documents [p.51 et 52].pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Ante%CC%81rieur/Analyse/41.%20GOULET%2C%20Ste%CC%81phane/Pie%CC%80ces/08032.01G%20-%20170223%20Document%20de%20Ide%CC%81al%20De%CC%81veloppement%20en%20titre%20%22Diffe%CC%81rentes%20alternatives%22%2C%20avec%20notes%20manuscrites/Documents%20%5Bp.51%20et%2052%5D.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 50 found, total 80876 chars (smart selected 7146 chars)
+  Content preview (first 300 chars):
+    | Stéphane Goulet De: France La Rivière C1 Nominatif Envoyé: 6 octobre 2014 13:30 À: C1 Nominatif Cc: Desormeaux Jean-François Objet: dossier papineau Pièces jointes: 10-13 Courriel investisseur-papineau-goulet.pdf; Évaluation RAPPORT 4071D-4212 - S.pdf; éval-inspection- RAPPORT 4071D-4370 - S.pdf Bon
+
+  FILE: EP3.151. Courriel du 5 décembre 2014 de Denise BÉLANGER à Stéphane Goulet.pdf
+  Type: 
+  Blob: extracted-text/Antérieur_Pièces EP_EP-3_1 - Pièces à déposer_EP3.151. Courriel du 5 décembre 2014 de Denise BÉLANGER à Stéphane Goulet.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Ante%CC%81rieur/Pie%CC%80ces%20EP/EP-3/1%20-%20Pie%CC%80ces%20a%CC%80%20de%CC%81poser/EP3.151.%20Courriel%20du%205%20de%CC%81cembre%202014%20de%20Denise%20BE%CC%81LANGER%20a%CC%80%20Ste%CC%81phane%20Goulet.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 3 found, total 3806 chars (smart selected 3808 chars)
+  Content preview (first 300 chars):
+    | Source: Antérieur/Pièces EP/EP-3/1 - Pièces à déposer/EP3.151. Courriel du 5 décembre 2014 de Denise BÉLANGER à Stéphane Goulet.pdf
+    | Type: PDF
+    | ============================================================
+    | 
+    | RE: Dossier Joliette/ Saint-Charles-Borromée - Stéphane Goulet Page 1 sur 2 RE: Dossier
+
+--- END SOURCE CONTENT ---
+
+--- GROUNDING VERIFICATION ---
+  Status: NOT GROUNDED (confidence: low)
+  Verified claims (3):
+    + The email was sent by Denise Bélanger to Solange Paquette on December 5, 2014, at 11:18 AM.
+    + The email mentions an investment of $240,500 in the project of Joliette (lot 2 901 481).
+    + The email was sent from dbelanger@idealfinance.ca to angepaq55@hotmail.com, with Jean-François Desormeaux cc'd.
+  UNVERIFIED claims (2):
+    ? The email content provided in the AI's answer matches the exact wording of the email in the source documents.
+    ? The email was sent specifically for Saint-Charles-Borromée for $240,000.
+  HALLUCINATIONS (2):
+    X The email content provided in the AI's answer does not match the exact wording of the email in the source documents.
+    X The email was sent specifically for Saint-Charles-Borromée for $240,000.
+  Missing info from source (2):
+    - The source documents mention an investment of $240,500, not $240,000.
+    - The email content in the source documents does not match the AI's provided email content.
+  Notes: The AI's answer contains inaccuracies regarding the email content and the investment amount. The source documents confirm an investment of $240,500, not $240,000, and the email content provided by the AI does not match the source documents.
+
+--- END VERIFICATION ---
+
+################################################################################
+# TEST 5
+################################################################################
+QUERY: Peut tu trouver les courriel que j ai envoyer à l évaluateur BBD Philippe Lamarre.
+
+INTENT: discovery
+ANSWER (11165 chars):
+  Found **31** documents matching your criteria (**document_type**: Courriel, **person**: Philippe Lamarre, **organization**: BBD, **keyword**: évaluateur).
+  
+  Showing top 30 results:
+  
+  1. **Rapport d'évaluation du 24 septembre 2015 de BBD évaluateurs agrées, Philippe Lamarre, pour le 120, rue St-Isidore à Saint-Esprit.pdf**
+     Type: rapport — évaluation | 📗 External
+     Persons: Philippe Lamarre, Jean-François Désormeaux, Olivier Gaudet, Meir Klein, Jagmohan Singh Bhatia
+     Summary: Ce rapport d'évaluation, rédigé par Philippe Lamarre de BBD Évaluateurs Agréés, estime la valeur marchande potentielle d'une propriété commerciale à c...
+  
+  2. **EP3.104. Rapport d'évaluation du 29 septembre 2015 de Philippe Lamarre pour le 120, rue St-Isidore à Saint-Esprit.pdf**
+     Type: rapport — évaluation | 📗 External
+     Persons: Philippe Lamarre, Jean-François Désormeaux, Olivier Gaudet, Marc Bergeron, Jean-Guy Deneault
+     Summary: Ce rapport d'évaluation, rédigé par Philippe Lamarre, estime la valeur marchande potentielle d'une propriété commerciale à construire au 120, rue St-I...
+  
+  3. **EP3.104. Rapport d'évaluation du 29 septembre 2015 de Philippe Lamarre pour le 120, rue St-Isidore à Saint-Esprit.pdf**
+     Type: rapport — évaluation | 📗 External
+     Persons: Philippe Lamarre, Jean-François Désormeaux, Olivier Gaudet, Marc Bergeron, Jean-Guy Deneault
+     Summary: Ce rapport d'évaluation, rédigé par Philippe Lamarre le 29 septembre 2015, estime la valeur marchande potentielle d'une propriété commerciale à constr...
+  
+  4. **EP3.104. Rapport d'évaluation du 29 septembre 2015 de Philippe Lamarre pour le 120, rue St-Isidore à Saint-Esprit.pdf**
+     Type: rapport — évaluation | 📗 External
+     Persons: Philippe Lamarre, Jean-François Désormeaux, Olivier Gaudet, Marc Bergeron, Jean-Guy Deneault
+     Summary: Ce rapport d'évaluation, rédigé par Philippe Lamarre, estime la valeur marchande potentielle d'une propriété commerciale à construire au 120, rue St-I...
+  
+  5. **PIÈCE D-6 En liasse - Évaluations des lots en litige - PARTIE 4.pdf**
+     Type: rapport — évaluation | 📗 External
+     Persons: Philippe Lamarre, Jean-François Désormeaux, Marc Bergeron, Jean-Guy Deneault, Patrick Dorval
+     Summary: Ce rapport d'évaluation, daté du 16 mars 2016, estime la valeur marchande potentielle d'une propriété commerciale à construire sur les lots 1 251 949 ...
+  
+  6. **170511-ID-Éval BBD St-Esprit.pdf**
+     Type: rapport — évaluation | 🔴 Internal
+     Persons: Marc Bergeron, Philippe Lamarre, Patrick Dorval, Charles-Olivier Granger, Christian Perron
+     Summary: Ce rapport d'évaluation, daté du 12 mai 2017, estime la valeur marchande potentielle d'une propriété commerciale à construire sur le lot 5 791 393, si...
+  
+  7. **OFFRE-STAUG(102)  BBD 15-02-2016.pdf**
+     Type: offre | 🔴 Internal
+     Persons: Marc Bergeron, Jean-Guy Deneault, Philippe Lamarre, Patrick Dorval, Charles-Olivier Granger
+     Summary: Offre de service de BBD Évaluateurs Agréés pour la réalisation de 13 rapports d'évaluation immobilière sur divers lots au Québec, en vue de financemen...
+  
+  8. **offre de service BBd.pdf**
+     Type: offre — service | 🔴 Internal
+     Persons: Marc Bergeron, Jean-Guy Deneault, Philippe Lamarre, Patrick Dorval, Charles-Olivier Granger
+     Summary: Offre de service de BBD Évaluateurs Agréés pour l'évaluation de 13 propriétés situées dans diverses localités du Québec, incluant des lots à Saint-Aug...
+  
+  9. **160215-ID-OS BBD Ste-Julienne 2.pdf**
+     Type: offre — service | 🔴 Internal
+     Persons: Marc Bergeron, Jean-Guy Deneault, Philippe Lamarre, Patrick Dorval, Charles-Olivier Granger
+     Summary: Ce document est une offre de service émise par BBD Évaluateurs Agréés à Idéal Développement pour l'évaluation de 13 propriétés situées dans diverses l...
+  
+  10. **160215-ID-OS BBD Ste-Julienne Petro.pdf**
+     Type: offre — service | 🔴 Internal
+     Persons: Marc Bergeron, Jean-Guy Deneault, Philippe Lamarre, Patrick Dorval, Charles-Olivier Granger
+     Summary: Offre de service de BBD Évaluateurs Agréés pour l'évaluation de 13 propriétés situées dans diverses localités du Québec, en vue de déterminer leur val...
+  
+  11. **151015-ID-Évaluation BBD-BRTON.pdf**
+     Type: rapport — évaluation | 🔴 Internal
+     Persons: Marc Bergeron, Jean-Guy Deneault, Philippe Lamarre, Patrick Dorval, Charles-Olivier Granger
+     Summary: Ce rapport d'évaluation, daté du 11 mars 2016, estime la valeur marchande potentielle d'une propriété commerciale à construire sur le lot 3 102 123 à ...
+  
+  12. **offre de service BBD.pdf**
+     Type: offre — service | 🔴 Internal
+     Persons: Marc Bergeron, Jean-Guy Deneault, Philippe Lamarre, Patrick Dorval, Charles-Olivier Granger
+     Summary: Offre de service de BBD Évaluateurs Agréés pour l'évaluation de 13 propriétés situées dans diverses localités du Québec, en vue de financement hypothé...
+  
+  13. **151015-ID-Éval BBD Trois-R Thibeau Commerce.pdf**
+     Type: rapport — évaluation | 🔴 Internal
+     Persons: Marc Bergeron, Jean-Guy Deneault, Philippe Lamarre, Patrick Dorval, Charles-Olivier Granger
+     Summary: Ce rapport d'évaluation, daté du 24 mars 2016, estime la valeur marchande d'une propriété commerciale à construire sur le lot 5 760 019, rue Duvernay,...
+  
+  14. **offre de service BBD.pdf**
+     Type: offre — service | 🔴 Internal
+     Persons: Marc Bergeron, Jean-Guy Deneault, Philippe Lamarre, Patrick Dorval, Charles-Olivier Granger
+     Summary: Ce document est une offre de service émise par BBD Évaluateurs Agréés pour l'évaluation de 13 propriétés situées dans diverses localités du Québec. Le...
+  
+  15. **151015-ID-Éval BBD ST AUGUSTIN Pétrolière.pdf**
+     Type: rapport — évaluation | 🔴 Internal
+     Persons: Marc Bergeron, Jean-Guy Deneault, Philippe Lamarre, Patrick Dorval, Charles-Olivier Granger
+     Summary: Ce rapport d'évaluation, daté du 16 mars 2016, estime la valeur marchande potentielle d'une station-service avec dépanneur et restaurant à construire ...
+  
+  16. **offre de service BBd.pdf**
+     Type: offre — service | 🔴 Internal
+     Persons: Marc Bergeron, Jean-Guy Deneault, Philippe Lamarre, Patrick Dorval, Charles-Olivier Granger
+     Summary: Ce document est une offre de service de BBD Évaluateurs Agréés pour l'évaluation de 13 propriétés situées dans diverses localités du Québec, en vue de...
+  
+  17. **151015-ID-Éval BBD STAUGUSTIN Restaurants.pdf**
+     Type: rapport — évaluation | 🔴 Internal
+     Persons: Marc Bergeron, Jean-Guy Deneault, Philippe Lamarre, Patrick Dorval, Charles-Olivier Granger
+     Summary: Ce rapport d'évaluation, daté du 24 mars 2016, estime la valeur marchande d'une propriété commerciale à construire sur le lot 5 845 977, situé à Saint...
+  
+  18. **offre de service BBD.pdf**
+     Type: offre — service | 🔴 Internal
+     Persons: Marc Bergeron, Jean-Guy Deneault, Philippe Lamarre, Patrick Dorval, Charles-Olivier Granger
+     Summary: Une offre de service de BBD Évaluateurs Agréés est adressée à Jean-François Désormeaux d'Idéal Développement pour l'évaluation de 13 propriétés située...
+  
+  19. **offre de service BBD.pdf**
+     Type: offre — service | 🔴 Internal
+     Persons: Marc Bergeron, Jean-Guy Deneault, Philippe Lamarre, Patrick Dorval, Charles-Olivier Granger
+     Summary: Ce document est une offre de service de BBD Évaluateurs Agréés pour l'évaluation de 13 propriétés situées dans diverses localités du Québec. Les évalu...
+  
+  20. **offre de service BBD.pdf**
+     Type: offre — service | 🔴 Internal
+     Persons: Marc Bergeron, Jean-Guy Deneault, Philippe Lamarre, Patrick Dorval, Charles-Olivier Granger
+     Summary: Une offre de service de BBD Évaluateurs Agréés est adressée à Idéal Développement pour l'évaluation de 13 propriétés situées dans différentes localité...
+  
+  21. **offre de service BBD.pdf**
+     Type: offre — service | 🔴 Internal
+     Persons: Marc Bergeron, Jean-Guy Deneault, Philippe Lamarre, Patrick Dorval, Charles-Olivier Granger
+     Summary: Une offre de service de BBD Évaluateurs Agréés est adressée à Idéal Développement pour l'évaluation de 13 propriétés situées dans différentes localité...
+  
+  22. **offre de service BBD.pdf**
+     Type: offre — service | 🔴 Internal
+     Persons: Marc Bergeron, Jean-Guy Deneault, Philippe Lamarre, Patrick Dorval, Charles-Olivier Granger
+     Summary: Offre de service de BBD Évaluateurs Agréés pour la réalisation de 13 rapports d'évaluation immobilière sur divers terrains et propriétés au Québec, en...
+  
+  23. **150924-ID-Évaluation BBD St-Esprit.pdf**
+     Type: rapport — évaluation | 🔴 Internal
+     Persons: Marc Bergeron, Jean-Guy Deneault, Philippe Lamarre, Patrick Dorval, Charles-Olivier Granger
+     Summary: Ce rapport d'évaluation, daté du 24 septembre 2015, estime la valeur marchande potentielle d'une propriété commerciale à construire à Saint-Esprit, Qu...
+  
+  24. **151015-ID-Éval BBD ST AUGUSTIN Free Standing.pdf**
+     Type: rapport — évaluation | 🔴 Internal
+     Persons: Marc Bergeron, Jean-Guy Deneault, Philippe Lamarre, Patrick Dorval, Charles-Olivier Granger
+     Summary: Ce rapport d'évaluation, daté du 24 mars 2016, estime la valeur marchande d'une propriété commerciale à construire sur le lot 5 845 978 à Saint-August...
+  
+  25. **160317-ID-Évaluation BBD Banque St-Charles Borromée (1).pdf**
+     Type: rapport — évaluation | 🔴 Internal
+     Persons: Marc Bergeron, Jean-Guy Deneault, Philippe Lamarre, Patrick Dorval, Charles-Olivier Granger
+     Summary: Ce rapport d'évaluation, daté du 17 mars 2016, estime la valeur marchande potentielle d'une propriété commerciale à construire au 13-15, rue de la Vis...
+  
+  26. **offre de service BBD.pdf**
+     Type: offre — service | 🔴 Internal
+     Persons: Marc Bergeron, Jean-Guy Deneault, Philippe Lamarre, Patrick Dorval, Charles-Olivier Granger
+     Summary: Offre de service de BBD Évaluateurs Agréés pour l'évaluation de 13 propriétés situées dans diverses localités du Québec, en vue de déterminer leur val...
+  
+  27. **offre de service BBD.pdf**
+     Type: offre — service | 🔴 Internal
+     Persons: Marc Bergeron, Jean-Guy Deneault, Philippe Lamarre, Patrick Dorval, Charles-Olivier Granger
+     Summary: BBD Évaluateurs Agréés propose une offre de service à Idéal Développement pour l'évaluation de 13 propriétés situées dans diverses localités du Québec...
+  
+  28. **offre de service BBD.pdf**
+     Type: offre — service | 🔴 Internal
+     Persons: Marc Bergeron, Jean-Guy Deneault, Philippe Lamarre, Patrick Dorval, Charles-Olivier Granger
+     Summary: Ce document est une offre de service émise par BBD Évaluateurs Agréés pour l'évaluation de 13 propriétés situées dans diverses localités du Québec. Le...
+  
+  29. **150924-ID-Evaluation  BBD St-Charles Borromée Chenoys.pdf**
+     Type: rapport — évaluation | 🔴 Internal
+     Persons: Marc Bergeron, Jean-Guy Deneault, Philippe Lamarre, Patrick Dorval, Charles-Olivier Granger
+     Summary: Ce rapport d'évaluation, daté du 29 septembre 2015, estime la valeur marchande potentielle d'une station-service avec dépanneur et lave-auto à constru...
+  
+  30. **151015- ID-Éval BBD MARIEN.pdf**
+     Type: rapport — évaluation | 🔴 Internal
+     Persons: Philippe Lamarre, Marc Bergeron, Jean-Guy Deneault, Patrick Dorval, Charles-Olivier Granger
+     Summary: Ce rapport d'évaluation, daté du 16 mars 2016, estime la valeur marchande potentielle d'une propriété commerciale à construire sur les lots 1 251 949 ...
+  
+
+--- SOURCE DOCUMENTS CONTENT ---
+  Claim keywords extracted: ['lot 5 791 393', 'lot 3 102 123', 'Internal\n   Persons', 'Guy Deneault', 'Banque St', 'Évaluateurs Agréés', 'lot 5 760 019', 'Patrick Dorval', 'Free Standing', 'Meir Klein', 'Marc Bergeron', '16 mars 2016', 'Jagmohan Singh Bhatia\n   Summary', '24 mars 2016', 'Olivier Granger\n   Summary', 'Christian Perron\n   Summary', 'lot 5 845 978', 'Charles Borromée Chenoys', '17 mars 2016', '29 septembre 2015']
+  Content budget: 6666 chars/file for 15 files
+
+  FILE: Rapport d'évaluation du 24 septembre 2015 de BBD évaluateurs agrées, Philippe Lamarre, pour le 120, rue St-Isidore à Saint-Esprit.pdf
+  Type: rapport
+  Blob: extracted-text/  Tableau de preuve - Février 2026_TÉMOINS_CHALIFOUX,JEAN_Rapport d'évaluation du 24 septembre 2015 de BBD évaluateurs agrées, Philippe Lamarre, pour le 120, rue St-Isidore à Saint-Esprit.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/%20%20Tableau%20de%20preuve%20-%20Fe%CC%81vrier%202026/TE%CC%81MOINS/CHALIFOUX%2CJEAN/Rapport%20d%27e%CC%81valuation%20du%2024%20septembre%202015%20de%20BBD%20e%CC%81valuateurs%20agre%CC%81es%2C%20Philippe%20Lamarre%2C%20pour%20le%20120%2C%20rue%20St-Isidore%20a%CC%80%20Saint-Esprit.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 34 found, total 57804 chars (smart selected 6670 chars)
+  Content preview (first 300 chars):
+    | Harnois Harnois Évaluation de la propriété sise au : 2 540 230 Ptie, cadastre du Québec 120, rue St-Isidore Saint-Esprit, Québec Dossier numéro : 15-09-1619
+    | 
+    | BBD Évaluateurs Agréés Consultants immobiliers AS Marc Bergeron, E.A. Jean-Guy Deneault, E.A. Philippe Lamarre, E.A. Patrick Dorval, E.A. Char
+
+  FILE: EP3.104. Rapport d'évaluation du 29 septembre 2015 de Philippe Lamarre pour le 120, rue St-Isidore à Saint-Esprit.pdf
+  Type: rapport
+  Blob: extracted-text/Antérieur_Pièces EP_EP-3_1 - Pièces à déposer_EP3.104. Rapport d'évaluation du 29 septembre 2015 de Philippe Lamarre pour le 120, rue St-Isidore à Saint-Esprit.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Ante%CC%81rieur/Pie%CC%80ces%20EP/EP-3/1%20-%20Pie%CC%80ces%20a%CC%80%20de%CC%81poser/EP3.104.%20Rapport%20d%27e%CC%81valuation%20du%2029%20septembre%202015%20de%20Philippe%20Lamarre%20pour%20le%20120%2C%20rue%20St-Isidore%20a%CC%80%20Saint-Esprit.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 34 found, total 58066 chars (smart selected 6670 chars)
+  Content preview (first 300 chars):
+    | Source: Antérieur/Pièces EP/EP-3/1 - Pièces à déposer/EP3.104. Rapport d'évaluation du 29 septembre 2015 de Philippe Lamarre pour le 120, rue St-Isidore à Saint-Esprit.pdf
+    | Type: PDF
+    | ============================================================
+    | 
+    | Harnois Harnois Évaluation de la propriété sise a
+
+  FILE: PIÈCE D-6 En liasse - Évaluations des lots en litige - PARTIE 4.pdf
+  Type: rapport
+  Blob: extracted-text/Divulgation_  ORIBUS - DIVULGATION 1_18 - DOSSIER SECONDAIRES_18003A - Dossiers cour civile - Criminelle & pénale_Palais de justice Laval_540-17-012632-179_P-31_DVD P-31_Pièces en défense_D-6 Évaluations des lots en litige_PIÈCE D-6 En liasse - Évaluations des lots en litige - PARTIE 4.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Divulgation/%20%20ORIBUS%20-%20DIVULGATION%201/18%20-%20DOSSIER%20SECONDAIRES/18003A%20-%20Dossiers%20cour%20civile%20-%20Criminelle%20%26%20pe%CC%81nale/Palais%20de%20justice%20Laval/540-17-012632-179/P-31/DVD%20P-31/Pie%CC%80ces%20en%20de%CC%81fense/D-6%20E%CC%81valuations%20des%20lots%20en%20litige/PIE%CC%80CE%20D-6%20En%20liasse%20-%20E%CC%81valuations%20des%20lots%20en%20litige%20-%20PARTIE%204.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 34 found, total 58133 chars (smart selected 6670 chars)
+  Content preview (first 300 chars):
+    | Source: Divulgation/  ORIBUS - DIVULGATION 1/18 - DOSSIER SECONDAIRES/18003A - Dossiers cour civile - Criminelle & pénale/Palais de justice Laval/540-17-012632-179/P-31/DVD P-31/Pièces en défense/D-6 Évaluations des lots en litige/PIÈCE D-6 En liasse - Évaluations des lots en litige - PARTIE 4
+
+  FILE: 170511-ID-Éval BBD St-Esprit.pdf
+  Type: rapport
+  Blob: extracted-text/internal/PROJETS/ST-ESPRIT- 120 rue St-ISIDORE/DÉVELOPPEMENT/2- ÉVALUATION/170511-ID-Éval BBD St-Esprit.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents-internal/PROJETS/ST-ESPRIT-%20120%20rue%20St-ISIDORE/D%C3%89VELOPPEMENT/2-%20%C3%89VALUATION/170511-ID-%C3%89val%20BBD%20St-Esprit.pdf?sp=rwl&st=2026-03-19T15:21:21Z&se=2026-04-19T23:36:21Z&spr=https&sv=2024-11-04&sr=c&sig=vKrMJFzFtoM%2FdtW6N%2BbhNypEgn2l58ffkoC3tVg4yCs%3D
+  Index chunks: 34 found, total 56155 chars (smart selected 6670 chars)
+  Content preview (first 300 chars):
+    | 1 RAPPORT D'ÉVALUATION 888888 R88888 B 1 T 11 Évaluation de la propriété à construire au : Lot 5 791 393, cadastre du Québec 120, rue St-Isidore Saint-Esprit, Québec L Dossier numéro : 11554 L BBD Evaluateurs ogyéés Consultants immobiliers - - 86, Boul. St-Luc, suite 210, St-Jean-sur-Richelieu, Québ
+
+  FILE: OFFRE-STAUG(102)  BBD 15-02-2016.pdf
+  Type: offre
+  Blob: extracted-text/internal/PROJETS/ST-AUGUSTIN DESMAURES/OFFRE DE SERVICES pour paiement/OFFRE-STAUG(102)  BBD 15-02-2016.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents-internal/PROJETS/ST-AUGUSTIN%20DESMAURES/OFFRE%20DE%20SERVICES%20pour%20paiement/OFFRE-STAUG%28102%29%20%20BBD%2015-02-2016.pdf?sp=rwl&st=2026-03-19T15:21:21Z&se=2026-04-19T23:36:21Z&spr=https&sv=2024-11-04&sr=c&sig=vKrMJFzFtoM%2FdtW6N%2BbhNypEgn2l58ffkoC3tVg4yCs%3D
+  Index chunks: 5 found, total 8203 chars (smart selected 6670 chars)
+  Content preview (first 300 chars):
+    | BBD Évaluateurs Agréés Consultants immobiliers Marc Bergeron, È.A. Jean-Guy Deneault, E.A. Philippe Lamarre, E.A. Patrick Dorval, E.A. Charles-Olivier Granger, E.A. Guillaume Mongrain, E.A. Idéal Développement a/s Jean-François Désormeaux 7, rue John-F. Kennedy, local 111 Saint-Jérôme (Québec) J7Y 4
+
+  FILE: offre de service BBd.pdf
+  Type: offre
+  Blob: extracted-text/internal/PROJETS/TROIS-RIVIÈRES-  THIBEAU et DUVERNAY (RESTO)/offre de service BBd.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents-internal/PROJETS/TROIS-RIVI%C3%88RES-%20%20THIBEAU%20et%20DUVERNAY%20%28RESTO%29/offre%20de%20service%20BBd.pdf?sp=rwl&st=2026-03-19T15:21:21Z&se=2026-04-19T23:36:21Z&spr=https&sv=2024-11-04&sr=c&sig=vKrMJFzFtoM%2FdtW6N%2BbhNypEgn2l58ffkoC3tVg4yCs%3D
+  Index chunks: 5 found, total 8203 chars (smart selected 6670 chars)
+  Content preview (first 300 chars):
+    | BBD Évaluateurs Agréés Consultants immobiliers Marc Bergeron, È.A. Jean-Guy Deneault, E.A. Philippe Lamarre, E.A. Patrick Dorval, E.A. Charles-Olivier Granger, E.A. Guillaume Mongrain, E.A. Idéal Développement a/s Jean-François Désormeaux 7, rue John-F. Kennedy, local 111 Saint-Jérôme (Québec) J7Y 4
+
+  FILE: 160215-ID-OS BBD Ste-Julienne 2.pdf
+  Type: offre
+  Blob: extracted-text/internal/PROJETS/STE-JULIENNE 2- 1992, route 125/GESTION DU PROJETS/3- Dépenses engagées par ID ou IF pour le développement/160215-ID-OS BBD Ste-Julienne 2.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents-internal/PROJETS/STE-JULIENNE%202-%201992%2C%20route%20125/GESTION%20DU%20PROJETS/3-%20D%C3%A9penses%20engag%C3%A9es%20par%20ID%20ou%20IF%20pour%20le%20d%C3%A9veloppement/160215-ID-OS%20BBD%20Ste-Julienne%202.pdf?sp=rwl&st=2026-03-19T15:21:21Z&se=2026-04-19T23:36:21Z&spr=https&sv=2024-11-04&sr=c&sig=vKrMJFzFtoM%2FdtW6N%2BbhNypEgn2l58ffkoC3tVg4yCs%3D
+  Index chunks: 5 found, total 8163 chars (smart selected 6670 chars)
+  Content preview (first 300 chars):
+    | BBD Évaluateurs Agréés Consultants immobiliers Marc Bergeron, È.A. Jean-Guy Deneault, E.A. Philippe Lamarre, E.A. Patrick Dorval, E.A. Charles-Olivier Granger, E.A. Guillaume Mongrain, E.A. Idéal Développement a/s Jean-François Désormeaux 7, rue John-F. Kennedy, local 111 Saint-Jérôme (Québec) J7Y 4
+
+  FILE: 160215-ID-OS BBD Ste-Julienne Petro.pdf
+  Type: offre
+  Blob: extracted-text/internal/PROJETS/ST-JULIENNE 1- 1219-1221, route 125 (PETRO)/GESTION DU PROJETS/3- Dépenses engagées par ID ou IF pour le développement/160215-ID-OS BBD Ste-Julienne Petro.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents-internal/PROJETS/ST-JULIENNE%201-%201219-1221%2C%20route%20125%20%28PETRO%29/GESTION%20DU%20PROJETS/3-%20D%C3%A9penses%20engag%C3%A9es%20par%20ID%20ou%20IF%20pour%20le%20d%C3%A9veloppement/160215-ID-OS%20BBD%20Ste-Julienne%20Petro.pdf?sp=rwl&st=2026-03-19T15:21:21Z&se=2026-04-19T23:36:21Z&spr=https&sv=2024-11-04&sr=c&sig=vKrMJFzFtoM%2FdtW6N%2BbhNypEgn2l58ffkoC3tVg4yCs%3D
+  Index chunks: 5 found, total 8203 chars (smart selected 6670 chars)
+  Content preview (first 300 chars):
+    | BBD Évaluateurs Agréés Consultants immobiliers Marc Bergeron, È.A. Jean-Guy Deneault, E.A. Philippe Lamarre, E.A. Patrick Dorval, E.A. Charles-Olivier Granger, E.A. Guillaume Mongrain, E.A. Idéal Développement a/s Jean-François Désormeaux 7, rue John-F. Kennedy, local 111 Saint-Jérôme (Québec) J7Y 4
+
+  FILE: 151015-ID-Évaluation BBD-BRTON.pdf
+  Type: rapport
+  Blob: extracted-text/internal/PROJETS/BROMPTON/DÉVELOPPEMENT/2- ÉVALUATION/151015-ID-Évaluation BBD-BRTON.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents-internal/PROJETS/BROMPTON/D%C3%89VELOPPEMENT/2-%20%C3%89VALUATION/151015-ID-%C3%89valuation%20BBD-BRTON.pdf?sp=rwl&st=2026-03-19T15:21:21Z&se=2026-04-19T23:36:21Z&spr=https&sv=2024-11-04&sr=c&sig=vKrMJFzFtoM%2FdtW6N%2BbhNypEgn2l58ffkoC3tVg4yCs%3D
+  Index chunks: 38 found, total 63358 chars (smart selected 6635 chars)
+  Content preview (first 300 chars):
+    | RAPPORT D'ÉVALUATION RUE DE LA CROIX NORD 3 230 967 11.00- 3.00 3.65 LIVRAISON 3 102 123 S: 3 156,4 11.00 1.00 1 -11.35 20,50 De DÉPANNEUR 2 500 pi.ca. 15.00 -10.00 + 3.00 3 102 127 +6.00 RUE LAVAL 3 230 963 1 10:00 REST. 1 200 pi. ca. 2.60 1 3.85 € - CONTENEUR + SEM-ENFOUISI DECHETS 20 CASES 11,00 
+
+  FILE: offre de service BBD.pdf
+  Type: offre
+  Blob: extracted-text/internal/PROJETS/ST-JULIENNE 1- 1219-1221, route 125 (PETRO)/GESTION DU PROJETS/1- Planification du projet/OFFRE DE SERVICE/offre de service BBD.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents-internal/PROJETS/ST-JULIENNE%201-%201219-1221%2C%20route%20125%20%28PETRO%29/GESTION%20DU%20PROJETS/1-%20Planification%20du%20projet/OFFRE%20DE%20SERVICE/offre%20de%20service%20BBD.pdf?sp=rwl&st=2026-03-19T15:21:21Z&se=2026-04-19T23:36:21Z&spr=https&sv=2024-11-04&sr=c&sig=vKrMJFzFtoM%2FdtW6N%2BbhNypEgn2l58ffkoC3tVg4yCs%3D
+  Index chunks: 5 found, total 8203 chars (smart selected 6670 chars)
+  Content preview (first 300 chars):
+    | BBD Évaluateurs Agréés Consultants immobiliers Marc Bergeron, È.A. Jean-Guy Deneault, E.A. Philippe Lamarre, E.A. Patrick Dorval, E.A. Charles-Olivier Granger, E.A. Guillaume Mongrain, E.A. Idéal Développement a/s Jean-François Désormeaux 7, rue John-F. Kennedy, local 111 Saint-Jérôme (Québec) J7Y 4
+
+  FILE: 151015-ID-Éval BBD Trois-R Thibeau Commerce.pdf
+  Type: rapport
+  Blob: extracted-text/internal/PROJETS/TROIS-RIVIÈRES THIBEAU/DÉVELOPPEMENT/2- ÉVALUATION/151015-ID-Éval BBD Trois-R Thibeau Commerce.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents-internal/PROJETS/TROIS-RIVI%C3%88RES%20THIBEAU/D%C3%89VELOPPEMENT/2-%20%C3%89VALUATION/151015-ID-%C3%89val%20BBD%20Trois-R%20Thibeau%20Commerce.pdf?sp=rwl&st=2026-03-19T15:21:21Z&se=2026-04-19T23:36:21Z&spr=https&sv=2024-11-04&sr=c&sig=vKrMJFzFtoM%2FdtW6N%2BbhNypEgn2l58ffkoC3tVg4yCs%3D
+  Index chunks: 33 found, total 55446 chars (smart selected 6670 chars)
+  Content preview (first 300 chars):
+    | RAPPORT D'ÉVALUATION SUJET Couche Tard Couche-Tord TO La Place Thibeau Évaluation de la propriété à construire sise au : Lot 5 760 019, cadastre du Québec Rue Duvernay Trois-Rivières, Québec Dossier numéro : 16-03-0513 BBD 86, Boul. St-Luc, suite 210, St-Jean-sur-Richelieu, Québec, J3A 1G1, Tél : 45
+
+  FILE: 151015-ID-Éval BBD ST AUGUSTIN Pétrolière.pdf
+  Type: rapport
+  Blob: extracted-text/internal/PROJETS/ST-AUGUSTIN DESMAURES/DÉVELOPPEMENT/2- ÉVALUATION/151015-ID-Éval BBD ST AUGUSTIN Pétrolière.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents-internal/PROJETS/ST-AUGUSTIN%20DESMAURES/D%C3%89VELOPPEMENT/2-%20%C3%89VALUATION/151015-ID-%C3%89val%20BBD%20ST%20AUGUSTIN%20P%C3%A9troli%C3%A8re.pdf?sp=rwl&st=2026-03-19T15:21:21Z&se=2026-04-19T23:36:21Z&spr=https&sv=2024-11-04&sr=c&sig=vKrMJFzFtoM%2FdtW6N%2BbhNypEgn2l58ffkoC3tVg4yCs%3D
+  Index chunks: 36 found, total 60527 chars (smart selected 6670 chars)
+  Content preview (first 300 chars):
+    | 5 681 444 RAPPORT D'ÉVALUATION 17 RUE DE SINGAPOUR 5 456 576 -11.00 16.00 BATIMENT "D' BATIMENT "C" 17.75 Restaurant +2 100 pi.ca. Dépanneur +3 000 pi.ca. LIVRAISON DÉCHETS V +4.50- 4 5.50 10 38,8 2.50+- 15,00 32 CASES S .: +5 500,0 8 8 12 & -12.00- 1,72 10.00 41 14,41 R: 10,00 - 12.00 2 Ţ 3:00 = 1 
+
+  FILE: 151015-ID-Éval BBD STAUGUSTIN Restaurants.pdf
+  Type: rapport
+  Blob: extracted-text/internal/PROJETS/ST-AUGUSTIN DESMAURES/DÉVELOPPEMENT/2- ÉVALUATION/151015-ID-Éval BBD STAUGUSTIN Restaurants.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents-internal/PROJETS/ST-AUGUSTIN%20DESMAURES/D%C3%89VELOPPEMENT/2-%20%C3%89VALUATION/151015-ID-%C3%89val%20BBD%20STAUGUSTIN%20Restaurants.pdf?sp=rwl&st=2026-03-19T15:21:21Z&se=2026-04-19T23:36:21Z&spr=https&sv=2024-11-04&sr=c&sig=vKrMJFzFtoM%2FdtW6N%2BbhNypEgn2l58ffkoC3tVg4yCs%3D
+  Index chunks: 31 found, total 52461 chars (smart selected 6670 chars)
+  Content preview (first 300 chars):
+    | RAPPORT D'ÉVALUATION Rue de Singapour Rue de Sydney Robitaille Equipement O 7 Leclerc 40 Rue de Sydney 1 Évaluation de la propriété à construire sise au : Lot 5 845 977, cadastre du Québec Rue de Singapour Saint-Augustin-de-Desmaures, Québec Dossier numéro : 16-03-0505 BBD 86, Boul. St-Luc, suite 21
+
+  FILE: 150924-ID-Évaluation BBD St-Esprit.pdf
+  Type: rapport
+  Blob: extracted-text/internal/PROJETS/ST-ESPRIT- 120 rue St-ISIDORE/DÉVELOPPEMENT/2- ÉVALUATION/150924-ID-Évaluation BBD St-Esprit.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents-internal/PROJETS/ST-ESPRIT-%20120%20rue%20St-ISIDORE/D%C3%89VELOPPEMENT/2-%20%C3%89VALUATION/150924-ID-%C3%89valuation%20BBD%20St-Esprit.pdf?sp=rwl&st=2026-03-19T15:21:21Z&se=2026-04-19T23:36:21Z&spr=https&sv=2024-11-04&sr=c&sig=vKrMJFzFtoM%2FdtW6N%2BbhNypEgn2l58ffkoC3tVg4yCs%3D
+  Index chunks: 34 found, total 58187 chars (smart selected 6670 chars)
+  Content preview (first 300 chars):
+    | ENSEIGNE N Harnois "Harnois ENSEIGNE Évaluation de la propriété sise au : 2 540 230 Ptie, cadastre du Québec 120, rue St-Isidore Saint-Esprit, Québec Dossier numéro : 15-09-1619
+    | 
+    | BBD Évaluateurs Agréés Consultants immobiliers Marc Bergeron, E.A. Jean-Guy Deneault, E.A. Philippe Lamarre, E.A. Patrick
+
+  FILE: 151015-ID-Éval BBD ST AUGUSTIN Free Standing.pdf
+  Type: rapport
+  Blob: extracted-text/internal/PROJETS/ST-AUGUSTIN DESMAURES/DÉVELOPPEMENT/2- ÉVALUATION/151015-ID-Éval BBD ST AUGUSTIN Free Standing.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents-internal/PROJETS/ST-AUGUSTIN%20DESMAURES/D%C3%89VELOPPEMENT/2-%20%C3%89VALUATION/151015-ID-%C3%89val%20BBD%20ST%20AUGUSTIN%20Free%20Standing.pdf?sp=rwl&st=2026-03-19T15:21:21Z&se=2026-04-19T23:36:21Z&spr=https&sv=2024-11-04&sr=c&sig=vKrMJFzFtoM%2FdtW6N%2BbhNypEgn2l58ffkoC3tVg4yCs%3D
+  Index chunks: 30 found, total 50533 chars (smart selected 6670 chars)
+  Content preview (first 300 chars):
+    | RAPPORT D'ÉVALUATION I 17.75 BATIMENT Restaurant 11 100 pi.ca. CABE8 4 785 5 Évaluation de la propriété à construire sise au : Lot 5 845 978 (Ptie), cadastre du Québec Rue de Sydney Saint-Augustin-de-Desmaures, Québec Dossier numéro : 16-03-0501 BBD 86, Boul. St-Luc, suite 210, St-Jean-sur-Richelieu
+
+--- END SOURCE CONTENT ---
+
+--- GROUNDING VERIFICATION ---
+  Mode: DISCOVERY — checking metadata consistency (not content grounding)
+  Documents listed in answer: ~35
+  Actual sources returned: 18
+  Status: DISCOVERY_VALID (confidence: medium)
+  Note: Discovery mode lists documents by metadata. Content grounding not applicable.
+
+--- END VERIFICATION ---
+
+################################################################################
+# TEST 6
+################################################################################
+QUERY: Quel date nous avons reçu l avis de 60 jours , prise en paiement pour le prêt de ICC , Croll pour st-lin ?
+
+INTENT: answer
+ANSWER (752 chars):
+  La date de réception de l'avis de 60 jours pour la prise en paiement concernant le prêt de ICC et Croll pour St-Lin n'est pas explicitement mentionnée dans les documents disponibles. Cependant, il est indiqué dans **Source 2** qu'un préavis de 60 jours a été enregistré par Reuben Croll, le principal créancier du terrain à St-Lin, pour une valeur de plus de $9,000,000.00.
+  
+  Citation pertinente :
+  - « Concernant le terrain à St-Lin, un préavis d'exercice de 60 jours a été enregistré par le principal créancier du terrain, Reuben Croll, pour une valeur de plus de 9M$. »  
+  📗 External | File: 10001.01C - 161130 - Notes pers. GAUDREAULT P.-L. (12481).pdf
+  
+  Si vous avez besoin d'une recherche plus approfondie ou d'autres informations, veuillez préciser.
+
+--- SOURCE DOCUMENTS CONTENT ---
+  Claim keywords extracted: ['$9000000.00.\n\n', 'Concernant le terrain à St-Lin, un préa', '$.', 'Reuben Croll']
+  Content budget: 7692 chars/file for 13 files
+
+  FILE: Pièce P-22 - Préavis d'exercice recours hypothécaire Placement Verrino avec Lehoux tiers interessé - Sainte-Julienne - 171205 .pdf
+  Type: 
+  Blob: extracted-text/Divulgation_  ORIBUS - DIVULGATION 1_18 - DOSSIER SECONDAIRES_18003A - Dossiers cour civile - Criminelle & pénale_Palais de justice Montréal_231116 - 500-11-057525-194_Pièce 278_Pièce P-22 - Préavis d'exercice recours hypothécaire Placement Verrino avec Lehoux tiers interessé - Sainte-Julienne - 171205 .pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Divulgation/%20%20ORIBUS%20-%20DIVULGATION%201/18%20-%20DOSSIER%20SECONDAIRES/18003A%20-%20Dossiers%20cour%20civile%20-%20Criminelle%20%26%20pe%CC%81nale/Palais%20de%20justice%20Montre%CC%81al/231116%20-%20500-11-057525-194/Pie%CC%80ce%20278/Pie%CC%80ce%20P-22%20-%20Pre%CC%81avis%20d%27exercice%20recours%20hypothe%CC%81caire%20Placement%20Verrino%20avec%20Lehoux%20tiers%20interesse%CC%81%20-%20Sainte-Julienne%20-%20171205%20.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 8 found, total 10596 chars (smart selected 7696 chars)
+  Content preview (first 300 chars):
+    | Source: Divulgation/  ORIBUS - DIVULGATION 1/18 - DOSSIER SECONDAIRES/18003A - Dossiers cour civile - Criminelle & pénale/Palais de justice Montréal/231116 - 500-11-057525-194/Pièce 278/Pièce P-22 - Préavis d'exercice recours hypothécaire Placement Verrino avec Lehoux tiers interessé - Sainte
+
+  FILE: 10001.01C - 161130 - Notes pers.  GAUDREAULT P.-L. (12481).pdf
+  Type: 
+  Blob: extracted-text/Divulgation_  ORIBUS - DIVULGATION 1_10 - ARRESTATION - ENTREVUE_10001 - DÉSORMEAUX Jean-François_10001.01C - 161130 - Notes pers.  GAUDREAULT P.-L. (12481).pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Divulgation/%20%20ORIBUS%20-%20DIVULGATION%201/10%20-%20ARRESTATION%20-%20ENTREVUE/10001%20-%20DE%CC%81SORMEAUX%20Jean-Franc%CC%A7ois/10001.01C%20-%20161130%20-%20Notes%20pers.%20%20GAUDREAULT%20P.-L.%20%2812481%29.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 11 found, total 16389 chars (smart selected 7696 chars)
+  Content preview (first 300 chars):
+    | ème, le résumé des éléments discutés; Reuben Croll, avis de 60 jours Concernant le terrain à St-Lin, un préavis d'exercice de 60 jours a été enregistré par le principal créancier du terrain, Reuben Croll, pour une valeur de plus de 9M$. Jean-François Désormeaux nous affirme que ça ne va pas très bie
+
+  FILE: Précis des faits - ORIBUS.pdf
+  Type: 
+  Blob: extracted-text/Divulgation_  ORIBUS - DIVULGATION 1__Précis des faits_Précis des faits - ORIBUS.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Divulgation/%20%20ORIBUS%20-%20DIVULGATION%201/_Pre%CC%81cis%20des%20faits/Pre%CC%81cis%20des%20faits%20-%20ORIBUS.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 50 found, total 81863 chars (smart selected 7696 chars)
+  Content preview (first 300 chars):
+    | oms, ou entre des compagnies à numéro de Jean-François DESORMEAUX et les prête-noms. Par exemple, le 30 mars 2015, Olivier GAUDET vend le lot 3 570 017 du projet de St-Lin à la compagnie 9310-0022 dont il est alors lui-même le seul administrateur - compagnie dont Jean-Francois DESORMEAUX lui a cédé 
+
+  FILE: P-14.pdf
+  Type: 
+  Blob: extracted-text/Antérieur_Analyse_11. LEHOUX, Gilles_500-11-057525-194 Gilles LEHOUX_PIÈCES_Pièces en RÉPONSE_P-14.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Ante%CC%81rieur/Analyse/11.%20LEHOUX%2C%20Gilles/500-11-057525-194%20Gilles%20LEHOUX/PIE%CC%80CES/Pie%CC%80ces%20en%20RE%CC%81PONSE/P-14.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 13 found, total 18498 chars (smart selected 7696 chars)
+  Content preview (first 300 chars):
+    | P-14
+    | 
+    | 14h57 heure-minute Numéro inscription : 24 279 135 DHM de présentation : 2018-11-22 14:57 - 1 - CANADA PROVINCE DE QUÉBEC CIRCONSCRIPTION FONCIÈRE DE MONTCALM 24 279 135 2018 -11-22 PRÉAVIS D'EXERCICE D'UN RECOURS ET/OU D'UN DROIT HYPOTHÉCAIRE DE PRISE EN PAIEMENT (Art. 2757 et suivants Code c
+
+  FILE: P-14 et P-15.PDF
+  Type: 
+  Blob: extracted-text/Antérieur_Analyse_11. LEHOUX, Gilles_500-11-057525-194 Gilles LEHOUX_PIÈCES_P-14 et P-15.PDF.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Ante%CC%81rieur/Analyse/11.%20LEHOUX%2C%20Gilles/500-11-057525-194%20Gilles%20LEHOUX/PIE%CC%80CES/P-14%20et%20P-15.PDF?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 13 found, total 18485 chars (smart selected 7696 chars)
+  Content preview (first 300 chars):
+    | P-14
+    | 
+    | 14h57 heure-minute Numéro inscription : 24 279 135 DHM de présentation : 2018-11-22 14:57 - 1 - CANADA PROVINCE DE QUÉBEC CIRCONSCRIPTION FONCIÈRE DE MONTCALM 24 279 135 2018 -11-22 PRÉAVIS D'EXERCICE D'UN RECOURS ET/OU D'UN DROIT HYPOTHÉCAIRE DE PRISE EN PAIEMENT (Art. 2757 et suivants Code c
+
+  FILE: Échéancier 3 semaines_Réunion 21 mars.pdf
+  Type: 
+  Blob: extracted-text/internal/AUTRES/2016-ID-Échéancier des réunions/Échéancier 3 semaines_Réunion 21 mars.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents-internal/AUTRES/2016-ID-%C3%89ch%C3%A9ancier%20des%20r%C3%A9unions/%C3%89ch%C3%A9ancier%203%20semaines_R%C3%A9union%2021%20mars.pdf?sp=rwl&st=2026-03-19T15:21:21Z&se=2026-04-19T23:36:21Z&spr=https&sv=2024-11-04&sr=c&sig=vKrMJFzFtoM%2FdtW6N%2BbhNypEgn2l58ffkoC3tVg4yCs%3D
+  Index chunks: 4 found, total 5363 chars (smart selected 5366 chars)
+  Content preview (first 300 chars):
+    | ID IdéalDéveloppement Réunion 7 Échéancier 3 semaines des tâches a exécuter No Tache Responsable Date 14 mars au poisson d'avril+ 2 ..! 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 1 2 3 A Marie-Andrée 1 Suivi des locataires (banques) potentiels pour St-Lin et Ste-Julienne A ÉTÉ DONNÉ À ALE
+
+  FILE: Pièce P-20 - Préavis d'exervice recours hypothécaire par Villeneuve et Charbonneau - Saint-Augustin .pdf
+  Type: 
+  Blob: extracted-text/Divulgation_  ORIBUS - DIVULGATION 1_18 - DOSSIER SECONDAIRES_18003A - Dossiers cour civile - Criminelle & pénale_Palais de justice Montréal_231116 - 500-11-057525-194_Pièce 278_Pièce P-20 - Préavis d'exervice recours hypothécaire par Villeneuve et Charbonneau - Saint-Augustin .pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Divulgation/%20%20ORIBUS%20-%20DIVULGATION%201/18%20-%20DOSSIER%20SECONDAIRES/18003A%20-%20Dossiers%20cour%20civile%20-%20Criminelle%20%26%20pe%CC%81nale/Palais%20de%20justice%20Montre%CC%81al/231116%20-%20500-11-057525-194/Pie%CC%80ce%20278/Pie%CC%80ce%20P-20%20-%20Pre%CC%81avis%20d%27exervice%20recours%20hypothe%CC%81caire%20par%20Villeneuve%20et%20Charbonneau%20-%20Saint-Augustin%20.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 8 found, total 11955 chars (smart selected 7656 chars)
+  Content preview (first 300 chars):
+    | Source: Divulgation/  ORIBUS - DIVULGATION 1/18 - DOSSIER SECONDAIRES/18003A - Dossiers cour civile - Criminelle & pénale/Palais de justice Montréal/231116 - 500-11-057525-194/Pièce 278/Pièce P-20 - Préavis d'exervice recours hypothécaire par Villeneuve et Charbonneau - Saint-Augustin .pdf
+    | Typ
+
+  FILE: 140114-ID-Abandon Masterdev.pdf
+  Type: 
+  Blob: extracted-text/internal/DOCUMENTS DEMANDES PAR JFD/VIEUX DOSSIER MASTERDEV/140114-ID-Abandon Masterdev.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents-internal/DOCUMENTS%20DEMANDES%20PAR%20JFD/VIEUX%20DOSSIER%20MASTERDEV/140114-ID-Abandon%20Masterdev.pdf?sp=rwl&st=2026-03-19T15:21:21Z&se=2026-04-19T23:36:21Z&spr=https&sv=2024-11-04&sr=c&sig=vKrMJFzFtoM%2FdtW6N%2BbhNypEgn2l58ffkoC3tVg4yCs%3D
+  Index chunks: 4 found, total 4943 chars (smart selected 4946 chars)
+  Content preview (first 300 chars):
+    | envoyer avocat le 20-1-14 CANADA PROVINCE DE QUÉBEC BUREAU DE LA PUBLICITÉ DES DROITS CIRCONSCRIPTION FONCIÈRE DE TERREBONNE 13:21 heure minute 1 4 JAN. 2014 20 506 480 AVIS DE LA DÉBITRICE AFIN D'EXIGER L'ABANDON DE LA PRISE EN PAIEMENT (Art. 2779 et suivants C.C.Q.) À : 8181772 CANADA INC. 7, rue 
+
+  FILE: 141218-ID-F Larivière à H Dubé Avis 60 jours St-Alphonse.pdf
+  Type: 
+  Blob: extracted-text/internal/DOCUMENTS DEMANDES PAR JFD/VIEUX DOSSIER MASTERDEV/141218-ID-F Larivière à H Dubé Avis 60 jours St-Alphonse.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents-internal/DOCUMENTS%20DEMANDES%20PAR%20JFD/VIEUX%20DOSSIER%20MASTERDEV/141218-ID-F%20Larivi%C3%A8re%20%C3%A0%20H%20Dub%C3%A9%20Avis%2060%20jours%20St-Alphonse.pdf?sp=rwl&st=2026-03-19T15:21:21Z&se=2026-04-19T23:36:21Z&spr=https&sv=2024-11-04&sr=c&sig=vKrMJFzFtoM%2FdtW6N%2BbhNypEgn2l58ffkoC3tVg4yCs%3D
+  Index chunks: 1 found, total 794 chars (smart selected 794 chars)
+  Content preview (first 300 chars):
+    | De : France La Rivière À : harold@acceslocation.com Cc : Desormeaux Jean-Francois Objet : 9303 6234 quebec inc Date : 18 décembre 2014 16:49:27 Pièces jointes : image001.pnq Bonjour M. Dubé Nous avons reçu un avis de 60 jours pour la terre de St Alphonse (DP-0308 9303 6234 Québec Inc.), et ce pour l
+
+  FILE: Pièce P-15 - Préavis d'exercice recours hypothécaire par Villeneuve et Charbonneau - 180510 - Saint-Augustin.pdf
+  Type: 
+  Blob: extracted-text/Divulgation_  ORIBUS - DIVULGATION 1_18 - DOSSIER SECONDAIRES_18003A - Dossiers cour civile - Criminelle & pénale_Palais de justice Montréal_231116 - 500-11-057525-194_Pièce 278_Pièce P-15 - Préavis d'exercice recours hypothécaire par Villeneuve et Charbonneau - 180510 - Saint-Augustin.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Divulgation/%20%20ORIBUS%20-%20DIVULGATION%201/18%20-%20DOSSIER%20SECONDAIRES/18003A%20-%20Dossiers%20cour%20civile%20-%20Criminelle%20%26%20pe%CC%81nale/Palais%20de%20justice%20Montre%CC%81al/231116%20-%20500-11-057525-194/Pie%CC%80ce%20278/Pie%CC%80ce%20P-15%20-%20Pre%CC%81avis%20d%27exercice%20recours%20hypothe%CC%81caire%20par%20Villeneuve%20et%20Charbonneau%20-%20180510%20-%20Saint-Augustin.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 8 found, total 11944 chars (smart selected 7654 chars)
+  Content preview (first 300 chars):
+    | Source: Divulgation/  ORIBUS - DIVULGATION 1/18 - DOSSIER SECONDAIRES/18003A - Dossiers cour civile - Criminelle & pénale/Palais de justice Montréal/231116 - 500-11-057525-194/Pièce 278/Pièce P-15 - Préavis d'exercice recours hypothécaire par Villeneuve et Charbonneau - 180510 - Saint-Augustin
+
+  FILE: 23 251 834.pdf
+  Type: 
+  Blob: extracted-text/Analyse des projets_Ste-Julienne #1 - 1219-1221, route 125_03009 - 1219-1221 ROUTE 125, STE-JULIENNE_03009C - propriété - Actes transactionnels_23 251 834.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Analyse%20des%20projets/Ste-Julienne%20%231%20-%201219-1221%2C%20route%20125/03009%20-%201219-1221%20ROUTE%20125%2C%20STE-JULIENNE/03009C%20-%20proprie%CC%81te%CC%81%20-%20Actes%20transactionnels/23%20251%20834.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 9 found, total 12032 chars (smart selected 7697 chars)
+  Content preview (first 300 chars):
+    | Registre des mentions Numéro inscription : 23 251 834 DHM de présentation : 2017-07-19 10:01 Circ. foncière : Montcalm Registre des mentions
+    | 
+    | Numéro inscription : 23 251 834 DHM de présentation : 2017-07-19 10:01 10601 hours-minute 2017 -07- 1 9 23 251 834 PRÉAVIS D'EXERCICE D'UN DROIT HYPOTHÉCAIRE 
+
+  FILE: 2022-02-03 - Cahier des Pièces des Demandeurs R-1 à R-9 (objections).pdf
+  Type: 
+  Blob: extracted-text/Antérieur_705-17-007541-178 ST-LIN RAYMOND ET AL_PIÈCES_2022-02-03 - Cahier des Pièces des Demandeurs R-1 à R-9 (objections).pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Ante%CC%81rieur/705-17-007541-178%20ST-LIN%20RAYMOND%20ET%20AL/PIE%CC%80CES/2022-02-03%20-%20Cahier%20des%20Pie%CC%80ces%20des%20Demandeurs%20R-1%20a%CC%80%20R-9%20%28objections%29.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 50 found, total 76596 chars (smart selected 7697 chars)
+  Content preview (first 300 chars):
+    |  L'OBJECTION No 16) Ventiler l'utilisation qui a été faite des prêts consentis les 11 et 12 décembre 2014 pour un montant de - 11 -
+    | 
+    | 705-17-007541-178 12 juillet 2021 1 550 000 $. 220 E-42 Fournir la preuve du déboursé et les explications avec pièces justificatives concernant la cession de créances 
+
+  FILE: 231130 - Documents certifiés.pdf
+  Type: 
+  Blob: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_H. Dépôt selon la loi sur la preuve_Preuve émanant du Registraire des entreprises_03024A Registre des entreprises pour 9672176 Canada Inc．_9672176 Canada inc_231130 - Documents certifiés.pdf.txt
+  Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Ante%CC%81rieur/231219%20-%20Cahier%20de%20preuve%20Oribus/H.%20De%CC%81po%CC%82t%20selon%20la%20loi%20sur%20la%20preuve/Preuve%20e%CC%81manant%20du%20Registraire%20des%20entreprises/03024A%20Registre%20des%20entreprises%20pour%209672176%20Canada%20Inc%EF%BC%8E/9672176%20Canada%20inc/231130%20-%20Documents%20certifie%CC%81s.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+  Index chunks: 22 found, total 38145 chars (smart selected 7696 chars)
+  Content preview (first 300 chars):
+    | REZ-131 (2017-08) Certificat de conformité Loi sur la publicité légale des entreprises (RLRQ, chapitre P-44.1) J'atteste que le document ci-joint est une copie conforme des informations apparaissant à l'état de renseignements au registre des entreprises, concernant : 9672176 CANADA INC. Fait et déli
+
+--- END SOURCE CONTENT ---
+
+--- GROUNDING VERIFICATION ---
+  Status: NOT GROUNDED (confidence: low)
+  Verified claims (1):
+    + Un préavis de 60 jours a été enregistré par Reuben Croll pour le terrain à St-Lin, pour une valeur de plus de 9M$.
+  UNVERIFIED claims (1):
+    ? La date de réception de l'avis de 60 jours pour la prise en paiement concernant le prêt de ICC et Croll pour St-Lin n'est pas explicitement mentionnée dans les documents disponibles.
+  HALLUCINATIONS (1):
+    X La date de réception de l'avis de 60 jours pour la prise en paiement concernant le prêt de ICC et Croll pour St-Lin n'est pas explicitement mentionnée dans les documents disponibles.
+  Missing info from source (1):
+    - The specific date of receipt of the 60-day notice for the St-Lin property is not mentioned in the provided source documents.
+  Notes: The AI correctly identified that a 60-day notice was registered by Reuben Croll for the St-Lin property, but it fabricated the claim that the date of receipt of the notice is not explicitly mentioned in the documents. The source documents do not provide this specific date.
+
+--- END VERIFICATION ---
