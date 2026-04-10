@@ -95,8 +95,33 @@ class GreenAPIClient:
             raise
 
     def send_text_message(self, chat_id: str, message: str) -> Dict:
-        data = {"chatId": chat_id, "message": message}
-        return self._make_request("POST", "sendMessage", data)
+        """Send a text message, auto-splitting if too long for WhatsApp."""
+        MAX_LEN = 4096  # Safe limit for GreenAPI
+        if len(message) <= MAX_LEN:
+            data = {"chatId": chat_id, "message": message}
+            return self._make_request("POST", "sendMessage", data)
+
+        # Split into multiple messages at line boundaries
+        parts = []
+        current = ""
+        for line in message.split("\n"):
+            if len(current) + len(line) + 1 > MAX_LEN:
+                if current:
+                    parts.append(current)
+                current = line
+            else:
+                current = current + "\n" + line if current else line
+        if current:
+            parts.append(current)
+
+        result = None
+        for i, part in enumerate(parts):
+            if len(parts) > 1:
+                header = f"_({i+1}/{len(parts)})_\n" if i > 0 else ""
+                part = header + part
+            data = {"chatId": chat_id, "message": part}
+            result = self._make_request("POST", "sendMessage", data)
+        return result
 
     def download_media(self, chat_id: str, id_message: str) -> Optional[bytes]:
         """Download media (voice/audio) by message ID via GreenAPI"""
