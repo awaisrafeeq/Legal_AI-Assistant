@@ -652,6 +652,42 @@ def hybrid_search_isolated(
 # DISCOVERY SEARCH (metadata-filtered, high-recall)
 # ============================================================================
 
+def _build_person_variations(person: str) -> List[str]:
+    """
+    Generate name variations for fuzzy matching.
+    E.g., 'Yves Blach' → ['Yves Blach', 'Yves Blache', 'Yves Blachi', 'Blach', 'Blache']
+    """
+    import unicodedata as _ud
+
+    variations = set()
+    variations.add(person)
+
+    # Split into parts
+    parts = person.strip().split()
+    if len(parts) >= 2:
+        first_name = parts[0]
+        last_name = " ".join(parts[1:])
+
+        # Last name only (catches "Blache" when searching "Blach")
+        variations.add(last_name)
+
+        # Common French name endings: add/remove trailing 'e'
+        if last_name.endswith('e'):
+            variations.add(f"{first_name} {last_name[:-1]}")  # Blache → Blach
+            variations.add(last_name[:-1])
+        else:
+            variations.add(f"{first_name} {last_name}e")  # Blach → Blache
+            variations.add(f"{last_name}e")
+
+    # Strip accents version
+    nfkd = _ud.normalize("NFKD", person)
+    no_accents = "".join(c for c in nfkd if not _ud.combining(c))
+    if no_accents != person:
+        variations.add(no_accents)
+
+    return list(variations)
+
+
 def _build_odata_filter(filters: Dict[str, Any]) -> str:
     """Build OData filter string from discovery filter dict."""
     parts = []
@@ -663,8 +699,16 @@ def _build_odata_filter(filters: Dict[str, Any]) -> str:
 
     person = filters.get("person")
     if person:
-        escaped = person.replace("'", "''")
-        parts.append(f"persons/any(p: p eq '{escaped}')")
+        # Build OR filter with all name variations for fuzzy matching
+        person_variations = _build_person_variations(person)
+        person_clauses = []
+        for v in person_variations:
+            escaped = v.replace("'", "''")
+            person_clauses.append(f"persons/any(p: p eq '{escaped}')")
+        if len(person_clauses) == 1:
+            parts.append(person_clauses[0])
+        else:
+            parts.append(f"({' or '.join(person_clauses)})")
 
     org = filters.get("organization")
     if org:
@@ -683,22 +727,8 @@ def _build_fuzzy_person_filters(person: str) -> List[str]:
     """
     Generate multiple OData filter variations for a person name to handle
     accent differences, case, and partial matches.
-    E.g., 'Denise Bélanger' → also try 'Denise Belanger', search in content too.
     """
-    import unicodedata as _ud
-
-    variations = [person]
-
-    # Strip accents version
-    nfkd = _ud.normalize("NFKD", person)
-    no_accents = "".join(c for c in nfkd if not _ud.combining(c))
-    if no_accents != person:
-        variations.append(no_accents)
-
-    # Upper case version
-    upper = person.upper()
-    if upper != person:
-        variations.append(upper)
+    variations = _build_person_variations(person)
 
     filters = []
     for v in variations:
@@ -976,30 +1006,34 @@ def rewrite_query_node(state: RAGState, azure_clients: AzureClients) -> RAGState
 
     logger.info(f"Query variants ({len(variants)}): {[v[:50] for v in variants]}")
 
-    # --- Intent detection: discovery vs answer ---
+    # --- Combined intent detection + filter extraction (single GPT call) ---
     query_intent = "answer"
     discovery_filters = {}
 
-    intent_prompt = prompts.get_discovery_intent_prompt(query)
-    intent_resp = azure_clients.llm.invoke([("human", intent_prompt)])
-    intent_text = intent_resp.content.strip().upper()
-
-    if "DISCOVERY" in intent_text:
-        query_intent = "discovery"
-
-    # Extract structured filters for ALL queries (used in both discovery and answer modes)
-    filter_prompt = prompts.get_discovery_filter_prompt(query)
-    filter_resp = azure_clients.llm.invoke([("human", filter_prompt)])
+    combined_prompt = prompts.get_combined_intent_filter_prompt(query)
+    combined_resp = azure_clients.llm.invoke([("human", combined_prompt)])
     try:
-        raw = filter_resp.content.strip()
+        raw = combined_resp.content.strip()
         if raw.startswith("```"):
             raw = raw.split("\n", 1)[-1].rsplit("```", 1)[0].strip()
-        discovery_filters = json.loads(raw)
-        # Remove null values
-        discovery_filters = {k: v for k, v in discovery_filters.items() if v is not None}
+        parsed = json.loads(raw)
+
+        # Extract intent
+        if parsed.get("intent", "").upper() == "DISCOVERY":
+            query_intent = "discovery"
+
+        # Extract filters (remove intent key and null values)
+        discovery_filters = {k: v for k, v in parsed.items() if v is not None and k != "intent"}
     except (json.JSONDecodeError, Exception) as e:
-        logger.warning(f"Failed to parse discovery filters: {e} | raw: {filter_resp.content}")
-        discovery_filters = {}
+        logger.warning(f"Failed to parse combined intent+filters: {e} | raw: {combined_resp.content}")
+        # Fallback: try separate intent detection
+        try:
+            intent_prompt = prompts.get_discovery_intent_prompt(query)
+            intent_resp = azure_clients.llm.invoke([("human", intent_prompt)])
+            if "DISCOVERY" in intent_resp.content.strip().upper():
+                query_intent = "discovery"
+        except Exception:
+            pass
 
     logger.info(f"Query intent: {query_intent.upper()} | filters: {discovery_filters}")
 
@@ -1153,8 +1187,8 @@ def retrieve_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
         )
         variant_embedding = generate_embedding(azure_clients, variant)
 
-        # First search WITH metadata filter (high precision)
         if answer_odata_filter:
+            # Search WITH metadata filter (high precision)
             filtered_results, filtered_source = hybrid_search_isolated(
                 azure_clients, variant, variant_embedding,
                 top_k=20, source_mode=source_mode,
@@ -1164,14 +1198,25 @@ def retrieve_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
             all_results.extend(filtered_results)
             winning_sources.append(filtered_source)
 
-        # Also search WITHOUT filter (catches unclassified docs + broader context)
-        results, winning_source = hybrid_search_isolated(
-            azure_clients, variant, variant_embedding,
-            top_k=20, source_mode=source_mode,
-            allowed_files=allowed_files
-        )
-        all_results.extend(results)
-        winning_sources.append(winning_source)
+            # Only do unfiltered search on FIRST variant if filtered gave < 3 results
+            if i == 0 and len(filtered_results) < 3:
+                logger.info(f"Filtered search gave only {len(filtered_results)} results — adding unfiltered search")
+                results, winning_source = hybrid_search_isolated(
+                    azure_clients, variant, variant_embedding,
+                    top_k=20, source_mode=source_mode,
+                    allowed_files=allowed_files
+                )
+                all_results.extend(results)
+                winning_sources.append(winning_source)
+        else:
+            # No filter available — normal unfiltered search
+            results, winning_source = hybrid_search_isolated(
+                azure_clients, variant, variant_embedding,
+                top_k=20, source_mode=source_mode,
+                allowed_files=allowed_files
+            )
+            all_results.extend(results)
+            winning_sources.append(winning_source)
 
     # Deduplicate by blob_path + chunk_index, keeping the highest-scored version
     best_by_key = {}

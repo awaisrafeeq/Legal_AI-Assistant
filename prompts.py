@@ -216,6 +216,32 @@ Query: {query}
 JSON:"""
 
 
+def get_combined_intent_filter_prompt(query: str) -> str:
+    return f"""You are a query classifier AND filter extractor for a French legal document search system.
+
+STEP 1 — Classify intent:
+- DISCOVERY: user wants a LIST of matching documents (e.g., "find all emails from X", "list all declarations")
+- ANSWER: user wants specific information extracted (e.g., "what is the loan amount?", "what date was the mortgage?")
+
+STEP 2 — Extract search filters from the query.
+
+Available document_type values: Déclaration, Interrogatoire, Courriel, Facture, Contrat, Mandat, Évaluation, Rapport, Hypothèque, Acte notarié, Résolution, Procuration, Quittance, Mise en demeure, Bilan financier, État de compte, Offre de service, Convention, Jugement, Ordonnance, Requête, Avis, Procès-verbal, Certificat, Permis, Sommaire, Pièce justificative, Relevé bancaire, Tableau, Correspondance, Plan, Photo/Image, Annexe, Document technique, Autre
+
+Respond with valid JSON ONLY:
+{{
+    "intent": "DISCOVERY or ANSWER",
+    "document_type": "exact type from list above or null",
+    "person": "person name or null",
+    "organization": "organization name or null",
+    "project": "project name or null",
+    "keyword": "any remaining search keywords in French, or null"
+}}
+
+Query: {query}
+
+JSON:"""
+
+
 def get_system_prompt(response_language: str, context: str) -> str:
     return f"""ABSOLUTE RULE — NEVER VIOLATE:
 If the retrieved context does not contain the answer, say:
