@@ -517,8 +517,10 @@ class WhatsAppHandler:
         return False
 
     def _has_dependent_language(self, query: str) -> bool:
+        import re
         q = query.lower().strip()
 
+        # Multi-word phrases: safe for substring matching
         phrases = [
             "who sent it",
             "who received it",
@@ -533,12 +535,20 @@ class WhatsAppHandler:
             "this one",
             "and this",
             "and that",
-            "it",
-            "this",
-            "that"
+            "give me more",
+            "more documents",
+            "more details",
+            "tell me more",
+            "show me more",
+            "anything else",
         ]
 
-        return any(p in q for p in phrases)
+        if any(p in q for p in phrases):
+            return True
+
+        # Short words: must be whole-word match to avoid "credit" matching "it"
+        short_words = [r"\bit\b", r"\bthis\b", r"\bthat\b", r"\bthese\b", r"\bthose\b"]
+        return any(re.search(pat, q) for pat in short_words)
 
     def _classify_query_context_mode(self, query: str) -> str:
         """
@@ -692,24 +702,28 @@ class WhatsAppHandler:
             if not text:
                 return
 
+            # ── Extract quoted/reply context BEFORE bot mention check ──
+            quoted_message_id = self._extract_quoted_message_id(webhook_data)
+            reply_context = None
+            is_reply_to_bot = False
+
+            if quoted_message_id:
+                reply_context = self.memory.get_bot_message_by_id(sender_phone, quoted_message_id)
+                if reply_context:
+                    is_reply_to_bot = True
+                    logger.info(f"Reply context found for quoted bot message: {quoted_message_id}")
+                else:
+                    logger.info(f"Quoted message ID found but no bot context stored: {quoted_message_id}")
+
             # ── GUARD 3: Bot must be mentioned in text (groups only, DMs skip this) ──
-            if not is_dm and not self._is_bot_mentioned(text, message_data):
+            # Exception: replies to bot messages always pass through
+            if not is_dm and not is_reply_to_bot and not self._is_bot_mentioned(text, message_data):
                 logger.info(f"Bot not mentioned, skipping: '{text[:40]}'")
                 return
 
             # Handle special commands
             cleaned = self._clean_query(text)
             lower = cleaned.lower().strip()
-
-            quoted_message_id = self._extract_quoted_message_id(webhook_data)
-            reply_context = None
-
-            if quoted_message_id:
-                reply_context = self.memory.get_bot_message_by_id(sender_phone, quoted_message_id)
-                if reply_context:
-                    logger.info(f"Reply context found for quoted bot message: {quoted_message_id}")
-                else:
-                    logger.info(f"Quoted message ID found but no bot context stored: {quoted_message_id}")
 
             if lower in ["hi", "hello", "help", "/start", "/help"]:
                 self._send_welcome(chat_id)

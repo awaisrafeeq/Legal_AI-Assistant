@@ -216,17 +216,26 @@ Query: {query}
 JSON:"""
 
 
-def get_combined_intent_filter_prompt(query: str) -> str:
+def get_combined_intent_filter_prompt(query: str, history_text: str = "") -> str:
+    history_section = ""
+    if history_text:
+        history_section = f"""
+IMPORTANT — Conversation context:
+The user may be asking a follow-up question. Use the conversation history to understand what they are referring to.
+If the current query is vague (e.g., "give me more", "what else", "show me more"), extract filters from the PREVIOUS query/answer in the history.
+{history_text}
+"""
     return f"""You are a query classifier AND filter extractor for a French legal document search system.
 
 STEP 1 — Classify intent:
 - DISCOVERY: user wants a LIST of matching documents (e.g., "find all emails from X", "list all declarations")
 - ANSWER: user wants specific information extracted (e.g., "what is the loan amount?", "what date was the mortgage?")
+- For follow-up queries like "give me more", "show more", "what else" — inherit the intent from the previous query in conversation history.
 
-STEP 2 — Extract search filters from the query.
+STEP 2 — Extract search filters from the query (or from conversation history if the query is a follow-up).
 
 Available document_type values: Déclaration, Interrogatoire, Courriel, Facture, Contrat, Mandat, Évaluation, Rapport, Hypothèque, Acte notarié, Résolution, Procuration, Quittance, Mise en demeure, Bilan financier, État de compte, Offre de service, Convention, Jugement, Ordonnance, Requête, Avis, Procès-verbal, Certificat, Permis, Sommaire, Pièce justificative, Relevé bancaire, Tableau, Correspondance, Plan, Photo/Image, Annexe, Document technique, Autre
-
+{history_section}
 Respond with valid JSON ONLY:
 {{
     "intent": "DISCOVERY or ANSWER",

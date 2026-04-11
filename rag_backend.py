@@ -1010,7 +1010,7 @@ def rewrite_query_node(state: RAGState, azure_clients: AzureClients) -> RAGState
     query_intent = "answer"
     discovery_filters = {}
 
-    combined_prompt = prompts.get_combined_intent_filter_prompt(query)
+    combined_prompt = prompts.get_combined_intent_filter_prompt(query, history_text)
     combined_resp = azure_clients.llm.invoke([("human", combined_prompt)])
     try:
         raw = combined_resp.content.strip()
