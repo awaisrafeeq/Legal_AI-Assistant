@@ -1173,7 +1173,7 @@ def retrieve_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
     Multi-query retrieval: run all query variants against the index,
     merge + deduplicate results, then let the cross-encoder re-ranker
     (inside hybrid_search_isolated) pick the best chunks.
-    """
+    """ 
     query_variants = state.get("query_variants", [])
     fallback_query = state.get("rewritten_query") or state.get("query", "")
 
