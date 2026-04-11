@@ -40,6 +40,7 @@ jobs:
         zip -r deploy.zip \
           antenv/ \
           whatsapp_bot.py \
+          prompts.py \
           requirements-whatsapp.txt \
           startup_whatsapp.txt \
           logs/ \
