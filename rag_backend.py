@@ -124,6 +124,7 @@ class ChatRequest(BaseModel):
     history: Optional[List[ChatMessage]] = []
     source_mode: Optional[str] = "all"  # "all", "internal_only", "external_only"
     allowed_files: Optional[List[str]] = []
+    exclude_blob_paths: Optional[List[str]] = []
 
 
 class ChatResponse(BaseModel):
@@ -259,6 +260,7 @@ class RAGState(TypedDict, total=False):
     query_variants: List[str]
     query_intent: str  # "discovery" or "answer"
     discovery_filters: Dict
+    exclude_blob_paths: List[str]
 
 
 # ============================================================================
@@ -952,7 +954,8 @@ def rewrite_query_node(state: RAGState, azure_clients: AzureClients) -> RAGState
             "query_variants": [query],
             "conversation_history": history,
             "source_mode": state.get("source_mode", "all"),
-            "allowed_files": allowed_files
+            "allowed_files": allowed_files,
+            "exclude_blob_paths": state.get("exclude_blob_paths", []),
         }
 
     history_text = ""
@@ -1048,6 +1051,7 @@ def rewrite_query_node(state: RAGState, azure_clients: AzureClients) -> RAGState
         "allowed_files": state.get("allowed_files", []),
         "query_intent": query_intent,
         "discovery_filters": discovery_filters,
+        "exclude_blob_paths": state.get("exclude_blob_paths", []),
     }
 
 
@@ -1064,6 +1068,13 @@ def discovery_retrieve_node(state: RAGState, azure_clients: AzureClients) -> RAG
         azure_clients, query, filters,
         source_mode=source_mode, max_results=50
     )
+
+    # Exclude already-shown documents
+    exclude_paths = set(state.get("exclude_blob_paths", []))
+    if exclude_paths:
+        before_count = len(results)
+        results = [r for r in results if r.get("blob_path", "") not in exclude_paths]
+        logger.info(f"Discovery: excluded {before_count - len(results)} already-shown docs")
 
     # Determine winning source
     sources_in_results = set(r.get("source_container", "") for r in results)
@@ -1232,6 +1243,13 @@ def retrieve_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
                 best_by_key[key] = r
     deduped = list(best_by_key.values())
 
+    # Exclude already-shown documents (for "give me more" follow-ups)
+    exclude_paths = set(state.get("exclude_blob_paths", []))
+    if exclude_paths:
+        before_count = len(deduped)
+        deduped = [r for r in deduped if r.get("blob_path", "") not in exclude_paths]
+        logger.info(f"Excluded {before_count - len(deduped)} already-shown docs ({len(exclude_paths)} paths)")
+
     # Sort by cross-encoder score and take top results
     deduped.sort(
         key=lambda r: r.get("cross_encoder_score", r.get("score", 0)),
@@ -1261,6 +1279,7 @@ def retrieve_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
         "allowed_files": allowed_files,
         "lookup_mode": state.get("lookup_mode", "answer"),
         "discovery_filters": state.get("discovery_filters", {}),
+        "exclude_blob_paths": state.get("exclude_blob_paths", []),
     }
 
 
@@ -1831,7 +1850,8 @@ async def chat(request: ChatRequest, background_tasks: BackgroundTasks):
             "query_lang": detected_lang,
             "conversation_history": history_dicts,
             "source_mode": request.source_mode or "all",
-            "allowed_files": request.allowed_files or []
+            "allowed_files": request.allowed_files or [],
+            "exclude_blob_paths": request.exclude_blob_paths or [],
         }
         final_state = rag_graph.invoke(state)
 

@@ -23,8 +23,10 @@ from contextlib import asynccontextmanager
 from pydantic import BaseModel
 from dotenv import load_dotenv
 from openai import AzureOpenAI
+import json
 
 from logging.handlers import TimedRotatingFileHandler
+import prompts
 os.makedirs("logs", exist_ok=True)
 
 _log_fmt = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
@@ -114,14 +116,20 @@ class GreenAPIClient:
         if current:
             parts.append(current)
 
-        result = None
+        all_results = []
         for i, part in enumerate(parts):
             if len(parts) > 1:
                 header = f"_({i+1}/{len(parts)})_\n" if i > 0 else ""
                 part = header + part
             data = {"chatId": chat_id, "message": part}
             result = self._make_request("POST", "sendMessage", data)
-        return result
+            all_results.append(result)
+
+        # Return combined result with all message IDs for multi-message tracking
+        combined = all_results[-1] if all_results else {}
+        if len(all_results) > 1:
+            combined["allMessageIds"] = [r.get("idMessage", "") for r in all_results if r.get("idMessage")]
+        return combined
 
     def download_media(self, chat_id: str, id_message: str) -> Optional[bytes]:
         """Download media (voice/audio) by message ID via GreenAPI"""
@@ -148,18 +156,28 @@ class RAGBackendClient:
     def __init__(self, base_url: str = "http://localhost:8000"):
         self.base_url = base_url
 
-    def chat(self, query: str, history: List[Dict] = None, conversation_id: str = None) -> Dict[str, Any]:
+    def chat(
+        self,
+        query: str,
+        history: List[Dict] = None,
+        conversation_id: str = None,
+        exclude_blob_paths: List[str] = None,
+        allowed_files: List[str] = None,
+    ) -> Dict[str, Any]:
         """
         Send query to RAG backend.
-        - target_language is always 'en' because client wants English responses
-        - history is passed for conversation context
+        - history: conversation context
+        - exclude_blob_paths: documents to skip (already shown to user)
+        - allowed_files: restrict search to specific files only
         """
         payload = {
             "query": query,
-            "target_language": "auto",     # Respond in same language as user's query
+            "target_language": "auto",
             "conversation_id": conversation_id,
             "history": history or [],
-            "source_mode": "all"
+            "source_mode": "all",
+            "exclude_blob_paths": exclude_blob_paths or [],
+            "allowed_files": allowed_files or [],
         }
         try:
             base_url = self.base_url.rstrip('/')
@@ -259,15 +277,21 @@ class WhisperTranscriber:
 
 class ConversationMemory:
     """
-    Stores last N messages per sender for context.
-    Also stores bot messages by WhatsApp message ID so replies to old bot
-    messages can be resolved correctly.
+    Full conversation state per sender:
+    - history: last N messages for context
+    - shown_blob_paths: documents already shown (for "give me more" exclusion)
+    - last_query / last_sources / last_filters: previous turn's state
+    - topic: GPT-summarized conversation topic
+    - bot_messages: all bot message IDs → context (for reply handling)
     """
-    MAX_HISTORY = 6  # Last 3 turns (user + assistant × 3)
+    MAX_HISTORY = 16  # Last 8 turns (user + assistant × 8)
 
     def __init__(self):
         self._store: Dict[str, List[Dict]] = {}
         self._bot_messages: Dict[str, Dict[str, Dict]] = {}
+        self._state: Dict[str, Dict] = {}
+
+    # ── History ──
 
     def get(self, sender_id: str) -> List[Dict]:
         return self._store.get(sender_id, [])
@@ -282,27 +306,73 @@ class ConversationMemory:
     def clear(self, sender_id: str):
         self._store[sender_id] = []
         self._bot_messages[sender_id] = {}
+        self._state[sender_id] = {}
+
+    # ── Conversation State ──
+
+    def get_state(self, sender_id: str) -> Dict:
+        if sender_id not in self._state:
+            self._state[sender_id] = {
+                "topic": "",
+                "last_query": "",
+                "last_filters": {},
+                "shown_blob_paths": set(),
+                "last_sources": [],
+                "all_message_ids": [],
+                "last_activity": None,
+            }
+        return self._state[sender_id]
+
+    def update_state(self, sender_id: str, **kwargs):
+        state = self.get_state(sender_id)
+        state.update(kwargs)
+        state["last_activity"] = datetime.now()
+
+    def add_shown_blob_paths(self, sender_id: str, blob_paths: List[str]):
+        state = self.get_state(sender_id)
+        state["shown_blob_paths"].update(blob_paths)
+
+    def clear_shown_blob_paths(self, sender_id: str):
+        state = self.get_state(sender_id)
+        state["shown_blob_paths"] = set()
+
+    def get_shown_blob_paths(self, sender_id: str) -> List[str]:
+        return list(self.get_state(sender_id).get("shown_blob_paths", set()))
+
+    # ── Bot Message Tracking (all message IDs → same context) ──
 
     def save_bot_message(
         self,
         sender_id: str,
-        whatsapp_message_id: str,
+        whatsapp_message_ids: list,
         answer: str,
         query: str,
         sources: Optional[List[Dict]] = None
     ):
-        if not whatsapp_message_id:
+        """Store context for ALL message IDs from a response (supports multi-message)."""
+        if not whatsapp_message_ids:
             return
 
         if sender_id not in self._bot_messages:
             self._bot_messages[sender_id] = {}
 
-        self._bot_messages[sender_id][whatsapp_message_id] = {
+        context = {
             "role": "assistant",
             "content": answer,
             "query": query,
             "sources": sources or []
         }
+
+        # All message IDs point to the same context
+        for msg_id in whatsapp_message_ids:
+            if msg_id:
+                self._bot_messages[sender_id][msg_id] = context
+
+        # Also update state with these message IDs
+        state = self.get_state(sender_id)
+        state["all_message_ids"] = whatsapp_message_ids
+        state["last_sources"] = sources or []
+        state["last_query"] = query
 
     def get_bot_message_by_id(self, sender_id: str, whatsapp_message_id: str) -> Optional[Dict]:
         return self._bot_messages.get(sender_id, {}).get(whatsapp_message_id)
@@ -318,11 +388,15 @@ class WhatsAppHandler:
         green_api: GreenAPIClient,
         rag_backend: RAGBackendClient,
         transcriber: WhisperTranscriber,
+        gpt_client: Optional[AzureOpenAI] = None,
+        gpt_deployment: str = "",
     ):
         self.green_api = green_api
         self.rag_backend = rag_backend
         self.transcriber = transcriber
         self.memory = ConversationMemory()
+        self.gpt_client = gpt_client
+        self.gpt_deployment = gpt_deployment
 
     # ------------------------------------------------------------------
     # Group & Mention Guards
@@ -454,119 +528,75 @@ class WhatsAppHandler:
         return " ".join(cleaned.split()).strip()
 
     # ------------------------------------------------------------------
-    # Reference Management
+    # GPT Conversation Router
     # ------------------------------------------------------------------
-    
-    
-    def _has_explicit_same_reference(self, query: str) -> bool:
-        q = query.lower().strip()
 
-        phrases = [
-            "same email",
-            "same document",
-            "same report",
-            "same source",
-            "that same email",
-            "that same document",
-            "that same report",
-            "that email",
-            "that document",
-            "that report",
-            "this email",
-            "this document",
-            "this report",
-            "same case",
-            "that case"
-        ]
-        return any(p in q for p in phrases)
-
-    def _has_new_identifier(self, query: str) -> bool:
-        import re
-
-        q = query.lower()
-
-        keyword_identifiers = [
-            "couvent",
-            "brompton",
-            "st-augustin",
-            "st augustin",
-            "st-paul",
-            "8181772",
-            "9301-7291",
-            "financial report",
-            "invoice register",
-            "civil plans",
-            "email",
-            "courriel",
-            "grands livres",
-            "rapport financier",
-            "mutation",
-            "invoice",
-            "register"
-        ]
-
-        if any(k in q for k in keyword_identifiers):
-            return True
-
-        if re.search(r"\b\d{4,}\b", q):
-            return True
-
-        if re.search(r"\b(20\d{2}|19\d{2})\b", q):
-            return True
-
-        return False
-
-    def _has_dependent_language(self, query: str) -> bool:
-        import re
-        q = query.lower().strip()
-
-        # Multi-word phrases: safe for substring matching
-        phrases = [
-            "who sent it",
-            "who received it",
-            "what about",
-            "and the date",
-            "what is the date",
-            "summarize it",
-            "explain it",
-            "its source",
-            "its amount",
-            "that one",
-            "this one",
-            "and this",
-            "and that",
-            "give me more",
-            "more documents",
-            "more details",
-            "tell me more",
-            "show me more",
-            "anything else",
-        ]
-
-        if any(p in q for p in phrases):
-            return True
-
-        # Short words: must be whole-word match to avoid "credit" matching "it"
-        short_words = [r"\bit\b", r"\bthis\b", r"\bthat\b", r"\bthese\b", r"\bthose\b"]
-        return any(re.search(pat, q) for pat in short_words)
-
-    def _classify_query_context_mode(self, query: str) -> str:
+    def _route_conversation(
+        self,
+        query: str,
+        sender_phone: str,
+        reply_context: Optional[Dict] = None,
+    ) -> Dict:
         """
-        Returns:
-        - 'reply_context'
-        - 'follow_up'
-        - 'fresh'
+        GPT-based conversation router. Classifies the user's message and decides
+        how the system should handle it. Returns classification dict.
         """
-        if self._has_explicit_same_reference(query):
-            return "follow_up"
+        history = self.memory.get(sender_phone)
+        state = self.memory.get_state(sender_phone)
 
-        if self._has_new_identifier(query):
-            return "fresh"
+        # Build history text for prompt
+        history_text = ""
+        if history:
+            last_turns = history[-8:]  # last 4 turns
+            history_text = "\n".join(
+                f"{m['role'].upper()}: {m['content'][:300]}" for m in last_turns
+            )
 
-        if self._has_dependent_language(query):
-            return "follow_up"
+        # Build last sources text
+        last_sources = state.get("last_sources", [])
+        last_sources_text = ""
+        if last_sources:
+            for i, s in enumerate(last_sources, 1):
+                fname = s.get("file_name", "unknown")
+                doc_type = s.get("document_type", "")
+                last_sources_text += f"{i}. {fname} (type: {doc_type})\n"
 
-        return "fresh"
+        # Build reply context text
+        reply_context_text = ""
+        if reply_context:
+            reply_context_text = (
+                f"Original query: {reply_context.get('query', '')}\n"
+                f"Bot answer (first 500 chars): {reply_context.get('content', '')[:500]}"
+            )
+
+        prompt = prompts.get_conversation_router_prompt(
+            query=query,
+            history_text=history_text,
+            last_sources_text=last_sources_text,
+            reply_context_text=reply_context_text,
+        )
+
+        try:
+            response = self.gpt_client.chat.completions.create(
+                model=self.gpt_deployment,
+                messages=[{"role": "user", "content": prompt}],
+                temperature=0,
+                max_tokens=500,
+                response_format={"type": "json_object"},
+            )
+            raw = response.choices[0].message.content.strip()
+            result = json.loads(raw)
+            logger.info(f"Router: {result.get('classification')} | reason: {result.get('reasoning', '')[:80]}")
+            return result
+        except Exception as e:
+            logger.error(f"Router GPT call failed: {e}")
+            # Fallback: if history exists treat as follow-up deep, else fresh
+            return {
+                "classification": "FOLLOW_UP_DEEP" if history else "FRESH",
+                "reasoning": "fallback due to router error",
+                "effective_query": query,
+                "topic": state.get("topic", ""),
+            }
 
     def _extract_quoted_message_id(self, webhook_data: Dict[str, Any]) -> Optional[str]:
         """
@@ -807,49 +837,6 @@ class WhatsAppHandler:
             reply_context=reply_context
         )
 
-    # def _query_and_respond(
-    #     self,
-    #     chat_id: str,
-    #     sender_phone: str,
-    #     sender_name: str,
-    #     query: str,
-    #     is_voice: bool = False
-    # ) -> None:
-    #     """Send query to RAG backend and reply in WhatsApp"""
-    #     if not query:
-    #         return
-
-    #     try:
-    #         # Get conversation history for this sender
-    #         history = self.memory.get(sender_phone)
-
-    #         logger.info(f"Querying RAG: '{query[:60]}' | history: {len(history)} msgs")
-
-    #         response = self.rag_backend.chat(
-    #             query=query,
-    #             history=history,
-    #             conversation_id=sender_phone
-    #         )
-
-    #         answer = response.get("answer", "I could not find an answer. Please try rephrasing.")
-    #         sources = response.get("sources", [])
-
-    #         # Update conversation memory
-    #         self.memory.add(sender_phone, "user", query)
-    #         self.memory.add(sender_phone, "assistant", answer)
-
-    #         # Format and send
-    #         formatted = self._format_response(answer, sources, query_was_voice=is_voice)
-    #         self.green_api.send_text_message(chat_id, formatted)
-
-    #         logger.info(f"Response sent to {chat_id}")
-
-    #     except Exception as e:
-    #         logger.error(f"RAG error: {e}", exc_info=True)
-    #         self.green_api.send_text_message(
-    #             chat_id,
-    #             "❌ An error occurred while processing your request. Please try again."
-    #         )
     def _query_and_respond(
         self,
         chat_id: str,
@@ -859,58 +846,123 @@ class WhatsAppHandler:
         is_voice: bool = False,
         reply_context: Optional[Dict] = None
     ) -> None:
-        """Send query to RAG backend and reply in WhatsApp"""
+        """Send query to RAG backend with GPT-routed conversation intelligence."""
         if not query:
             return
 
         try:
+            # ── Step 1: GPT Conversation Router ──
+            routing = self._route_conversation(query, sender_phone, reply_context)
+            classification = routing.get("classification", "FRESH")
+            effective_query = routing.get("effective_query") or query
+            topic = routing.get("topic", "")
+
+            conv_state = self.memory.get_state(sender_phone)
+
+            # ── Step 2: Handle special classifications ──
+
+            # CHITCHAT — respond without querying RAG
+            if classification == "CHITCHAT":
+                chitchat_resp = routing.get("chitchat_response", "Hello! Ask me anything about the legal documents.")
+                self.green_api.send_text_message(chat_id, f"🤖 {chitchat_resp}")
+                return
+
+            # VAGUE — ask for clarification
+            if classification == "VAGUE":
+                clarification = routing.get(
+                    "clarification_message",
+                    "Could you be more specific? For example:\n"
+                    "• _Find all emails from Jean Tremblay_\n"
+                    "• _What is the loan amount for DP-0372?_\n"
+                    "• _Show me contracts for project Couvent_"
+                )
+                self.green_api.send_text_message(chat_id, f"🤖 {clarification}")
+                return
+
+            # ── Step 3: Build RAG parameters based on classification ──
             full_history = self.memory.get(sender_phone)
+            history = []
+            exclude_blob_paths = []
 
-            if reply_context:
-                history = [
-                    {"role": "user", "content": reply_context.get("query", "")},
-                    {"role": "assistant", "content": reply_context.get("content", "")}
-                ]
-                context_mode = "reply_context"
-                logger.info("Reply-to-message detected | using replied bot message as context")
+            if classification == "FRESH":
+                # New topic — clear previous shown docs, no history
+                self.memory.clear_shown_blob_paths(sender_phone)
+                history = []
+                logger.info(f"FRESH query | topic: {topic}")
 
-            else:
-                context_mode = self._classify_query_context_mode(query)
+            elif classification == "FOLLOW_UP_MORE":
+                # User wants more of same → exclude already-shown docs
+                exclude_blob_paths = self.memory.get_shown_blob_paths(sender_phone)
+                # Use the original query (or router's effective_query) for better search
+                history = full_history[-4:]  # last 2 turns for context
+                logger.info(f"FOLLOW_UP_MORE | excluding {len(exclude_blob_paths)} shown docs | effective: '{effective_query[:60]}'")
 
-                if context_mode == "follow_up":
-                    history = full_history[-2:]   # only last 1 turn
-                    logger.info(f"Follow-up query detected | using short history: {len(history)} msgs")
+            elif classification == "FOLLOW_UP_DEEP":
+                # Deeper question on same topic — full history context
+                history = full_history[-6:]  # last 3 turns
+                logger.info(f"FOLLOW_UP_DEEP | history: {len(history)} msgs | effective: '{effective_query[:60]}'")
+
+            elif classification == "FOLLOW_UP_DOC":
+                # Specific document from previous answer
+                doc_index = routing.get("referenced_doc_index")
+                doc_name = routing.get("referenced_doc_name")
+                last_sources = conv_state.get("last_sources", [])
+
+                allowed_file = None
+                if doc_index and doc_index <= len(last_sources):
+                    allowed_file = last_sources[doc_index - 1].get("blob_path", "")
+                elif doc_name:
+                    # Find by name match
+                    for s in last_sources:
+                        if doc_name.lower() in s.get("file_name", "").lower():
+                            allowed_file = s.get("blob_path", "")
+                            break
+
+                if allowed_file:
+                    logger.info(f"FOLLOW_UP_DOC | specific doc: {allowed_file}")
+                    response = self.rag_backend.chat(
+                        query=effective_query,
+                        history=full_history[-4:],
+                        conversation_id=sender_phone,
+                        allowed_files=[allowed_file],
+                    )
+                    self._send_rag_response(
+                        chat_id, sender_phone, query, effective_query,
+                        response, is_voice, topic
+                    )
+                    return
                 else:
-                    history = []
-                    logger.info("Fresh query detected | ignoring history")
+                    # Couldn't find specific doc — fall through to normal search
+                    history = full_history[-4:]
+                    logger.info(f"FOLLOW_UP_DOC | doc not found, falling back to normal search")
 
-            logger.info(f"Querying RAG: '{query[:60]}' | mode={context_mode} | history={len(history)} msgs")
+            # ── Step 4: Query RAG ──
+            logger.info(f"Querying RAG: '{effective_query[:60]}' | class={classification} | history={len(history)} | exclude={len(exclude_blob_paths)}")
 
             response = self.rag_backend.chat(
-                query=query,
+                query=effective_query,
                 history=history,
-                conversation_id=sender_phone
+                conversation_id=sender_phone,
+                exclude_blob_paths=exclude_blob_paths,
             )
 
-            answer = response.get("answer", "I could not find an answer. Please try rephrasing.")
+            # ── Step 5: Handle "no new results" for FOLLOW_UP_MORE ──
             sources = response.get("sources", [])
+            if classification == "FOLLOW_UP_MORE" and not sources:
+                self.green_api.send_text_message(
+                    chat_id,
+                    "🤖 I've already shared all the documents I found on this topic. "
+                    "Try asking a more specific question or a different topic."
+                )
+                self.memory.add(sender_phone, "user", query)
+                self.memory.add(sender_phone, "assistant", "(no new documents available)")
+                return
 
-            self.memory.add(sender_phone, "user", query)
-            self.memory.add(sender_phone, "assistant", answer)
-
-            formatted = self._format_response(answer, sources, query_was_voice=is_voice)
-            send_result = self.green_api.send_text_message(chat_id, formatted)
-
-            sent_message_id = send_result.get("idMessage", "")
-            self.memory.save_bot_message(
-                sender_id=sender_phone,
-                whatsapp_message_id=sent_message_id,
-                answer=answer,
-                query=query,
-                sources=sources
+            # ── Step 6: Send response ──
+            self._send_rag_response(
+                chat_id, sender_phone, query, effective_query,
+                response, is_voice, topic
             )
-
-            logger.info(f"Response sent to {chat_id}")
 
         except Exception as e:
             logger.error(f"RAG error: {e}", exc_info=True)
@@ -918,6 +970,57 @@ class WhatsAppHandler:
                 chat_id,
                 "❌ An error occurred while processing your request. Please try again."
             )
+
+    def _send_rag_response(
+        self,
+        chat_id: str,
+        sender_phone: str,
+        original_query: str,
+        effective_query: str,
+        response: Dict,
+        is_voice: bool,
+        topic: str,
+    ) -> None:
+        """Format RAG response, send to WhatsApp, update memory & state."""
+        answer = response.get("answer", "I could not find an answer. Please try rephrasing.")
+        sources = response.get("sources", [])
+
+        # Update conversation history
+        self.memory.add(sender_phone, "user", original_query)
+        self.memory.add(sender_phone, "assistant", answer)
+
+        # Track shown documents
+        new_blob_paths = [s.get("blob_path", "") for s in sources if s.get("blob_path")]
+        self.memory.add_shown_blob_paths(sender_phone, new_blob_paths)
+
+        # Update conversation state
+        self.memory.update_state(
+            sender_phone,
+            topic=topic,
+            last_query=effective_query,
+            last_sources=sources,
+        )
+
+        # Format and send
+        formatted = self._format_response(answer, sources, query_was_voice=is_voice)
+        send_result = self.green_api.send_text_message(chat_id, formatted)
+
+        # Store bot message ID(s) for reply tracking (supports multi-message split)
+        all_ids = send_result.get("allMessageIds", [])
+        if not all_ids:
+            sent_message_id = send_result.get("idMessage", "")
+            all_ids = [sent_message_id] if sent_message_id else []
+        message_ids = [mid for mid in all_ids if mid]
+
+        self.memory.save_bot_message(
+            sender_id=sender_phone,
+            whatsapp_message_ids=message_ids,
+            answer=answer,
+            query=effective_query,
+            sources=sources,
+        )
+
+        logger.info(f"Response sent to {chat_id} | sources: {len(sources)} | topic: {topic}")
 
     def _send_welcome(self, chat_id: str) -> None:
         bot_name = self.green_api.config.bot_name
@@ -957,8 +1060,20 @@ async def lifespan(app: FastAPI):
     )
     transcriber = WhisperTranscriber()
 
-    whatsapp_handler = WhatsAppHandler(green_api, rag_backend, transcriber)
-    logger.info("WhatsApp handler initialized (Improved v2.0)")
+    # GPT client for conversation routing (same endpoint as RAG backend uses)
+    gpt_client = AzureOpenAI(
+        azure_endpoint=os.environ.get("OPENAI_ENDPOINT", ""),
+        api_key=os.environ.get("OPENAI_KEY", ""),
+        api_version="2024-02-01",
+    )
+    gpt_deployment = os.environ.get("OPENAI_CHAT_DEPLOYMENT", "gpt-4o")
+
+    whatsapp_handler = WhatsAppHandler(
+        green_api, rag_backend, transcriber,
+        gpt_client=gpt_client,
+        gpt_deployment=gpt_deployment,
+    )
+    logger.info("WhatsApp handler initialized (Improved v2.0 + GPT Router)")
 
     yield
     logger.info("Shutting down WhatsApp bot...")

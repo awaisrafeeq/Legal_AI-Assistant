@@ -251,6 +251,56 @@ Query: {query}
 JSON:"""
 
 
+def get_conversation_router_prompt(query: str, history_text: str, last_sources_text: str, reply_context_text: str = "") -> str:
+    reply_section = ""
+    if reply_context_text:
+        reply_section = f"""
+REPLY CONTEXT — The user replied directly to this bot message:
+{reply_context_text}
+"""
+    return f"""You are a conversation routing engine for a legal document AI assistant.
+Your job: classify the user's message and decide how the system should handle it.
+
+CONVERSATION HISTORY (most recent last):
+{history_text if history_text else "(no prior conversation)"}
+
+DOCUMENTS SHOWN IN LAST RESPONSE:
+{last_sources_text if last_sources_text else "(none)"}
+{reply_section}
+CURRENT USER MESSAGE: {query}
+
+CLASSIFICATION RULES:
+1. FRESH — The user is asking about a new topic unrelated to the conversation history. Start fresh, ignore history.
+2. FOLLOW_UP_MORE — The user wants MORE documents or results on the SAME topic (e.g., "give me more", "any other documents?", "what else?", "show me more"). The system should search again but EXCLUDE already-shown documents.
+3. FOLLOW_UP_DEEP — The user is asking a deeper or related question about the same topic (e.g., "what are the dates?", "who sent it?", "summarize the content"). The system should search with full history context.
+4. FOLLOW_UP_DOC — The user is asking about a SPECIFIC document from the previous response (e.g., "tell me about the 1st document", "open document #3", "what does the Courriel say?"). Extract which document they mean.
+5. VAGUE — The message is too ambiguous to process meaningfully AND there is no conversation history to infer from. Ask for clarification.
+6. CHITCHAT — Greetings, thanks, off-topic chat. Respond politely without querying documents.
+
+DECISION LOGIC:
+- If the user's message clearly introduces a new entity, project, person, or document type → FRESH
+- If the message references "more", "others", "additional", "encore", "d'autres" about same topic → FOLLOW_UP_MORE
+- If the message asks about details (dates, amounts, names, content) of the previous topic → FOLLOW_UP_DEEP
+- If the message references a specific numbered document or filename from the last response → FOLLOW_UP_DOC
+- If the message is extremely short/vague (< 3 meaningful words) AND no history exists → VAGUE
+- If the message is vague BUT history exists → infer intent from history, classify as FOLLOW_UP_DEEP
+- If the user replied to a specific bot message (reply context provided), use that context to understand what they're referring to
+
+Respond with valid JSON ONLY:
+{{
+    "classification": "FRESH | FOLLOW_UP_MORE | FOLLOW_UP_DEEP | FOLLOW_UP_DOC | VAGUE | CHITCHAT",
+    "reasoning": "one sentence explaining why this classification",
+    "effective_query": "the actual query to send to the search system — if follow-up, rewrite to be self-contained using context from history. If FRESH, use the query as-is. If VAGUE, set to null.",
+    "referenced_doc_index": null or integer (1-based) if FOLLOW_UP_DOC,
+    "referenced_doc_name": null or "filename" if FOLLOW_UP_DOC and user mentioned a specific file,
+    "clarification_message": null or "a helpful message asking the user to clarify" if VAGUE,
+    "chitchat_response": null or "a friendly response" if CHITCHAT,
+    "topic": "a 3-8 word summary of what the conversation is about (extract from history + current query)"
+}}
+
+JSON:"""
+
+
 def get_system_prompt(response_language: str, context: str) -> str:
     return f"""ABSOLUTE RULE — NEVER VIOLATE:
 If the retrieved context does not contain the answer, say:
