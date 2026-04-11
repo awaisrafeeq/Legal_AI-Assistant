@@ -1641,7 +1641,7 @@ def generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
         source_type = (
             "🔴 Internal (Confidential)"
             if result.get("source_container") == "legal-documents-internal"
-            else "📗 External"
+            else "📗 Gov"
         )
         context_parts.append(
             f"[Source {i}] {source_type} | File: {result['file_name']}\n"
