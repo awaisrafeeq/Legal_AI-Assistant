@@ -1137,7 +1137,7 @@ def discovery_generate_node(state: RAGState, azure_clients: AzureClients) -> RAG
         file_name = r.get("file_name", "unknown")
         persons = r.get("persons", [])
         summary = r.get("summary", "")
-        source_type = "🔴 Internal" if r.get("source_container") == "legal-documents-internal" else "📗 External"
+        source_type = "🔴 Internal" if r.get("source_container") == "legal-documents-internal" else "📗 Gov"
 
         entry = f"{i}. **{file_name}**\n"
         entry += f"   Type: {doc_type}"
