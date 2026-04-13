@@ -130,6 +130,7 @@ class ChatRequest(BaseModel):
 class ChatResponse(BaseModel):
     answer: str
     sources: List[SearchResult]
+    sections: Optional[List[Dict[str, Any]]] = None
     conversation_id: str
     detected_query_language: Optional[str] = None
 
@@ -261,6 +262,7 @@ class RAGState(TypedDict, total=False):
     query_intent: str  # "discovery" or "answer"
     discovery_filters: Dict
     exclude_blob_paths: List[str]
+    sections: List[Dict[str, Any]]
 
 
 # ============================================================================
@@ -932,6 +934,76 @@ def _parse_query_variants(response_text: str) -> List[str]:
     return variants
 
 
+def _build_inline_section(
+    text: str,
+    source: Optional[Dict[str, Any]] = None,
+    section_type: str = "answer_point"
+) -> Dict[str, Any]:
+    section = {
+        "section_type": section_type,
+        "text": (text or "").strip(),
+    }
+    if source:
+        section.update({
+            "file_name": source.get("file_name", ""),
+            "blob_path": source.get("blob_path", ""),
+            "folder_path": source.get("folder_path", ""),
+            "source_container": source.get("source_container", ""),
+            "source_url": source.get("source_url", ""),
+        })
+    return section
+
+
+def _split_answer_sections(answer: str) -> List[str]:
+    normalized = (answer or "").replace("\r\n", "\n").strip()
+    if not normalized:
+        return []
+
+    sections = []
+    current = []
+    for line in normalized.split("\n"):
+        stripped = line.strip()
+        if not stripped:
+            if current:
+                sections.append("\n".join(current).strip())
+                current = []
+            continue
+
+        if (
+            current and
+            (
+                stripped.startswith("•")
+                or stripped.startswith("-")
+                or (
+                    ". " in stripped
+                    and stripped.split(". ", 1)[0].isdigit()
+                )
+            )
+        ):
+            sections.append("\n".join(current).strip())
+            current = [stripped]
+        else:
+            current.append(stripped)
+
+    if current:
+        sections.append("\n".join(current).strip())
+
+    return [s for s in sections if s]
+
+
+def _build_answer_sections(answer: str, grounded_sources: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    chunks = _split_answer_sections(answer)
+    if not chunks:
+        chunks = [answer.strip()] if answer.strip() else []
+
+    sections = []
+    for idx, chunk in enumerate(chunks):
+        source = grounded_sources[min(idx, len(grounded_sources) - 1)] if grounded_sources else None
+        sections.append(_build_inline_section(chunk, source, "answer_point"))
+
+    return sections
+
+
 def rewrite_query_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
     """
     Rewrite user query into multiple French keyword search variations.
@@ -1098,12 +1170,11 @@ def discovery_retrieve_node(state: RAGState, azure_clients: AzureClients) -> RAG
 
 def discovery_generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
     """
-    Generate a document listing response for discovery queries.
-    Lists all matching documents with their metadata instead of extracting answers.
+    Generate a discovery response that includes a short summary plus
+    document-by-document entries with inline source metadata.
     """
     query = state.get("query", "")
     search_results = state.get("search_results", [])
-    query_lang = state.get("query_lang", "en")
     winning_source = state.get("winning_source", "unknown")
     filters = state.get("discovery_filters", {})
 
@@ -1118,51 +1189,59 @@ def discovery_generate_node(state: RAGState, azure_clients: AzureClients) -> RAG
                 "- Try a broader search with fewer filters"
             ),
             "sources": [],
+            "sections": [],
             "context": "",
             "winning_source": "none"
         }
 
-    # Build a structured document listing
-    lang_names = {
-        "en": "English", "fr": "French", "ur": "Urdu",
-        "ar": "Arabic", "es": "Spanish"
-    }
-    resp_lang = lang_names.get(query_lang, "English")
+    top_results = search_results[:10]
+    filter_desc = ", ".join(f"{k}={v}" for k, v in filters.items()) if filters else "your request"
+    summary_lines = [f"I found {len(search_results)} documents matching {filter_desc}."]
 
-    # Group by document_type for organized output
-    doc_list_parts = []
-    for i, r in enumerate(search_results[:30], 1):
-        doc_type = r.get("document_type", "Unknown")
-        subtype = r.get("document_subtype", "")
-        file_name = r.get("file_name", "unknown")
-        persons = r.get("persons", [])
-        summary = r.get("summary", "")
-        source_type = "🔴 Internal" if r.get("source_container") == "legal-documents-internal" else "📗 Gov"
+    highlighted_types = []
+    seen_types = set()
+    for result in top_results:
+        doc_type = (result.get("document_type") or "").strip()
+        if doc_type and doc_type not in seen_types:
+            seen_types.add(doc_type)
+            highlighted_types.append(doc_type)
+        if len(highlighted_types) >= 3:
+            break
+    if highlighted_types:
+        summary_lines.append("Main document types found: " + ", ".join(highlighted_types) + ".")
 
-        entry = f"{i}. **{file_name}**\n"
-        entry += f"   Type: {doc_type}"
-        if subtype:
-            entry += f" — {subtype}"
-        entry += f" | {source_type}\n"
+    sections = [_build_inline_section(" ".join(summary_lines), top_results[0], "discovery_summary")]
+
+    for i, result in enumerate(top_results, 1):
+        lines = [f"{i}. {result.get('file_name', 'Unknown document')}"]
+        doc_type = result.get("document_type", "document")
+        subtype = result.get("document_subtype", "")
+        lines.append(f"Type: {doc_type}" + (f" ({subtype})" if subtype else ""))
+
+        persons = result.get("persons", [])[:4]
         if persons:
-            entry += f"   Persons: {', '.join(persons[:5])}\n"
+            lines.append("Persons: " + ", ".join(persons))
+
+        projects = result.get("projects", [])[:3]
+        if projects:
+            lines.append("Projects: " + ", ".join(projects))
+
+        summary = (result.get("summary") or "").strip()
         if summary:
-            entry += f"   Summary: {summary[:150]}...\n" if len(summary) > 150 else f"   Summary: {summary}\n"
+            lines.append("Why it matches: " + summary)
+        else:
+            lines.append("Why it matches: This document matched the discovery filters and search terms.")
 
-        doc_list_parts.append(entry)
+        sections.append(_build_inline_section("\n".join(lines), result, "document_match"))
 
-    total = len(search_results)
-    shown = min(total, 30)
-    filter_desc = ", ".join(f"**{k}**: {v}" for k, v in filters.items()) if filters else "no specific filters"
-
-    answer = f"Found **{total}** documents matching your criteria ({filter_desc}).\n\n"
-    if shown < total:
-        answer += f"Showing top {shown} results:\n\n"
-    answer += "\n".join(doc_list_parts)
+    answer = " ".join(summary_lines)
+    if len(search_results) > len(top_results):
+        answer += f" Showing top {len(top_results)} results."
 
     return {
         "answer": answer,
-        "sources": search_results[:30],
+        "sources": top_results,
+        "sections": sections,
         "context": "",
         "winning_source": winning_source
     }
@@ -1514,6 +1593,7 @@ NOT_FOUND_RESPONSE = {
         "Please consult a qualified legal professional for authoritative guidance."
     ),
     "sources": [],
+    "sections": [],
     "context": "",
     "winning_source": "none"
 }
@@ -1587,13 +1667,29 @@ def generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
                     "rather than the original source files."
                 ),
                 "sources": [],
+                "sections": [],
                 "context": "",
                 "winning_source": "none"
             }
 
+        sections = [
+            _build_inline_section(
+                "I found the most relevant source documents matching your request.",
+                unique_sources[0],
+                "document_summary"
+            )
+        ]
+        for i, source in enumerate(unique_sources[:10], 1):
+            sections.append(_build_inline_section(
+                f"{i}. {source.get('file_name', 'Source document')}",
+                source,
+                "document_match"
+            ))
+
         return {
             "answer": "I found the most relevant source documents matching your request.",
             "sources": unique_sources[:10],
+            "sections": sections,
             "context": "",
             "winning_source": winning_source
         }
@@ -1690,6 +1786,7 @@ def generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
     return {
         "answer": answer,
         "sources": grounded_sources,
+        "sections": _build_answer_sections(answer, grounded_sources),
         "context": context,
         "winning_source": winning_source
     }
@@ -1857,6 +1954,7 @@ async def chat(request: ChatRequest, background_tasks: BackgroundTasks):
 
         answer = final_state.get("answer", "")
         sources = final_state.get("sources", [])
+        sections = final_state.get("sections", [])
 
         # Translate if needed
         if target_lang == "fr" and detected_lang == "en":
@@ -1879,6 +1977,7 @@ async def chat(request: ChatRequest, background_tasks: BackgroundTasks):
         return ChatResponse(
             answer=answer,
             sources=[SearchResult(**s) for s in sources],
+            sections=sections,
             conversation_id=request.conversation_id or "new",
             detected_query_language=detected_lang,
         )

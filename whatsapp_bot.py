@@ -625,7 +625,38 @@ class WhatsAppHandler:
     # Response Formatting
     # ------------------------------------------------------------------
 
-    def _format_response(self, answer: str, sources: List[Dict], query_was_voice: bool = False) -> str:
+    def _format_source_label(self, source: Dict) -> str:
+        container = source.get("source_container", "")
+        icon = "🔴" if container == "legal-documents-internal" else "📗"
+        label = "Internal (Confidential)" if container == "legal-documents-internal" else "Legal Documents"
+        fname = source.get("file_name", "Unknown")
+        return f"{icon} {fname} [{label}]"
+
+    def _format_inline_sections(self, sections: List[Dict]) -> str:
+        blocks = []
+        for section in sections:
+            text = (section.get("text") or "").strip()
+            if not text:
+                continue
+
+            block = text
+            source_url = section.get("source_url", "")
+            if source_url:
+                block += (
+                    f"\n_Source:_ {self._format_source_label(section)}"
+                    f"\n_Link:_ {source_url}"
+                )
+            blocks.append(block)
+
+        return "\n\n".join(blocks)
+
+    def _format_response(
+        self,
+        answer: str,
+        sources: List[Dict],
+        sections: Optional[List[Dict]] = None,
+        query_was_voice: bool = False
+    ) -> str:
         """
         Format the AI answer for WhatsApp.
         WhatsApp supports: *bold*, _italic_, ~strikethrough~, ```code```
@@ -633,11 +664,14 @@ class WhatsAppHandler:
         prefix = "🎤 _Voice query processed_\n\n" if query_was_voice else ""
 
         header = "🤖 *Legal AI Assistant*\n" + "─" * 28 + "\n\n"
-        body = answer.strip()
+        if sections:
+            body = self._format_inline_sections(sections)
+        else:
+            body = answer.strip()
 
         # Sources section (all unique sources)
         sources_text = ""
-        if sources:
+        if sources and not sections:
             sources_text = "\n\n" + "─" * 28 + "\n📚 *Sources:*\n"
             seen = set()
             count = 0
@@ -984,6 +1018,7 @@ class WhatsAppHandler:
         """Format RAG response, send to WhatsApp, update memory & state."""
         answer = response.get("answer", "I could not find an answer. Please try rephrasing.")
         sources = response.get("sources", [])
+        sections = response.get("sections", [])
 
         # Update conversation history
         self.memory.add(sender_phone, "user", original_query)
@@ -1002,7 +1037,12 @@ class WhatsAppHandler:
         )
 
         # Format and send
-        formatted = self._format_response(answer, sources, query_was_voice=is_voice)
+        formatted = self._format_response(
+            answer,
+            sources,
+            sections=sections,
+            query_was_voice=is_voice
+        )
         send_result = self.green_api.send_text_message(chat_id, formatted)
 
         # Store bot message ID(s) for reply tracking (supports multi-message split)
