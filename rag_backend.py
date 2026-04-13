@@ -9,11 +9,14 @@ from typing import List, Dict, Any, Optional
 from collections import Counter
 from dataclasses import dataclass, field
 import unicodedata
+import hashlib
+import base64
 from contextlib import asynccontextmanager
 
 
 from fastapi import FastAPI, HTTPException, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
 from pydantic import BaseModel
 from dotenv import load_dotenv
 
@@ -70,6 +73,8 @@ class Config:
     internal_container_sas_url: str
     acs_connection_string: str
     acs_sender_email: str
+    public_base_url: str
+    short_links_container: str
 
     @classmethod
     def from_env(cls) -> "Config":
@@ -89,6 +94,8 @@ class Config:
             internal_container_sas_url=os.environ.get("INTERNAL_CONTAINER_SAS_URL", ""),
             acs_connection_string=os.environ.get("ACS_CONNECTION_STRING", ""),
             acs_sender_email=os.environ.get("ACS_SENDER_EMAIL", ""),
+            public_base_url=os.environ.get("PUBLIC_BASE_URL", "").rstrip("/"),
+            short_links_container=os.environ.get("SHORT_LINKS_CONTAINER", "short-links"),
         )
 
 
@@ -215,6 +222,11 @@ class AzureClients:
         sas_token = parsed.query
         self.container_name = parsed.path.strip('/').split('/')[-1]
         self.blob_service = BlobServiceClient(account_url=account_url, credential=sas_token)
+        self.short_links_container = config.short_links_container
+        try:
+            self.blob_service.create_container(self.short_links_container)
+        except Exception:
+            pass
 
         self.openai_client = AzureOpenAI(
             azure_endpoint=config.openai_endpoint,
@@ -384,6 +396,75 @@ def generate_sas_url(
     except Exception as e:
         logger.warning(f"Failed to generate URL for {blob_path}: {e}")
         return None
+
+
+def _build_short_link_token(source_container: str, blob_path: str, folder_path: str = "", file_name: str = "") -> str:
+    seed = "||".join([
+        source_container or "",
+        blob_path or "",
+        folder_path or "",
+        file_name or "",
+    ]).encode("utf-8")
+    digest = hashlib.sha256(seed).digest()[:9]
+    return base64.urlsafe_b64encode(digest).decode("ascii").rstrip("=")
+
+
+def _store_short_link_mapping(
+    azure_clients: AzureClients,
+    token: str,
+    blob_path: str,
+    source_container: str = "",
+    folder_path: str = "",
+    file_name: str = ""
+) -> None:
+    payload = {
+        "blob_path": blob_path,
+        "source_container": source_container,
+        "folder_path": folder_path,
+        "file_name": file_name,
+    }
+    blob_name = f"{token}.json"
+    container = azure_clients.blob_service.get_container_client(azure_clients.short_links_container)
+    container.upload_blob(
+        name=blob_name,
+        data=json.dumps(payload, ensure_ascii=True),
+        overwrite=True
+    )
+
+
+def _read_short_link_mapping(azure_clients: AzureClients, token: str) -> Optional[Dict[str, Any]]:
+    try:
+        blob_name = f"{token}.json"
+        container = azure_clients.blob_service.get_container_client(azure_clients.short_links_container)
+        payload = container.download_blob(blob_name).readall()
+        return json.loads(payload.decode("utf-8"))
+    except Exception as e:
+        logger.warning(f"Short-link token lookup failed for {token}: {e}")
+        return None
+
+
+def generate_short_source_url(
+    azure_clients: AzureClients,
+    blob_path: str,
+    source_container: str = "",
+    folder_path: str = "",
+    file_name: str = ""
+) -> Optional[str]:
+    direct_url = generate_sas_url(azure_clients, blob_path, source_container, folder_path, file_name)
+    public_base_url = azure_clients.config.public_base_url
+    if not direct_url:
+        return None
+    if not public_base_url:
+        logger.warning("PUBLIC_BASE_URL is not set — falling back to long SAS URL")
+        return direct_url
+
+    try:
+        token = _build_short_link_token(source_container, blob_path, folder_path, file_name)
+        _store_short_link_mapping(azure_clients, token, blob_path, source_container, folder_path, file_name)
+        return f"{public_base_url}/s/{token}"
+    except Exception as e:
+        logger.warning(f"Failed to create short-link token for {blob_path}: {e}")
+        return direct_url
 
 
 # ============================================================================
@@ -633,9 +714,9 @@ def hybrid_search_isolated(
     else:
         winning_source = "legal-documents"
 
-    # Generate SAS URLs for each result based on its own container
+    # Generate short redirect URLs for each result based on its own container
     for r in winning:
-        r["source_url"] = generate_sas_url(
+        r["source_url"] = generate_short_source_url(
             azure_clients,
             r["blob_path"],
             r.get("source_container", ""),
@@ -898,9 +979,9 @@ def discovery_search(
 
     deduped = sorted(best_by_file.values(), key=lambda r: r.get("score", 0), reverse=True)
 
-    # Generate SAS URLs
+    # Generate short redirect URLs
     for r in deduped:
-        r["source_url"] = generate_sas_url(
+        r["source_url"] = generate_short_source_url(
             azure_clients,
             r["blob_path"],
             r.get("source_container", ""),
@@ -2099,6 +2180,28 @@ app.add_middleware(
 @app.get("/health")
 async def health_check():
     return {"status": "healthy", "service": "legal-ai-rag", "version": "2.0.0"}
+
+
+@app.get("/s/{token}")
+async def resolve_short_link(token: str):
+    if not azure_clients:
+        raise HTTPException(status_code=503, detail="Service not ready")
+
+    mapping = _read_short_link_mapping(azure_clients, token)
+    if not mapping:
+        raise HTTPException(status_code=404, detail="Short link not found")
+
+    target_url = generate_sas_url(
+        azure_clients,
+        mapping.get("blob_path", ""),
+        mapping.get("source_container", ""),
+        mapping.get("folder_path", ""),
+        mapping.get("file_name", ""),
+    )
+    if not target_url:
+        raise HTTPException(status_code=404, detail="Source file not found")
+
+    return RedirectResponse(url=target_url, status_code=307)
 
 
 @app.post("/search", response_model=List[SearchResult])
