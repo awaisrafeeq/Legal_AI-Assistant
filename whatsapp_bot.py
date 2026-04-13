@@ -184,7 +184,7 @@ class RAGBackendClient:
             response = requests.post(
                 f"{base_url}/chat",
                 json=payload,
-                timeout=180    # 3 min timeout for complex queries with metadata filtering
+                timeout=3600    # 3 min timeout for complex queries with metadata filtering
             )
             response.raise_for_status()
             return response.json()
