@@ -356,20 +356,14 @@ def generate_sas_url(
 
         is_internal = source_container == "legal-documents-internal"
 
-        if is_internal and azure_clients.config.internal_container_sas_url:
-            sas_url = azure_clients.config.internal_container_sas_url
-
+        if is_internal:
             if blob_path.startswith("extracted-text/internal/"):
                 blob_file_path = blob_path[len("extracted-text/internal/"):]
             else:
                 blob_file_path = file_name or blob_path.split("/")[-1]
-
             if blob_file_path.endswith(".txt"):
                 blob_file_path = blob_file_path[:-4]
-
         else:
-            sas_url = azure_clients.config.container_sas_url
-
             if folder_path and file_name:
                 blob_file_path = f"{folder_path}/{file_name}"
             elif blob_path:
@@ -381,9 +375,18 @@ def generate_sas_url(
             else:
                 blob_file_path = file_name or ""
 
+        sas_url = azure_clients.config.container_sas_url
+        if is_internal and azure_clients.config.internal_container_sas_url:
+            sas_url = azure_clients.config.internal_container_sas_url
+
         parsed = urlparse(sas_url)
         base_url = f"{parsed.scheme}://{parsed.netloc}"
-        container_name = parsed.path.strip("/").split("/")[-1]
+        parsed_path = parsed.path.strip("/")
+        container_name = parsed_path.split("/")[-1] if parsed_path else ""
+        if not container_name:
+            container_name = source_container or (
+                "legal-documents-internal" if is_internal else "legal-documents"
+            )
         sas_token = parsed.query
 
         unicode_form = "NFC" if is_internal else "NFD"
