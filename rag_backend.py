@@ -1004,6 +1004,75 @@ def _build_answer_sections(answer: str, grounded_sources: List[Dict[str, Any]]) 
     return sections
 
 
+ANALYSIS_INTENT_TERMS = [
+    "contradiction", "contradictions", "inconsisten", "différent", "different",
+    "ment", "mensonge", "false", "falsehood", "lied", "liar", "analyse",
+    "analyze", "analysis", "témoign", "testimony", "déclaration", "statement",
+    "interrogatoire", "cross-examination", "contre-interrogatoire", "credibility",
+]
+
+DISCOVERY_INTENT_TERMS = [
+    "find all", "list all", "show all", "documents", "document", "files",
+    "fichiers", "liste", "list", "trouve", "montre", "show me documents",
+]
+
+
+def _is_analysis_query(query_lower: str) -> bool:
+    return any(term in query_lower for term in ANALYSIS_INTENT_TERMS)
+
+
+def _is_explicit_discovery_query(query_lower: str) -> bool:
+    if any(term in query_lower for term in DISCOVERY_INTENT_TERMS):
+        if _is_analysis_query(query_lower):
+            return False
+        return True
+    return False
+
+
+def _extract_source_numbers(text: str) -> List[int]:
+    import re
+
+    numbers = []
+    patterns = re.findall(r"\[Source(?:s)?\s+([0-9,\s]+)\]", text, flags=re.IGNORECASE)
+    for group in patterns:
+        for part in group.split(","):
+            part = part.strip()
+            if part.isdigit():
+                value = int(part)
+                if value not in numbers:
+                    numbers.append(value)
+    return numbers
+
+
+def _strip_source_markers(text: str) -> str:
+    import re
+
+    cleaned = re.sub(r"\s*\[Source(?:s)?\s+[0-9,\s]+\]", "", text, flags=re.IGNORECASE)
+    return cleaned.strip()
+
+
+def _build_cited_answer_sections(answer: str, source_catalog: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    chunks = _split_answer_sections(answer)
+    if not chunks:
+        chunks = [answer.strip()] if answer.strip() else []
+
+    sections = []
+    for chunk in chunks:
+        cited_numbers = _extract_source_numbers(chunk)
+        source = None
+        for source_number in cited_numbers:
+            idx = source_number - 1
+            if 0 <= idx < len(source_catalog):
+                source = source_catalog[idx]
+                break
+
+        cleaned = _strip_source_markers(chunk)
+        if cleaned:
+            sections.append(_build_inline_section(cleaned, source, "answer_point"))
+
+    return sections
+
+
 def rewrite_query_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
     """
     Rewrite user query into multiple French keyword search variations.
@@ -1039,6 +1108,7 @@ def rewrite_query_node(state: RAGState, azure_clients: AzureClients) -> RAGState
         history_text = f"\nRecent conversation:\n{history_text}\n"
 
     ql = query.lower()
+    force_answer_intent = _is_analysis_query(ql) and not _is_explicit_discovery_query(ql)
 
     query_type = "general legal"
     if any(word in ql for word in [
@@ -1056,6 +1126,8 @@ def rewrite_query_node(state: RAGState, azure_clients: AzureClients) -> RAGState
         "project", "facture"
     ]):
         query_type = "invoice/register"
+    elif force_answer_intent:
+        query_type = "testimony contradictions"
 
     lookup_mode = "document" if any(
         term in ql for term in [
@@ -1094,7 +1166,7 @@ def rewrite_query_node(state: RAGState, azure_clients: AzureClients) -> RAGState
         parsed = json.loads(raw)
 
         # Extract intent
-        if parsed.get("intent", "").upper() == "DISCOVERY":
+        if not force_answer_intent and parsed.get("intent", "").upper() == "DISCOVERY":
             query_intent = "discovery"
 
         # Extract filters (remove intent key and null values)
@@ -1105,10 +1177,13 @@ def rewrite_query_node(state: RAGState, azure_clients: AzureClients) -> RAGState
         try:
             intent_prompt = prompts.get_discovery_intent_prompt(query)
             intent_resp = azure_clients.llm.invoke([("human", intent_prompt)])
-            if "DISCOVERY" in intent_resp.content.strip().upper():
+            if not force_answer_intent and "DISCOVERY" in intent_resp.content.strip().upper():
                 query_intent = "discovery"
         except Exception:
             pass
+
+    if force_answer_intent:
+        query_intent = "answer"
 
     logger.info(f"Query intent: {query_intent.upper()} | filters: {discovery_filters}")
 
@@ -1732,6 +1807,8 @@ def generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
         in grounded_file_keys
     ]
 
+    source_catalog = []
+
     context_parts = []
     for i, result in enumerate(grounded_chunks, 1):
         source_type = (
@@ -1743,6 +1820,7 @@ def generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
             f"[Source {i}] {source_type} | File: {result['file_name']}\n"
             f"{result['content'][:3000]}\n"
         )
+        source_catalog.append(result)
     context = "\n---\n".join(context_parts)
 
     # Step 3: Build messages for GPT
@@ -1770,7 +1848,8 @@ def generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
     messages.append(("human", query))
 
     response = azure_clients.llm.invoke(messages)
-    answer = response.content
+    raw_answer = response.content
+    answer = raw_answer
 
     # Extract and strip confidence signal before sending to user
     confidence = "CONFIDENT"
@@ -1780,13 +1859,15 @@ def generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
             answer = answer.replace(tag, "").strip()
             break
 
+    cleaned_answer = _strip_source_markers(answer)
+
     logger.info(f"LLM confidence signal: {confidence}")
-    logger.info(f"Generated answer ({len(answer)} chars) | grounded on {len(grounded_sources)} files")
+    logger.info(f"Generated answer ({len(cleaned_answer)} chars) | grounded on {len(grounded_sources)} files")
 
     return {
-        "answer": answer,
+        "answer": cleaned_answer,
         "sources": grounded_sources,
-        "sections": _build_answer_sections(answer, grounded_sources),
+        "sections": _build_cited_answer_sections(raw_answer, source_catalog),
         "context": context,
         "winning_source": winning_source
     }

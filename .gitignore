@@ -44,7 +44,7 @@ env/
 *.log
 
 # Test files
-Test/*.txt
+# Test/*.txt
 Test/*.pdf
 test_files/
 

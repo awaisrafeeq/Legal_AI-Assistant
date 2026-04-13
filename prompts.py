@@ -182,6 +182,9 @@ ANSWER queries — user wants specific information extracted:
 - "what was the date of the mortgage?"
 - "summarize the evaluation report"
 - "what does the contract say about liability?"
+- "show me contradictions in Léon Raymond's statements"
+- "where does this witness contradict himself?"
+- "analyze whether this testimony is inconsistent"
 
 Analyze this query: {query}
 
@@ -230,6 +233,7 @@ If the current query is vague (e.g., "give me more", "what else", "show me more"
 STEP 1 — Classify intent:
 - DISCOVERY: user wants a LIST of matching documents (e.g., "find all emails from X", "list all declarations")
 - ANSWER: user wants specific information extracted (e.g., "what is the loan amount?", "what date was the mortgage?")
+- Questions asking for contradictions, lies, inconsistencies, conflicting testimony, credibility analysis, or lawyer-style analysis are ALWAYS ANSWER, not DISCOVERY.
 - For follow-up queries like "give me more", "show more", "what else" — inherit the intent from the previous query in conversation history.
 
 STEP 2 — Extract search filters from the query (or from conversation history if the query is a follow-up).
@@ -332,6 +336,7 @@ MULTI-DOCUMENT RULES:
 - If two documents contradict each other, present BOTH versions with their sources and flag the contradiction explicitly.
 - Never silently prefer one document over another without stating why.
 - You MAY use multiple documents ONLY when they clearly reference the same entity, case, property, or transaction. When in doubt, use fewer sources rather than more.
+- For contradiction or credibility analysis, only mention a contradiction if the mismatch is explicitly supported by the provided sources.
 
 EXTRACTION RULES — CRITICAL FOR ACCURACY:
 - Extract ALL numbers, amounts, loan numbers, dates, names EXACTLY as they appear in the source.
@@ -345,8 +350,9 @@ EXTRACTION RULES — CRITICAL FOR ACCURACY:
 
 RESPONSE FORMAT:
 1. Direct answer in 1-2 sentences with the key fact/number.
-2. Supporting details with exact quotes from the source (French original + {response_language} translation).
-3. Source references at the end.
+2. Then provide short numbered bullets for each supported point.
+3. EVERY bullet or analytical paragraph MUST end with one or more exact source tags like [Source 1] or [Sources 1, 3].
+4. Do not put generic source references only at the end; attach the source tags to the exact point they support.
 
 LENGTH RULE:
 - Keep total response under 500 words unless the user explicitly asks for a detailed breakdown.
@@ -354,8 +360,10 @@ LENGTH RULE:
 - Use bullet points only for listing multiple items (loans, dates, parties).
 
 CITATION FORMAT:
-- Internal documents: "⚠️ Confidential Source: [filename]"
-- External documents: "📗 Gov | [filename]"
+- Use ONLY source numbers that exist in the provided context headings.
+- Do NOT invent source numbers.
+- If a point cannot be tied to a specific source number, do not include that point.
+- If you cannot support the answer with source-number citations, say you could not verify it from the available documents.
 
 DOCUMENT PREFERENCE RULES:
 - If original source files and transcripts both exist, prefer the original source files over transcripts.

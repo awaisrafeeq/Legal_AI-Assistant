@@ -1,0 +1,76 @@
+My question:
+Donne-moi des contradictions de Léon raymond et au minimum des contradictions ou des endroits où est-ce qu'on voit qu'il ment ou qu'il a fait des témoignages différents ou des déclarations différentes ou qu'il a reçu des documents différents de ce qu'il dit. Donc, prends le temps d'analyser ça comme un avocat criminaliste, prend tout le temps de faire l'analyse de tous les documents PDF qui existent dans toutes les bases de données que tu as accès. Donc, je ne m'attends pas à ce que tu me répondes en deux secondes, je m'attends à ce que tu me répondes, à prendre tout le temps nécessaire.
+
+
+Rag Answer:
+[7:24 PM, 4/13/2026] +1 (954) 203-2639:  Legal AI Assistant
+────────────────────────────
+
+I found 32 documents matching person=Léon Raymond, keyword=contradictions, inconsistencies, differing statements, falsehoods, discrepancies. Main document types found: requête, remise_volontaire, cahier_de_preuve.
+Source: 📗 2020-11-22 défense et demande reconventionnelle de jfd version 4.docx [Legal Documents]
+Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Ante%CC%81rieur/705-17-007541-178%20ST-LIN%20RAYMOND%20ET%20AL/PROCE%CC%81DURES/2020-11-22%20de%CC%81fense%20et%20demande%20reconventionnelle%20de%20jfd%20version%204.docx?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+
+1. 2020-11-22 défense et demande reconventionnelle de jfd version 4.docx
+Type: requête
+Persons: Jean-François Desormeaux, Benoit Charron, Olivier Gaudet, Michael Voyer
+Projects: Place du Marché, Saint-Lin, Lot 3 570 017
+Why it matches: Les défendeurs, dont Jean-François Desormeaux et ses sociétés, contestent une demande des demandeurs visant l'annulation d'actes notariés et de certificats d'actions liés à des projets immobiliers. Le litige porte sur des prêts hypothécaires à haut risque pour le développement de terrains vacants, notamment le projet « Place du Marché » à Saint-Lin. Les défendeurs allèguent avoir agi de bonne foi et contestent les accusations de dol et de fausses représentations. Ils demandent le rejet de la demande et des dommages-intérêts pour atteinte à leur réputation.
+Source: 📗 2020-11-22 défense et demande reconventionnelle de jfd version 4.docx [Legal Documents]
+Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Ante%CC%81rieur/705-17-007541-178%20ST-LIN%20RAYMOND%20ET%20AL/PROCE%CC%81DURES/2020-11-22%20de%CC%81fense%20et%20demande%20reconventionnelle%20de%20jfd%20version%204.docx?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+
+2. 500-17-105760-188 (5).pdf
+Type: requête
+Persons: Gilles Lehoux, Jean-François Desormeaux, Isabelle Collette, Olivier Gaudet
+Projects: 1523, Chemin du Pays-Brûlé, Varennes, Québec H8R 3P1, 13-15, de la Visitation, St-Charles Borromée, Québec, Brompton
+Why it matches: La requête vise à annuler une saisie avant jugement et réclame des dommages pour abus de procédure. Les défendeurs, incluant Isabelle Collette et ses entreprises, contestent la validité des saisies effectuées sur des biens immobiliers, comptes bancaires et actions. Ils allèguent des insuffisances et des faussetés dans les affidavits des demandeurs, ainsi qu'une intention de pression abusive. Plusieurs transactions immobilières et financières suspectes sont détaillées, impliquant des prête-noms et des sociétés liées à Jean-François Desormeaux et Jean-François Bouchard.
+Source: 📗 500-17-105760-188 (5).pdf [Legal Documents]
+Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Divulgation/%20%20ORIBUS%20-%20DIVULGATION%201/18%20-%20DOSSIER%20SECONDAIRES/18003A%20-%20Dossiers%20cour%20civile%20-%20Criminelle%20%26%20pe%CC%81nale/Palais%20de%20justice%20Montre%CC%81al/500-17-105760-188/500-17-105760-188%20%285%29.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+
+3. 08011.01G - 161227 - Remise volontaire - Documents [p.209 à 227].pdf
+Type: remise_volontaire
+Persons: Yves Blache, Pierre Aubin, Alain Lamoureux, Lucie Lafontaine
+Projects: 196, route 335, Ville de St-Lin des Laurentides, 3871 à 3875 rue Ste-Catherine Est, Montréal, 13-15, de la Visitation, St-Charles Borromée
+[7:24 PM, 4/13/2026] +1 (954) 203-2639: (2/4)
+Why it matches: Ce document contient des informations détaillées sur des prêts hypothécaires, des cessions de créances et des hypothèques impliquant plusieurs parties, dont Yves Blache et diverses entreprises québécoises. Il inclut des montants importants, des adresses de propriétés et des conditions de remboursement. Les transactions concernent des biens situés à St-Lin, St-Charles Borromée et Montréal, avec des garanties hypothécaires et des clauses spécifiques pour les créanciers.
+Source: 📗 08011.01G - 161227 - Remise volontaire - Documents [p.209 à 227].pdf [Legal Documents]
+Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Ante%CC%81rieur/231219%20-%20Cahier%20de%20preuve%20Oribus/D%20-%20Te%CC%81moins%20%3E%20Ide%CC%81al%20de%CC%81veloppement%20et%20Ide%CC%81al%20finance/I.%20Les%20compagnies%20Ide%CC%81al/2.%20Isabelle%20TCHOULACK%20KOUEMO/Pie%CC%80ces/08011.01G%20-%20161227%20Documents%20promotionnels%20pour%20le%20projet%20de%20St-Lin%20pre%CC%81pare%CC%81%20par%20Ide%CC%81al%20De%CC%81veloppement/08011.01G%20-%20161227%20-%20Remise%20volontaire%20-%20Documents%20%5Bp.209%20a%CC%80%20227%5D.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+
+4. 08011.01G - 161227 - Remise volontaire - Documents [p.199].pdf
+Type: remise_volontaire
+Persons: Yves Blache, Pierre Aubin, Alain Lamoureux, Lucie Lafontaine
+Projects: 196, route 335, Ville de St-Lin des Laurentides, 3871 à 3875 rue Ste-Catherine Est, Montréal, 80, chemin Lasalle, Ville de Lachine
+Why it matches: Ce document concerne une remise volontaire impliquant plusieurs prêts hypothécaires et transactions immobilières. Il mentionne des montants importants, des propriétés situées à St-Lin, St-Charles-Borromée et Montréal, ainsi que des hypothèques sur divers lots cadastraux. Plusieurs parties, dont Yves Blache, Olivier Gaudet et diverses entreprises québécoises, sont impliquées. Les transactions incluent des prêts, des hypothèques et des conventions entre actionnaires. Les dates clés s'étendent de 2014 à 2016.
+Source: 📗 08011.01G - 161227 - Remise volontaire - Documents [p.199].pdf [Legal Documents]
+Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Ante%CC%81rieur/Analyse/8.%20BLACHE%2C%20Yves/Documents/08011.01G%20-%20161227%20Certificat%20d%27actions%20du%209%20mars%202016%20de%20Yves%20Blache%20pour%209333-9356%20Qc%20inc/08011.01G%20-%20161227%20-%20Remise%20volontaire%20-%20Documents%20%5Bp.199%5D.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+
+5. 08011.01G - 161227 - Remise volontaire - Documents [p.129].pdf
+Type: remise_volontaire
+Persons: Yves Blache, Pierre Aubin, Alain Lamoureux, Lucie Lafontaine
+Projects: 196, route 335, Ville de St-Lin des Laurentides, 3871 à 3875 rue Ste-Catherine Est, Montréal, 80, chemin Lasalle, Ville de Lachine
+Why it matches: Ce document concerne une remise volontaire impliquant plusieurs prêts hypothécaires et transactions immobilières. Il mentionne des montants importants, des propriétés situées à St-Lin, St-Charles-Borromée et Montréal, ainsi que des hypothèques sur divers lots. Plusieurs parties, dont Yves Blache et des entreprises comme 9303-4197 Québec Inc., sont impliquées. Des dates clés et des montants précis sont détaillés.
+Source: 📗 08011.01G - 161227 - Remise volontaire - Documents [p.129].pdf [Legal Documents]
+Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Ante%CC%81rieur/Analyse/8.%20BLACHE%2C%20Yves/Documents/08011.01G%20-%20161227%20E%CC%81tat%20de%20compte%20de%207327587%20Canada%20inc%20au%20sujet%20du%20pre%CC%82t%20a%CC%80%20Saint-Charles-Borrome%CC%81e/08011.01G%20-%20161227%20-%20Remise%20volontaire%20-%20Documents%20%5Bp.129%5D.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+
+6. 2022-02-03-Cahier des Autorités des Demandeurs (objections).pdf
+[7:24 PM, 4/13/2026] +1 (954) 203-2639: (3/4)
+Type: cahier_de_preuve
+Persons: Léon Raymond, Jean-François Desormeaux, Pierre Aubin, Jean-Claude Royer
+Projects: Centre de tri et de recyclage de matières résiduelles, Ligne R, Ligne ICI
+Why it matches: Ce document est un cahier de preuves et d'objections dans une affaire de litige immobilier et contractuel au Québec. Il inclut des interrogatoires, des engagements, des objections et des jugements sur des questions de pertinence, de confidentialité et de secret professionnel. Les parties impliquées incluent des entreprises, des ingénieurs, des avocats et des municipalités. Les litiges concernent des contrats de construction et de tri de matières résiduelles, avec des réclamations financières importantes et des enjeux liés à la performance des équipements et à la gestion des projets.
+Source: 📗 2022-02-03-Cahier des Autorités des Demandeurs (objections).pdf [Legal Documents]
+Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Ante%CC%81rieur/705-17-007541-178%20ST-LIN%20RAYMOND%20ET%20AL/PIE%CC%80CES/2022-02-03-Cahier%20des%20Autorite%CC%81s%20des%20Demandeurs%20%28objections%29.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+
+7. 08011.01G - 161227 - Remise volontaire - Documents [p.203 à 209 à 228].pdf
+Type: remise_volontaire
+Persons: Yves Blache, Pierre Aubin, Alain Lamoureux, Lucie Lafontaine
+Projects: 196, route 335, Ville de St-Lin des Laurentides, 3871 à 3875 rue Ste-Catherine Est, Montréal, 80, chemin Lasalle, Ville de Lachine
+Why it matches: Ce document contient des informations détaillées sur des prêts hypothécaires, des cessions de créances et des hypothèques impliquant plusieurs parties, dont Yves Blache et diverses entreprises québécoises. Il inclut des montants importants, des adresses de propriétés hypothéquées et des conditions de remboursement. Les transactions concernent des biens situés à St-Lin, Montréal et St-Charles-Borromée, avec des hypothèques enregistrées au registre foncier. Des clauses spécifiques sur les défauts de paiement et les assurances sont également mentionnées.
+Source: 📗 08011.01G - 161227 - Remise volontaire - Documents [p.203 à 209 à 228].pdf [Legal Documents]
+Link: https://legaldatacontainer.blob.core.windows.net/legal-documents/Ante%CC%81rieur/231219%20-%20Cahier%20de%20preuve%20Oribus/E%20-%20Te%CC%81moins%20%3E%20Les%20projets%20immobiliers/IV.%20Les%20investisseurs/30.%20Yves%20BLACHE/Pie%CC%80ces/08011.01G%20-%20161227%20Ordre%20du%20jour%20date%CC%81%20du%207%20juin%202016/08011.01G%20-%20161227%20-%20Remise%20volontaire%20-%20Documents%20%5Bp.203%20a%CC%80%20209%20a%CC%80%20228%5D.pdf?sp=rwl&st=2026-03-18T15:42:11Z&se=2026-04-18T23:57:11Z&spr=https&sv=2024-11-04&sr=c&sig=anuf4O4MxYYw%2Bg66HInbF7KwM2kvAmtUUBLFD7o5tMM%3D
+
+8. 08011.01G - 161227 - Remise volontaire - Documents [p.36 à 41].pdf
+Type: remise_volontaire
+Persons: Yves Blache, Olivier Gaudet, Jean-François Desormeaux, Lucie Lafontaine
+Projects: 196, route 335, Ville de St-Lin des Laurentides, 3871 à 3875 rue Ste-Catherine Est, Montréal, 13-15, de la Visitation, St-Charles Borromée
+Why it matches: Ce document contient des informations détaillées sur plusieurs transactions immobilières et hypothécaires impliquant des prêts, des hypothèques et des cessions de créances. Les parties incluent des individus et des entreprises, avec des montants importants allant jusqu'à 5 525 000 $. Les propriétés concernées sont situées dans diverses localités du Québec, notamment St-Lin des Laurentides, Montréal et St-Charles Borromée. Plusieurs dates clés sont mentionnées, notamment celles des prêts, des hypothèques et des notifications légales. Les transactions sont documentées par des actes notariés et des conventions entre les parties.
+Source: 📗 08011.01G - 161227 - Remise volontaire - Documents [p.36 à 41].pdf [Legal Documents]
