@@ -1029,6 +1029,120 @@ def _is_explicit_discovery_query(query_lower: str) -> bool:
     return False
 
 
+def _normalize_file_label(name: str) -> str:
+    normalized = unicodedata.normalize("NFKD", (name or "").lower())
+    normalized = "".join(ch for ch in normalized if not unicodedata.combining(ch))
+    cleaned = []
+    previous_space = False
+    for ch in normalized:
+        if ch.isalnum():
+            cleaned.append(ch)
+            previous_space = False
+        else:
+            if not previous_space:
+                cleaned.append(" ")
+                previous_space = True
+    return "".join(cleaned).strip()
+
+
+def _is_non_analyzable_source(result: Dict[str, Any]) -> bool:
+    name = (result.get("file_name", "") or "").lower()
+    path = (result.get("blob_path", "") or "").lower()
+    combined = f"{name} {path}"
+    blocked_terms = [
+        ".zip", ".mp3", ".wav", ".mp4", ".avi", ".mov",
+        "audio", "video", "archive", "piece jointe",
+    ]
+    return any(term in combined for term in blocked_terms)
+
+
+def _is_evidence_friendly_result(result: Dict[str, Any], query_lower: str = "") -> bool:
+    if _is_non_analyzable_source(result):
+        return False
+
+    file_name = (result.get("file_name", "") or "").lower()
+    doc_type = (result.get("document_type", "") or "").lower()
+    subtype = (result.get("document_subtype", "") or "").lower()
+    content = (result.get("content", "") or "").lower()
+    haystack = " ".join([file_name, doc_type, subtype, content[:1200]])
+
+    if _is_analysis_query(query_lower):
+        positive_terms = [
+            "interrogatoire", "declaration", "déclaration", "temoign", "témoign",
+            "affidavit", "statement", "courriel", "email", "correspondance",
+            "transcript", "transcription", "contre-interrogatoire",
+        ]
+        if not any(term in haystack for term in positive_terms):
+            return False
+
+    return True
+
+
+def _dedupe_similar_file_results(results: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    deduped = []
+    seen_exact = set()
+    seen_normalized = set()
+
+    for result in results:
+        key = (
+            result.get("source_container", ""),
+            result.get("blob_path", ""),
+            result.get("file_name", ""),
+        )
+        if key in seen_exact:
+            continue
+
+        normalized_name = _normalize_file_label(result.get("file_name", ""))
+        if normalized_name and normalized_name in seen_normalized:
+            continue
+
+        seen_exact.add(key)
+        if normalized_name:
+            seen_normalized.add(normalized_name)
+        deduped.append(result)
+
+    return deduped
+
+
+def _build_grounded_context(search_results: List[Dict[str, Any]]) -> tuple[List[Dict[str, Any]], str]:
+    grounded_sources = _dedupe_similar_file_results(search_results)
+    grounded_sources = grounded_sources[:6]
+    grounded_file_keys = [
+        (r.get("source_container", ""), r.get("blob_path", ""), r.get("file_name", ""))
+        for r in grounded_sources
+    ]
+
+    context_parts = []
+    for i, source in enumerate(grounded_sources, 1):
+        source_type = (
+            "Internal (Confidential)"
+            if source.get("source_container") == "legal-documents-internal"
+            else "Gov"
+        )
+        chunks = [
+            r for r in search_results
+            if (
+                r.get("source_container", ""),
+                r.get("blob_path", ""),
+                r.get("file_name", "")
+            ) == grounded_file_keys[i - 1]
+        ]
+        chunk_text = "\n".join(
+            (chunk.get("content", "") or "")[:1800]
+            for chunk in chunks[:3]
+            if (chunk.get("content", "") or "").strip()
+        ).strip()
+        if not chunk_text:
+            chunk_text = (source.get("content", "") or "")[:1800]
+
+        context_parts.append(
+            f"[Source {i}] {source_type} | File: {source.get('file_name', 'Unknown')}\n"
+            f"{chunk_text}\n"
+        )
+
+    return grounded_sources, "\n---\n".join(context_parts)
+
+
 def _extract_source_numbers(text: str) -> List[int]:
     import re
 
@@ -1336,13 +1450,15 @@ def retrieve_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
 
     source_mode = state.get("source_mode", "all")
     allowed_files = state.get("allowed_files", [])
+    query_lower = (state.get("query", "") or "").lower()
+    strict_analysis_mode = _is_analysis_query(query_lower)
 
     all_results = []
     winning_sources = []
 
     # Build OData filter from discovery_filters for ANSWER mode too
     discovery_filters = state.get("discovery_filters", {})
-    answer_odata_filter = _build_odata_filter(discovery_filters) if discovery_filters else None
+    answer_odata_filter = None if strict_analysis_mode else (_build_odata_filter(discovery_filters) if discovery_filters else None)
     if answer_odata_filter:
         logger.info(f"ANSWER mode using metadata filter: {answer_odata_filter}")
 
@@ -1403,6 +1519,14 @@ def retrieve_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
         before_count = len(deduped)
         deduped = [r for r in deduped if r.get("blob_path", "") not in exclude_paths]
         logger.info(f"Excluded {before_count - len(deduped)} already-shown docs ({len(exclude_paths)} paths)")
+
+    if strict_analysis_mode:
+        before_count = len(deduped)
+        deduped = [r for r in deduped if _is_evidence_friendly_result(r, query_lower)]
+        logger.info(
+            f"Analysis retrieval filter kept {len(deduped)}/{before_count} chunks "
+            f"for contradiction/evidence-style answering"
+        )
 
     # Sort by cross-encoder score and take top results
     deduped.sort(
@@ -1489,6 +1613,8 @@ def multi_retrieve_node(state: RAGState, azure_clients: AzureClients) -> RAGStat
     sub_queries = state.get("sub_queries", [])
     source_mode = state.get("source_mode", "all")
     allowed_files = state.get("allowed_files", [])
+    query_lower = (state.get("query", "") or "").lower()
+    strict_analysis_mode = _is_analysis_query(query_lower)
 
     all_results = []
     winning_sources = []
@@ -1532,6 +1658,14 @@ def multi_retrieve_node(state: RAGState, azure_clients: AzureClients) -> RAGStat
         if key not in seen:
             seen.add(key)
             deduped.append(r)
+
+    if strict_analysis_mode:
+        before_count = len(deduped)
+        deduped = [r for r in deduped if _is_evidence_friendly_result(r, query_lower)]
+        logger.info(
+            f"Analysis multi-retrieve filter kept {len(deduped)}/{before_count} chunks "
+            f"for contradiction/evidence-style answering"
+        )
 
     # Pick the most common winning source
     source_counts = Counter(s for s in winning_sources if s != "none")
@@ -1689,6 +1823,8 @@ def generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
     history = state.get("conversation_history", [])
     winning_source = state.get("winning_source", "unknown")
     lookup_mode = state.get("lookup_mode", "answer")
+    query_lower = (query or "").lower()
+    strict_analysis_mode = _is_analysis_query(query_lower)
 
     # --- Guard 1: No results at all ---
     if not search_results:
@@ -1711,6 +1847,17 @@ def generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
 
     # Use only quality results from here on
     search_results = quality_results
+
+    if strict_analysis_mode:
+        before_count = len(search_results)
+        search_results = [r for r in search_results if _is_evidence_friendly_result(r, query_lower)]
+        logger.info(
+            f"Analysis quality filter kept {len(search_results)}/{before_count} chunks "
+            f"before answer generation"
+        )
+        if not search_results:
+            logger.info("No analyzable evidence-style results remained for analysis query")
+            return dict(NOT_FOUND_RESPONSE)
 
     # --- Guard 3: Document lookup mode ---
     if lookup_mode == "document":
@@ -1778,50 +1925,13 @@ def generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
         key=lambda r: r.get("cross_encoder_score", r.get("score", 0)),
         reverse=True
     )
-    seen_files = set()
-    seen_basenames = {}  # basename -> count, to limit near-duplicate files
-    grounded_sources = []
-    for r in sorted_results:
-        key = (r.get("source_container", ""), r.get("blob_path", ""), r.get("file_name", ""))
-        if key in seen_files:
-            continue
-        # Limit files with very similar basenames (e.g. 4 interrogatoire variants)
-        # Allow max 2 files sharing the same first 30 chars of filename
-        fname = r.get("file_name", "")
-        base_prefix = fname[:30] if fname else ""
-        prefix_count = seen_basenames.get(base_prefix, 0)
-        if prefix_count >= 2:
-            continue
-        seen_files.add(key)
-        seen_basenames[base_prefix] = prefix_count + 1
-        grounded_sources.append(r)
+    sorted_results = [r for r in sorted_results if not _is_non_analyzable_source(r)]
+    grounded_sources, context = _build_grounded_context(sorted_results)
+    source_catalog = grounded_sources
 
-    # Step 2: Build context ONLY from chunks belonging to grounded source files
-    grounded_file_keys = set(
-        (r.get("source_container", ""), r.get("blob_path", ""), r.get("file_name", ""))
-        for r in grounded_sources
-    )
-    grounded_chunks = [
-        r for r in search_results
-        if (r.get("source_container", ""), r.get("blob_path", ""), r.get("file_name", ""))
-        in grounded_file_keys
-    ]
-
-    source_catalog = []
-
-    context_parts = []
-    for i, result in enumerate(grounded_chunks, 1):
-        source_type = (
-            "🔴 Internal (Confidential)"
-            if result.get("source_container") == "legal-documents-internal"
-            else "📗 Gov"
-        )
-        context_parts.append(
-            f"[Source {i}] {source_type} | File: {result['file_name']}\n"
-            f"{result['content'][:3000]}\n"
-        )
-        source_catalog.append(result)
-    context = "\n---\n".join(context_parts)
+    if strict_analysis_mode and len(grounded_sources) < 1:
+        logger.info("No grounded source files remained after analysis source cleanup")
+        return dict(NOT_FOUND_RESPONSE)
 
     # Step 3: Build messages for GPT
     messages = []
@@ -1860,6 +1970,11 @@ def generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
             break
 
     cleaned_answer = _strip_source_markers(answer)
+    sections = _build_cited_answer_sections(raw_answer, source_catalog)
+
+    if strict_analysis_mode and not sections:
+        logger.info("Analysis query produced no cited sections — returning not-found response")
+        return dict(NOT_FOUND_RESPONSE)
 
     logger.info(f"LLM confidence signal: {confidence}")
     logger.info(f"Generated answer ({len(cleaned_answer)} chars) | grounded on {len(grounded_sources)} files")
@@ -1867,7 +1982,7 @@ def generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
     return {
         "answer": cleaned_answer,
         "sources": grounded_sources,
-        "sections": _build_cited_answer_sections(raw_answer, source_catalog),
+        "sections": sections,
         "context": context,
         "winning_source": winning_source
     }
