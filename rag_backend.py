@@ -298,10 +298,29 @@ def send_email_acs(config, recipient_email: str, subject: str, body: str) -> boo
         logger.warning("ACS not configured — skipping email send")
         return False
     try:
+        endpoint_host = "unknown"
+        try:
+            # Connection string format: endpoint=https://...;accesskey=...
+            for part in config.acs_connection_string.split(";"):
+                if part.lower().startswith("endpoint="):
+                    endpoint_value = part.split("=", 1)[1].strip()
+                    endpoint_host = endpoint_value.replace("https://", "").replace("http://", "").strip("/")
+                    break
+        except Exception:
+            pass
+
+        sender_email = (config.acs_sender_email or "").strip()
+        sender_domain = sender_email.split("@", 1)[1] if "@" in sender_email else "(invalid)"
+        logger.info(
+            f"ACS send debug | endpoint_host={endpoint_host} | "
+            f"sender_email={sender_email} | sender_domain={sender_domain} | "
+            f"recipient_email={recipient_email}"
+        )
+
         from azure.communication.email import EmailClient
         client = EmailClient.from_connection_string(config.acs_connection_string)
         message = {
-            "senderAddress": config.acs_sender_email,
+            "senderAddress": sender_email,
             "recipients": {"to": [{"address": recipient_email}]},
             "content": {
                 "subject": subject,
