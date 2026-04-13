@@ -405,7 +405,6 @@ class ConversationMemory:
     def get_bot_message_by_id(self, sender_id: str, whatsapp_message_id: str) -> Optional[Dict]:
         return self._bot_messages.get(sender_id, {}).get(whatsapp_message_id)
 
-
 # ============================================================================
 # WhatsApp Handler
 # ============================================================================
@@ -477,7 +476,7 @@ class WhatsAppHandler:
         if not payload:
             self.green_api.send_text_message(
                 chat_id,
-                "🤖 Mujhay email bhejne ke liye pehle koi answer ya sources chahiye honge. Kisi previous bot reply ko reply karke dobara kaho."
+                "🤖 I need an existing answer or source list before I can send an email. Reply to a previous bot message and try again."
             )
             return True
 
@@ -491,12 +490,12 @@ class WhatsAppHandler:
             )
             self.green_api.send_text_message(
                 chat_id,
-                f"📧 Email {recipient_email} par bhej di gayi hai."
+                f"📧 The email has been sent to {recipient_email}."
             )
         except Exception:
             self.green_api.send_text_message(
                 chat_id,
-                "❌ Email bhejte waqt error aaya. Backend email settings aur ACS config check karo."
+                "❌ An error occurred while sending the email. Check the backend email settings and ACS configuration."
             )
         return True
 
