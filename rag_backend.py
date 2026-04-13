@@ -1078,6 +1078,15 @@ def _is_evidence_friendly_result(result: Dict[str, Any], query_lower: str = "") 
     return True
 
 
+def _analysis_priority(result: Dict[str, Any], query_lower: str = "") -> tuple[int, float]:
+    score = float(result.get("cross_encoder_score", result.get("score", 0)) or 0)
+    if _is_non_analyzable_source(result):
+        return (0, score)
+    if _is_evidence_friendly_result(result, query_lower):
+        return (2, score)
+    return (1, score)
+
+
 def _dedupe_similar_file_results(results: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     deduped = []
     seen_exact = set()
@@ -1252,6 +1261,9 @@ def rewrite_query_node(state: RAGState, azure_clients: AzureClients) -> RAGState
             "exclude interrogatoires", "exclure les interrogatoires"
         ]
     ) else "answer"
+
+    if force_answer_intent:
+        lookup_mode = "answer"
 
     # Generate 3 query variations
     prompt = prompts.get_multi_query_rewrite_prompt(history_text, query_type, query)
@@ -1520,19 +1532,14 @@ def retrieve_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
         deduped = [r for r in deduped if r.get("blob_path", "") not in exclude_paths]
         logger.info(f"Excluded {before_count - len(deduped)} already-shown docs ({len(exclude_paths)} paths)")
 
-    if strict_analysis_mode:
-        before_count = len(deduped)
-        deduped = [r for r in deduped if _is_evidence_friendly_result(r, query_lower)]
-        logger.info(
-            f"Analysis retrieval filter kept {len(deduped)}/{before_count} chunks "
-            f"for contradiction/evidence-style answering"
-        )
-
     # Sort by cross-encoder score and take top results
-    deduped.sort(
-        key=lambda r: r.get("cross_encoder_score", r.get("score", 0)),
-        reverse=True
-    )
+    if strict_analysis_mode:
+        deduped.sort(key=lambda r: _analysis_priority(r, query_lower), reverse=True)
+    else:
+        deduped.sort(
+            key=lambda r: r.get("cross_encoder_score", r.get("score", 0)),
+            reverse=True
+        )
     search_results = deduped[:20]
 
     # Determine winning source from the best results
@@ -1660,12 +1667,7 @@ def multi_retrieve_node(state: RAGState, azure_clients: AzureClients) -> RAGStat
             deduped.append(r)
 
     if strict_analysis_mode:
-        before_count = len(deduped)
-        deduped = [r for r in deduped if _is_evidence_friendly_result(r, query_lower)]
-        logger.info(
-            f"Analysis multi-retrieve filter kept {len(deduped)}/{before_count} chunks "
-            f"for contradiction/evidence-style answering"
-        )
+        deduped.sort(key=lambda r: _analysis_priority(r, query_lower), reverse=True)
 
     # Pick the most common winning source
     source_counts = Counter(s for s in winning_sources if s != "none")
@@ -1849,15 +1851,11 @@ def generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
     search_results = quality_results
 
     if strict_analysis_mode:
-        before_count = len(search_results)
-        search_results = [r for r in search_results if _is_evidence_friendly_result(r, query_lower)]
-        logger.info(
-            f"Analysis quality filter kept {len(search_results)}/{before_count} chunks "
-            f"before answer generation"
+        search_results = sorted(
+            search_results,
+            key=lambda r: _analysis_priority(r, query_lower),
+            reverse=True
         )
-        if not search_results:
-            logger.info("No analyzable evidence-style results remained for analysis query")
-            return dict(NOT_FOUND_RESPONSE)
 
     # --- Guard 3: Document lookup mode ---
     if lookup_mode == "document":
@@ -1922,14 +1920,17 @@ def generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
     #         Sort by cross-encoder score first to ensure best files win regardless of variant order.
     sorted_results = sorted(
         search_results,
-        key=lambda r: r.get("cross_encoder_score", r.get("score", 0)),
+        key=lambda r: _analysis_priority(r, query_lower) if strict_analysis_mode else (
+            float(r.get("cross_encoder_score", r.get("score", 0)) or 0),
+            float(r.get("score", 0) or 0)
+        ),
         reverse=True
     )
     sorted_results = [r for r in sorted_results if not _is_non_analyzable_source(r)]
     grounded_sources, context = _build_grounded_context(sorted_results)
     source_catalog = grounded_sources
 
-    if strict_analysis_mode and len(grounded_sources) < 1:
+    if len(grounded_sources) < 1:
         logger.info("No grounded source files remained after analysis source cleanup")
         return dict(NOT_FOUND_RESPONSE)
 
@@ -1972,8 +1973,8 @@ def generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
     cleaned_answer = _strip_source_markers(answer)
     sections = _build_cited_answer_sections(raw_answer, source_catalog)
 
-    if strict_analysis_mode and not sections:
-        logger.info("Analysis query produced no cited sections — returning not-found response")
+    if not sections:
+        logger.info("Answer generation produced no cited sections — returning not-found response")
         return dict(NOT_FOUND_RESPONSE)
 
     logger.info(f"LLM confidence signal: {confidence}")
