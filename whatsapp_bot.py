@@ -192,6 +192,34 @@ class RAGBackendClient:
             logger.error(f"RAG backend request failed: {e}")
             raise
 
+    def send_email(
+        self,
+        recipient_email: str,
+        answer: str,
+        query: str = "",
+        sources: Optional[List[Dict[str, Any]]] = None,
+        subject: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        payload = {
+            "recipient_email": recipient_email,
+            "answer": answer,
+            "query": query,
+            "sources": sources or [],
+            "subject": subject,
+        }
+        try:
+            base_url = self.base_url.rstrip('/')
+            response = requests.post(
+                f"{base_url}/share/email",
+                json=payload,
+                timeout=120,
+            )
+            response.raise_for_status()
+            return response.json()
+        except requests.exceptions.RequestException as e:
+            logger.error(f"Email share request failed: {e}")
+            raise
+
 
 # ============================================================================
 # Whisper Transcription
@@ -397,6 +425,80 @@ class WhatsAppHandler:
         self.memory = ConversationMemory()
         self.gpt_client = gpt_client
         self.gpt_deployment = gpt_deployment
+
+    def _extract_email_request(self, query: str) -> Optional[str]:
+        import re
+
+        email_match = re.search(r'[\w.+\-]+@[\w\-]+\.[a-zA-Z]{2,}', query or "")
+        if not email_match:
+            return None
+
+        lowered = (query or "").lower()
+        email_terms = [
+            "email", "mail", "send", "envoyer", "envoie",
+            "bhejo", "bhej", "forward", "share"
+        ]
+        if any(term in lowered for term in email_terms):
+            return email_match.group(0)
+        return None
+
+    def _resolve_email_payload(self, sender_phone: str, reply_context: Optional[Dict]) -> Optional[Dict[str, Any]]:
+        if reply_context:
+            return {
+                "answer": reply_context.get("content", ""),
+                "query": reply_context.get("query", ""),
+                "sources": reply_context.get("sources", []) or [],
+            }
+
+        state = self.memory.get_state(sender_phone)
+        answer = state.get("last_answer", "")
+        query = state.get("last_query", "")
+        sources = state.get("last_sources", []) or []
+        if not answer:
+            return None
+        return {
+            "answer": answer,
+            "query": query,
+            "sources": sources,
+        }
+
+    def _handle_email_request(
+        self,
+        chat_id: str,
+        sender_phone: str,
+        query: str,
+        reply_context: Optional[Dict] = None,
+    ) -> bool:
+        recipient_email = self._extract_email_request(query)
+        if not recipient_email:
+            return False
+
+        payload = self._resolve_email_payload(sender_phone, reply_context)
+        if not payload:
+            self.green_api.send_text_message(
+                chat_id,
+                "🤖 Mujhay email bhejne ke liye pehle koi answer ya sources chahiye honge. Kisi previous bot reply ko reply karke dobara kaho."
+            )
+            return True
+
+        try:
+            self.rag_backend.send_email(
+                recipient_email=recipient_email,
+                answer=payload.get("answer", ""),
+                query=payload.get("query", ""),
+                sources=payload.get("sources", []),
+                subject="Legal Assistant — Shared Answer",
+            )
+            self.green_api.send_text_message(
+                chat_id,
+                f"📧 Email {recipient_email} par bhej di gayi hai."
+            )
+        except Exception:
+            self.green_api.send_text_message(
+                chat_id,
+                "❌ Email bhejte waqt error aaya. Backend email settings aur ACS config check karo."
+            )
+        return True
 
     # ------------------------------------------------------------------
     # Group & Mention Guards
@@ -885,6 +987,9 @@ class WhatsAppHandler:
             return
 
         try:
+            if self._handle_email_request(chat_id, sender_phone, query, reply_context):
+                return
+
             # ── Step 1: GPT Conversation Router ──
             routing = self._route_conversation(query, sender_phone, reply_context)
             classification = routing.get("classification", "FRESH")
@@ -1034,6 +1139,7 @@ class WhatsAppHandler:
             topic=topic,
             last_query=effective_query,
             last_sources=sources,
+            last_answer=answer,
         )
 
         # Format and send

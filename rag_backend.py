@@ -142,6 +142,14 @@ class ChatResponse(BaseModel):
     detected_query_language: Optional[str] = None
 
 
+class EmailShareRequest(BaseModel):
+    recipient_email: str
+    answer: str
+    query: Optional[str] = None
+    sources: Optional[List[SearchResult]] = []
+    subject: Optional[str] = None
+
+
 # ============================================================================
 # LANGUAGE DETECTION
 # ============================================================================
@@ -322,6 +330,43 @@ def extract_email_intent(query: str):
     if any(kw in query.lower() for kw in email_keywords):
         return email_match.group(0), True
     return None, False
+
+
+def build_email_body(query: str, answer: str, sources: Optional[List[Dict[str, Any]]] = None) -> str:
+    lines = []
+    if query:
+        lines.append("Question:")
+        lines.append(query.strip())
+        lines.append("")
+
+    lines.append("Answer:")
+    lines.append((answer or "").strip())
+
+    unique_sources = []
+    seen = set()
+    for source in (sources or []):
+        key = (
+            source.get("source_container", ""),
+            source.get("blob_path", ""),
+            source.get("file_name", ""),
+            source.get("source_url", ""),
+        )
+        if key in seen:
+            continue
+        seen.add(key)
+        unique_sources.append(source)
+
+    if unique_sources:
+        lines.append("")
+        lines.append("Sources:")
+        for idx, source in enumerate(unique_sources, 1):
+            label = source.get("file_name", "Source document")
+            url = source.get("source_url", "")
+            lines.append(f"{idx}. {label}")
+            if url:
+                lines.append(f"   {url}")
+
+    return "\n".join(lines).strip()
 
 
 def generate_embedding(azure_clients: AzureClients, text: str) -> List[float]:
@@ -2205,6 +2250,31 @@ async def resolve_short_link(token: str):
         raise HTTPException(status_code=404, detail="Source file not found")
 
     return RedirectResponse(url=target_url, status_code=307)
+
+
+@app.post("/share/email")
+async def share_email(request: EmailShareRequest):
+    if not azure_clients:
+        raise HTTPException(status_code=503, detail="Service not ready")
+
+    try:
+        subject = request.subject or "Legal Assistant — Shared Answer"
+        source_dicts = [s.model_dump() if hasattr(s, "model_dump") else dict(s) for s in (request.sources or [])]
+        body = build_email_body(request.query or "", request.answer, source_dicts)
+        sent = send_email_acs(
+            azure_clients.config,
+            request.recipient_email,
+            subject,
+            body,
+        )
+        if not sent:
+            raise HTTPException(status_code=500, detail="Failed to send email")
+        return {"status": "sent", "recipient_email": request.recipient_email}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Email share error: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.post("/search", response_model=List[SearchResult])
