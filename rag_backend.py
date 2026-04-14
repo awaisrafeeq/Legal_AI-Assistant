@@ -5,6 +5,9 @@ from cgitb import lookup
 import os
 import json
 import logging
+import urllib.request
+import urllib.error
+import smtplib
 from typing import List, Dict, Any, Optional
 from collections import Counter
 from dataclasses import dataclass, field
@@ -12,6 +15,7 @@ import unicodedata
 import hashlib
 import base64
 from contextlib import asynccontextmanager
+from email.message import EmailMessage
 
 
 from fastapi import FastAPI, HTTPException, BackgroundTasks
@@ -73,6 +77,14 @@ class Config:
     internal_container_sas_url: str
     acs_connection_string: str
     acs_sender_email: str
+    resend_api_key: str
+    resend_sender_email: str
+    smtp_host: str
+    smtp_port: int
+    smtp_username: str
+    smtp_password: str
+    smtp_sender_email: str
+    smtp_use_tls: bool
     public_base_url: str
     short_links_container: str
 
@@ -94,6 +106,14 @@ class Config:
             internal_container_sas_url=os.environ.get("INTERNAL_CONTAINER_SAS_URL", ""),
             acs_connection_string=os.environ.get("ACS_CONNECTION_STRING", ""),
             acs_sender_email=os.environ.get("ACS_SENDER_EMAIL", ""),
+            resend_api_key=os.environ.get("RESEND_API_KEY", ""),
+            resend_sender_email=os.environ.get("RESEND_SENDER_EMAIL", ""),
+            smtp_host=os.environ.get("SMTP_HOST", ""),
+            smtp_port=int(os.environ.get("SMTP_PORT", "587")),
+            smtp_username=os.environ.get("SMTP_USERNAME", ""),
+            smtp_password=os.environ.get("SMTP_PASSWORD", ""),
+            smtp_sender_email=os.environ.get("SMTP_SENDER_EMAIL", ""),
+            smtp_use_tls=os.environ.get("SMTP_USE_TLS", "true").strip().lower() in {"1", "true", "yes", "on"},
             public_base_url=os.environ.get("PUBLIC_BASE_URL", "").rstrip("/"),
             short_links_container=os.environ.get("SHORT_LINKS_CONTAINER", "short-links"),
         )
@@ -289,47 +309,37 @@ class RAGState(TypedDict, total=False):
 # UTILITY FUNCTIONS
 # ============================================================================
 
-def send_email_acs(config, recipient_email: str, subject: str, body: str) -> bool:
+def send_email_smtp(config, recipient_email: str, subject: str, body: str) -> bool:
     """
-    Send an email via Azure Communication Services.
+    Send an email via SMTP.
     Returns True if sent successfully, False otherwise.
     """
-    if not config.acs_connection_string or not config.acs_sender_email:
-        logger.warning("ACS not configured — skipping email send")
+    if not config.smtp_host or not config.smtp_username or not config.smtp_password or not config.smtp_sender_email:
+        logger.warning("SMTP not configured — skipping email send")
         return False
     try:
-        endpoint_host = "unknown"
-        try:
-            # Connection string format: endpoint=https://...;accesskey=...
-            for part in config.acs_connection_string.split(";"):
-                if part.lower().startswith("endpoint="):
-                    endpoint_value = part.split("=", 1)[1].strip()
-                    endpoint_host = endpoint_value.replace("https://", "").replace("http://", "").strip("/")
-                    break
-        except Exception:
-            pass
-
-        sender_email = (config.acs_sender_email or "").strip()
+        sender_email = (config.smtp_sender_email or "").strip()
         sender_domain = sender_email.split("@", 1)[1] if "@" in sender_email else "(invalid)"
         logger.info(
-            f"ACS send debug | endpoint_host={endpoint_host} | "
+            f"SMTP send debug | host={config.smtp_host} | port={config.smtp_port} | use_tls={config.smtp_use_tls} | "
             f"sender_email={sender_email} | sender_domain={sender_domain} | "
             f"recipient_email={recipient_email}"
         )
 
-        from azure.communication.email import EmailClient
-        client = EmailClient.from_connection_string(config.acs_connection_string)
-        message = {
-            "senderAddress": sender_email,
-            "recipients": {"to": [{"address": recipient_email}]},
-            "content": {
-                "subject": subject,
-                "plainText": body,
-            },
-        }
-        poller = client.begin_send(message)
-        result = poller.result()
-        logger.info(f"Email sent to {recipient_email} | status: {result}")
+        message = EmailMessage()
+        message["From"] = sender_email
+        message["To"] = recipient_email
+        message["Subject"] = subject
+        message.set_content(body)
+
+        with smtplib.SMTP(config.smtp_host, config.smtp_port, timeout=30) as server:
+            server.ehlo()
+            if config.smtp_use_tls:
+                server.starttls()
+                server.ehlo()
+            server.login(config.smtp_username, config.smtp_password)
+            server.send_message(message)
+        logger.info(f"Email sent to {recipient_email} | provider=SMTP")
         return True
     except Exception as e:
         logger.error(f"Failed to send email to {recipient_email}: {e}")
@@ -2280,7 +2290,7 @@ async def share_email(request: EmailShareRequest):
         subject = request.subject or "Legal Assistant — Shared Answer"
         source_dicts = [s.model_dump() if hasattr(s, "model_dump") else dict(s) for s in (request.sources or [])]
         body = build_email_body(request.query or "", request.answer, source_dicts)
-        sent = send_email_acs(
+        sent = send_email_smtp(
             azure_clients.config,
             request.recipient_email,
             subject,
@@ -2358,7 +2368,7 @@ async def chat(request: ChatRequest, background_tasks: BackgroundTasks):
         recipient_email, wants_email = extract_email_intent(request.query)
         if wants_email:
             background_tasks.add_task(
-                send_email_acs,
+                send_email_smtp,
                 azure_clients.config,
                 recipient_email,
                 "Legal Assistant — Document Information",
