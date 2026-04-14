@@ -1007,7 +1007,7 @@ def discovery_search(
             try:
                 results = search_client.search(
                     search_text=fallback_text,
-                    filter=None,
+                    filter=None, 
                     query_type="semantic",
                     semantic_configuration_name="semantic-config",
                     select=[
