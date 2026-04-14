@@ -168,6 +168,7 @@ class EmailShareRequest(BaseModel):
     query: Optional[str] = None
     sources: Optional[List[SearchResult]] = []
     subject: Optional[str] = None
+    formatted_body: Optional[str] = None
 
 
 # ============================================================================
@@ -2289,7 +2290,7 @@ async def share_email(request: EmailShareRequest):
     try:
         subject = request.subject or "Legal Assistant — Shared Answer"
         source_dicts = [s.model_dump() if hasattr(s, "model_dump") else dict(s) for s in (request.sources or [])]
-        body = build_email_body(request.query or "", request.answer, source_dicts)
+        body = (request.formatted_body or "").strip() or build_email_body(request.query or "", request.answer, source_dicts)
         sent = send_email_smtp(
             azure_clients.config,
             request.recipient_email,

@@ -208,6 +208,7 @@ class RAGBackendClient:
         query: str = "",
         sources: Optional[List[Dict[str, Any]]] = None,
         subject: Optional[str] = None,
+        formatted_body: str = "",
     ) -> Dict[str, Any]:
         payload = {
             "recipient_email": recipient_email,
@@ -215,6 +216,7 @@ class RAGBackendClient:
             "query": query,
             "sources": sources or [],
             "subject": subject,
+            "formatted_body": formatted_body,
         }
         try:
             base_url = self.base_url.rstrip('/')
@@ -386,6 +388,7 @@ class ConversationMemory:
         query: str,
         sources: Optional[List[Dict]] = None,
         message_parts: Optional[List[str]] = None,
+        formatted_answer: str = "",
     ):
         """Store context for ALL message IDs from a response (supports multi-message)."""
         if not whatsapp_message_ids:
@@ -398,6 +401,8 @@ class ConversationMemory:
             "role": "assistant",
             "content": answer,
             "full_content": answer,
+            "formatted_content": formatted_answer or answer,
+            "full_formatted_content": formatted_answer or answer,
             "query": query,
             "sources": sources or [],
         }
@@ -410,6 +415,7 @@ class ConversationMemory:
                     part_text = message_parts[idx]
                 context = dict(base_context)
                 context["content"] = part_text or answer
+                context["formatted_content"] = part_text or formatted_answer or answer
                 context["part_index"] = idx + 1
                 context["part_count"] = len(whatsapp_message_ids)
                 self._bot_messages[sender_id][msg_id] = context
@@ -471,6 +477,7 @@ class WhatsAppHandler:
         if reply_context:
             return {
                 "answer": reply_context.get("content", "") or reply_context.get("full_content", ""),
+                "formatted_body": reply_context.get("formatted_content", "") or reply_context.get("full_formatted_content", ""),
                 "query": reply_context.get("query", ""),
                 "sources": reply_context.get("sources", []) or [],
             }
@@ -483,6 +490,7 @@ class WhatsAppHandler:
             return None
         return {
             "answer": answer,
+            "formatted_body": state.get("last_formatted_answer", "") or answer,
             "query": query,
             "sources": sources,
         }
@@ -516,6 +524,7 @@ class WhatsAppHandler:
         if reply_context:
             selected_answer = self._extract_requested_reply_subset(query, reply_context)
             payload["answer"] = selected_answer
+            payload["formatted_body"] = selected_answer
 
         try:
             self.rag_backend.send_email(
@@ -524,6 +533,7 @@ class WhatsAppHandler:
                 query=payload.get("query", ""),
                 sources=payload.get("sources", []),
                 subject="Legal Assistant — Shared Answer",
+                formatted_body=payload.get("formatted_body", ""),
             )
             self.green_api.send_text_message(
                 chat_id,
@@ -850,8 +860,8 @@ class WhatsAppHandler:
             source_url = section.get("source_url", "")
             if source_url:
                 block += (
-                    f"\n_Source:_ {self._format_source_label(section)}"
-                    f"\n_Link:_ {source_url}"
+                    f"\nSource: {self._format_source_label(section)}"
+                    f"\nLink: {source_url}"
                 )
             blocks.append(block)
 
@@ -865,12 +875,11 @@ class WhatsAppHandler:
         query_was_voice: bool = False
     ) -> str:
         """
-        Format the AI answer for WhatsApp.
-        WhatsApp supports: *bold*, _italic_, ~strikethrough~, ```code```
+        Format the AI answer for WhatsApp using plain text.
         """
-        prefix = "🎤 _Voice query processed_\n\n" if query_was_voice else ""
+        prefix = "Voice query processed\n\n" if query_was_voice else ""
 
-        header = "🤖 *Legal AI Assistant*\n" + "─" * 28 + "\n\n"
+        header = "Legal AI Assistant\n" + "─" * 28 + "\n\n"
         if sections:
             body = self._format_inline_sections(sections)
         else:
@@ -879,7 +888,7 @@ class WhatsAppHandler:
         # Sources section (all unique sources)
         sources_text = ""
         if sources and not sections:
-            sources_text = "\n\n" + "─" * 28 + "\n📚 *Sources:*\n"
+            sources_text = "\n\n" + "─" * 28 + "\nSources:\n"
             seen = set()
             count = 0
             for source in sources:
@@ -899,11 +908,11 @@ class WhatsAppHandler:
                 folder = source.get("folder_path", "")
                 full_path = f"{folder}/{fname}" if folder else fname
                 sources_text += f"\n{count}. {icon} {full_path}\n"
-                sources_text += f"   _{label}_\n"
+                sources_text += f"   {label}\n"
                 if source_url:
-                    sources_text += f"   🔗 {source_url}\n"
+                    sources_text += f"   Link: {source_url}\n"
 
-        footer = "\n\n_Reply to this message or tag @" + self.green_api.config.bot_name + " to ask a follow-up._"
+        footer = "\n\nReply to this message or tag @" + self.green_api.config.bot_name + " to ask a follow-up."
 
         return prefix + header + body + sources_text + footer
 
@@ -1238,15 +1247,6 @@ class WhatsAppHandler:
         new_blob_paths = [s.get("blob_path", "") for s in sources if s.get("blob_path")]
         self.memory.add_shown_blob_paths(sender_phone, new_blob_paths)
 
-        # Update conversation state
-        self.memory.update_state(
-            sender_phone,
-            topic=topic,
-            last_query=effective_query,
-            last_sources=sources,
-            last_answer=answer,
-        )
-
         # Format and send
         formatted = self._format_response(
             answer,
@@ -1254,6 +1254,17 @@ class WhatsAppHandler:
             sections=sections,
             query_was_voice=is_voice
         )
+
+        # Update conversation state
+        self.memory.update_state(
+            sender_phone,
+            topic=topic,
+            last_query=effective_query,
+            last_sources=sources,
+            last_answer=answer,
+            last_formatted_answer=formatted,
+        )
+
         send_result = self.green_api.send_text_message(chat_id, formatted)
 
         # Store bot message ID(s) for reply tracking (supports multi-message split)
@@ -1272,6 +1283,7 @@ class WhatsAppHandler:
             query=effective_query,
             sources=sources,
             message_parts=sent_parts,
+            formatted_answer=formatted,
         )
 
         logger.info(f"Response sent to {chat_id} | sources: {len(sources)} | topic: {topic}")
