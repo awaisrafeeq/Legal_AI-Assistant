@@ -1001,7 +1001,7 @@ def discovery_search(
                     query_type="semantic",
                     semantic_configuration_name="semantic-config",
                     select=[
-                        "content", "file_name", "folder_path",
+                        "content", "file_name", "folder_path", 
                         "blob_path", "chunk_index", "source_container",
                         "document_type", "document_subtype", "persons",
                         "organizations", "projects", "key_dates",
