@@ -96,18 +96,15 @@ class GreenAPIClient:
             logger.error(f"GreenAPI request failed: {e}")
             raise
 
-    def send_text_message(self, chat_id: str, message: str) -> Dict:
-        """Send a text message, auto-splitting if too long for WhatsApp."""
-        MAX_LEN = 4096  # Safe limit for GreenAPI
-        if len(message) <= MAX_LEN:
-            data = {"chatId": chat_id, "message": message}
-            return self._make_request("POST", "sendMessage", data)
+    def _split_message_parts(self, message: str, max_len: int = 4096) -> List[str]:
+        """Split a message into WhatsApp-safe parts, preserving line boundaries."""
+        if len(message) <= max_len:
+            return [message]
 
-        # Split into multiple messages at line boundaries
         parts = []
         current = ""
         for line in message.split("\n"):
-            if len(current) + len(line) + 1 > MAX_LEN:
+            if len(current) + len(line) + 1 > max_len:
                 if current:
                     parts.append(current)
                 current = line
@@ -115,8 +112,18 @@ class GreenAPIClient:
                 current = current + "\n" + line if current else line
         if current:
             parts.append(current)
+        return parts
+
+    def send_text_message(self, chat_id: str, message: str) -> Dict:
+        """Send a text message, auto-splitting if too long for WhatsApp."""
+        MAX_LEN = 4096  # Safe limit for GreenAPI
+        parts = self._split_message_parts(message, MAX_LEN)
+        if len(parts) == 1:
+            data = {"chatId": chat_id, "message": message}
+            return self._make_request("POST", "sendMessage", data)
 
         all_results = []
+        sent_parts = []
         for i, part in enumerate(parts):
             if len(parts) > 1:
                 header = f"_({i+1}/{len(parts)})_\n" if i > 0 else ""
@@ -124,11 +131,13 @@ class GreenAPIClient:
             data = {"chatId": chat_id, "message": part}
             result = self._make_request("POST", "sendMessage", data)
             all_results.append(result)
+            sent_parts.append(part)
 
         # Return combined result with all message IDs for multi-message tracking
         combined = all_results[-1] if all_results else {}
         if len(all_results) > 1:
             combined["allMessageIds"] = [r.get("idMessage", "") for r in all_results if r.get("idMessage")]
+            combined["sentParts"] = sent_parts
         return combined
 
     def download_media(self, chat_id: str, id_message: str) -> Optional[bytes]:
@@ -375,7 +384,8 @@ class ConversationMemory:
         whatsapp_message_ids: list,
         answer: str,
         query: str,
-        sources: Optional[List[Dict]] = None
+        sources: Optional[List[Dict]] = None,
+        message_parts: Optional[List[str]] = None,
     ):
         """Store context for ALL message IDs from a response (supports multi-message)."""
         if not whatsapp_message_ids:
@@ -384,16 +394,24 @@ class ConversationMemory:
         if sender_id not in self._bot_messages:
             self._bot_messages[sender_id] = {}
 
-        context = {
+        base_context = {
             "role": "assistant",
             "content": answer,
+            "full_content": answer,
             "query": query,
-            "sources": sources or []
+            "sources": sources or [],
         }
 
-        # All message IDs point to the same context
-        for msg_id in whatsapp_message_ids:
+        # Each split message keeps its own visible text while preserving the full answer.
+        for idx, msg_id in enumerate(whatsapp_message_ids):
             if msg_id:
+                part_text = ""
+                if message_parts and idx < len(message_parts):
+                    part_text = message_parts[idx]
+                context = dict(base_context)
+                context["content"] = part_text or answer
+                context["part_index"] = idx + 1
+                context["part_count"] = len(whatsapp_message_ids)
                 self._bot_messages[sender_id][msg_id] = context
 
         # Also update state with these message IDs
@@ -441,10 +459,18 @@ class WhatsAppHandler:
             return email_match.group(0)
         return None
 
+    def _wants_email_action(self, query: str) -> bool:
+        lowered = (query or "").lower()
+        email_terms = [
+            "email", "mail", "send", "envoyer", "envoie",
+            "bhejo", "bhej", "forward", "share"
+        ]
+        return any(term in lowered for term in email_terms)
+
     def _resolve_email_payload(self, sender_phone: str, reply_context: Optional[Dict]) -> Optional[Dict[str, Any]]:
         if reply_context:
             return {
-                "answer": reply_context.get("content", ""),
+                "answer": reply_context.get("content", "") or reply_context.get("full_content", ""),
                 "query": reply_context.get("query", ""),
                 "sources": reply_context.get("sources", []) or [],
             }
@@ -469,6 +495,12 @@ class WhatsAppHandler:
         reply_context: Optional[Dict] = None,
     ) -> bool:
         recipient_email = self._extract_email_request(query)
+        if not recipient_email and self._wants_email_action(query):
+            self.green_api.send_text_message(
+                chat_id,
+                "📧 Please include the recipient email address, for example: send this to name@example.com"
+            )
+            return True
         if not recipient_email:
             return False
 
@@ -479,6 +511,11 @@ class WhatsAppHandler:
                 "🤖 I need an existing answer or source list before I can send an email. Reply to a previous bot message and try again."
             )
             return True
+
+        selected_answer = payload.get("answer", "")
+        if reply_context:
+            selected_answer = self._extract_requested_reply_subset(query, reply_context)
+            payload["answer"] = selected_answer
 
         try:
             self.rag_backend.send_email(
@@ -498,6 +535,47 @@ class WhatsAppHandler:
                 "❌ An error occurred while sending the email. Check the backend email settings and ACS configuration."
             )
         return True
+
+    def _extract_requested_reply_subset(self, query: str, reply_context: Dict[str, Any]) -> str:
+        import re
+
+        reply_text = (reply_context.get("content") or "").strip()
+        full_text = (reply_context.get("full_content") or reply_text or "").strip()
+        working_text = reply_text or full_text
+        if not working_text:
+            return ""
+
+        lower = (query or "").lower()
+        if any(phrase in lower for phrase in ["this message", "this msg", "is msg", "this paragraph", "this part"]):
+            return working_text
+
+        number_matches = re.findall(r"\b(?:statement|statements|paragraph|paragraphs|point|points|item|items)\s+((?:\d+\s*(?:,|and)?\s*)+)", lower)
+        numbers: List[int] = []
+        for match in number_matches:
+            for num in re.findall(r"\d+", match):
+                numbers.append(int(num))
+
+        if not numbers:
+            return working_text
+
+        lines = [line.strip() for line in working_text.splitlines() if line.strip()]
+        numbered_lines = []
+        for line in lines:
+            m = re.match(r"^(\d+)[\).\-\:]?\s+(.*)$", line)
+            if m:
+                numbered_lines.append((int(m.group(1)), line))
+
+        if numbered_lines:
+            selected = [line for idx, line in numbered_lines if idx in numbers]
+            if selected:
+                return "\n".join(selected)
+
+        paragraphs = [p.strip() for p in working_text.split("\n\n") if p.strip()]
+        selected_paragraphs = [paragraphs[i - 1] for i in numbers if 1 <= i <= len(paragraphs)]
+        if selected_paragraphs:
+            return "\n\n".join(selected_paragraphs)
+
+        return working_text
 
     # ------------------------------------------------------------------
     # Group & Mention Guards
@@ -705,20 +783,48 @@ class WhatsAppHandler:
         Different payload shapes may exist, so we check multiple common locations.
         """
         message_data = webhook_data.get("messageData", {})
+        current_message_id = webhook_data.get("idMessage", "")
 
-        candidates = [
-            message_data.get("quotedMessage", {}).get("stanzaId"),
-            message_data.get("quotedMessageData", {}).get("stanzaId"),
-            message_data.get("extendedTextMessageData", {}).get("stanzaId"),
-            message_data.get("extendedTextMessageData", {}).get("quotedMessage", {}).get("stanzaId"),
-            message_data.get("textMessageData", {}).get("quotedMessage", {}).get("stanzaId"),
-            webhook_data.get("quotedMessage", {}).get("stanzaId"),
-            webhook_data.get("quotedMessageData", {}).get("stanzaId"),
+        def _collect_values(node: Any, keys: set[str]) -> List[str]:
+            found: List[str] = []
+            if isinstance(node, dict):
+                for key, value in node.items():
+                    if key in keys and isinstance(value, str) and value:
+                        found.append(value)
+                    found.extend(_collect_values(value, keys))
+            elif isinstance(node, list):
+                for item in node:
+                    found.extend(_collect_values(item, keys))
+            return found
+
+        preferred_nodes = [
+            message_data.get("quotedMessage", {}),
+            message_data.get("quotedMessageData", {}),
+            message_data.get("extendedTextMessageData", {}).get("quotedMessage", {}),
+            message_data.get("extendedTextMessageData", {}).get("contextInfo", {}),
+            message_data.get("textMessageData", {}).get("quotedMessage", {}),
+            message_data.get("textMessageData", {}).get("contextInfo", {}),
+            webhook_data.get("quotedMessage", {}),
+            webhook_data.get("quotedMessageData", {}),
         ]
 
-        for c in candidates:
-            if c:
-                return c
+        candidate_keys = {"quotedMessageId", "quotedStanzaId", "stanzaId"}
+        candidates: List[str] = []
+
+        for node in preferred_nodes:
+            candidates.extend(_collect_values(node, candidate_keys))
+
+        candidates.extend(
+            [
+                message_data.get("extendedTextMessageData", {}).get("quotedMessageId"),
+                message_data.get("textMessageData", {}).get("quotedMessageId"),
+                webhook_data.get("quotedMessageId"),
+            ]
+        )
+
+        for candidate in candidates:
+            if candidate and candidate != current_message_id:
+                return candidate
 
         return None
     
@@ -1152,9 +1258,11 @@ class WhatsAppHandler:
 
         # Store bot message ID(s) for reply tracking (supports multi-message split)
         all_ids = send_result.get("allMessageIds", [])
+        sent_parts = send_result.get("sentParts", [])
         if not all_ids:
             sent_message_id = send_result.get("idMessage", "")
             all_ids = [sent_message_id] if sent_message_id else []
+            sent_parts = [formatted] if sent_message_id else []
         message_ids = [mid for mid in all_ids if mid]
 
         self.memory.save_bot_message(
@@ -1163,6 +1271,7 @@ class WhatsAppHandler:
             answer=answer,
             query=effective_query,
             sources=sources,
+            message_parts=sent_parts,
         )
 
         logger.info(f"Response sent to {chat_id} | sources: {len(sources)} | topic: {topic}")
