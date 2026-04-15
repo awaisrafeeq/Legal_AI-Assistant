@@ -27,6 +27,13 @@ import json
 
 from logging.handlers import TimedRotatingFileHandler
 import prompts
+
+# Cosmos DB (optional, for persistent memory)
+try:
+    from azure.cosmos import CosmosClient, PartitionKey
+    COSMOS_AVAILABLE = True
+except ImportError:
+    COSMOS_AVAILABLE = False
 os.makedirs("logs", exist_ok=True)
 
 _log_fmt = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
@@ -429,6 +436,455 @@ class ConversationMemory:
     def get_bot_message_by_id(self, sender_id: str, whatsapp_message_id: str) -> Optional[Dict]:
         return self._bot_messages.get(sender_id, {}).get(whatsapp_message_id)
 
+
+# ============================================================================
+# Cosmos DB Persistent Conversation Memory
+# ============================================================================
+
+class CosmosConversationMemory:
+    """
+    Drop-in replacement for ConversationMemory backed by Azure Cosmos DB.
+    Same interface, but data survives restarts and deployments.
+
+    Cosmos document types per sender (partition key: /sender_id):
+      - {sender_id}:state       → conversation state (topic, last_query, shown_blob_paths, etc.)
+      - {sender_id}:history     → message history array
+      - {sender_id}:bot_msgs    → WhatsApp message ID → context mapping
+    """
+    MAX_HISTORY = 16
+    MAX_BOT_MESSAGES = 100  # Keep last N bot messages to prevent unbounded growth
+    TTL_SECONDS = 90 * 86400  # 90 days
+
+    def __init__(self, cosmos_container):
+        self._container = cosmos_container
+        # Write-through cache: avoid repeated Cosmos reads within a single webhook
+        self._cache_history: Dict[str, List[Dict]] = {}
+        self._cache_state: Dict[str, Dict] = {}
+        self._cache_bot_msgs: Dict[str, Dict[str, Dict]] = {}
+
+    # ── Cosmos helpers ──
+
+    def _read_doc(self, doc_id: str, sender_id: str) -> Optional[Dict]:
+        """Read a document from Cosmos. Returns None if not found."""
+        try:
+            return self._container.read_item(item=doc_id, partition_key=sender_id)
+        except Exception:
+            return None
+
+    def _upsert_doc(self, doc: Dict):
+        """Create or replace a document in Cosmos."""
+        try:
+            self._container.upsert_item(doc)
+        except Exception as e:
+            logging.getLogger(__name__).error(f"Cosmos upsert failed for {doc.get('id')}: {e}")
+
+    def _delete_doc(self, doc_id: str, sender_id: str):
+        """Delete a document from Cosmos. Silently ignores if not found."""
+        try:
+            self._container.delete_item(item=doc_id, partition_key=sender_id)
+        except Exception:
+            pass
+
+    # ── History ──
+
+    def get(self, sender_id: str) -> List[Dict]:
+        if sender_id in self._cache_history:
+            return self._cache_history[sender_id]
+        doc = self._read_doc(f"{sender_id}:history", sender_id)
+        messages = doc.get("messages", []) if doc else []
+        self._cache_history[sender_id] = messages
+        return messages
+
+    def add(self, sender_id: str, role: str, content: str):
+        messages = self.get(sender_id)
+        messages.append({
+            "role": role,
+            "content": content,
+            "timestamp": datetime.now().isoformat(),
+        })
+        if len(messages) > self.MAX_HISTORY:
+            messages = messages[-self.MAX_HISTORY:]
+        self._cache_history[sender_id] = messages
+        self._upsert_doc({
+            "id": f"{sender_id}:history",
+            "sender_id": sender_id,
+            "doc_type": "history",
+            "messages": messages,
+            "ttl": self.TTL_SECONDS,
+        })
+
+    def clear(self, sender_id: str):
+        self._cache_history.pop(sender_id, None)
+        self._cache_state.pop(sender_id, None)
+        self._cache_bot_msgs.pop(sender_id, None)
+        self._delete_doc(f"{sender_id}:history", sender_id)
+        self._delete_doc(f"{sender_id}:state", sender_id)
+        self._delete_doc(f"{sender_id}:bot_msgs", sender_id)
+
+    # ── Conversation State ──
+
+    def _default_state(self) -> Dict:
+        return {
+            "topic": "",
+            "last_query": "",
+            "last_filters": {},
+            "shown_blob_paths": [],
+            "last_sources": [],
+            "all_message_ids": [],
+            "last_activity": None,
+            "last_answer": "",
+            "last_formatted_answer": "",
+        }
+
+    def get_state(self, sender_id: str) -> Dict:
+        if sender_id in self._cache_state:
+            return self._cache_state[sender_id]
+        doc = self._read_doc(f"{sender_id}:state", sender_id)
+        if doc:
+            state = {k: v for k, v in doc.items() if k not in ("id", "sender_id", "doc_type", "ttl", "_rid", "_self", "_etag", "_attachments", "_ts")}
+            # Convert shown_blob_paths list back to set
+            state["shown_blob_paths"] = set(state.get("shown_blob_paths", []))
+            if not state.get("last_activity"):
+                state["last_activity"] = None
+        else:
+            state = self._default_state()
+            state["shown_blob_paths"] = set()
+        self._cache_state[sender_id] = state
+        return state
+
+    def _persist_state(self, sender_id: str):
+        state = self._cache_state.get(sender_id)
+        if state is None:
+            return
+        doc = dict(state)
+        # Convert set to list for JSON serialization
+        doc["shown_blob_paths"] = list(doc.get("shown_blob_paths", set()))
+        # Convert datetime to string
+        if isinstance(doc.get("last_activity"), datetime):
+            doc["last_activity"] = doc["last_activity"].isoformat()
+        # Truncate large fields to prevent Cosmos 2MB limit
+        sources = doc.get("last_sources", [])
+        if sources and len(sources) > 10:
+            doc["last_sources"] = sources[:10]
+        doc.update({
+            "id": f"{sender_id}:state",
+            "sender_id": sender_id,
+            "doc_type": "state",
+            "ttl": self.TTL_SECONDS,
+        })
+        self._upsert_doc(doc)
+
+    def update_state(self, sender_id: str, **kwargs):
+        state = self.get_state(sender_id)
+        state.update(kwargs)
+        state["last_activity"] = datetime.now()
+        self._persist_state(sender_id)
+
+    def add_shown_blob_paths(self, sender_id: str, blob_paths: List[str]):
+        state = self.get_state(sender_id)
+        state["shown_blob_paths"].update(blob_paths)
+        self._persist_state(sender_id)
+
+    def clear_shown_blob_paths(self, sender_id: str):
+        state = self.get_state(sender_id)
+        state["shown_blob_paths"] = set()
+        self._persist_state(sender_id)
+
+    def get_shown_blob_paths(self, sender_id: str) -> List[str]:
+        return list(self.get_state(sender_id).get("shown_blob_paths", set()))
+
+    # ── Bot Message Tracking ──
+
+    def save_bot_message(
+        self,
+        sender_id: str,
+        whatsapp_message_ids: list,
+        answer: str,
+        query: str,
+        sources: Optional[List[Dict]] = None,
+        message_parts: Optional[List[str]] = None,
+        formatted_answer: str = "",
+    ):
+        if not whatsapp_message_ids:
+            return
+
+        bot_msgs = self._get_bot_messages(sender_id)
+
+        base_context = {
+            "role": "assistant",
+            "content": answer,
+            "full_content": answer,
+            "formatted_content": formatted_answer or answer,
+            "full_formatted_content": formatted_answer or answer,
+            "query": query,
+            "sources": sources or [],
+        }
+
+        for idx, msg_id in enumerate(whatsapp_message_ids):
+            if msg_id:
+                part_text = ""
+                if message_parts and idx < len(message_parts):
+                    part_text = message_parts[idx]
+                context = dict(base_context)
+                context["content"] = part_text or answer
+                context["formatted_content"] = part_text or formatted_answer or answer
+                context["part_index"] = idx + 1
+                context["part_count"] = len(whatsapp_message_ids)
+                bot_msgs[msg_id] = context
+
+        # Trim old messages if too many
+        if len(bot_msgs) > self.MAX_BOT_MESSAGES:
+            keys = list(bot_msgs.keys())
+            for old_key in keys[:-self.MAX_BOT_MESSAGES]:
+                del bot_msgs[old_key]
+
+        self._cache_bot_msgs[sender_id] = bot_msgs
+        # Persist - strip sources content to reduce document size
+        persist_msgs = {}
+        for mid, ctx in bot_msgs.items():
+            slim = dict(ctx)
+            # Keep source metadata but drop content field to save space
+            slim_sources = []
+            for s in slim.get("sources", []):
+                slim_sources.append({
+                    "file_name": s.get("file_name", ""),
+                    "blob_path": s.get("blob_path", ""),
+                    "source_container": s.get("source_container", ""),
+                    "source_url": s.get("source_url", ""),
+                })
+            slim["sources"] = slim_sources
+            persist_msgs[mid] = slim
+
+        self._upsert_doc({
+            "id": f"{sender_id}:bot_msgs",
+            "sender_id": sender_id,
+            "doc_type": "bot_messages",
+            "messages": persist_msgs,
+            "ttl": self.TTL_SECONDS,
+        })
+
+        # Also update state
+        state = self.get_state(sender_id)
+        state["all_message_ids"] = whatsapp_message_ids
+        state["last_sources"] = sources or []
+        state["last_query"] = query
+        self._persist_state(sender_id)
+
+    def _get_bot_messages(self, sender_id: str) -> Dict[str, Dict]:
+        if sender_id in self._cache_bot_msgs:
+            return self._cache_bot_msgs[sender_id]
+        doc = self._read_doc(f"{sender_id}:bot_msgs", sender_id)
+        msgs = doc.get("messages", {}) if doc else {}
+        self._cache_bot_msgs[sender_id] = msgs
+        return msgs
+
+    def get_bot_message_by_id(self, sender_id: str, whatsapp_message_id: str) -> Optional[Dict]:
+        return self._get_bot_messages(sender_id).get(whatsapp_message_id)
+
+
+# ============================================================================
+# Case Memory Store (Persistent Case Facts & Findings)
+# ============================================================================
+
+class CaseMemoryStore:
+    """
+    Persistent store for extracted case knowledge that outlives individual conversations.
+    Enables the lawyer to come back days later and the agent remembers:
+    - What facts were discovered
+    - What documents were discussed
+    - What questions remain open
+    - What contradictions were found
+    - Timeline of events
+
+    Each sender can have multiple cases. Cases are auto-resolved by topic matching.
+    """
+    TTL_SECONDS = 180 * 86400  # 180 days for case memory
+
+    def __init__(self, cosmos_container):
+        self._container = cosmos_container
+        self._cache: Dict[str, Dict] = {}
+
+    def _read_doc(self, doc_id: str, sender_id: str) -> Optional[Dict]:
+        try:
+            return self._container.read_item(item=doc_id, partition_key=sender_id)
+        except Exception:
+            return None
+
+    def _upsert_doc(self, doc: Dict):
+        try:
+            self._container.upsert_item(doc)
+        except Exception as e:
+            logging.getLogger(__name__).error(f"Case memory upsert failed: {e}")
+
+    def get_active_case(self, sender_id: str, case_id: str = "default") -> Dict:
+        """Get or create a case memory document."""
+        cache_key = f"{sender_id}:{case_id}"
+        if cache_key in self._cache:
+            return self._cache[cache_key]
+
+        doc_id = f"{sender_id}:case:{case_id}"
+        doc = self._read_doc(doc_id, sender_id)
+        if doc:
+            case = {k: v for k, v in doc.items() if not k.startswith("_") and k not in ("id", "sender_id", "doc_type", "ttl")}
+        else:
+            case = {
+                "case_id": case_id,
+                "case_name": "",
+                "case_facts": [],
+                "persons_mentioned": [],
+                "documents_discussed": [],
+                "open_questions": [],
+                "key_contradictions": [],
+                "timeline_events": [],
+                "topic_history": [],
+                "turn_count": 0,
+                "created_at": datetime.now().isoformat(),
+                "last_updated": datetime.now().isoformat(),
+            }
+        self._cache[cache_key] = case
+        return case
+
+    def update_case_from_extraction(self, sender_id: str, case_id: str, extracted: Dict):
+        """Merge extracted facts from a conversation turn into the case memory."""
+        case = self.get_active_case(sender_id, case_id)
+
+        # Merge facts (deduplicate)
+        existing_facts = set(case.get("case_facts", []))
+        for fact in extracted.get("case_facts", []):
+            if fact and fact not in existing_facts:
+                case["case_facts"].append(fact)
+                existing_facts.add(fact)
+        # Cap at 200 facts
+        if len(case["case_facts"]) > 200:
+            case["case_facts"] = case["case_facts"][-200:]
+
+        # Merge persons (deduplicate)
+        existing_persons = set(p.lower() for p in case.get("persons_mentioned", []))
+        for person in extracted.get("persons_mentioned", []):
+            if person and person.lower() not in existing_persons:
+                case["persons_mentioned"].append(person)
+                existing_persons.add(person.lower())
+
+        # Merge documents (deduplicate)
+        existing_docs = set(d.lower() for d in case.get("documents_discussed", []))
+        for doc in extracted.get("documents_discussed", []):
+            if doc and doc.lower() not in existing_docs:
+                case["documents_discussed"].append(doc)
+                existing_docs.add(doc.lower())
+
+        # Merge open questions (deduplicate, also remove answered ones)
+        for q in extracted.get("open_questions", []):
+            if q and q not in case.get("open_questions", []):
+                case["open_questions"].append(q)
+        # Cap open questions
+        if len(case["open_questions"]) > 50:
+            case["open_questions"] = case["open_questions"][-50:]
+
+        # Merge contradictions
+        for c in extracted.get("key_contradictions", []):
+            if c and c not in case.get("key_contradictions", []):
+                case["key_contradictions"].append(c)
+
+        # Merge timeline events
+        existing_events = set(json.dumps(e, sort_keys=True) for e in case.get("timeline_events", []))
+        for event in extracted.get("timeline_events", []):
+            event_key = json.dumps(event, sort_keys=True)
+            if event_key not in existing_events:
+                case["timeline_events"].append(event)
+                existing_events.add(event_key)
+
+        # Update topic history
+        topic_summary = extracted.get("topic_summary", "")
+        if topic_summary:
+            case["topic_history"].append({
+                "summary": topic_summary,
+                "timestamp": datetime.now().isoformat(),
+            })
+            # Keep last 50 topic entries
+            if len(case["topic_history"]) > 50:
+                case["topic_history"] = case["topic_history"][-50:]
+
+        case["turn_count"] = case.get("turn_count", 0) + 1
+        case["last_updated"] = datetime.now().isoformat()
+
+        # Persist
+        doc = dict(case)
+        doc.update({
+            "id": f"{sender_id}:case:{case_id}",
+            "sender_id": sender_id,
+            "doc_type": "case_memory",
+            "ttl": self.TTL_SECONDS,
+        })
+        self._upsert_doc(doc)
+        self._cache[f"{sender_id}:{case_id}"] = case
+
+    def get_case_context_summary(self, sender_id: str, case_id: str = "default") -> str:
+        """Build a plain-text summary of case memory for injecting into conversation context."""
+        case = self.get_active_case(sender_id, case_id)
+        if not case.get("case_facts") and not case.get("topic_history"):
+            return ""
+
+        parts = []
+        case_name = case.get("case_name", "")
+        if case_name:
+            parts.append(f"Active case: {case_name}")
+
+        facts = case.get("case_facts", [])
+        if facts:
+            parts.append("Known facts from previous sessions:")
+            for i, fact in enumerate(facts[-15:], 1):  # Last 15 facts
+                parts.append(f"  {i}. {fact}")
+
+        persons = case.get("persons_mentioned", [])
+        if persons:
+            parts.append(f"Key persons: {', '.join(persons[-10:])}")
+
+        docs = case.get("documents_discussed", [])
+        if docs:
+            parts.append(f"Documents previously discussed: {', '.join(docs[-10:])}")
+
+        open_qs = case.get("open_questions", [])
+        if open_qs:
+            parts.append("Open questions from previous sessions:")
+            for q in open_qs[-5:]:
+                parts.append(f"  - {q}")
+
+        contradictions = case.get("key_contradictions", [])
+        if contradictions:
+            parts.append("Contradictions found:")
+            for c in contradictions[-5:]:
+                parts.append(f"  - {c}")
+
+        topics = case.get("topic_history", [])
+        if topics:
+            parts.append("Recent topics discussed:")
+            for t in topics[-5:]:
+                parts.append(f"  - {t.get('summary', '')} ({t.get('timestamp', '')[:10]})")
+
+        return "\n".join(parts)
+
+    def list_active_cases(self, sender_id: str) -> List[Dict]:
+        """List all active cases for a sender. Used by session resolver."""
+        try:
+            query = "SELECT * FROM c WHERE c.sender_id = @sid AND c.doc_type = 'case_memory'"
+            params = [{"name": "@sid", "value": sender_id}]
+            items = list(self._container.query_items(query=query, parameters=params, partition_key=sender_id))
+            cases = []
+            for item in items:
+                cases.append({
+                    "case_id": item.get("case_id", ""),
+                    "case_name": item.get("case_name", ""),
+                    "turn_count": item.get("turn_count", 0),
+                    "last_updated": item.get("last_updated", ""),
+                    "persons": item.get("persons_mentioned", [])[:5],
+                    "topic_summary": (item.get("topic_history", []) or [{}])[-1].get("summary", "") if item.get("topic_history") else "",
+                })
+            return sorted(cases, key=lambda c: c.get("last_updated", ""), reverse=True)
+        except Exception as e:
+            logging.getLogger(__name__).error(f"Failed to list cases: {e}")
+            return []
+
+
 # ============================================================================
 # WhatsApp Handler
 # ============================================================================
@@ -441,11 +897,14 @@ class WhatsAppHandler:
         transcriber: WhisperTranscriber,
         gpt_client: Optional[AzureOpenAI] = None,
         gpt_deployment: str = "",
+        memory: Optional[Any] = None,
+        case_memory: Optional[CaseMemoryStore] = None,
     ):
         self.green_api = green_api
         self.rag_backend = rag_backend
         self.transcriber = transcriber
-        self.memory = ConversationMemory()
+        self.memory = memory or ConversationMemory()
+        self.case_memory = case_memory
         self.gpt_client = gpt_client
         self.gpt_deployment = gpt_deployment
 
@@ -1132,27 +1591,42 @@ class WhatsAppHandler:
                 self.green_api.send_text_message(chat_id, f"🤖 {clarification}")
                 return
 
+            # ── Step 2.5: Load case memory context (Memory Agent) ──
+            case_context = self._load_case_context(sender_phone, effective_query)
+
             # ── Step 3: Build RAG parameters based on classification ──
             full_history = self.memory.get(sender_phone)
             history = []
             exclude_blob_paths = []
 
+            # If we have case memory, inject it as a system-level context message
+            # at the start of history so RAG backend sees prior case knowledge
+            case_context_msg = []
+            if case_context:
+                case_context_msg = [{
+                    "role": "user",
+                    "content": f"[CASE CONTEXT FROM PREVIOUS SESSIONS]\n{case_context}\n[END CASE CONTEXT]",
+                }, {
+                    "role": "assistant",
+                    "content": "Understood. I have the prior case context and will use it to inform my answers.",
+                }]
+
             if classification == "FRESH":
-                # New topic — clear previous shown docs, no history
+                # New topic — clear previous shown docs
+                # But keep case memory context if available
                 self.memory.clear_shown_blob_paths(sender_phone)
-                history = []
-                logger.info(f"FRESH query | topic: {topic}")
+                history = case_context_msg  # Fresh query but with case memory
+                logger.info(f"FRESH query | topic: {topic} | case_context: {len(case_context)} chars")
 
             elif classification == "FOLLOW_UP_MORE":
                 # User wants more of same → exclude already-shown docs
                 exclude_blob_paths = self.memory.get_shown_blob_paths(sender_phone)
-                # Use the original query (or router's effective_query) for better search
-                history = full_history[-4:]  # last 2 turns for context
+                history = case_context_msg + full_history[-4:]  # case context + last 2 turns
                 logger.info(f"FOLLOW_UP_MORE | excluding {len(exclude_blob_paths)} shown docs | effective: '{effective_query[:60]}'")
 
             elif classification == "FOLLOW_UP_DEEP":
-                # Deeper question on same topic — full history context
-                history = full_history[-6:]  # last 3 turns
+                # Deeper question on same topic — full history context + case memory
+                history = case_context_msg + full_history[-6:]  # case context + last 3 turns
                 logger.info(f"FOLLOW_UP_DEEP | history: {len(history)} msgs | effective: '{effective_query[:60]}'")
 
             elif classification == "FOLLOW_UP_DOC":
@@ -1175,7 +1649,7 @@ class WhatsAppHandler:
                     logger.info(f"FOLLOW_UP_DOC | specific doc: {allowed_file}")
                     response = self.rag_backend.chat(
                         query=effective_query,
-                        history=full_history[-4:],
+                        history=case_context_msg + full_history[-4:],
                         conversation_id=sender_phone,
                         allowed_files=[allowed_file],
                     )
@@ -1186,7 +1660,7 @@ class WhatsAppHandler:
                     return
                 else:
                     # Couldn't find specific doc — fall through to normal search
-                    history = full_history[-4:]
+                    history = case_context_msg + full_history[-4:]
                     logger.info(f"FOLLOW_UP_DOC | doc not found, falling back to normal search")
 
             # ── Step 4: Query RAG ──
@@ -1288,6 +1762,142 @@ class WhatsAppHandler:
 
         logger.info(f"Response sent to {chat_id} | sources: {len(sources)} | topic: {topic}")
 
+        # ── Memory Update Agent: extract and persist case facts ──
+        if self.case_memory and self.gpt_client:
+            try:
+                self._run_memory_update(sender_phone, effective_query, answer, sources)
+            except Exception as e:
+                logger.error(f"Memory update agent failed (non-blocking): {e}")
+
+    # ------------------------------------------------------------------
+    # Memory Update Agent
+    # ------------------------------------------------------------------
+
+    def _run_memory_update(self, sender_phone: str, query: str, answer: str, sources: List[Dict]):
+        """
+        Memory Update Agent: After each RAG response, extract case facts,
+        persons, contradictions, timeline events, and open questions.
+        Persist to CaseMemoryStore so the lawyer can resume days later.
+        """
+        if not self.case_memory or not self.gpt_client:
+            return
+
+        # Build sources summary for the extraction prompt
+        sources_summary = ""
+        if sources:
+            for i, s in enumerate(sources[:6], 1):
+                fname = s.get("file_name", "unknown")
+                container = s.get("source_container", "")
+                label = "Internal" if "internal" in container else "External"
+                sources_summary += f"{i}. {fname} [{label}]\n"
+
+        # Call GPT to extract structured facts
+        prompt = prompts.get_extract_case_memory_prompt(query, answer, sources_summary)
+        try:
+            response = self.gpt_client.chat.completions.create(
+                model=self.gpt_deployment,
+                messages=[{"role": "user", "content": prompt}],
+                temperature=0,
+                max_tokens=1000,
+                response_format={"type": "json_object"},
+            )
+            raw = response.choices[0].message.content.strip()
+            extracted = json.loads(raw)
+            logger.info(
+                f"Memory extraction: {len(extracted.get('case_facts', []))} facts, "
+                f"{len(extracted.get('persons_mentioned', []))} persons, "
+                f"{len(extracted.get('open_questions', []))} open questions"
+            )
+        except Exception as e:
+            logger.error(f"Memory extraction GPT call failed: {e}")
+            return
+
+        # Resolve which case this belongs to
+        case_id = self._resolve_case_id(sender_phone, query)
+
+        # Persist extracted facts
+        self.case_memory.update_case_from_extraction(sender_phone, case_id, extracted)
+        logger.info(f"Case memory updated | sender={sender_phone[:10]}... | case={case_id}")
+
+    def _resolve_case_id(self, sender_phone: str, query: str) -> str:
+        """
+        Session/Case Resolver: determine which case this query belongs to.
+        For now, uses GPT to match against active cases. Falls back to 'default'.
+        """
+        if not self.case_memory or not self.gpt_client:
+            return "default"
+
+        active_cases = self.case_memory.list_active_cases(sender_phone)
+        if not active_cases:
+            return "default"
+
+        # If only one case, continue it
+        if len(active_cases) == 1:
+            return active_cases[0].get("case_id", "default")
+
+        # Multiple cases: ask GPT to resolve
+        cases_summary = ""
+        for c in active_cases[:5]:
+            cases_summary += (
+                f"- Case ID: {c.get('case_id')} | Name: {c.get('case_name', 'unnamed')} | "
+                f"Last active: {c.get('last_updated', '')[:10]} | "
+                f"Persons: {', '.join(c.get('persons', []))} | "
+                f"Topic: {c.get('topic_summary', '')}\n"
+            )
+
+        prompt = prompts.get_session_case_resolver_prompt(query, cases_summary)
+        try:
+            response = self.gpt_client.chat.completions.create(
+                model=self.gpt_deployment,
+                messages=[{"role": "user", "content": prompt}],
+                temperature=0,
+                max_tokens=200,
+                response_format={"type": "json_object"},
+            )
+            raw = response.choices[0].message.content.strip()
+            result = json.loads(raw)
+
+            if result.get("case_action") == "START_NEW":
+                # Generate a new case ID
+                import hashlib
+                new_id = hashlib.md5(f"{sender_phone}:{datetime.now().isoformat()}".encode()).hexdigest()[:8]
+                case_name = result.get("suggested_case_name", "")
+                if case_name:
+                    case = self.case_memory.get_active_case(sender_phone, new_id)
+                    case["case_name"] = case_name
+                logger.info(f"Session resolver: START_NEW case {new_id} ({case_name})")
+                return new_id
+
+            resolved_id = result.get("case_id")
+            if resolved_id and any(c.get("case_id") == resolved_id for c in active_cases):
+                logger.info(f"Session resolver: CONTINUE case {resolved_id}")
+                return resolved_id
+
+        except Exception as e:
+            logger.error(f"Session resolver failed: {e}")
+
+        # Fallback: most recently active case
+        return active_cases[0].get("case_id", "default")
+
+    # ------------------------------------------------------------------
+    # Memory Agent (Load at Query Start)
+    # ------------------------------------------------------------------
+
+    def _load_case_context(self, sender_phone: str, query: str) -> str:
+        """
+        Memory Agent: Load relevant case memory to enrich the conversation.
+        Returns a context string to prepend to history, or empty string if no memory.
+        """
+        if not self.case_memory:
+            return ""
+
+        case_id = self._resolve_case_id(sender_phone, query)
+        context = self.case_memory.get_case_context_summary(sender_phone, case_id)
+
+        if context:
+            logger.info(f"Case memory loaded for {sender_phone[:10]}... | case={case_id} | {len(context)} chars")
+        return context
+
     def _send_welcome(self, chat_id: str) -> None:
         bot_name = self.green_api.config.bot_name
         msg = (
@@ -1315,6 +1925,51 @@ class WhatsAppHandler:
 whatsapp_handler: Optional[WhatsAppHandler] = None
 
 
+def _init_cosmos_memory():
+    """Initialize Cosmos DB-backed memory if configured. Returns (memory, case_memory) or (None, None)."""
+    cosmos_endpoint = os.environ.get("COSMOS_ENDPOINT", "")
+    cosmos_key = os.environ.get("COSMOS_KEY", "")
+    memory_backend = os.environ.get("MEMORY_BACKEND", "inmemory").lower()
+
+    if memory_backend != "cosmos" or not cosmos_endpoint or not cosmos_key:
+        logger.info(f"Memory backend: in-memory (MEMORY_BACKEND={memory_backend})")
+        return None, None
+
+    if not COSMOS_AVAILABLE:
+        logger.warning("MEMORY_BACKEND=cosmos but azure-cosmos package not installed. Falling back to in-memory.")
+        return None, None
+
+    try:
+        cosmos_client = CosmosClient(cosmos_endpoint, cosmos_key)
+        db_name = os.environ.get("COSMOS_DATABASE", "legal-assistant")
+
+        # Create database if not exists
+        database = cosmos_client.create_database_if_not_exists(id=db_name)
+
+        # Conversations container (history, state, bot messages)
+        conv_container = database.create_container_if_not_exists(
+            id="conversations",
+            partition_key=PartitionKey(path="/sender_id"),
+            default_ttl=-1,  # Per-document TTL enabled
+        )
+
+        # Case memory container (facts, findings, open questions)
+        case_container = database.create_container_if_not_exists(
+            id="case_memory",
+            partition_key=PartitionKey(path="/sender_id"),
+            default_ttl=-1,
+        )
+
+        memory = CosmosConversationMemory(conv_container)
+        case_memory = CaseMemoryStore(case_container)
+        logger.info(f"Cosmos DB memory initialized | db={db_name} | endpoint={cosmos_endpoint[:40]}...")
+        return memory, case_memory
+
+    except Exception as e:
+        logger.error(f"Cosmos DB initialization failed: {e}. Falling back to in-memory.")
+        return None, None
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     global whatsapp_handler
@@ -1334,12 +1989,18 @@ async def lifespan(app: FastAPI):
     )
     gpt_deployment = os.environ.get("OPENAI_CHAT_DEPLOYMENT", "gpt-4o")
 
+    # Initialize persistent memory (Cosmos DB) or fall back to in-memory
+    memory, case_memory = _init_cosmos_memory()
+
     whatsapp_handler = WhatsAppHandler(
         green_api, rag_backend, transcriber,
         gpt_client=gpt_client,
         gpt_deployment=gpt_deployment,
+        memory=memory,
+        case_memory=case_memory,
     )
-    logger.info("WhatsApp handler initialized (Improved v2.0 + GPT Router)")
+    backend_type = "Cosmos DB" if memory else "in-memory"
+    logger.info(f"WhatsApp handler initialized (v3.0 + Persistent Memory [{backend_type}])")
 
     yield
     logger.info("Shutting down WhatsApp bot...")

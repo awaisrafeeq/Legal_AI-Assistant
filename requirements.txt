@@ -17,3 +17,4 @@ langchain-openai==0.0.8
 sentence-transformers>=2.2.0
 gunicorn==21.2.0
 azure-communication-email>=1.0.0
+azure-cosmos>=4.7.0

@@ -1,494 +1,556 @@
-# Legal Documents AI Project - Complete Documentation
+# Legal AI Project
 
 ## Overview
-Bilingual (English/French) AI-powered legal document assistant with WhatsApp integration. Uses Azure services for OCR, vector search, and OpenAI for RAG-based responses.
+This project is a legal-document RAG system with a WhatsApp interface.
 
-## Architecture
+It has two running services:
 
-```
-┌─────────────────┐     ┌──────────────────┐     ┌─────────────────┐
-│  WhatsApp User  │────▶│   WhatsApp Bot   │────▶│   RAG Backend   │
-│   (GreenAPI)    │◄────│    (FastAPI)     │◄────│    (FastAPI)    │
-└─────────────────┘     └──────────────────┘     └────────┬────────┘
-                                                         │
-                           ┌─────────────────────────────┼─────────────────────────────┐
-                           │                             │                             │
-                    ┌──────▼──────┐            ┌────────▼────────┐           ┌────────▼────────┐
-                    │ Azure AI    │            │  Azure AI       │           │  Azure OpenAI   │
-                    │  Search     │◄───────────│  Document       │           │  (Embeddings +  │
-                    │ (Vector +   │            │  Intelligence   │           │   Chat)         │
-                    │  BM25)      │            │    (OCR)        │           │                 │
-                    └─────────────┘            └─────────────────┘           └─────────────────┘
-                           ▲
-                           │
-                    ┌──────┴──────────────────────┐
-                    │    Azure Blob Storage       │
-                    │  ┌─────────────────────┐    │
-                    │  │ legal-documents    │    │
-                    │  │ (external files)   │    │
-                    │  └─────────────────────┘    │
-                    │  ┌─────────────────────┐    │
-                    │  │ legal-documents-   │    │
-                    │  │ internal           │    │
-                    │  │ (confidential)     │    │
-                    │  └─────────────────────┘    │
-                    └───────────────────────────────┘
-```
+- `rag_backend.py`: FastAPI backend for retrieval, answer generation, short links, and email sharing
+- `whatsapp_bot.py`: FastAPI webhook service for GreenAPI WhatsApp integration
 
-## Core Files
+Main capabilities:
 
-### 1. OCR Processing
+- Search across external and internal legal document corpora
+- Generate grounded answers with source links
+- Return short source URLs instead of long Azure SAS URLs
+- Share answers by email
+- Support reply-aware follow-ups in WhatsApp
+- Support voice message transcription
 
-#### `ocr_to_blob.py`
-Main OCR processor for external legal documents.
-- **Input**: `legal-documents` container (PDFs, images)
-- **Output**: `extracted-text/` folder in same container
-- **Azure Service**: Document Intelligence (prebuilt-read)
-- **Features**:
-  - Batch processing with progress tracking
-  - SAS URL authentication
-  - Chunked uploads for large files
-  - Configurable max files via `MAX_FILES` env
+## High-Level Architecture
 
-#### `ocr_internal.py`
-OCR processor for internal/confidential documents.
-- **Input**: `legal-documents-internal` container
-- **Output**: `extracted-text/internal/` folder (in main container)
-- **Same Azure Service**: Document Intelligence
-- **Note**: Uses separate input container, unified output location
-
-#### `process_all_formats.py`
-Multi-format document processor.
-- **Supported Formats**:
-  - PDF, DOCX, XLSX, CSV, TXT
-  - Images: JPG, PNG, HEIC, TIFF, BMP
-  - Audio/Video: MP3, WAV, MP4, AVI, MOV (metadata extraction)
-- **Libraries**: 
-  - PyPDF2 / pdfplumber for PDFs
-  - python-docx for Word
-  - pandas for Excel/CSV
-  - Pillow for images
-
-#### `retry_failed.py`
-Retry mechanism for failed OCR operations.
-- Reads `retry_failed.log` for failed files
-- Re-attempts OCR with exponential backoff
-- Updates log with new status
-
-### 2. Indexing to Search
-
-#### `index_to_search.py`
-Indexer for external documents to Azure AI Search.
-- **Source**: `extracted-text/` (OCR output from main container)
-- **Target**: Azure AI Search index
-- **Features**:
-  - Text chunking (configurable size/overlap)
-  - Azure OpenAI embeddings (text-embedding-ada-002)
-  - Batch uploads (1000 docs/batch)
-  - Metadata extraction: file_name, folder_path, blob_path
-  - **Source tagging**: `source_container: "legal-documents"`
-
-#### `index_internal.py`
-Indexer for internal documents.
-- **Source**: `extracted-text/internal/`
-- **Same target index**: Unified search across both sources
-- **Source tagging**: `source_container: "legal-documents-internal"`
-
-#### `recreate_index.py`
-Index management utility.
-- Deletes and recreates search index
-- **Schema includes**:
-  - `id`, `content`, `content_vector` (1536 dims)
-  - `blob_path`, `file_name`, `folder_path`
-  - `chunk_index`, `total_chunks`
-  - `source_container` (for filtering)
-
-### 3. RAG Backend
-
-#### `rag_backend.py`
-FastAPI-based RAG service with bilingual support.
-- **Port**: 8000
-- **Endpoints**:
-  - `GET /health` - Health check
-  - `POST /search` - Direct vector search
-  - `POST /chat` - Full RAG with translation
-
-**Bilingual Pipeline**:
-```
-User Query (FR/EN) → Detect Language → Translate to EN → 
-RAG Search → GPT-4 Response → Translate to Original Lang → User
+```text
+WhatsApp User
+   |
+   v
+GreenAPI
+   |
+   v
+whatsapp_bot.py  ----------------------------+
+   |                                         |
+   | HTTP                                    | in-memory conversation state
+   v                                         |
+rag_backend.py                               |
+   |                                         |
+   +--> Azure AI Search                      |
+   +--> Azure OpenAI                         |
+   +--> Azure Blob Storage                   |
+   +--> Gmail SMTP / SMTP provider           |
 ```
 
-**LangGraph Workflow**:
-1. `detect_language_node` - Detects query language
-2. `translate_query_node` - Translates to English if needed
-3. `retrieve_context_node` - Hybrid search (vector + BM25)
-4. `generate_answer_node` - GPT-4 with context
-5. `translate_response_node` - Translates back if needed
+## Main Runtime Components
 
-**Models**:
-- Embeddings: `text-embedding-ada-002`
-- Chat: `gpt-4`
-- Translation: `gpt-4` with system prompt
+### 1. `rag_backend.py`
+Core backend service.
 
-### 4. WhatsApp Bot
+Responsibilities:
 
-#### `whatsapp_bot.py`
-GreenAPI-based WhatsApp bot.
-- **Port**: 8001
-- **Webhook**: Receives messages from GreenAPI
-- **Features**:
-  - Group-only responses (configurable allowed group)
-  - Bot mention detection (`@botname`)
-  - Source container icons in responses:
-    - 📗 Green = External documents
-    - 🔴 Red = Internal documents
-  - Download links with SAS tokens
-  - Debug logging for group ID verification
+- Builds embeddings with Azure OpenAI
+- Retrieves from Azure AI Search
+- Re-ranks results with a cross-encoder
+- Generates final answers
+- Generates short redirect links for sources
+- Sends shared answers by email through SMTP
 
-**Response Flow**:
+Current public endpoints:
+
+- `GET /health`
+- `GET /s/{token}`: resolve short-link token and redirect to fresh blob URL
+- `POST /search`: direct search
+- `POST /chat`: main RAG answer endpoint
+- `POST /share/email`: send answer by email
+- `POST /webhook/whatsapp`: placeholder webhook endpoint on backend side
+
+Important current behavior:
+
+- Uses dual source handling:
+  - external: `legal-documents`
+  - internal: `legal-documents-internal`
+- Builds user-facing short links via backend redirect instead of exposing long SAS URLs
+- Uses SMTP instead of ACS/Resend for email sending
+- Accepts preformatted email body from WhatsApp service so email can mirror WhatsApp response layout
+
+### 2. `whatsapp_bot.py`
+GreenAPI webhook service for WhatsApp.
+
+Responsibilities:
+
+- Receives incoming GreenAPI webhooks
+- Filters allowed groups / DMs
+- Detects mentions
+- Handles text and voice messages
+- Sends user query to backend
+- Formats backend response for WhatsApp
+- Tracks sent bot message IDs for reply-aware follow-ups
+- Supports reply-based email sharing
+
+Current public endpoints:
+
+- `GET /health`
+- `POST /webhook/greenapi`
+- `GET /webhook/greenapi`
+
+Important current behavior:
+
+- Group-restricted by `ALLOWED_GROUP_ID`
+- DM-restricted by `ALLOWED_DM_PHONES`
+- Bot ignores its own messages using `BOT_PHONE`
+- Stores all sent WhatsApp message IDs for multi-part reply tracking
+- Replying to any split message can reuse that chunk as follow-up or email context
+- Multi-part answers are stored chunk-by-chunk, not only as one full response
+
+### 3. Azure Blob Storage
+Current logical containers:
+
+- `legal-documents`: external documents
+- `legal-documents-internal`: confidential/internal documents
+- `short-links`: mapping store for backend-generated short URLs
+
+Short-link flow:
+
+1. Backend stores token metadata in `short-links`
+2. WhatsApp/email shows `PUBLIC_BASE_URL/s/{token}`
+3. User opens short link
+4. Backend generates fresh blob URL and redirects
+
+### 4. Azure AI Search
+Used as primary retrieval layer.
+
+Current backend logic uses:
+
+- keyword search
+- vector search
+- source-aware metadata
+- cross-encoder reranking
+
+The codebase includes isolated search/retrieval logic for internal/external sources and answer-generation nodes around that retrieval.
+
+### 5. Azure OpenAI
+Used for:
+
+- query understanding
+- answer generation
+- routing / conversation classification in WhatsApp bot
+- embeddings
+- transcription client integration support on WhatsApp side
+
+### 6. SMTP Email Provider
+Current email sending path is SMTP.
+
+Typical current use:
+
+- Gmail SMTP
+- sender mailbox used directly as `SMTP_SENDER_EMAIL`
+
+The old ACS path is no longer the active email delivery path.
+
+## Data and Processing Flow
+
+### Document Ingestion
+Documents are uploaded into Azure Blob Storage.
+
+Typical sources:
+
+- external legal corpus
+- internal confidential legal corpus
+
+### OCR / Text Extraction
+Relevant scripts:
+
+- `ocr_to_blob.py`
+- `ocr_internal.py`
+- `process_all_formats.py`
+- `retry_failed.py`
+
+These produce extracted text under blob paths used later for indexing.
+
+### Indexing
+Relevant scripts:
+
+- `index_to_search.py`
+- `index_internal.py`
+- `recreate_index.py`
+- supporting repair / audit scripts such as `fix_classification.py`, `audit_data.py`
+
+The index stores:
+
+- chunked text
+- metadata
+- blob path
+- source container
+- vectors
+
+### Query Flow
+
+```text
+User message
+-> GreenAPI webhook
+-> whatsapp_bot.py
+-> mention / reply / email / voice handling
+-> rag_backend.py /chat
+-> retrieval + rerank + answer generation
+-> formatted WhatsApp response
+-> optional email via /share/email
 ```
-WhatsApp Message → Webhook → Check Group ID → 
-Check Bot Mention → Clean Query → RAG Backend → 
-Format Response with Sources → Send Reply
-```
 
-### 5. Utilities
+## Current Reply-Aware WhatsApp Behavior
 
-#### `upload_drive_to_azure.py`
-Uploads files from local/Google Drive to Azure Blob.
-- Supports batch uploads
-- Maintains folder structure
+The bot supports reply-context handling.
+
+What currently works:
+
+- User replies to a bot answer and asks a follow-up
+- User replies to any split part of a long bot answer
+- User replies and asks to email the replied content
+- User can ask for specific statements/paragraph numbers within the replied chunk
+
+Current design details:
+
+- all sent message IDs are tracked
+- split messages are stored with:
+  - full answer
+  - exact chunk text
+  - query
+  - sources
+- email requests can use replied chunk text instead of always sending the full answer
+
+## Email Flow
+
+Current email flow is:
+
+1. User asks bot to send an answer by email
+2. `whatsapp_bot.py` detects the email request
+3. It resolves payload from:
+   - replied bot message context, or
+   - latest stored answer
+4. It calls backend `POST /share/email`
+5. Backend sends email via SMTP
+
+Current behavior:
+
+- If user asks to email but does not include recipient email, bot prompts for the address
+- Email body can reuse WhatsApp-style formatted content
+
+## Formatting Behavior
+
+Current WhatsApp output is intentionally plain-text friendly.
+
+Recent formatting changes:
+
+- removed markdown-style emphasis such as `*bold*` and `_italic_` from response body formatting
+- source blocks are emitted as plain text
+- email body can now reuse the same formatted output style as WhatsApp
+
+## Important Files
+
+### Backend / Core
+
+- `rag_backend.py`
+- `prompts.py`
+- `audit_data.py`
+- `fix_classification.py`
+
+### WhatsApp Layer
+
+- `whatsapp_bot.py`
+
+### OCR / Indexing
+
+- `ocr_to_blob.py`
+- `ocr_internal.py`
+- `process_all_formats.py`
+- `retry_failed.py`
+- `index_to_search.py`
+- `index_internal.py`
+- `recreate_index.py`
+
+### Testing / Verification / Notes
+
+- `Test/answer_verification.txt`
+- `.env`
+- `.env.new`
+- `requirements.txt`
 
 ## Environment Variables
 
-```bash
-# Azure Storage
-CONTAINER_SAS_URL=<sas-url-for-legal-documents>
-INTERNAL_CONTAINER_SAS_URL=<sas-url-for-internal>
+### Backend (`rag_backend.py`)
 
-# Azure Document Intelligence
-DI_ENDPOINT=https://<resource>.cognitiveservices.azure.com/
-DI_KEY=<key>
+Core retrieval / Azure:
 
-# Azure AI Search
-SEARCH_ENDPOINT=https://<resource>.search.windows.net
-SEARCH_KEY=<key>
-SEARCH_INDEX=legal-docs-index
+- `SEARCH_ENDPOINT`
+- `SEARCH_KEY`
+- `SEARCH_INDEX`
+- `SEARCH_INDEX_EXTERNAL`
+- `SEARCH_INDEX_INTERNAL`
+- `MIN_SEARCH_SCORE`
+- `CROSS_ENCODER_MIN_SCORE`
+- `OPENAI_ENDPOINT`
+- `OPENAI_KEY`
+- `OPENAI_CHAT_DEPLOYMENT`
+- `OPENAI_EMBEDDING_DEPLOYMENT`
+- `CONTAINER_SAS_URL`
+- `INTERNAL_CONTAINER_SAS_URL`
 
-# Azure OpenAI
-OPENAI_ENDPOINT=https://<resource>.openai.azure.com/
-OPENAI_KEY=<key>
-OPENAI_EMBEDDING_DEPLOYMENT=text-embedding-ada-002
-OPENAI_CHAT_DEPLOYMENT=gpt-4
+Short links:
 
-# WhatsApp (GreenAPI)
-GREENAPI_URL=https://api.greenapi.com
-GREENAPI_INSTANCE_ID=<id>
-GREENAPI_TOKEN=<token>
-ALLOWED_GROUP_ID=<group-id>@g.us
-BOT_NAME=LegalBot
+- `PUBLIC_BASE_URL`
+- `SHORT_LINKS_CONTAINER`
 
-# RAG Backend
-RAG_BACKEND_URL=http://localhost:8000
+SMTP:
 
-# OCR/Indexing Config
-INPUT_PREFIX=uploads/
-OUTPUT_PREFIX=extracted-text/
-MAX_CHUNK_SIZE=1000
-CHUNK_OVERLAP=200
-MAX_FILES=  # leave empty for unlimited
-OVERWRITE=false
+- `SMTP_HOST`
+- `SMTP_PORT`
+- `SMTP_USERNAME`
+- `SMTP_PASSWORD`
+- `SMTP_SENDER_EMAIL`
+- `SMTP_USE_TLS`
+
+Legacy / no longer active primary email path:
+
+- `ACS_CONNECTION_STRING`
+- `ACS_SENDER_EMAIL`
+- `RESEND_API_KEY`
+- `RESEND_SENDER_EMAIL`
+
+### WhatsApp Service (`whatsapp_bot.py`)
+
+GreenAPI:
+
+- `GREENAPI_URL`
+- `GREENAPI_INSTANCE_ID`
+- `GREENAPI_TOKEN`
+- `ALLOWED_GROUP_ID`
+- `BOT_NAME`
+- `BOT_PHONE`
+- `ALLOWED_DM_PHONES`
+
+Routing / OpenAI / backend access:
+
+- `RAG_BACKEND_URL`
+- `OPENAI_ENDPOINT`
+- `OPENAI_KEY`
+- `OPENAI_CHAT_DEPLOYMENT`
+
+Persistent Memory (Cosmos DB):
+
+- `MEMORY_BACKEND` (set to `cosmos` to enable, default: `inmemory`)
+- `COSMOS_ENDPOINT`
+- `COSMOS_KEY`
+- `COSMOS_DATABASE` (default: `legal-assistant`)
+
+Voice:
+
+- `AUTO_PROCESS_AUDIO`
+- Whisper/OpenAI-related values if configured in environment
+
+## Current Operational Notes
+
+### 1. Cross-encoder startup can be heavy
+`rag_backend.py` loads a Hugging Face cross-encoder. On fresh startup this may:
+
+- download model files
+- slow startup
+- cause transient health/startup issues if the host is impatient
+
+### 2. Short links are backend-owned
+User-facing links are not raw Azure SAS URLs anymore. They are backend redirect links.
+
+### 3. SMTP is currently the working email channel
+SMTP with Gmail app password is the current working path.
+
+### 4. WhatsApp instance strategy
+For testing new webhook behavior safely, use a separate GreenAPI instance with a separate WhatsApp number and separate test group.
+
+## Current Known Functional Areas
+
+Working / implemented:
+
+- RAG answers from WhatsApp
+- short source URLs
+- SMTP email sending
+- reply-based email actions
+- chunk-aware multi-message reply context
+- WhatsApp plain-text response formatting
+
+Areas that are sensitive / operationally tricky:
+
+- heavy backend startup because of cross-encoder model load
+- GreenAPI reply payload shape differences
+- Azure deployment / restart timing
+- WhatsApp split-message context behavior for novice users
+
+## Suggested Research Topics
+
+If you want to continue researching improvements, these are the highest-value directions:
+
+### Retrieval / Relevance
+
+- source-aware reranking
+- confidence scoring before final answer
+- contradiction-analysis prompting for legal workflows
+- improved retrieval for exact numeric facts and quoted statements
+
+### Operations
+
+- lazy-loading cross-encoder on first request
+- persistent model cache for app restarts
+- health-check hardening
+- staging vs production GreenAPI setup
+
+### WhatsApp UX
+
+- better parsing of novice follow-up requests
+- chunk-specific reference extraction
+- section-aware email/export actions
+- explicit command patterns for users who reply ambiguously
+
+### Document Intelligence
+
+- better OCR normalization for multilingual legal docs
+- metadata classification fixes
+- audit pipeline for missing/incorrect source metadata
+
+## Proposed Agent Flow
+
+This is the recommended multi-agent flow for the lawyer-assistant version of the project.
+
+```mermaid
+flowchart TD
+    A[User Query from WhatsApp or Web] --> B[Session and Case Resolver]
+    B --> C[Memory Agent]
+    C --> D[Case Workspace Loader]
+    D --> E[Retriever Agent]
+    E --> F[Hybrid Search]
+    F --> G[Candidate Documents and Chunks]
+    G --> H[Evidence Validator Agent]
+    H --> I{Relevant and Grounded?}
+    I -- No --> J[Reject Weak or Garbage Sources]
+    J --> E
+    I -- Yes --> K[Citation Agent]
+    K --> L[Evidence Map]
+    L --> M[Legal Analyst Agent]
+    M --> N[Task Agent]
+    N --> O[Final Answer Composer]
+    O --> P[WhatsApp Response / Email / Export]
+    O --> Q[Memory Update Agent]
+    Q --> R[Persist Conversation Memory]
+    Q --> S[Persist Case Memory]
+    Q --> T[Persist Tasks / Findings / Timelines]
 ```
 
-## Data Flow
+### Agent Responsibilities
 
-### 1. Document Ingestion
-```
-Upload Files → Azure Blob (legal-documents or legal-documents-internal)
-```
+#### 1. Session and Case Resolver
+- identify user
+- identify active case
+- determine whether request belongs to an existing case thread or a new matter
 
-### 2. OCR Processing
-```
-PDFs/Images → Azure Document Intelligence → Text Files (extracted-text/)
-```
+#### 2. Memory Agent
+- load recent conversation memory
+- load persistent case facts
+- load prior contradictions, timelines, witness notes, and unfinished tasks
 
-### 3. Indexing
-```
-Text Files → Chunking → Embeddings → Azure AI Search (with source_container tag)
-```
+#### 3. Retriever Agent
+- generate search variants
+- run hybrid retrieval across indexes and metadata filters
+- collect top candidate chunks and documents
 
-### 4. Query Flow
-```
-WhatsApp Query → RAG Backend → Search (Hybrid) → GPT-4 → 
-Translated Response → WhatsApp Reply (with source indicators)
-```
+#### 4. Evidence Validator Agent
+- remove irrelevant or weak sources
+- ensure only grounded evidence survives
+- prevent garbage sources from reaching final answer generation
 
-## Source Container Differentiation
+#### 5. Citation Agent
+- attach exact support for each factual finding
+- map claims to specific source passages
+- enforce citation-backed output
 
-| Source | Container | Output Path | Icon | Search Tag |
-|--------|-----------|-------------|------|------------|
-| External | legal-documents | extracted-text/ | 📗 | legal-documents |
-| Internal | legal-documents-internal | extracted-text/internal/ | 🔴 | legal-documents-internal |
+#### 6. Legal Analyst Agent
+- compare statements
+- detect contradictions and factual inconsistencies
+- build legal reasoning structures such as chronology, witness credibility issues, and document mismatches
 
-## Running the Project
+#### 7. Task Agent
+- execute lawyer-style work requests
+- examples:
+  - draft chronology
+  - extract contradictions
+  - prepare witness notes
+  - share by email
+  - explain a paragraph
+  - isolate statements 1 and 3
 
-### 1. OCR (One-time for new files)
-```bash
-# External documents
-python ocr_to_blob.py
+#### 8. Final Answer Composer
+- produce user-facing response
+- keep answer grounded in validated evidence only
+- adapt response format for WhatsApp, email, or future UI
 
-# Internal documents  
-python ocr_internal.py
+#### 9. Memory Update Agent
+- store what was learned in the turn
+- update case summary, facts, open questions, and action history
+- make the next follow-up work even days later
 
-# Multi-format files (Excel, Word, etc.)
-python process_all_formats.py
+## Proposed Long-Term Memory Flow
 
-# Retry any failures
-python retry_failed.py
-```
-
-### 2. Indexing (After OCR)
-```bash
-# Recreate index if schema changed
-python recreate_index.py
-
-# Index external documents
-python index_to_search.py
-
-# Index internal documents
-python index_internal.py
-```
-
-### 3. Start Services
-```bash
-# Terminal 1: RAG Backend
-python rag_backend.py
-
-# Terminal 2: WhatsApp Bot
-python whatsapp_bot.py
-```
-
-### 4. Configure Webhook
-```bash
-# Update GreenAPI webhook URL with ngrok
-# ngrok http 8001
+```mermaid
+flowchart LR
+    A[Completed User Turn] --> B[Conversation Summary]
+    A --> C[Extracted Facts]
+    A --> D[Open Questions]
+    A --> E[Validated Sources]
+    B --> F[Conversation Memory Store]
+    C --> G[Case Facts Store]
+    D --> H[Task and Follow-Up Store]
+    E --> I[Evidence Memory Store]
+    F --> J[Future Follow-Up Query]
+    G --> J
+    H --> J
+    I --> J
 ```
 
-## Ports
+## Proposed Validation Gate
 
-| Service | Port |
-|---------|------|
-| RAG Backend | 8000 |
-| WhatsApp Bot | 8001 |
+```mermaid
+flowchart TD
+    A[Retrieved Chunks] --> B[Relevance Scoring]
+    B --> C[Cross-Encoder Rerank]
+    C --> D[LLM Evidence Validator]
+    D --> E{Pass Validation?}
+    E -- No --> F[Discard Chunk]
+    E -- Yes --> G[Keep for Final Evidence Set]
+    G --> H[Answer Generation]
+    H --> I[Claim to Citation Check]
+    I --> J{Every Important Claim Supported?}
+    J -- No --> K[Revise or Remove Unsupported Claim]
+    J -- Yes --> L[Return Final Grounded Answer]
+```
 
-## Key Features
+## Current Service Ports
 
-1. **Bilingual Support**: Automatic detection and translation (FR/EN)
-2. **Hybrid Search**: Vector similarity + BM25 keyword matching
-3. **Source Attribution**: Clear indicators for internal vs external docs
-4. **Secure Access**: SAS token-based download links
-5. **Group Control**: Bot responds only in allowed WhatsApp groups
-6. **Mention Detection**: Only responds when tagged (@botname)
-7. **Multi-format**: PDF, Word, Excel, Images, Text files
+- backend: `8000`
+- WhatsApp bot: `8001`
 
-## Dependencies
+## Minimal Run Order
 
-See `requirements.txt`:
-- Azure SDK (Blob, Search, Document Intelligence)
-- OpenAI
-- LangGraph / LangChain
-- FastAPI / Uvicorn
-- Various file format libraries (PyPDF2, python-docx, pandas, Pillow)
+1. Start `rag_backend.py`
+2. Start `whatsapp_bot.py`
+3. Point GreenAPI webhook to WhatsApp bot service
+4. Ensure Azure Search, Blob, OpenAI, and SMTP env vars are valid
 
----
+## Summary
 
-## ⚠️ Known Issues & Problems
+This codebase is now a two-service legal AI system with:
 
-### 1. Embeddings & Indexing Issues
+- Azure-based retrieval and storage
+- WhatsApp interaction via GreenAPI
+- backend-managed short links
+- SMTP-based answer sharing
+- reply-aware, chunk-aware follow-up handling
 
-#### Issue #1: External Documents Override Internal/Test Files
-**Status**: 🔴 **CRITICAL**  
-**Description**: When searching, external documents (Oribus, St-Lin) always rank higher than internal test files, even when test files are more relevant.  
-**Impact**: RAG returns wrong information for internal documents (e.g., Farrier evaluation shows wrong property data)  
-**Example**: 
-- Query: "What is Farrier property value?"
-- Expected: $827,000 (from test file)
-- Got: Wrong property (4,750,436 sq ft from external docs)
-  
-**Root Cause**: 
-- Hybrid search (BM25 + Vector) gives higher scores to larger external documents
-- `source_container` tag exists but no source filtering in search
-- No document boosting for internal sources
+The most important current files for future work are:
 
-**Workaround**: Use `index_test_files.py` to index local files with `source_container: test-local-files`
-
----
-
-#### Issue #2: Document ID Key Errors with Special Characters
-**Status**: 🟡 **FIXED** (in `index_test_files.py`)  
-**Description**: French filenames with accents/spaces (e.g., `Pièces Caon.pdf.txt`, `Évaluation FARRIER`) cause Azure AI Search ID errors  
-**Error**: `InvalidDocumentKey: Keys can only contain letters, digits, underscore (_), dash (-), or equal sign (=)`  
-**Fix Applied**: Use MD5 hash of filename to generate safe IDs (hexadecimal only)
-
----
-
-#### Issue #3: Test Files Not Retrieved Despite Indexing
-**Status**: 🔴 **CRITICAL**  
-**Description**: Even after indexing test files with `source_container: test-local-files`, RAG still prioritizes external documents  
-**Test Results**: 
-- 9 test files indexed (58 chunks total)
-- Search returns external docs with higher scores (0.021 vs 0.019)
-- Only 9/25 test queries passing
-
-**Root Cause**: 
-- No source filtering in `retrieve_context_node`
-- Search returns top_k by relevance score, not by source priority
-- Similar names (Tremblay, Brompton, Rawdon) exist in both internal and external docs
-
-**Potential Solutions**:
-1. Add source filter parameter to search endpoint
-2. Boost `test-local-files` and `legal-documents-internal` scores
-3. Use separate indices for internal vs external
-
----
-
-#### Issue #4: Confusion Between Similar Project Names
-**Status**: 🔴 **HIGH**  
-**Description**: Multiple projects with same/similar names across internal and external docs cause mix-ups  
-**Examples**:
-| Query | Expected (Internal) | Got (External) |
-|-------|---------------------|----------------|
-| Brompton loan # | DP-0372, $700K | DP-0381, $1.1M |
-| Tremblay investment | $250K (Joliette) | $1.1M (St-Lin) |
-| Blache investment | $100K (Joliette) | $331K (Montreal) |
-
-**Impact**: Wrong loan amounts, wrong dates, wrong people in responses
-
----
-
-#### Issue #5: No Source Priority in RAG Pipeline
-**Status**: 🔴 **HIGH**  
-**Description**: LangGraph workflow does not prioritize internal over external sources  
-**Current Flow**: `retrieve_context_node` → Returns top_k by hybrid score  
-**Missing**: Source-based re-ranking or filtering  
-**Files Affected**: `rag_backend.py` lines 245-270
-
----
-
-### 2. Search & Retrieval Issues
-
-#### Issue #6: Missing Internal Documents in Search Results
-**Status**: 🔴 **CRITICAL**  
-**Description**: `index_internal.py` looks for files in blob storage (`extracted-text/internal/`) but OCR outputs to same location  
-**Test Result**: `test_source.py` shows only external documents (no `internal` or `test-local-files` in top results before test indexing)
-
----
-
-#### Issue #7: Low Recall for Specific Numeric Values
-**Status**: 🟡 **MEDIUM**  
-**Description**: Exact numeric values (matricule numbers, specific dollar amounts) often not retrieved  
-**Examples**:
-- Matricule #8398-41-5065 not found
-- $3,102,123 Brompton evaluation not found
-- $100,000 Capital Transit payment not found
-
-**Root Cause**: 
-- Text chunking may split numbers across chunks
-- BM25 weights may not prioritize exact numbers
-
----
-
-### 3. RAG Backend Issues
-
-#### Issue #8: Hallucinated Values When Document Missing
-**Status**: 🔴 **HIGH**  
-**Description**: When correct document not retrieved, RAG hallucinates plausible but wrong values  
-**Examples**:
-- Farrier property area: Expected 9,192,594 sq ft → Got 4,750,436 sq ft (different property)
-- Brompton loan: Expected $700K → Got $1.1M (different loan)
-
-**Problem**: No "document not found" response - always generates answer from available (wrong) context
-
----
-
-#### Issue #9: Source Container Icons Not Consistent
-**Status**: 🟡 **LOW**  
-**Description**: WhatsApp bot shows 📗 for external but test files have no icon defined  
-**Current Mapping**:
-- `legal-documents` = 📗
-- `internal` = 🔒
-- `test-local-files` = 🧪 (added in test script only)
-
-**Fix Needed**: Add `test-local-files` to icon mapping in `whatsapp_bot.py`
-
----
-
-### 4. Indexing Workflow Issues
-
-#### Issue #10: No Easy Way to Test with Clean Index
-**Status**: 🟡 **MEDIUM**  
-**Description**: Cannot easily test RAG with only specific documents (external docs always present)  
-**Current Process**:
-1. Index external docs (hundreds of files)
-2. Index test files
-3. Test results polluted by external docs
-
-**Need**: Utility to temporarily disable/purge external docs for testing
-
----
-
-#### Issue #11: Duplicate Documents Possible
-**Status**: 🟡 **MEDIUM**  
-**Description**: Running `index_to_search.py` multiple times may create duplicates  
-**Current ID Generation**: `f"internal_{hash(blob_path) % 100000000}_{chunk_index}"`  
-**Risk**: Same file re-indexed = different chunks get different IDs if hash collision
-
----
-
-### 5. Testing Infrastructure Issues
-
-#### Issue #12: No Automated Test Validation
-**Status**: 🟡 **MEDIUM**  
-**Description**: `run_rag_tests.py` exists but no automated comparison with expected answers  
-**Current**: Manual keyword matching only  
-**Need**: Semantic similarity check or exact value matching
-
----
-
-## 🔧 Recommended Fix Priority
-
-### Immediate (Do Now)
-1. Add source filtering to `rag_backend.py` search endpoint
-2. Boost `test-local-files` and `internal` source scores
-3. Re-run tests after filtering fix
-
-### Short Term (This Week)
-4. Create utility to purge external docs for testing
-5. Add document ID deduplication logic
-6. Improve numeric value extraction in chunking
-
-### Medium Term (Next Sprint)
-7. Separate indices for internal vs external
-8. Add re-ranking based on source priority
-9. Implement "confidence threshold" - return "not found" if sources irrelevant
-
----
-
-## 🧪 Current Test Status
-
-**From `run_rag_tests.py` (25 test cases)**:
-- ✅ PASS: 9/25 (36%)
-- ❌ FAIL: 16/25 (64%)
-- HIGH Priority Pass: 9/22 (41%)
-
-**Key Passing Tests**:
-- Rawdon→Brompton transfer recognition (after test indexing)
-- November 2014 loan date
-- Some cross-document connections
-
-**Key Failing Tests**:
-- Exact dollar amounts ($827K, $700K, $100K, $250K)
-- Specific document numbers (DP-0372, P-14-365)
-- Property specifications (9,192,594 sq ft, lot numbers)
-- Notary contacts (Lucie Lafontaine)
+- `rag_backend.py`
+- `whatsapp_bot.py`
+- `prompts.py`
+- `requirements.txt`
+- `.env`

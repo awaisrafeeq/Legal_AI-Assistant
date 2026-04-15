@@ -384,3 +384,101 @@ This tag is for internal system use only.
 CURRENT CONTEXT FROM LEGAL DOCUMENTS:
 {context}"""
 
+
+# ============================================================================
+# MEMORY AGENT PROMPTS
+# ============================================================================
+
+def get_extract_case_memory_prompt(query: str, answer: str, sources_summary: str) -> str:
+    return f"""You are a legal case memory extraction system.
+After each conversation turn, you extract structured facts and context that a lawyer would need to remember for future follow-ups — even days later.
+
+CONVERSATION TURN:
+User question: {query}
+AI answer: {answer}
+Sources used: {sources_summary}
+
+Extract the following from this turn. Output valid JSON ONLY:
+{{
+    "case_facts": [
+        // Key factual findings from this turn. Each fact should be self-contained and referenceable.
+        // Examples: "Loan DP-0372 has a principal amount of $700,000", "Property at 123 Rue Principale was evaluated on 2023-05-15"
+        // Only include facts that are EXPLICITLY stated in the answer with source backing. Do NOT infer or speculate.
+    ],
+    "persons_mentioned": [
+        // Names of people discussed in this turn
+    ],
+    "documents_discussed": [
+        // Document names or types that were central to the answer
+    ],
+    "open_questions": [
+        // Questions that remain unanswered or partially answered
+        // Questions the lawyer might logically ask next
+    ],
+    "topic_summary": "A 1-2 sentence summary of what this turn was about",
+    "key_contradictions": [
+        // Any contradictions or inconsistencies found between sources (if any)
+    ],
+    "timeline_events": [
+        // Date-anchored events extracted, format: {{"date": "YYYY-MM-DD or approximate", "event": "description"}}
+    ]
+}}
+
+Rules:
+- Only extract facts that are DIRECTLY stated in the answer. Do not add knowledge from your training data.
+- If the answer says "I could not find this information", extract minimal facts and note it in open_questions.
+- Keep each fact concise but self-contained (someone reading it months later should understand it without context).
+- Persons and documents should use the exact names/spellings from the sources.
+
+JSON:"""
+
+
+def get_case_memory_context_prompt(case_facts: str, open_questions: str, topic_history: str) -> str:
+    return f"""You are a legal case memory summarizer.
+A lawyer is returning to a conversation after some time. Summarize the relevant prior context to help the AI assistant understand what has been discussed before.
+
+PRIOR CASE FACTS:
+{case_facts}
+
+OPEN QUESTIONS FROM PREVIOUS SESSIONS:
+{open_questions}
+
+TOPIC HISTORY:
+{topic_history}
+
+Produce a concise context paragraph (max 200 words) that:
+1. Summarizes what the lawyer has been investigating
+2. Lists the most important facts discovered so far
+3. Notes any unresolved questions
+4. Mentions key persons and documents involved
+
+This context will be prepended to the conversation history so the AI assistant can provide informed follow-ups.
+
+Context summary:"""
+
+
+def get_session_case_resolver_prompt(query: str, active_cases_summary: str) -> str:
+    return f"""You are a session resolver for a legal AI assistant.
+The user has sent a new message. Determine whether this belongs to an existing case thread or is a new matter.
+
+ACTIVE CASES:
+{active_cases_summary}
+
+USER MESSAGE: {query}
+
+Respond with valid JSON ONLY:
+{{
+    "case_action": "CONTINUE_EXISTING or START_NEW",
+    "case_id": "the matching case ID if CONTINUE_EXISTING, or null if START_NEW",
+    "reasoning": "one sentence explaining why",
+    "suggested_case_name": "a short descriptive name for the case if START_NEW, or null"
+}}
+
+Rules:
+- If the message clearly references a person, property, loan, or topic from an active case → CONTINUE_EXISTING
+- If the message is about a completely new topic not mentioned in any active case → START_NEW
+- If ambiguous but there is only one active case → CONTINUE_EXISTING (assume they are continuing)
+- If ambiguous with multiple active cases → CONTINUE_EXISTING with the most recently active case
+
+JSON:"""
+
