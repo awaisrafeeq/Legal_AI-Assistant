@@ -571,6 +571,7 @@ Rules:
 - If the answer says "I could not find this information", extract minimal facts and note it in open_questions.
 - Keep each fact concise but self-contained (someone reading it months later should understand it without context).
 - Persons and documents should use the exact names/spellings from the sources.
+- case_facts, persons_mentioned, documents_discussed, open_questions, and key_contradictions must be arrays of plain strings only.
 - Action items should be specific and actionable — not vague suggestions.
 - Evidence references should preserve the EXACT French quote — do not paraphrase.
 

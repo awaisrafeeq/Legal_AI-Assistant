@@ -720,6 +720,106 @@ class CaseMemoryStore:
         except Exception as e:
             logging.getLogger(__name__).error(f"Case memory upsert failed: {e}")
 
+    @staticmethod
+    def _normalize_text_item(value: Any) -> str:
+        """Convert mixed GPT output into a stable text value for string-list fields."""
+        if value is None:
+            return ""
+        if isinstance(value, str):
+            return value.strip()
+        if isinstance(value, dict):
+            preferred_keys = (
+                "fact", "name", "document", "question", "issue",
+                "contradiction", "summary", "event", "text", "value"
+            )
+            for key in preferred_keys:
+                raw = value.get(key)
+                if isinstance(raw, str) and raw.strip():
+                    return raw.strip()
+            try:
+                return json.dumps(value, ensure_ascii=False, sort_keys=True)
+            except Exception:
+                return str(value).strip()
+        if isinstance(value, (list, tuple, set)):
+            parts = [CaseMemoryStore._normalize_text_item(v) for v in value]
+            return " | ".join(p for p in parts if p)
+        return str(value).strip()
+
+    @staticmethod
+    def _normalize_timeline_event(value: Any) -> Optional[Dict[str, str]]:
+        if not value:
+            return None
+        if isinstance(value, str):
+            return {"date": "", "event": value.strip()}
+        if not isinstance(value, dict):
+            return {"date": "", "event": CaseMemoryStore._normalize_text_item(value)}
+
+        date_value = CaseMemoryStore._normalize_text_item(
+            value.get("date") or value.get("when") or value.get("time")
+        )
+        event_value = CaseMemoryStore._normalize_text_item(
+            value.get("event") or value.get("description") or value.get("fact") or value.get("summary")
+        )
+        if not date_value and not event_value:
+            return None
+        return {"date": date_value, "event": event_value}
+
+    @staticmethod
+    def _normalize_action_item(value: Any) -> Optional[Dict[str, str]]:
+        if not value:
+            return None
+        if isinstance(value, str):
+            task = value.strip()
+            if not task:
+                return None
+            return {"task": task, "priority": "medium", "status": "pending"}
+        if not isinstance(value, dict):
+            task = CaseMemoryStore._normalize_text_item(value)
+            if not task:
+                return None
+            return {"task": task, "priority": "medium", "status": "pending"}
+
+        task = CaseMemoryStore._normalize_text_item(
+            value.get("task") or value.get("action") or value.get("next_step") or value.get("summary")
+        )
+        if not task:
+            return None
+        priority = CaseMemoryStore._normalize_text_item(value.get("priority")).lower() or "medium"
+        if priority not in {"high", "medium", "low"}:
+            priority = "medium"
+        status = CaseMemoryStore._normalize_text_item(value.get("status")).lower() or "pending"
+        return {"task": task, "priority": priority, "status": status}
+
+    @staticmethod
+    def _normalize_evidence_reference(value: Any) -> Optional[Dict[str, str]]:
+        if not value:
+            return None
+        if isinstance(value, str):
+            quote = value.strip()
+            if not quote:
+                return None
+            return {"quote": quote, "source_file": "", "relevance": ""}
+        if not isinstance(value, dict):
+            quote = CaseMemoryStore._normalize_text_item(value)
+            if not quote:
+                return None
+            return {"quote": quote, "source_file": "", "relevance": ""}
+
+        quote = CaseMemoryStore._normalize_text_item(
+            value.get("quote") or value.get("text") or value.get("evidence")
+        )
+        if not quote:
+            return None
+        return {
+            "quote": quote,
+            "source_file": CaseMemoryStore._normalize_text_item(
+                value.get("source_file") or value.get("source") or value.get("document")
+            ),
+            "relevance": CaseMemoryStore._normalize_text_item(
+                value.get("relevance") or value.get("why_it_matters") or value.get("summary")
+            ),
+        }
+
     def get_active_case(self, sender_id: str, case_id: str = "default") -> Dict:
         """Get or create a case memory document."""
         cache_key = f"{sender_id}:{case_id}"
@@ -769,9 +869,20 @@ class CaseMemoryStore:
         """Merge extracted facts from a conversation turn into the case memory."""
         case = self.get_active_case(sender_id, case_id)
 
+        # Normalize legacy / malformed values before dedup logic runs.
+        case["case_facts"] = [self._normalize_text_item(v) for v in case.get("case_facts", []) if self._normalize_text_item(v)]
+        case["persons_mentioned"] = [self._normalize_text_item(v) for v in case.get("persons_mentioned", []) if self._normalize_text_item(v)]
+        case["documents_discussed"] = [self._normalize_text_item(v) for v in case.get("documents_discussed", []) if self._normalize_text_item(v)]
+        case["open_questions"] = [self._normalize_text_item(v) for v in case.get("open_questions", []) if self._normalize_text_item(v)]
+        case["key_contradictions"] = [self._normalize_text_item(v) for v in case.get("key_contradictions", []) if self._normalize_text_item(v)]
+        case["timeline_events"] = [ev for ev in (self._normalize_timeline_event(v) for v in case.get("timeline_events", [])) if ev]
+        case["action_items"] = [item for item in (self._normalize_action_item(v) for v in case.get("action_items", [])) if item]
+        case["evidence_references"] = [ev for ev in (self._normalize_evidence_reference(v) for v in case.get("evidence_references", [])) if ev]
+
         # Merge facts (deduplicate)
         existing_facts = set(case.get("case_facts", []))
         for fact in extracted.get("case_facts", []):
+            fact = self._normalize_text_item(fact)
             if fact and fact not in existing_facts:
                 case["case_facts"].append(fact)
                 existing_facts.add(fact)
@@ -782,6 +893,7 @@ class CaseMemoryStore:
         # Merge persons (deduplicate)
         existing_persons = set(p.lower() for p in case.get("persons_mentioned", []))
         for person in extracted.get("persons_mentioned", []):
+            person = self._normalize_text_item(person)
             if person and person.lower() not in existing_persons:
                 case["persons_mentioned"].append(person)
                 existing_persons.add(person.lower())
@@ -789,12 +901,14 @@ class CaseMemoryStore:
         # Merge documents (deduplicate)
         existing_docs = set(d.lower() for d in case.get("documents_discussed", []))
         for doc in extracted.get("documents_discussed", []):
+            doc = self._normalize_text_item(doc)
             if doc and doc.lower() not in existing_docs:
                 case["documents_discussed"].append(doc)
                 existing_docs.add(doc.lower())
 
         # Merge open questions (deduplicate, also remove answered ones)
         for q in extracted.get("open_questions", []):
+            q = self._normalize_text_item(q)
             if q and q not in case.get("open_questions", []):
                 case["open_questions"].append(q)
         # Cap open questions
@@ -803,12 +917,16 @@ class CaseMemoryStore:
 
         # Merge contradictions
         for c in extracted.get("key_contradictions", []):
+            c = self._normalize_text_item(c)
             if c and c not in case.get("key_contradictions", []):
                 case["key_contradictions"].append(c)
 
         # Merge timeline events
         existing_events = set(json.dumps(e, sort_keys=True) for e in case.get("timeline_events", []))
         for event in extracted.get("timeline_events", []):
+            event = self._normalize_timeline_event(event)
+            if not event:
+                continue
             event_key = json.dumps(event, sort_keys=True)
             if event_key not in existing_events:
                 case["timeline_events"].append(event)
@@ -829,12 +947,12 @@ class CaseMemoryStore:
         if "action_items" not in case:
             case["action_items"] = []
         for item in extracted.get("action_items", []):
-            if isinstance(item, str):
-                item = {"task": item, "status": "pending", "created": datetime.now().isoformat()}
+            item = self._normalize_action_item(item)
             if item and item.get("task"):
                 # Deduplicate by task text
                 existing_tasks = {a.get("task", "").lower() for a in case["action_items"]}
                 if item["task"].lower() not in existing_tasks:
+                    item["created"] = item.get("created") or datetime.now().isoformat()
                     case["action_items"].append(item)
         # Cap action items
         if len(case["action_items"]) > 50:
@@ -844,6 +962,7 @@ class CaseMemoryStore:
         if "evidence_references" not in case:
             case["evidence_references"] = []
         for ev in extracted.get("evidence_references", []):
+            ev = self._normalize_evidence_reference(ev)
             if ev and ev.get("quote"):
                 # Deduplicate by quote text (first 80 chars)
                 existing_quotes = {e.get("quote", "")[:80].lower() for e in case["evidence_references"]}
@@ -1884,7 +2003,7 @@ class WhatsAppHandler:
                 response_format={"type": "json_object"},
             )
             raw = response.choices[0].message.content.strip()
-            extracted = json.loads(raw)
+            extracted = self._parse_memory_extraction(raw)
             logger.info(
                 f"Memory extraction: {len(extracted.get('case_facts', []))} facts, "
                 f"{len(extracted.get('persons_mentioned', []))} persons, "
@@ -1900,6 +2019,44 @@ class WhatsAppHandler:
         # Persist extracted facts
         self.case_memory.update_case_from_extraction(sender_phone, case_id, extracted)
         logger.info(f"Case memory updated | sender={sender_phone[:10]}... | case={case_id}")
+
+    @staticmethod
+    def _parse_memory_extraction(raw: str) -> Dict[str, Any]:
+        """Parse memory extraction JSON with a small repair fallback for malformed model output."""
+        try:
+            parsed = json.loads(raw)
+        except json.JSONDecodeError:
+            start = raw.find("{")
+            end = raw.rfind("}")
+            if start == -1 or end == -1 or end <= start:
+                raise
+            candidate = raw[start:end + 1]
+            parsed = json.loads(candidate)
+
+        defaults = {
+            "case_facts": [],
+            "persons_mentioned": [],
+            "documents_discussed": [],
+            "open_questions": [],
+            "topic_summary": "",
+            "key_contradictions": [],
+            "timeline_events": [],
+            "action_items": [],
+            "evidence_references": [],
+        }
+        if not isinstance(parsed, dict):
+            raise ValueError("Memory extraction must be a JSON object")
+
+        normalized = dict(defaults)
+        normalized.update(parsed)
+        for key in ("case_facts", "persons_mentioned", "documents_discussed", "open_questions",
+                    "key_contradictions", "timeline_events", "action_items", "evidence_references"):
+            if not isinstance(normalized.get(key), list):
+                value = normalized.get(key)
+                normalized[key] = [] if value in (None, "") else [value]
+        if not isinstance(normalized.get("topic_summary"), str):
+            normalized["topic_summary"] = str(normalized.get("topic_summary", "")).strip()
+        return normalized
 
     def _resolve_case_id(self, sender_phone: str, query: str) -> str:
         """
