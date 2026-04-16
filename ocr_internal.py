@@ -46,15 +46,15 @@ TEXT_EXTS = {'.txt', '.htm', '.html', '.xml', '.json', '.md'}
 SKIP_EXTS = {'.ds_store', '.db', '.ini', '.log'}
 
 
-def split_container_sas_url(container_sas_url: str) -> Tuple[str, str, str]:
+def split_container_sas_url(container_sas_url: str, fallback_container: Optional[str] = None) -> Tuple[str, str, str]:
     p = urlparse(container_sas_url)
     if not p.scheme or not p.netloc:
         raise ValueError("URL must be a full https URL")
     if not p.query:
         raise ValueError("URL must include SAS query string")
-    container_name = p.path.strip("/").split("/")[-1]
+    container_name = p.path.strip("/").split("/")[-1] if p.path.strip("/") else (fallback_container or "")
     if not container_name:
-        raise ValueError("URL path must end with container name")
+        raise ValueError("URL path must end with container name or OUTPUT_CONTAINER must be set")
     account_url = f"{p.scheme}://{p.netloc}"
     return account_url, container_name, p.query
 
@@ -240,7 +240,8 @@ def main():
 
     # External container — OCR output destination
     output_sas_url = os.environ.get("CONTAINER_SAS_URL")
-    out_account_url, out_container, out_sas = split_container_sas_url(output_sas_url)
+    output_container = os.environ.get("OUTPUT_CONTAINER") or os.environ.get("OCR_OUTPUT_CONTAINER")
+    out_account_url, out_container, out_sas = split_container_sas_url(output_sas_url, output_container)
     out_blob_service = BlobServiceClient(account_url=out_account_url, credential=out_sas)
 
     # DI client

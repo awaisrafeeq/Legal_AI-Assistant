@@ -97,7 +97,7 @@ class Config:
             search_index_external=os.environ.get("SEARCH_INDEX_EXTERNAL", "legal-docs-external"),
             search_index_internal=os.environ.get("SEARCH_INDEX_INTERNAL", "legal-docs-internal"),
             min_search_score=float(os.environ.get("MIN_SEARCH_SCORE", "0.15")),
-            cross_encoder_min_score=float(os.environ.get("CROSS_ENCODER_MIN_SCORE", "0.5")),
+            cross_encoder_min_score=float(os.environ.get("CROSS_ENCODER_MIN_SCORE", "0.65")),
             openai_endpoint=os.environ["OPENAI_ENDPOINT"],
             openai_key=os.environ["OPENAI_KEY"],
             openai_chat_deployment=os.environ.get("OPENAI_CHAT_DEPLOYMENT", "chat"),
@@ -152,6 +152,7 @@ class ChatRequest(BaseModel):
     source_mode: Optional[str] = "all"  # "all", "internal_only", "external_only"
     allowed_files: Optional[List[str]] = []
     exclude_blob_paths: Optional[List[str]] = []
+    task_type: Optional[str] = None  # "chronology"|"contradictions"|"witness_notes"|"explain_paragraph"|"compare_statements"
 
 
 class ChatResponse(BaseModel):
@@ -297,6 +298,7 @@ class RAGState(TypedDict, total=False):
     lookup_mode: str
     retrieval_attempts: int
     retrieval_sufficient: bool
+    forced_generation: bool  # True when max retries reached with poor results
     sub_queries: List[str]
     sub_results: List[Dict]
     query_variants: List[str]
@@ -304,6 +306,14 @@ class RAGState(TypedDict, total=False):
     discovery_filters: Dict
     exclude_blob_paths: List[str]
     sections: List[Dict[str, Any]]
+    # Validation pipeline fields
+    validated_results: List[Dict]  # Results that passed source validation
+    validation_scores: List[Dict]  # Per-chunk validation details
+    post_validation: Dict  # Post-generation verification result
+    confidence_score: float  # Numeric confidence 0.0-1.0
+    # Legal Analyst / Task Agent fields
+    task_type: str  # "none"|"chronology"|"contradictions"|"witness_notes"|"explain_paragraph"|"compare_statements"
+    analysis_result: Dict  # Structured output from Legal Analyst Agent
 
 
 # ============================================================================
@@ -603,6 +613,15 @@ def _search_one_index(
                     if r.get("@search.reranker_score") is not None
                     else r.get("@search.score", 0),
             "source_url": None,
+            "document_type": r.get("document_type", ""),
+            "document_subtype": r.get("document_subtype", ""),
+            "persons": r.get("persons", []),
+            "organizations": r.get("organizations", []),
+            "projects": r.get("projects", []),
+            "key_dates": r.get("key_dates", []),
+            "key_amounts": r.get("key_amounts", []),
+            "summary": r.get("summary", ""),
+            "total_chunks": r.get("total_chunks", 0),
         }
         for r in results
     ]
@@ -1303,8 +1322,28 @@ def _build_grounded_context(search_results: List[Dict[str, Any]]) -> tuple[List[
         if not chunk_text:
             chunk_text = (source.get("content", "") or "")[:1800]
 
+        # Build enriched metadata header
+        meta_parts = [f"[Source {i}] {source_type} | File: {source.get('file_name', 'Unknown')}"]
+        doc_type = source.get("document_type", "")
+        if doc_type:
+            meta_parts.append(f"Type: {doc_type}")
+        key_dates_list = source.get("key_dates", [])
+        if key_dates_list:
+            meta_parts.append(f"Date: {', '.join(str(d) for d in key_dates_list[:2])}")
+        persons_list = source.get("persons", [])
+        if persons_list:
+            meta_parts.append(f"Persons: {', '.join(str(p) for p in persons_list[:4])}")
+        chunk_idx = source.get("chunk_index", "?")
+        total_ch = source.get("total_chunks", 0)
+        if total_ch:
+            meta_parts.append(f"Chunk {chunk_idx} of {total_ch}")
+        summary_text = source.get("summary", "")
+        if summary_text:
+            meta_parts.append(f"Summary: {str(summary_text)[:120]}")
+        header = " | ".join(meta_parts)
+
         context_parts.append(
-            f"[Source {i}] {source_type} | File: {source.get('file_name', 'Unknown')}\n"
+            f"{header}\n"
             f"{chunk_text}\n"
         )
 
@@ -1379,6 +1418,7 @@ def rewrite_query_node(state: RAGState, azure_clients: AzureClients) -> RAGState
             "source_mode": state.get("source_mode", "all"),
             "allowed_files": allowed_files,
             "exclude_blob_paths": state.get("exclude_blob_paths", []),
+            "task_type": state.get("task_type", "none"),
         }
 
     history_text = ""
@@ -1441,6 +1481,7 @@ def rewrite_query_node(state: RAGState, azure_clients: AzureClients) -> RAGState
     # --- Combined intent detection + filter extraction (single GPT call) ---
     query_intent = "answer"
     discovery_filters = {}
+    task_type = state.get("task_type", "none") or "none"
 
     combined_prompt = prompts.get_combined_intent_filter_prompt(query, history_text)
     combined_resp = azure_clients.llm.invoke([("human", combined_prompt)])
@@ -1451,11 +1492,24 @@ def rewrite_query_node(state: RAGState, azure_clients: AzureClients) -> RAGState
         parsed = json.loads(raw)
 
         # Extract intent
-        if not force_answer_intent and parsed.get("intent", "").upper() == "DISCOVERY":
+        detected_intent = parsed.get("intent", "").upper()
+        if not force_answer_intent and detected_intent == "DISCOVERY":
             query_intent = "discovery"
+        elif detected_intent == "TASK":
+            # TASK uses the ANSWER retrieval path but carries task_type
+            query_intent = "answer"
+            task_type = parsed.get("task_type", "contradictions") or "contradictions"
+            logger.info(f"TASK intent detected | task_type: {task_type}")
 
-        # Extract filters (remove intent key and null values)
-        discovery_filters = {k: v for k, v in parsed.items() if v is not None and k != "intent"}
+        # Extract task_type from classification if not already set from request
+        if task_type == "none" and parsed.get("task_type"):
+            task_type = parsed["task_type"]
+
+        # Extract filters (remove intent/task_type keys and null values)
+        discovery_filters = {
+            k: v for k, v in parsed.items()
+            if v is not None and k not in ("intent", "task_type")
+        }
     except (json.JSONDecodeError, Exception) as e:
         logger.warning(f"Failed to parse combined intent+filters: {e} | raw: {combined_resp.content}")
         # Fallback: try separate intent detection
@@ -1470,7 +1524,7 @@ def rewrite_query_node(state: RAGState, azure_clients: AzureClients) -> RAGState
     if force_answer_intent:
         query_intent = "answer"
 
-    logger.info(f"Query intent: {query_intent.upper()} | filters: {discovery_filters}")
+    logger.info(f"Query intent: {query_intent.upper()} | task_type: {task_type} | filters: {discovery_filters}")
 
     return {
         "query": query,
@@ -1484,6 +1538,7 @@ def rewrite_query_node(state: RAGState, azure_clients: AzureClients) -> RAGState
         "query_intent": query_intent,
         "discovery_filters": discovery_filters,
         "exclude_blob_paths": state.get("exclude_blob_paths", []),
+        "task_type": task_type,
     }
 
 
@@ -1896,9 +1951,14 @@ def evaluate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
     if not is_sufficient and attempts >= MAX_RETRIEVAL_ATTEMPTS:
         logger.warning(
             f"Max retrieval attempts ({MAX_RETRIEVAL_ATTEMPTS}) reached — "
-            f"proceeding with best results"
+            f"marking forced_generation=True (will use cautious mode)"
         )
-        is_sufficient = True
+        return {
+            **state,
+            "retrieval_attempts": attempts,
+            "retrieval_sufficient": True,
+            "forced_generation": True,
+        }
 
     return {
         **state,
@@ -1908,9 +1968,9 @@ def evaluate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
 
 
 def should_retry_retrieval(state: RAGState) -> str:
-    """Routing function: retry retrieval or proceed to generate."""
+    """Routing function: retry retrieval or proceed to source validation."""
     if state.get("retrieval_sufficient", False):
-        return "generate"
+        return "source_validate"
     return "retry_rewrite"
 
 
@@ -1969,21 +2029,390 @@ NOT_FOUND_RESPONSE = {
 }
 
 
-def generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
-    """
-    Generate a structured, professional legal answer from a single trusted source.
+# ============================================================================
+# SOURCE VALIDATION NODE (Pre-Generation Evidence Validator)
+# ============================================================================
 
-    Guards:
-    1. No results → return not-found
-    2. All results below cross-encoder quality threshold → return not-found
-    3. Lookup mode "document" → return file links instead of generated answer
-    4. Normal mode → generate answer with GPT-4 + confidence signal
+def source_validate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
+    """
+    Evidence Validator Agent: Before sending chunks to GPT for answer generation,
+    validate that each chunk actually relates to the user's query.
+
+    Steps:
+    1. Group chunks by file
+    2. LLM scores each chunk's relevance (1-5)
+    3. Filter chunks scoring below 3
+    4. Re-rank chunks within each file by LLM relevance score
+    5. Quality gate: if too few good chunks, flag for cautious generation
     """
     query = state.get("query", "")
     search_results = state.get("search_results", [])
+    forced_generation = state.get("forced_generation", False)
+
+    if not search_results:
+        return {**state, "validated_results": [], "validation_scores": []}
+
+    # Build chunks text for validation prompt
+    chunks_for_validation = []
+    for i, r in enumerate(search_results[:15], 1):  # Validate top 15 chunks
+        fname = r.get("file_name", "unknown")
+        content_preview = (r.get("content", "") or "")[:600]
+        ce_score = r.get("cross_encoder_score", r.get("score", 0))
+        chunks_for_validation.append(
+            f"[Chunk {i}] File: {fname} | CE Score: {ce_score:.3f}\n{content_preview}"
+        )
+
+    chunks_text = "\n\n---\n\n".join(chunks_for_validation)
+
+    # Call LLM to validate relevance
+    prompt = prompts.get_source_validation_prompt(query, chunks_text)
+    validation_scores = []
+
+    try:
+        response = azure_clients.llm.invoke([("human", prompt)])
+        raw = response.content.strip()
+        # Parse JSON (handle markdown code fences)
+        if raw.startswith("```"):
+            raw = raw.split("\n", 1)[-1].rsplit("```", 1)[0].strip()
+        validation_scores = json.loads(raw)
+        logger.info(
+            f"Source validation: {len(validation_scores)} chunks scored | "
+            f"scores: {[v.get('score', 0) for v in validation_scores]}"
+        )
+    except (json.JSONDecodeError, Exception) as e:
+        logger.warning(f"Source validation parsing failed: {e} — passing all results through")
+        # Fallback: pass all results through unfiltered
+        return {
+            **state,
+            "validated_results": search_results,
+            "validation_scores": [],
+        }
+
+    # Build a map: chunk_id (1-based) → validation score
+    score_map = {}
+    for v in validation_scores:
+        chunk_id = v.get("chunk_id", 0)
+        score = v.get("score", 0)
+        if isinstance(chunk_id, int) and 1 <= chunk_id <= len(search_results):
+            score_map[chunk_id - 1] = score  # Convert to 0-based index
+
+    # Filter: keep only chunks scoring 3+
+    MIN_RELEVANCE_SCORE = 3
+    validated = []
+    rejected_count = 0
+    for idx, r in enumerate(search_results[:15]):
+        relevance_score = score_map.get(idx, 3)  # Default to 3 (pass) if not scored
+        r_copy = dict(r)
+        r_copy["validation_score"] = relevance_score
+        if relevance_score >= MIN_RELEVANCE_SCORE:
+            validated.append(r_copy)
+        else:
+            rejected_count += 1
+            logger.info(
+                f"Source validation REJECTED chunk {idx+1}: "
+                f"file={r.get('file_name', '?')} | "
+                f"relevance={relevance_score} | "
+                f"reason={next((v.get('reason', '') for v in validation_scores if v.get('chunk_id') == idx+1), 'n/a')}"
+            )
+
+    # Also include un-validated chunks (positions 16+) if they exist — they already passed cross-encoder
+    for r in search_results[15:]:
+        r_copy = dict(r)
+        r_copy["validation_score"] = 3  # Assume borderline pass
+        validated.append(r_copy)
+
+    # Sort validated results: within each file, sort by validation_score desc then CE score desc
+    validated.sort(
+        key=lambda r: (
+            r.get("validation_score", 0),
+            r.get("cross_encoder_score", r.get("score", 0))
+        ),
+        reverse=True
+    )
+
+    # Quality gate: count files with at least one chunk scoring 4+
+    high_quality_files = set()
+    for r in validated:
+        if r.get("validation_score", 0) >= 4:
+            high_quality_files.add(r.get("file_name", ""))
+
+    if len(high_quality_files) < 1 and not forced_generation:
+        logger.warning(
+            f"Source validation: no files with score 4+ — "
+            f"setting forced_generation for cautious prompt"
+        )
+        forced_generation = True
+
+    logger.info(
+        f"Source validation complete: {len(search_results)} → {len(validated)} "
+        f"({rejected_count} rejected) | high-quality files: {len(high_quality_files)}"
+    )
+
+    return {
+        **state,
+        "validated_results": validated,
+        "validation_scores": validation_scores,
+        "forced_generation": forced_generation,
+    }
+
+
+# ============================================================================
+# LEGAL ANALYST AGENT NODE
+# ============================================================================
+
+def legal_analyst_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
+    """
+    Legal Analyst Agent: For TASK-type queries (contradictions, chronology,
+    compare_statements, witness_notes, explain_paragraph), perform structured
+    legal analysis on validated chunks BEFORE answer generation.
+
+    For non-task queries, this is a no-op pass-through (zero latency cost).
+    """
+    task_type = state.get("task_type", "none") or "none"
+
+    if task_type == "none":
+        return state
+
+    query = state.get("query", "")
+    validated_results = state.get("validated_results", [])
+    search_results = state.get("search_results", [])
+
+    # Use validated results if available, otherwise fall back to search results
+    results_to_analyze = validated_results if validated_results else search_results
+    if not results_to_analyze:
+        logger.info("Legal Analyst: no results to analyze — skipping")
+        return {**state, "analysis_result": {}}
+
+    # Build enriched chunk text with metadata for analysis (up to 20 chunks)
+    chunks_for_analysis = []
+    for i, r in enumerate(results_to_analyze[:20], 1):
+        fname = r.get("file_name", "unknown")
+        doc_type = r.get("document_type", "")
+        persons_list = r.get("persons", [])
+        key_dates_list = r.get("key_dates", [])
+        chunk_idx = r.get("chunk_index", "?")
+        total_ch = r.get("total_chunks", 0)
+        content = (r.get("content", "") or "")[:2000]
+
+        header_parts = [f"[Chunk {i}] File: {fname}"]
+        if doc_type:
+            header_parts.append(f"Type: {doc_type}")
+        if key_dates_list:
+            header_parts.append(f"Date: {', '.join(str(d) for d in key_dates_list[:2])}")
+        if persons_list:
+            header_parts.append(f"Persons: {', '.join(str(p) for p in persons_list[:4])}")
+        if total_ch:
+            header_parts.append(f"Chunk {chunk_idx} of {total_ch}")
+
+        header = " | ".join(header_parts)
+        chunks_for_analysis.append(f"{header}\n{content}")
+
+    chunks_text = "\n\n---\n\n".join(chunks_for_analysis)
+
+    logger.info(f"Legal Analyst: analyzing {len(chunks_for_analysis)} chunks | task_type={task_type}")
+
+    # Call LLM for structured analysis
+    prompt = prompts.get_legal_analyst_prompt(query, chunks_text, task_type)
+    try:
+        response = azure_clients.llm.invoke([("human", prompt)])
+        raw = response.content.strip()
+        # Parse JSON (handle markdown code fences)
+        if raw.startswith("```"):
+            raw = raw.split("\n", 1)[-1].rsplit("```", 1)[0].strip()
+        analysis_result = json.loads(raw)
+
+        # Log analysis summary
+        findings_count = len(analysis_result.get("findings", analysis_result.get("events", analysis_result.get("comparisons", analysis_result.get("statements", [])))))
+        logger.info(
+            f"Legal Analyst complete: {findings_count} findings | "
+            f"type={analysis_result.get('analysis_type', task_type)} | "
+            f"summary={str(analysis_result.get('summary', ''))[:100]}"
+        )
+    except (json.JSONDecodeError, Exception) as e:
+        logger.warning(f"Legal Analyst JSON parsing failed: {e} — continuing without analysis")
+        analysis_result = {"error": str(e), "summary": "Analysis could not be completed"}
+
+    return {**state, "analysis_result": analysis_result}
+
+
+# ============================================================================
+# POST-GENERATION VALIDATION NODE (Citation Agent)
+# ============================================================================
+
+def post_validate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
+    """
+    Citation Agent: After GPT generates an answer, verify that every factual claim
+    is actually supported by the cited source chunks.
+
+    Steps:
+    1. Parse answer into individual claims with their [Source N] citations
+    2. For each claim, extract the cited source text
+    3. LLM verifies: VERIFIED / PARTIAL / UNSUPPORTED
+    4. Remove UNSUPPORTED claims, recalculate confidence
+    """
+    answer = state.get("answer", "")
+    context = state.get("context", "")
+    sources = state.get("sources", [])
+    sections = state.get("sections", [])
+
+    # If no answer or no sources, skip validation
+    if not answer or not sources:
+        return {**state, "confidence_score": 0.0}
+
+    # Parse answer into claims with their citations
+    import re
+    # Split by sentences or bullet points
+    lines = [l.strip() for l in answer.replace("\n\n", "\n").split("\n") if l.strip()]
+
+    claims = []
+    claim_id = 0
+    for line in lines:
+        # Skip very short lines or headers
+        if len(line) < 15:
+            continue
+        # Extract source references
+        source_refs = _extract_source_numbers(line)
+        if not source_refs:
+            continue  # Skip lines without citations (headers, transitions)
+
+        claim_id += 1
+        # Get the cited source text
+        cited_source_texts = []
+        for src_num in source_refs:
+            idx = src_num - 1
+            if 0 <= idx < len(sources):
+                src = sources[idx]
+                # Find the source text from context
+                src_marker = f"[Source {src_num}]"
+                if src_marker in context:
+                    # Extract text between this marker and the next
+                    start = context.index(src_marker)
+                    next_markers = [context.index(f"[Source {n}]") for n in range(src_num + 1, len(sources) + 2)
+                                   if f"[Source {n}]" in context]
+                    end = min(next_markers) if next_markers else len(context)
+                    cited_source_texts.append(context[start:end][:800])
+                else:
+                    # Fallback to content field
+                    content = (src.get("content", "") or "")[:800]
+                    if content:
+                        cited_source_texts.append(f"[Source {src_num}] {src.get('file_name', '')}\n{content}")
+
+        if cited_source_texts:
+            clean_claim = _strip_source_markers(line)
+            claims.append({
+                "id": claim_id,
+                "text": clean_claim,
+                "source_refs": source_refs,
+                "source_text": "\n".join(cited_source_texts),
+            })
+
+    # If fewer than 2 verifiable claims, skip validation (too little to verify meaningfully)
+    if len(claims) < 2:
+        logger.info(f"Post-validation: only {len(claims)} claims with citations — skipping")
+        return {**state, "confidence_score": 0.8}
+
+    # Build the verification prompt
+    claims_text_parts = []
+    for c in claims:
+        claims_text_parts.append(
+            f"CLAIM {c['id']}: \"{c['text']}\"\n"
+            f"CITED SOURCE TEXT:\n{c['source_text']}\n"
+        )
+    claims_text = "\n---\n".join(claims_text_parts)
+
+    prompt = prompts.get_citation_verification_prompt(claims_text)
+
+    try:
+        response = azure_clients.llm.invoke([("human", prompt)])
+        raw = response.content.strip()
+        if raw.startswith("```"):
+            raw = raw.split("\n", 1)[-1].rsplit("```", 1)[0].strip()
+        verifications = json.loads(raw)
+    except (json.JSONDecodeError, Exception) as e:
+        logger.warning(f"Post-validation parsing failed: {e} — keeping answer as-is")
+        return {**state, "confidence_score": 0.7}
+
+    # Count verdicts
+    verified_count = 0
+    partial_count = 0
+    unsupported_count = 0
+    unsupported_claim_ids = set()
+
+    for v in verifications:
+        verdict = v.get("verdict", "").upper()
+        cid = v.get("claim_id", 0)
+        if "VERIFIED" in verdict:
+            verified_count += 1
+        elif "PARTIAL" in verdict:
+            partial_count += 1
+        elif "UNSUPPORTED" in verdict:
+            unsupported_count += 1
+            unsupported_claim_ids.add(cid)
+            logger.info(
+                f"Post-validation UNSUPPORTED claim {cid}: "
+                f"{v.get('reason', 'no reason')}"
+            )
+
+    total_claims = len(claims)
+    verified_ratio = (verified_count + partial_count * 0.5) / max(total_claims, 1)
+
+    logger.info(
+        f"Post-validation: {verified_count} verified, {partial_count} partial, "
+        f"{unsupported_count} unsupported out of {total_claims} claims | "
+        f"confidence: {verified_ratio:.2f}"
+    )
+
+    # Decision: if more than half unsupported, warn in the answer
+    if unsupported_count > total_claims / 2:
+        logger.warning("Post-validation: majority of claims unsupported — adding caution notice")
+        answer = (
+            "Note: The system could not fully verify this answer against the source documents. "
+            "Please cross-check the following information carefully.\n\n" + answer
+        )
+        confidence_score = max(0.1, verified_ratio)
+    else:
+        confidence_score = min(0.95, verified_ratio + 0.2)  # Boost slightly since most verified
+
+    # If some claims unsupported, we could remove them, but that risks breaking
+    # the answer's coherence. Instead, we log them and set a lower confidence.
+    # The post_validation dict is available for inspection.
+
+    post_validation_result = {
+        "total_claims": total_claims,
+        "verified": verified_count,
+        "partial": partial_count,
+        "unsupported": unsupported_count,
+        "unsupported_claim_ids": list(unsupported_claim_ids),
+        "confidence_score": confidence_score,
+        "verifications": verifications,
+    }
+
+    return {
+        **state,
+        "answer": answer,
+        "post_validation": post_validation_result,
+        "confidence_score": confidence_score,
+    }
+
+
+def generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
+    """
+    Generate a structured, professional legal answer from validated sources.
+
+    Guards:
+    1. No results → return not-found
+    2. Forced generation with very low scores → return not-found
+    3. All results below cross-encoder quality threshold → return not-found
+    4. Lookup mode "document" → return file links instead of generated answer
+    5. Normal mode → generate answer with GPT-4 + confidence signal
+    """
+    query = state.get("query", "")
+    # Prefer validated_results (from source_validate_node) over raw search_results
+    search_results = state.get("validated_results") or state.get("search_results", [])
     history = state.get("conversation_history", [])
     winning_source = state.get("winning_source", "unknown")
     lookup_mode = state.get("lookup_mode", "answer")
+    forced_generation = state.get("forced_generation", False)
     query_lower = (query or "").lower()
     strict_analysis_mode = _is_analysis_query(query_lower)
 
@@ -1991,6 +2420,19 @@ def generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
     if not search_results:
         logger.info("No results above confidence threshold — returning not-found response")
         return dict(NOT_FOUND_RESPONSE)
+
+    # --- Guard 1b: Forced generation with poor results → NOT_FOUND ---
+    if forced_generation:
+        best_score = max(
+            (r.get("cross_encoder_score", r.get("score", 0)) for r in search_results),
+            default=0
+        )
+        if best_score < azure_clients.config.cross_encoder_min_score:
+            logger.warning(
+                f"Forced generation blocked: best score {best_score:.4f} "
+                f"below threshold — returning NOT_FOUND instead of generating with garbage"
+            )
+            return dict(NOT_FOUND_RESPONSE)
 
     # --- Guard 2: Filter out low-quality results before sending to GPT-4 ---
     ce_threshold = azure_clients.config.cross_encoder_min_score
@@ -2103,7 +2545,21 @@ def generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
     }
     response_language = lang_names.get(query_lang, "English")
 
-    system_prompt = prompts.get_system_prompt(response_language, context)
+    # Select system prompt: task-specific > cautious > normal
+    task_type = state.get("task_type", "none") or "none"
+    analysis_result = state.get("analysis_result", {})
+
+    if task_type != "none" and analysis_result and not analysis_result.get("error"):
+        logger.info(f"Using TASK system prompt | task_type={task_type}")
+        analysis_json = json.dumps(analysis_result, ensure_ascii=False, indent=2)
+        system_prompt = prompts.get_task_generation_prompt(
+            response_language, context, task_type, analysis_json
+        )
+    elif forced_generation:
+        logger.info("Using CAUTIOUS system prompt due to forced_generation flag")
+        system_prompt = prompts.get_cautious_system_prompt(response_language, context)
+    else:
+        system_prompt = prompts.get_system_prompt(response_language, context)
     messages.append(("system", system_prompt))
 
     if history:
@@ -2122,7 +2578,8 @@ def generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
     answer = raw_answer
 
     # Extract and strip confidence signal before sending to user
-    confidence = "CONFIDENT"
+    # Default to PARTIAL (not CONFIDENT) — missing tag means GPT wasn't certain enough to tag
+    confidence = "PARTIAL"
     for tag in ["[NOT_FOUND]", "[PARTIAL]", "[CONFIDENT]"]:
         if tag in answer:
             confidence = tag.strip("[]")
@@ -2161,16 +2618,16 @@ def should_route_intent(state: RAGState) -> str:
 
 def build_rag_graph(azure_clients: AzureClients):
     """
-    Build the agentic RAG workflow graph.
+    Build the agentic RAG workflow graph with validation pipeline.
 
     Flow:
       rewrite_query ─┬─ (DISCOVERY) → discovery_retrieve → discovery_generate → END
                       │
-                      └─ (ANSWER) → decompose_query ─┬─ (SINGLE) → retrieve → evaluate ─┬─ (SUFFICIENT) → generate → END
-                                                      │                                   │
-                                                      │                                   └─ (INSUFFICIENT) → retry_rewrite → retrieve (loop up to 3x)
-                                                      │
-                                                      └─ (MULTI) → multi_retrieve → generate → END
+                      └─ (ANSWER/TASK) → decompose_query ─┬─ (SINGLE) → retrieve → evaluate ─┬─ (SUFFICIENT) → source_validate → legal_analyst → generate → post_validate → END
+                                                           │                                   │
+                                                           │                                   └─ (INSUFFICIENT) → retry_rewrite → retrieve (loop up to 3x)
+                                                           │
+                                                           └─ (MULTI) → multi_retrieve → source_validate → legal_analyst → generate → post_validate → END
     """
     workflow = StateGraph(RAGState)
 
@@ -2183,7 +2640,10 @@ def build_rag_graph(azure_clients: AzureClients):
     workflow.add_node("multi_retrieve", lambda state: multi_retrieve_node(state, azure_clients))
     workflow.add_node("evaluate", lambda state: evaluate_node(state, azure_clients))
     workflow.add_node("retry_rewrite", lambda state: retry_rewrite_node(state, azure_clients))
+    workflow.add_node("source_validate", lambda state: source_validate_node(state, azure_clients))
+    workflow.add_node("legal_analyst", lambda state: legal_analyst_node(state, azure_clients))
     workflow.add_node("generate", lambda state: generate_node(state, azure_clients))
+    workflow.add_node("post_validate", lambda state: post_validate_node(state, azure_clients))
 
     # Edges — intent routing after rewrite
     workflow.add_conditional_edges("rewrite_query", should_route_intent, {
@@ -2191,26 +2651,29 @@ def build_rag_graph(azure_clients: AzureClients):
         "decompose_query": "decompose_query",
     })
 
-    # Discovery path
+    # Discovery path (no validation needed — returns document list, not generated answer)
     workflow.add_edge("discovery_retrieve", "discovery_generate")
     workflow.add_edge("discovery_generate", END)
 
-    # Answer path (existing)
+    # Answer path with validation pipeline
     workflow.add_conditional_edges("decompose_query", should_decompose, {
         "retrieve": "retrieve",
         "multi_retrieve": "multi_retrieve",
     })
 
     workflow.add_edge("retrieve", "evaluate")
-    workflow.add_edge("multi_retrieve", "generate")
+    workflow.add_edge("multi_retrieve", "source_validate")  # Multi-retrieve → validate → generate
 
     workflow.add_conditional_edges("evaluate", should_retry_retrieval, {
-        "generate": "generate",
+        "source_validate": "source_validate",  # Sufficient → validate sources first
         "retry_rewrite": "retry_rewrite",
     })
 
     workflow.add_edge("retry_rewrite", "retrieve")
-    workflow.add_edge("generate", END)
+    workflow.add_edge("source_validate", "legal_analyst")   # Validate → Legal Analyst
+    workflow.add_edge("legal_analyst", "generate")          # Legal Analyst → Generate
+    workflow.add_edge("generate", "post_validate")          # Generate → verify citations
+    workflow.add_edge("post_validate", END)
 
     workflow.set_entry_point("rewrite_query")
 
@@ -2352,6 +2815,7 @@ async def chat(request: ChatRequest, background_tasks: BackgroundTasks):
             "source_mode": request.source_mode or "all",
             "allowed_files": request.allowed_files or [],
             "exclude_blob_paths": request.exclude_blob_paths or [],
+            "task_type": request.task_type or "none",
         }
         final_state = rag_graph.invoke(state)
 

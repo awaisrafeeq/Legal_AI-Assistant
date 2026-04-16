@@ -233,7 +233,15 @@ If the current query is vague (e.g., "give me more", "what else", "show me more"
 STEP 1 — Classify intent:
 - DISCOVERY: user wants a LIST of matching documents (e.g., "find all emails from X", "list all declarations")
 - ANSWER: user wants specific information extracted (e.g., "what is the loan amount?", "what date was the mortgage?")
-- Questions asking for contradictions, lies, inconsistencies, conflicting testimony, credibility analysis, or lawyer-style analysis are ALWAYS ANSWER, not DISCOVERY.
+- TASK: user wants a structured analytical deliverable — not just a factual answer but a legal work product. Examples:
+  * "extract contradictions between X and Y's statements" → task_type: "contradictions"
+  * "build a chronology / timeline of events" → task_type: "chronology"
+  * "compare what X said vs what Y said" → task_type: "compare_statements"
+  * "draft witness notes for X" or "summarize everything X said" → task_type: "witness_notes"
+  * "explain paragraph 5" or "explain what this passage means" → task_type: "explain_paragraph"
+  * "help me defend against what X is saying" → task_type: "contradictions" (needs to find exact statements and counter-evidence)
+- Questions asking for contradictions, lies, inconsistencies, conflicting testimony, credibility analysis, or structured legal analysis are TASK, not ANSWER.
+- Simple factual questions about contradictions (e.g., "is there a contradiction in the loan amount?") remain ANSWER.
 - For follow-up queries like "give me more", "show more", "what else" — inherit the intent from the previous query in conversation history.
 
 STEP 2 — Extract search filters from the query (or from conversation history if the query is a follow-up).
@@ -242,7 +250,8 @@ Available document_type values: Déclaration, Interrogatoire, Courriel, Facture,
 {history_section}
 Respond with valid JSON ONLY:
 {{
-    "intent": "DISCOVERY or ANSWER",
+    "intent": "DISCOVERY or ANSWER or TASK",
+    "task_type": "chronology or contradictions or witness_notes or explain_paragraph or compare_statements or null",
     "document_type": "exact type from list above or null",
     "person": "person name or null",
     "organization": "organization name or null",
@@ -374,12 +383,133 @@ DOCUMENT PREFERENCE RULES:
 - For financial questions, prefer documents whose title or content clearly indicates a financial report or financial statements.
 - For email questions, prefer documents whose title or content clearly indicates an email or correspondence.
 
+EXACT QUOTE AND DOCUMENT IDENTIFICATION RULES — CRITICAL:
+- When referencing what a person said, declared, or testified, you MUST include the EXACT quote from the source in the original French, enclosed in guillemets (« ... »), followed by an {response_language} translation in parentheses.
+- Do NOT paraphrase testimony, declarations, or sworn statements. Quote directly from the source text.
+- When citing a source, identify the document precisely using the metadata provided in the source header:
+  * Document type (e.g., Déclaration, Interrogatoire, Courriel, Contrat)
+  * Date (if available in the source header)
+  * Parties or persons involved (if available in the source header)
+  * Chunk reference (if available, e.g., "chunk 3 of 12")
+- Example of a properly cited statement:
+  "In the Déclaration dated 2023-05-15, involving Jean Tremblay and Denise Bélanger (chunk 3 of 12), Jean Tremblay states: « Le montant initial du prêt était de 700 000 $ » (The initial loan amount was $700,000) [Source 1]"
+- When the user asks about what a specific person said or claimed, extract and present EVERY relevant statement from that person found in the sources, with exact quotes.
+- When multiple documents discuss the same person or topic, attribute each fact to its specific document with full identification.
+
 CONFIDENCE SIGNAL — MANDATORY:
 At the very end of your response, on its own line, add exactly one of these tags:
 - [CONFIDENT] — the answer is directly and clearly stated in the sources
 - [PARTIAL] — some relevant info was found but the answer may be incomplete
 - [NOT_FOUND] — the sources do not contain the answer
 This tag is for internal system use only.
+
+CURRENT CONTEXT FROM LEGAL DOCUMENTS:
+{context}"""
+
+
+# ============================================================================
+# EVIDENCE VALIDATION PROMPTS
+# ============================================================================
+
+def get_source_validation_prompt(query: str, chunks_text: str) -> str:
+    return f"""You are a legal document relevance judge. Your job is to determine whether each retrieved chunk actually contains information relevant to the user's query.
+
+This is critical: in a legal system, including irrelevant sources can mislead the lawyer. Only chunks that DIRECTLY relate to the query should pass.
+
+USER QUERY: {query}
+
+RETRIEVED CHUNKS:
+{chunks_text}
+
+For each chunk, rate its relevance on a 1-5 scale:
+5 = Directly answers the query with specific facts, names, dates, or amounts
+4 = Contains strongly relevant information that supports answering the query
+3 = Somewhat relevant — contains related context but not directly answering
+2 = Tangentially related at best — mentions similar topics but not what was asked
+1 = Not relevant to the query at all
+
+Respond with valid JSON ONLY — an array of objects:
+[
+    {{"chunk_id": 1, "score": 5, "reason": "Contains the exact loan amount for DP-0372"}},
+    {{"chunk_id": 2, "score": 2, "reason": "Mentions loans but for a different property"}}
+]
+
+Rules:
+- Be STRICT. When in doubt, score lower. It is better to exclude a borderline chunk than to include garbage.
+- A chunk that mentions the same person/entity but discusses unrelated topics should score 2 or lower.
+- A chunk about a completely different case, property, or transaction should score 1.
+- Only score 4+ if the chunk would genuinely help answer the specific query asked.
+
+JSON:"""
+
+
+def get_citation_verification_prompt(claims_with_sources: str) -> str:
+    return f"""You are a legal citation verification system. Your job is to check whether each factual claim in an AI-generated answer is actually supported by the cited source text.
+
+This is critical: in a legal system, a citation that does not support its claim is worse than no citation at all. It creates false confidence.
+
+CLAIMS AND THEIR CITED SOURCES:
+{claims_with_sources}
+
+For each claim, determine:
+- VERIFIED: The source text directly and explicitly supports this claim. The specific fact, number, date, or statement can be found in the source.
+- PARTIAL: The source contains related information but the specific claim is an inference or generalization, OR key details differ slightly.
+- UNSUPPORTED: The source does NOT contain information that supports this claim. The claim may be hallucinated or attributed to the wrong source.
+
+Respond with valid JSON ONLY — an array of objects:
+[
+    {{"claim_id": 1, "verdict": "VERIFIED", "reason": "Source explicitly states the loan amount as $700,000"}},
+    {{"claim_id": 2, "verdict": "UNSUPPORTED", "reason": "Source discusses property evaluation, not loan terms"}}
+]
+
+Rules:
+- Be STRICT. If the source does not EXPLICITLY contain the claimed fact, mark as UNSUPPORTED.
+- Paraphrasing is acceptable for VERIFIED — the meaning must match, not the exact words.
+- If a claim cites multiple sources, it is VERIFIED if ANY of the cited sources support it.
+- Numerical claims (amounts, dates, percentages) must match exactly to be VERIFIED.
+- Do NOT use your own knowledge — only judge based on the provided source text.
+
+JSON:"""
+
+
+def get_cautious_system_prompt(response_language: str, context: str) -> str:
+    return f"""ABSOLUTE RULE — NEVER VIOLATE:
+You are operating in HIGH CAUTION mode because the retrieval system had difficulty finding strongly relevant documents.
+
+CRITICAL INSTRUCTIONS:
+1. ONLY state facts that are EXPLICITLY and CLEARLY present in the provided context.
+2. If the context does not directly answer the question, say: "I could not find this information in the available documents."
+3. Do NOT make inferences, assumptions, or connections between documents unless they are explicitly stated.
+4. Do NOT combine partial information from different documents to construct an answer unless the connection is obvious and explicit.
+5. Prefer saying "I don't have enough information" over providing a potentially incorrect answer.
+6. Every single fact you state MUST have a [Source N] citation. If you cannot cite it, do not include it.
+
+You are an expert legal AI assistant for a French-language legal document system.
+
+LANGUAGE RULE:
+- Source documents are in French. Respond in {response_language}.
+- When quoting French text, provide original + translation.
+
+SOURCE PRIORITY:
+- 🔴 Internal (Confidential) sources are authoritative.
+- 📗 Gov sources are government/court records.
+
+RESPONSE FORMAT:
+1. Direct answer in 1-2 sentences (or "not found" statement).
+2. Numbered bullets for each supported point, each ending with [Source N].
+3. Keep total response under 300 words.
+
+EXACT QUOTE AND DOCUMENT IDENTIFICATION RULES:
+- When referencing what a person said or declared, include the EXACT quote in French using guillemets (« ... »), followed by {response_language} translation.
+- Do NOT paraphrase testimony or declarations — quote directly from the source.
+- Identify each source precisely: document type, date, persons involved, and chunk reference from the source header metadata.
+- Example: "In the Déclaration dated 2023-05-15, Jean Tremblay states: « Le montant était de 500 000 $ » (The amount was $500,000) [Source 1]"
+
+CONFIDENCE SIGNAL — MANDATORY:
+At the very end, on its own line, add exactly one tag:
+- [CONFIDENT] — answer is directly and clearly stated in the sources
+- [PARTIAL] — some relevant info found but answer may be incomplete
+- [NOT_FOUND] — sources do not contain the answer
 
 CURRENT CONTEXT FROM LEGAL DOCUMENTS:
 {context}"""
@@ -421,6 +551,18 @@ Extract the following from this turn. Output valid JSON ONLY:
     ],
     "timeline_events": [
         // Date-anchored events extracted, format: {{"date": "YYYY-MM-DD or approximate", "event": "description"}}
+    ],
+    "action_items": [
+        // Next steps, things to investigate, tasks for the lawyer
+        // Format: {{"task": "description of what to do next", "priority": "high or medium or low"}}
+        // Examples: "Investigate discrepancy in loan DP-0372 amount", "Get declaration from witness X about the 2023-05-15 meeting"
+        // Only include action items that logically follow from this turn's findings
+    ],
+    "evidence_references": [
+        // Key pieces of evidence found in this turn — exact quotes with source identification
+        // Format: {{"quote": "exact French quote from source", "source_file": "document name", "relevance": "why this matters"}}
+        // Only include the most important evidence that the lawyer would want to recall later
+        // Maximum 5 per turn — quality over quantity
     ]
 }}
 
@@ -429,6 +571,8 @@ Rules:
 - If the answer says "I could not find this information", extract minimal facts and note it in open_questions.
 - Keep each fact concise but self-contained (someone reading it months later should understand it without context).
 - Persons and documents should use the exact names/spellings from the sources.
+- Action items should be specific and actionable — not vague suggestions.
+- Evidence references should preserve the EXACT French quote — do not paraphrase.
 
 JSON:"""
 
@@ -481,4 +625,224 @@ Rules:
 - If ambiguous with multiple active cases → CONTINUE_EXISTING with the most recently active case
 
 JSON:"""
+
+
+def get_legal_analyst_prompt(query: str, chunks_text: str, task_type: str) -> str:
+    task_instructions = {
+        "contradictions": """TASK: Find contradictions and inconsistencies across the source documents.
+For each contradiction found:
+- Extract the EXACT quote from each side (in original French)
+- Identify the specific source (file name, document type, chunk reference)
+- Explain why this is a contradiction and its legal significance
+- If a person's statements contradict themselves across documents, highlight this
+
+Output JSON with this structure:
+{{
+    "analysis_type": "contradictions",
+    "findings": [
+        {{
+            "finding": "Brief description of the contradiction",
+            "quote_a": "Exact French quote from source A",
+            "source_a": "File name and chunk reference for quote A",
+            "quote_b": "Exact French quote from source B that contradicts A",
+            "source_b": "File name and chunk reference for quote B",
+            "significance": "Why this matters legally"
+        }}
+    ],
+    "persons_involved": ["List of persons whose statements are analyzed"],
+    "summary": "Overall assessment: how many contradictions, how significant, key patterns"
+}}""",
+        "chronology": """TASK: Build a chronological timeline of all events found in the source documents.
+For each event:
+- Extract the exact date or date range
+- Describe what happened, quoting the source in French
+- Identify who was involved
+- Reference the specific source document
+
+Output JSON with this structure:
+{{
+    "analysis_type": "chronology",
+    "events": [
+        {{
+            "date": "YYYY-MM-DD or approximate date as stated in source",
+            "event": "Description of what happened",
+            "quote": "Relevant French quote from source",
+            "persons_involved": ["Person A", "Person B"],
+            "source": "File name and chunk reference"
+        }}
+    ],
+    "date_range": "Earliest date to latest date covered",
+    "summary": "Overview of the timeline and key turning points"
+}}""",
+        "compare_statements": """TASK: Compare what different persons said about the same topics.
+For each topic where multiple persons made statements:
+- Extract EXACT quotes from each person (in original French)
+- Identify agreements and disagreements
+- Note any evasions, omissions, or suspicious differences
+
+Output JSON with this structure:
+{{
+    "analysis_type": "compare_statements",
+    "comparisons": [
+        {{
+            "topic": "The specific topic or question being compared",
+            "statements": [
+                {{
+                    "person": "Person name",
+                    "quote": "Exact French quote",
+                    "source": "File name and chunk reference",
+                    "position": "Brief summary of their position"
+                }}
+            ],
+            "agreement_or_conflict": "AGREE or CONFLICT or PARTIAL",
+            "analysis": "What this comparison reveals"
+        }}
+    ],
+    "summary": "Overall assessment of how statements align or conflict"
+}}""",
+        "witness_notes": """TASK: Prepare witness notes for a specific person across all available documents.
+For each statement by the person:
+- Extract the EXACT quote in French
+- Note the document type and context (declaration, interrogatoire, email, etc.)
+- Flag any statements that seem inconsistent with other evidence
+- Note any topics the person avoided or gave vague answers about
+
+Output JSON with this structure:
+{{
+    "analysis_type": "witness_notes",
+    "witness": "Person name",
+    "statements": [
+        {{
+            "topic": "What the statement is about",
+            "quote": "Exact French quote",
+            "source": "File name and document type",
+            "context": "Under what circumstances this was said",
+            "credibility_flag": "CONSISTENT or INCONSISTENT or EVASIVE or null",
+            "note": "Any observation about this statement"
+        }}
+    ],
+    "key_claims": ["List of the person's most important factual claims"],
+    "credibility_concerns": ["Any patterns of inconsistency or evasion"],
+    "summary": "Overall assessment of this witness's testimony"
+}}""",
+        "explain_paragraph": """TASK: Provide a detailed explanation of the specific passage or paragraph the user is asking about.
+- Quote the relevant passage in full (in French)
+- Translate it accurately
+- Explain its legal significance
+- Identify any defined terms, legal references, or implications
+
+Output JSON with this structure:
+{{
+    "analysis_type": "explain_paragraph",
+    "passage": "The full French text of the passage",
+    "translation": "Accurate English translation",
+    "explanation": "Plain-language explanation of what this means",
+    "legal_significance": "Why this matters in the legal context",
+    "related_evidence": ["Any connections to other facts in the sources"],
+    "source": "File name and chunk reference"
+}}""",
+    }
+
+    instruction = task_instructions.get(task_type, task_instructions["contradictions"])
+
+    return f"""You are a Legal Analyst Agent for a French-language legal document system.
+Your job is to perform structured legal analysis on retrieved source documents.
+
+CRITICAL RULES:
+1. ONLY analyze what is EXPLICITLY present in the provided source chunks. Do NOT infer or fabricate.
+2. Every quote MUST be copied EXACTLY from the source text in French.
+3. Every finding MUST reference the specific source file and chunk it came from.
+4. If the sources do not contain enough information for this analysis, say so in the summary.
+5. Be thorough — examine ALL provided chunks for relevant information.
+
+{instruction}
+
+USER QUERY: {query}
+
+SOURCE DOCUMENTS:
+{chunks_text}
+
+Respond with valid JSON ONLY:"""
+
+
+def get_task_generation_prompt(response_language: str, context: str, task_type: str, analysis_json: str) -> str:
+    task_format_instructions = {
+        "contradictions": f"""FORMAT YOUR RESPONSE AS A CONTRADICTION ANALYSIS:
+
+1. Start with a brief overview: how many contradictions were found and their overall significance.
+2. For each contradiction, present it as a numbered item:
+   - State what the contradiction is about
+   - Quote Person/Source A: use guillemets for the French original, followed by ({response_language} translation)
+   - Quote Person/Source B: same format
+   - Identify the source document for each quote (type, date, persons, chunk reference)
+   - Explain why this contradiction matters
+3. End with an overall credibility assessment if applicable.
+""",
+        "chronology": f"""FORMAT YOUR RESPONSE AS A CHRONOLOGICAL TIMELINE:
+
+1. Start with the date range covered and a one-sentence overview.
+2. Present events in chronological order, each as a dated entry:
+   - Date: [date]
+   - Event description with exact quotes in French and ({response_language} translation)
+   - Persons involved
+   - Source document identification (type, date, chunk reference) [Source N]
+3. End with key observations about the timeline (gaps, critical dates, turning points).
+""",
+        "compare_statements": f"""FORMAT YOUR RESPONSE AS A STATEMENT COMPARISON:
+
+1. Start with who is being compared and on what topics.
+2. For each topic of comparison:
+   - State the topic clearly
+   - For each person, quote their exact statement in French with ({response_language} translation)
+   - Identify the source document for each statement
+   - State whether they AGREE, CONFLICT, or PARTIALLY align
+   - Explain the significance of any differences
+3. End with overall assessment of alignment vs. conflict.
+""",
+        "witness_notes": f"""FORMAT YOUR RESPONSE AS WITNESS NOTES:
+
+1. Start with the witness name and an overview of available statements.
+2. Group statements by topic:
+   - Quote each statement in French with ({response_language} translation)
+   - Identify the source document type and context
+   - Flag any credibility concerns
+3. List the witness's key factual claims.
+4. End with an overall credibility assessment and open questions.
+""",
+        "explain_paragraph": f"""FORMAT YOUR RESPONSE AS A PASSAGE EXPLANATION:
+
+1. Quote the full passage in French with ({response_language} translation).
+2. Provide a plain-language explanation.
+3. Explain the legal significance.
+4. Note any defined terms, legal references, or implications.
+5. Connect to other evidence if relevant.
+""",
+    }
+
+    format_instruction = task_format_instructions.get(task_type, task_format_instructions["contradictions"])
+
+    return f"""You are an expert legal AI assistant producing a structured legal analysis.
+
+LANGUAGE RULE: Respond in {response_language}. Always include original French quotes with translations.
+
+ABSOLUTE RULE: Only present facts found in the analysis and source context below. Do NOT fabricate or infer.
+
+{format_instruction}
+
+CITATION RULES:
+- Every statement or fact MUST end with [Source N] referencing the source it comes from.
+- Identify each source by: document type, date, persons involved, and chunk reference (all from the source header metadata).
+- Do NOT invent source numbers — only use numbers present in the context headings.
+
+PRE-COMPUTED ANALYSIS (from Legal Analyst Agent):
+{analysis_json}
+
+CONFIDENCE SIGNAL — MANDATORY:
+At the very end, on its own line, add exactly one tag:
+- [CONFIDENT] — analysis is well-supported by the sources
+- [PARTIAL] — some findings but sources may be incomplete
+- [NOT_FOUND] — sources do not contain enough for this analysis
+
+CURRENT CONTEXT FROM LEGAL DOCUMENTS:
+{context}"""
 

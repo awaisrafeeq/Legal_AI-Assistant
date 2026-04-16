@@ -179,12 +179,14 @@ class RAGBackendClient:
         conversation_id: str = None,
         exclude_blob_paths: List[str] = None,
         allowed_files: List[str] = None,
+        task_type: str = None,
     ) -> Dict[str, Any]:
         """
         Send query to RAG backend.
         - history: conversation context
         - exclude_blob_paths: documents to skip (already shown to user)
         - allowed_files: restrict search to specific files only
+        - task_type: legal task type (chronology, contradictions, etc.)
         """
         payload = {
             "query": query,
@@ -195,6 +197,8 @@ class RAGBackendClient:
             "exclude_blob_paths": exclude_blob_paths or [],
             "allowed_files": allowed_files or [],
         }
+        if task_type:
+            payload["task_type"] = task_type
         try:
             base_url = self.base_url.rstrip('/')
             response = requests.post(
@@ -737,12 +741,29 @@ class CaseMemoryStore:
                 "key_contradictions": [],
                 "timeline_events": [],
                 "topic_history": [],
+                "action_items": [],       # Task/Follow-Up Store: lawyer's to-dos and next steps
+                "evidence_references": [], # Evidence Store: key quotes/findings with source metadata
                 "turn_count": 0,
                 "created_at": datetime.now().isoformat(),
                 "last_updated": datetime.now().isoformat(),
             }
         self._cache[cache_key] = case
         return case
+
+    def persist_case(self, sender_id: str, case_id: str):
+        """Immediately persist the current case state to Cosmos DB."""
+        cache_key = f"{sender_id}:{case_id}"
+        case = self._cache.get(cache_key)
+        if not case:
+            return
+        doc = dict(case)
+        doc.update({
+            "id": f"{sender_id}:case:{case_id}",
+            "sender_id": sender_id,
+            "doc_type": "case_memory",
+            "ttl": self.TTL_SECONDS,
+        })
+        self._upsert_doc(doc)
 
     def update_case_from_extraction(self, sender_id: str, case_id: str, extracted: Dict):
         """Merge extracted facts from a conversation turn into the case memory."""
@@ -804,6 +825,34 @@ class CaseMemoryStore:
             if len(case["topic_history"]) > 50:
                 case["topic_history"] = case["topic_history"][-50:]
 
+        # Merge action items / follow-ups (Task Store)
+        if "action_items" not in case:
+            case["action_items"] = []
+        for item in extracted.get("action_items", []):
+            if isinstance(item, str):
+                item = {"task": item, "status": "pending", "created": datetime.now().isoformat()}
+            if item and item.get("task"):
+                # Deduplicate by task text
+                existing_tasks = {a.get("task", "").lower() for a in case["action_items"]}
+                if item["task"].lower() not in existing_tasks:
+                    case["action_items"].append(item)
+        # Cap action items
+        if len(case["action_items"]) > 50:
+            case["action_items"] = case["action_items"][-50:]
+
+        # Merge evidence references (Evidence Store)
+        if "evidence_references" not in case:
+            case["evidence_references"] = []
+        for ev in extracted.get("evidence_references", []):
+            if ev and ev.get("quote"):
+                # Deduplicate by quote text (first 80 chars)
+                existing_quotes = {e.get("quote", "")[:80].lower() for e in case["evidence_references"]}
+                if ev["quote"][:80].lower() not in existing_quotes:
+                    case["evidence_references"].append(ev)
+        # Cap evidence
+        if len(case["evidence_references"]) > 100:
+            case["evidence_references"] = case["evidence_references"][-100:]
+
         case["turn_count"] = case.get("turn_count", 0) + 1
         case["last_updated"] = datetime.now().isoformat()
 
@@ -819,7 +868,10 @@ class CaseMemoryStore:
         self._cache[f"{sender_id}:{case_id}"] = case
 
     def get_case_context_summary(self, sender_id: str, case_id: str = "default") -> str:
-        """Build a plain-text summary of case memory for injecting into conversation context."""
+        """
+        Case Workspace Loader: Build a full context summary combining all 4 memory stores
+        (conversation, case facts, tasks/follow-ups, evidence) for injection into conversation.
+        """
         case = self.get_active_case(sender_id, case_id)
         if not case.get("case_facts") and not case.get("topic_history"):
             return ""
@@ -829,10 +881,11 @@ class CaseMemoryStore:
         if case_name:
             parts.append(f"Active case: {case_name}")
 
+        # ── Case Facts Store ──
         facts = case.get("case_facts", [])
         if facts:
             parts.append("Known facts from previous sessions:")
-            for i, fact in enumerate(facts[-15:], 1):  # Last 15 facts
+            for i, fact in enumerate(facts[-15:], 1):
                 parts.append(f"  {i}. {fact}")
 
         persons = case.get("persons_mentioned", [])
@@ -843,11 +896,15 @@ class CaseMemoryStore:
         if docs:
             parts.append(f"Documents previously discussed: {', '.join(docs[-10:])}")
 
-        open_qs = case.get("open_questions", [])
-        if open_qs:
-            parts.append("Open questions from previous sessions:")
-            for q in open_qs[-5:]:
-                parts.append(f"  - {q}")
+        # ── Evidence Store ──
+        evidence = case.get("evidence_references", [])
+        if evidence:
+            parts.append("Key evidence from previous sessions:")
+            for ev in evidence[-8:]:
+                quote = ev.get("quote", "")[:150]
+                source = ev.get("source_file", "unknown")
+                relevance = ev.get("relevance", "")
+                parts.append(f"  - \"{quote}\" (from: {source}){' — ' + relevance if relevance else ''}")
 
         contradictions = case.get("key_contradictions", [])
         if contradictions:
@@ -855,6 +912,31 @@ class CaseMemoryStore:
             for c in contradictions[-5:]:
                 parts.append(f"  - {c}")
 
+        timeline = case.get("timeline_events", [])
+        if timeline:
+            parts.append("Timeline of events:")
+            for ev in timeline[-8:]:
+                date = ev.get("date", "?")
+                event = ev.get("event", "")
+                parts.append(f"  - {date}: {event}")
+
+        # ── Task/Follow-Up Store ──
+        action_items = case.get("action_items", [])
+        pending_items = [a for a in action_items if a.get("status", "pending") == "pending"]
+        if pending_items:
+            parts.append("Pending action items / follow-ups:")
+            for item in pending_items[-8:]:
+                task = item.get("task", "")
+                priority = item.get("priority", "")
+                parts.append(f"  - {task}{' [' + priority + ']' if priority else ''}")
+
+        open_qs = case.get("open_questions", [])
+        if open_qs:
+            parts.append("Open questions from previous sessions:")
+            for q in open_qs[-5:]:
+                parts.append(f"  - {q}")
+
+        # ── Conversation Topic History ──
         topics = case.get("topic_history", [])
         if topics:
             parts.append("Recent topics discussed:")
@@ -1862,9 +1944,11 @@ class WhatsAppHandler:
                 import hashlib
                 new_id = hashlib.md5(f"{sender_phone}:{datetime.now().isoformat()}".encode()).hexdigest()[:8]
                 case_name = result.get("suggested_case_name", "")
+                case = self.case_memory.get_active_case(sender_phone, new_id)
                 if case_name:
-                    case = self.case_memory.get_active_case(sender_phone, new_id)
                     case["case_name"] = case_name
+                # Persist immediately so the case survives even if extraction fails later
+                self.case_memory.persist_case(sender_phone, new_id)
                 logger.info(f"Session resolver: START_NEW case {new_id} ({case_name})")
                 return new_id
 

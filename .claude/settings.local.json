@@ -3,5 +3,8 @@
     "allow": [
       "Bash(grep -v \"^$\")"
     ]
-  }
+  },
+  "enabledMcpjsonServers": [
+    "code-review-graph"
+  ]
 }
