@@ -34,9 +34,14 @@ PDF_EXTS = ['.pdf']
 CSV_EXTS = ['.csv']
 TEXT_EXTS = ['.txt', '.htm', '.html', '.xml', '.json', '.md']
 
-def split_container_sas_url(container_sas_url: str) -> Tuple[str, str, str]:
+def split_container_sas_url(container_sas_url: str, container_override: str = "") -> Tuple[str, str, str]:
     p = urlparse(container_sas_url)
-    container_name = p.path.strip("/").split("/")[-1]
+    container_name = container_override or p.path.strip("/").split("/")[-1]
+    if not container_name:
+        raise ValueError(
+            "Container name not found in SAS URL. "
+            "Set CONTAINER_NAME env variable (e.g. CONTAINER_NAME=legal-documents)"
+        )
     account_url = f"{p.scheme}://{p.netloc}"
     return account_url, container_name, p.query
 
@@ -227,7 +232,8 @@ def main():
     overwrite = os.environ.get("OVERWRITE", "0") == "1"
     
     # Parse storage URL
-    account_url, container, sas = split_container_sas_url(container_sas_url)
+    container_name = os.environ.get("CONTAINER_NAME", "")
+    account_url, container, sas = split_container_sas_url(container_sas_url, container_name)
     logger.info(f"Processing container: {container}")
     
     blob_service = BlobServiceClient(account_url=account_url, credential=sas)

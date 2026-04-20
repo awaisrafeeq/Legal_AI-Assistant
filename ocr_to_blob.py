@@ -26,15 +26,18 @@ class Config:
     max_files: Optional[int]
 
 
-def split_container_sas_url(container_sas_url: str) -> Tuple[str, str, str]:
+def split_container_sas_url(container_sas_url: str, container_override: str = "") -> Tuple[str, str, str]:
     p = urlparse(container_sas_url)
     if not p.scheme or not p.netloc:
         raise ValueError("CONTAINER_SAS_URL must be a full https URL")
     if not p.query:
         raise ValueError("CONTAINER_SAS_URL must include SAS query string")
-    container_name = p.path.strip("/").split("/")[-1]
+    container_name = container_override or p.path.strip("/").split("/")[-1]
     if not container_name:
-        raise ValueError("CONTAINER_SAS_URL path must end with container name")
+        raise ValueError(
+            "Container name not found in SAS URL. "
+            "Set CONTAINER_NAME env variable (e.g. CONTAINER_NAME=legal-documents)"
+        )
     account_url = f"{p.scheme}://{p.netloc}"
     return account_url, container_name, p.query
 
@@ -86,7 +89,8 @@ def load_config() -> Config:
 
 def main() -> None:
     cfg = load_config()
-    account_url, container, sas = split_container_sas_url(cfg.container_sas_url)
+    container_name = os.environ.get("CONTAINER_NAME", "")
+    account_url, container, sas = split_container_sas_url(cfg.container_sas_url, container_name)
 
     blob_service = BlobServiceClient(account_url=account_url, credential=sas)
     container_client = blob_service.get_container_client(container)

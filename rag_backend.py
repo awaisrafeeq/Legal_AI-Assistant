@@ -86,6 +86,7 @@ class Config:
     smtp_sender_email: str
     smtp_use_tls: bool
     public_base_url: str
+    static_email_recipient: str
     short_links_container: str
 
     @classmethod
@@ -114,6 +115,7 @@ class Config:
             smtp_password=os.environ.get("SMTP_PASSWORD", ""),
             smtp_sender_email=os.environ.get("SMTP_SENDER_EMAIL", ""),
             smtp_use_tls=os.environ.get("SMTP_USE_TLS", "true").strip().lower() in {"1", "true", "yes", "on"},
+            static_email_recipient=os.environ.get("STATIC_EMAIL_RECIPIENT", ""),
             public_base_url=os.environ.get("PUBLIC_BASE_URL", "").rstrip("/"),
             short_links_container=os.environ.get("SHORT_LINKS_CONTAINER", "short-links"),
         )
@@ -2829,17 +2831,19 @@ async def chat(request: ChatRequest, background_tasks: BackgroundTasks):
         elif target_lang == "en" and detected_lang == "fr":
             answer = translate_text(azure_clients.llm, answer, "fr", "en")
 
-        # Check for email intent
-        recipient_email, wants_email = extract_email_intent(request.query)
+        # Check for email intent — use static recipient if configured
+        _, wants_email = extract_email_intent(request.query)
         if wants_email:
-            background_tasks.add_task(
-                send_email_smtp,
-                azure_clients.config,
-                recipient_email,
-                "Legal Assistant — Document Information",
-                answer,
-            )
-            answer += f"\n\n📧 Answer is being sent to **{recipient_email}**."
+            recipient_email = azure_clients.config.static_email_recipient
+            if recipient_email:
+                background_tasks.add_task(
+                    send_email_smtp,
+                    azure_clients.config,
+                    recipient_email,
+                    "Legal Assistant — Document Information",
+                    answer,
+                )
+                answer += f"\n\n📧 Answer is being sent to **{recipient_email}**."
 
         return ChatResponse(
             answer=answer,

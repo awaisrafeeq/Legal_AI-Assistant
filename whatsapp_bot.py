@@ -61,6 +61,7 @@ class GreenAPIConfig:
     bot_name: str               # e.g. "LegalBot"
     bot_phone: str              # Bot's own phone number (to avoid self-reply loops)
     allowed_dm_phones: List[str]  # Phone numbers allowed to DM bot directly
+    static_email_recipient: str  # All outgoing emails go to this address
 
     @classmethod
     def from_env(cls) -> "GreenAPIConfig":
@@ -78,6 +79,7 @@ class GreenAPIConfig:
             bot_name=os.environ.get("BOT_NAME", "LegalBot"),
             bot_phone=os.environ.get("BOT_PHONE", ""),         # e.g. "923001234567"
             allowed_dm_phones=dm_phones,
+            static_email_recipient=os.environ.get("STATIC_EMAIL_RECIPIENT", ""),
         )
 
 
@@ -370,6 +372,7 @@ class ConversationMemory:
                 "last_sources": [],
                 "all_message_ids": [],
                 "last_activity": None,
+                "pending_email": None,
             }
         return self._state[sender_id]
 
@@ -538,6 +541,7 @@ class CosmosConversationMemory:
             "last_activity": None,
             "last_answer": "",
             "last_formatted_answer": "",
+            "pending_email": None,
         }
 
     def get_state(self, sender_id: str) -> Dict:
@@ -1162,47 +1166,112 @@ class WhatsAppHandler:
         query: str,
         reply_context: Optional[Dict] = None,
     ) -> bool:
-        recipient_email = self._extract_email_request(query)
-        if not recipient_email and self._wants_email_action(query):
+        if not self._wants_email_action(query):
+            return False
+
+        static_recipient = self.green_api.config.static_email_recipient
+        if not static_recipient:
             self.green_api.send_text_message(
                 chat_id,
-                "📧 Please include the recipient email address, for example: send this to name@example.com"
+                "❌ Email sending is not configured. No static recipient has been set (STATIC_EMAIL_RECIPIENT)."
             )
             return True
-        if not recipient_email:
-            return False
 
         payload = self._resolve_email_payload(sender_phone, reply_context)
         if not payload:
             self.green_api.send_text_message(
                 chat_id,
-                "🤖 I need an existing answer or source list before I can send an email. Reply to a previous bot message and try again."
+                "🤖 I need an existing answer before I can send an email. Ask a question first, then ask me to email it."
             )
             return True
 
-        selected_answer = payload.get("answer", "")
         if reply_context:
             selected_answer = self._extract_requested_reply_subset(query, reply_context)
             payload["answer"] = selected_answer
             payload["formatted_body"] = selected_answer
 
+        # Store pending email and ask for confirmation
+        pending = {
+            "recipient": static_recipient,
+            "answer": payload.get("answer", ""),
+            "formatted_body": payload.get("formatted_body", ""),
+            "query": payload.get("query", ""),
+            "sources": payload.get("sources", []),
+            "subject": "Legal Assistant — Shared Answer",
+        }
+        self.memory.update_state(sender_phone, pending_email=pending)
+
+        # Send confirmation prompt and track the message for reply detection
+        confirm_msg = (
+            f"📧 Are you sure you want to send this email to *{static_recipient}*?\n\n"
+            f"Reply *yes* to confirm or *no* to cancel."
+        )
+        result = self.green_api.send_text_message(chat_id, confirm_msg)
+        msg_id = result.get("idMessage", "")
+        if msg_id:
+            self.memory.save_bot_message(
+                sender_id=sender_phone,
+                whatsapp_message_ids=[msg_id],
+                answer="(email confirmation prompt)",
+                query=query,
+            )
+
+        return True
+
+    def _handle_email_confirmation(
+        self,
+        chat_id: str,
+        sender_phone: str,
+        query: str,
+    ) -> bool:
+        """Check if user is confirming or declining a pending email send."""
+        state = self.memory.get_state(sender_phone)
+        pending = state.get("pending_email")
+        if not pending:
+            return False
+
+        lower = query.lower().strip()
+        affirmative = ["yes", "y", "haan", "ha", "ji", "confirm", "send", "ok", "okay", "sure", "oui", "bhejo"]
+        negative = ["no", "n", "nahi", "nah", "cancel", "non", "mat", "na", "nope"]
+
+        is_yes = any(lower == word or lower.startswith(word + " ") for word in affirmative)
+        is_no = any(lower == word or lower.startswith(word + " ") for word in negative)
+
+        if not is_yes and not is_no:
+            return False
+
+        # Clear pending state regardless of yes/no
+        self.memory.update_state(sender_phone, pending_email=None)
+
+        if is_no:
+            self.green_api.send_text_message(chat_id, "🚫 Email cancelled.")
+            return True
+
+        # Send the email
         try:
             self.rag_backend.send_email(
-                recipient_email=recipient_email,
-                answer=payload.get("answer", ""),
-                query=payload.get("query", ""),
-                sources=payload.get("sources", []),
-                subject="Legal Assistant — Shared Answer",
-                formatted_body=payload.get("formatted_body", ""),
+                recipient_email=pending["recipient"],
+                answer=pending.get("answer", ""),
+                query=pending.get("query", ""),
+                sources=pending.get("sources", []),
+                subject=pending.get("subject", "Legal Assistant — Shared Answer"),
+                formatted_body=pending.get("formatted_body", ""),
             )
+            # Show success message with email body
+            body_preview = pending.get("formatted_body", "") or pending.get("answer", "")
+            success_msg = (
+                f"✅ Email sent successfully to *{pending['recipient']}*\n\n"
+                f"{'─' * 28}\n"
+                f"📄 *Email Body:*\n\n"
+                f"{body_preview}\n"
+                f"{'─' * 28}"
+            )
+            self.green_api.send_text_message(chat_id, success_msg)
+        except Exception as e:
+            logger.error(f"Email send failed: {e}")
             self.green_api.send_text_message(
                 chat_id,
-                f"📧 The email has been sent to {recipient_email}."
-            )
-        except Exception:
-            self.green_api.send_text_message(
-                chat_id,
-                "❌ An error occurred while sending the email. Check the backend email settings and ACS configuration."
+                "❌ Failed to send the email. Please try again."
             )
         return True
 
@@ -1672,6 +1741,10 @@ class WhatsAppHandler:
             if lower == "/clear":
                 self.memory.clear(sender_phone)
                 self.green_api.send_text_message(chat_id, "🗑️ Conversation history cleared.")
+                return
+
+            # ── CHECK PENDING EMAIL CONFIRMATION ──
+            if self._handle_email_confirmation(chat_id, sender_phone, cleaned):
                 return
 
             # ── QUERY RAG ──
