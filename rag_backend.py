@@ -311,6 +311,7 @@ class RAGState(TypedDict, total=False):
     # Validation pipeline fields
     validated_results: List[Dict]  # Results that passed source validation
     validation_scores: List[Dict]  # Per-chunk validation details
+    discovery_validation_scores: List[Dict]  # Per-doc discovery judge details
     post_validation: Dict  # Post-generation verification result
     confidence_score: float  # Numeric confidence 0.0-1.0
     # Legal Analyst / Task Agent fields
