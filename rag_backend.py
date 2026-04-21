@@ -361,17 +361,28 @@ def send_email_smtp(config, recipient_email: str, subject: str, body: str) -> bo
 
 def extract_email_intent(query: str):
     """
-    Check if the user wants to send an email.
-    Returns (recipient_email, True) if email intent found, (None, False) otherwise.
+    Check if the user wants to SEND an email (not search for email documents).
+    Returns (recipient_email, True) if send intent found, (None, False) otherwise.
     """
     import re
-    email_match = re.search(r'[\w.+\-]+@[\w\-]+\.[a-zA-Z]{2,}', query)
-    if not email_match:
+    lowered = query.lower()
+    # Require explicit send-action phrases to avoid false positives
+    # on queries like "find all investor emails" or "show me emails from X"
+    send_phrases = [
+        "send email", "send mail", "send this", "send it", "send to",
+        "email this", "email it", "email the answer", "email the response",
+        "forward this", "forward it", "forward the answer",
+        "mail this", "mail it", "mail the answer",
+        "share via email", "share by email",
+        "envoyer par email", "envoyer par courriel",
+        "email bhejo", "bhejo email",
+    ]
+    if not any(phrase in lowered for phrase in send_phrases):
         return None, False
-    email_keywords = ['email', 'send', 'mail', 'envoyer', 'envoie', 'bhejo', 'bhej']
-    if any(kw in query.lower() for kw in email_keywords):
+    email_match = re.search(r'[\w.+\-]+@[\w\-]+\.[a-zA-Z]{2,}', query)
+    if email_match:
         return email_match.group(0), True
-    return None, False
+    return None, True
 
 
 def build_email_body(query: str, answer: str, sources: Optional[List[Dict[str, Any]]] = None) -> str:

@@ -1130,12 +1130,20 @@ class WhatsAppHandler:
         return None
 
     def _wants_email_action(self, query: str) -> bool:
+        """Detect if user wants to SEND an email, not search for email documents."""
         lowered = (query or "").lower()
-        email_terms = [
-            "email", "mail", "send", "envoyer", "envoie",
-            "bhejo", "bhej", "forward", "share"
+        # Require explicit send-action phrases to avoid false positives
+        # on queries like "find all investor emails" or "show me emails from X"
+        send_phrases = [
+            "send email", "send mail", "send this", "send it", "send to",
+            "email this", "email it", "email the answer", "email the response",
+            "forward this", "forward it", "forward the answer",
+            "mail this", "mail it", "mail the answer",
+            "share via email", "share by email", "share this email",
+            "envoyer par email", "envoyer par courriel", "envoie par email",
+            "email bhejo", "email bhej", "bhejo email", "bhej do email",
         ]
-        return any(term in lowered for term in email_terms)
+        return any(phrase in lowered for phrase in send_phrases)
 
     def _resolve_email_payload(self, sender_phone: str, reply_context: Optional[Dict]) -> Optional[Dict[str, Any]]:
         if reply_context:
