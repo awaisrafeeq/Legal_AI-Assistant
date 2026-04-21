@@ -1012,6 +1012,24 @@ def _discovery_structured_filter_count(filters: Dict[str, Any]) -> int:
     return sum(1 for key in keys if filters.get(key))
 
 
+def _result_matches_text(result: Dict[str, Any], target: str) -> bool:
+    target_norm = _normalize_filter_value(target)
+    if not target_norm:
+        return False
+
+    haystack = " ".join([
+        result.get("file_name", ""),
+        result.get("document_type", ""),
+        result.get("document_subtype", ""),
+        " ".join(result.get("persons", []) or []),
+        " ".join(result.get("organizations", []) or []),
+        " ".join(result.get("projects", []) or []),
+        result.get("summary", ""),
+        (result.get("content", "") or "")[:2000],
+    ])
+    return target_norm in _normalize_filter_value(haystack)
+
+
 def _result_matches_value(values: List[str], target: str, variations: Optional[List[str]] = None) -> bool:
     target_norm = _normalize_filter_value(target)
     if not target_norm:
@@ -1065,19 +1083,28 @@ def _score_discovery_result(result: Dict[str, Any], filters: Dict[str, Any]) -> 
 
     person = filters.get("person")
     if person:
-        if not _result_matches_value(result.get("persons", []) or [], person, _build_person_variations(person)):
+        if not (
+            _result_matches_value(result.get("persons", []) or [], person, _build_person_variations(person))
+            or _result_matches_text(result, person)
+        ):
             return -1
         score += 3
 
     organization = filters.get("organization")
     if organization:
-        if not _result_matches_value(result.get("organizations", []) or [], organization):
+        if not (
+            _result_matches_value(result.get("organizations", []) or [], organization)
+            or _result_matches_text(result, organization)
+        ):
             return -1
         score += 2
 
     project = filters.get("project")
     if project:
-        if not _result_matches_value(result.get("projects", []) or [], project):
+        if not (
+            _result_matches_value(result.get("projects", []) or [], project)
+            or _result_matches_text(result, project)
+        ):
             return -1
         score += 3
 
@@ -1106,7 +1133,7 @@ def discovery_search(
     person_filters = _build_fuzzy_person_filters(person) if person else []
 
     keyword = filters.get("keyword")
-    search_text = keyword if keyword else query
+    search_text = query or keyword or ""
 
     all_results = []
     filter_errors = []
@@ -1191,17 +1218,12 @@ def discovery_search(
                 _run_filtered_search(azure_clients.search_client_internal, fuzzy_filter, "legal-documents-internal")
 
     structured_filter_count = _discovery_structured_filter_count(filters)
-    allow_text_fallback = (
-        bool(odata_filter)
-        and len(all_results) == 0
-        and not filter_errors
-        and structured_filter_count <= 1
-        and not filters.get("document_subtype")
-    )
+    allow_text_fallback = bool(odata_filter) and len(all_results) == 0 and not filter_errors
 
-    # Only do a text-only fallback for broad / weakly-filtered discovery queries.
+    # If exact metadata filtering misses everything, fall back to semantic text retrieval
+    # and let deterministic post-filtering remove irrelevant files.
     if allow_text_fallback:
-        # Build a keyword-rich search text from the filters
+        # Build a query-rich fallback string instead of narrowing to a single keyword.
         filter_keywords = []
         if filters.get("document_type"):
             filter_keywords.append(filters["document_type"])
@@ -1211,7 +1233,8 @@ def discovery_search(
             filter_keywords.append(filters["organization"])
         if filters.get("project"):
             filter_keywords.append(filters["project"])
-        fallback_text = " ".join(filter_keywords + ([keyword] if keyword else []))
+        fallback_text = " ".join([query] + filter_keywords + ([keyword] if keyword else []))
+        fallback_text = fallback_text.strip() or query or keyword or ""
 
         logger.info(f"Discovery: OData filter returned 0 results, falling back to text search: {fallback_text}")
 
@@ -2850,7 +2873,6 @@ def build_rag_graph(azure_clients: AzureClients):
     # Nodes
     workflow.add_node("rewrite_query", lambda state: rewrite_query_node(state, azure_clients))
     workflow.add_node("discovery_retrieve", lambda state: discovery_retrieve_node(state, azure_clients))
-    workflow.add_node("discovery_validate", lambda state: source_validate_node(state, azure_clients))
     workflow.add_node("discovery_generate", lambda state: discovery_generate_node(state, azure_clients))
     workflow.add_node("decompose_query", lambda state: decompose_query_node(state, azure_clients))
     workflow.add_node("retrieve", lambda state: retrieve_node(state, azure_clients))
@@ -2868,9 +2890,8 @@ def build_rag_graph(azure_clients: AzureClients):
         "decompose_query": "decompose_query",
     })
 
-    # Discovery path (no validation needed — returns document list, not generated answer)
-    workflow.add_edge("discovery_retrieve", "discovery_validate")
-    workflow.add_edge("discovery_validate", "discovery_generate")
+    # Discovery path returns document matches, so answer-validation nodes are skipped.
+    workflow.add_edge("discovery_retrieve", "discovery_generate")
     workflow.add_edge("discovery_generate", END)
 
     # Answer path with validation pipeline
@@ -3035,7 +3056,7 @@ async def chat(request: ChatRequest, background_tasks: BackgroundTasks):
             "exclude_blob_paths": request.exclude_blob_paths or [],
             "task_type": request.task_type or "none",
         }
-        final_state = rag_graph.invoke(state)
+        final_state = rag_graph.invoke(state, config={"recursion_limit": 60})
 
         answer = final_state.get("answer", "")
         sources = final_state.get("sources", [])
