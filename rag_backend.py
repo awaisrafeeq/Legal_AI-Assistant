@@ -889,17 +889,17 @@ def _build_odata_filter(filters: Dict[str, Any]) -> str:
 
     doc_type = filters.get("document_type")
     if doc_type:
-        escaped = doc_type.replace("'", "''")
-        parts.append(f"document_type eq '{escaped}'")
+        escaped = doc_type.replace("'", "''").lower()
+        parts.append(f"tolower(document_type) eq '{escaped}'")
 
     person = filters.get("person")
     if person:
-        # Build OR filter with all name variations for fuzzy matching
+        # Build OR filter with all name variations for fuzzy matching (case-insensitive)
         person_variations = _build_person_variations(person)
         person_clauses = []
         for v in person_variations:
-            escaped = v.replace("'", "''")
-            person_clauses.append(f"persons/any(p: p eq '{escaped}')")
+            escaped = v.replace("'", "''").lower()
+            person_clauses.append(f"persons/any(p: tolower(p) eq '{escaped}')")
         if len(person_clauses) == 1:
             parts.append(person_clauses[0])
         else:
@@ -907,13 +907,13 @@ def _build_odata_filter(filters: Dict[str, Any]) -> str:
 
     org = filters.get("organization")
     if org:
-        escaped = org.replace("'", "''")
-        parts.append(f"organizations/any(o: o eq '{escaped}')")
+        escaped = org.replace("'", "''").lower()
+        parts.append(f"organizations/any(o: tolower(o) eq '{escaped}')")
 
     project = filters.get("project")
     if project:
-        escaped = project.replace("'", "''")
-        parts.append(f"projects/any(p: p eq '{escaped}')")
+        escaped = project.replace("'", "''").lower()
+        parts.append(f"projects/any(p: tolower(p) eq '{escaped}')")
 
     return " and ".join(parts) if parts else ""
 
@@ -927,8 +927,8 @@ def _build_fuzzy_person_filters(person: str) -> List[str]:
 
     filters = []
     for v in variations:
-        escaped = v.replace("'", "''")
-        filters.append(f"persons/any(p: p eq '{escaped}')")
+        escaped = v.replace("'", "''").lower()
+        filters.append(f"persons/any(p: tolower(p) eq '{escaped}')")
 
     return filters
 
@@ -1007,10 +1007,10 @@ def discovery_search(
             other_parts = []
             doc_type = filters.get("document_type")
             if doc_type:
-                other_parts.append(f"document_type eq '{doc_type.replace(chr(39), chr(39)*2)}'")
+                other_parts.append(f"tolower(document_type) eq '{doc_type.replace(chr(39), chr(39)*2).lower()}'")
             project = filters.get("project")
             if project:
-                other_parts.append(f"projects/any(p: p eq '{project.replace(chr(39), chr(39)*2)}')")
+                other_parts.append(f"projects/any(p: tolower(p) eq '{project.replace(chr(39), chr(39)*2).lower()}')")
 
             fuzzy_filter = " and ".join([pf] + other_parts) if other_parts else pf
 

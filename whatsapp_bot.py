@@ -1903,6 +1903,13 @@ class WhatsAppHandler:
             elif classification == "FOLLOW_UP_MORE":
                 # User wants more of same → exclude already-shown docs
                 exclude_blob_paths = self.memory.get_shown_blob_paths(sender_phone)
+                # Re-use the original query so the RAG backend preserves the same
+                # intent (discovery vs answer) and filters as the previous turn.
+                # "give me more" / "show next 30" has no search intent on its own.
+                last_query = conv_state.get("last_query", "")
+                if last_query:
+                    effective_query = last_query
+                    logger.info(f"FOLLOW_UP_MORE: re-using original query: '{effective_query[:60]}'")
                 history = case_context_msg + full_history[-4:]  # case context + last 2 turns
                 logger.info(f"FOLLOW_UP_MORE | excluding {len(exclude_blob_paths)} shown docs | effective: '{effective_query[:60]}'")
 
