@@ -1876,6 +1876,132 @@ def discovery_retrieve_node(state: RAGState, azure_clients: AzureClients) -> RAG
     }
 
 
+def discovery_validate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
+    """
+    Discovery Relevance Judge: LLM-based post-filter for discovery results.
+
+    The discovery_search path uses loose OData filtering and can return docs
+    that match only 1-2 constraints (e.g. police reports that share the same
+    project as the user's query). This node asks an LLM to grade each
+    retrieved document on a 1-5 scale against the ORIGINAL user query and
+    drops everything below DISCOVERY_MIN_SCORE.
+
+    This compensates for:
+      - "any 2 of 3" loose structured matching in _score_discovery_result
+      - keyword-only (+1) scoring of topic constraints like "investor"
+      - text-fallback search that ignores document_type
+      - email direction ("received" vs "sent") not being parsed
+
+    Populates state['validated_results']; discovery_generate_node already
+    prefers that over search_results.
+    """
+    query = state.get("query", "")
+    search_results = state.get("search_results", [])
+
+    if not search_results:
+        return {**state, "validated_results": [], "discovery_validation_scores": []}
+
+    # Validate up to top 30 results in one LLM call; cap docs_text size
+    MAX_TO_VALIDATE = 30
+    MIN_RELEVANCE_SCORE = 3
+    batch = search_results[:MAX_TO_VALIDATE]
+
+    # Build compact doc descriptions the judge can reason over
+    lines = []
+    for i, r in enumerate(batch, 1):
+        fname = r.get("file_name", "unknown")
+        dtype = r.get("document_type", "") or ""
+        dsub = r.get("document_subtype", "") or ""
+        type_str = dtype + (f" ({dsub})" if dsub else "")
+        persons = ", ".join((r.get("persons") or [])[:5]) or "—"
+        projects = ", ".join((r.get("projects") or [])[:3]) or "—"
+        summary = (r.get("summary") or "").strip().replace("\n", " ")[:300]
+        lines.append(
+            f"DOC {i}\n"
+            f"  file_name: {fname}\n"
+            f"  type: {type_str or '—'}\n"
+            f"  persons: {persons}\n"
+            f"  projects: {projects}\n"
+            f"  summary: {summary or '—'}"
+        )
+    docs_text = "\n\n".join(lines)
+
+    prompt = prompts.get_discovery_validation_prompt(query, docs_text)
+    validation_scores: List[Dict[str, Any]] = []
+
+    try:
+        response = azure_clients.llm.invoke([("human", prompt)])
+        raw = response.content.strip()
+        if raw.startswith("```"):
+            raw = raw.split("\n", 1)[-1].rsplit("```", 1)[0].strip()
+        validation_scores = json.loads(raw)
+        logger.info(
+            f"Discovery validation: {len(validation_scores)} docs scored | "
+            f"scores: {[v.get('score', 0) for v in validation_scores]}"
+        )
+    except (json.JSONDecodeError, Exception) as e:
+        logger.warning(
+            f"Discovery validation parsing failed: {e} — passing all results through unfiltered"
+        )
+        return {
+            **state,
+            "validated_results": search_results,
+            "discovery_validation_scores": [],
+        }
+
+    score_map: Dict[int, Dict[str, Any]] = {}
+    for v in validation_scores:
+        doc_id = v.get("doc_id", 0)
+        if isinstance(doc_id, int) and 1 <= doc_id <= len(batch):
+            score_map[doc_id - 1] = v
+
+    validated: List[Dict[str, Any]] = []
+    rejected = 0
+    for idx, r in enumerate(batch):
+        entry = score_map.get(idx)
+        score = entry.get("score", MIN_RELEVANCE_SCORE) if entry else MIN_RELEVANCE_SCORE
+        r_copy = dict(r)
+        r_copy["discovery_validation_score"] = score
+        if entry and entry.get("reason"):
+            r_copy["discovery_validation_reason"] = entry["reason"]
+        if score >= MIN_RELEVANCE_SCORE:
+            validated.append(r_copy)
+        else:
+            rejected += 1
+            logger.info(
+                f"Discovery validation REJECTED: "
+                f"file={r.get('file_name', '?')} | score={score} | "
+                f"reason={entry.get('reason', 'n/a') if entry else 'n/a'}"
+            )
+
+    # Tail (positions 31+) were not scored — keep them with borderline score
+    for r in search_results[MAX_TO_VALIDATE:]:
+        r_copy = dict(r)
+        r_copy["discovery_validation_score"] = MIN_RELEVANCE_SCORE
+        validated.append(r_copy)
+
+    # Sort: validation score desc, then original discovery_match_score, then Azure score
+    validated.sort(
+        key=lambda r: (
+            r.get("discovery_validation_score", 0),
+            r.get("discovery_match_score", 0),
+            r.get("score", 0),
+        ),
+        reverse=True,
+    )
+
+    logger.info(
+        f"Discovery validation complete: {len(search_results)} → {len(validated)} "
+        f"({rejected} rejected)"
+    )
+
+    return {
+        **state,
+        "validated_results": validated,
+        "discovery_validation_scores": validation_scores,
+    }
+
+
 def discovery_generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
     """
     Generate a discovery response that includes a short summary plus
@@ -2927,6 +3053,7 @@ def build_rag_graph(azure_clients: AzureClients):
     # Nodes
     workflow.add_node("rewrite_query", lambda state: rewrite_query_node(state, azure_clients))
     workflow.add_node("discovery_retrieve", lambda state: discovery_retrieve_node(state, azure_clients))
+    workflow.add_node("discovery_validate", lambda state: discovery_validate_node(state, azure_clients))
     workflow.add_node("discovery_generate", lambda state: discovery_generate_node(state, azure_clients))
     workflow.add_node("decompose_query", lambda state: decompose_query_node(state, azure_clients))
     workflow.add_node("retrieve", lambda state: retrieve_node(state, azure_clients))
@@ -2944,8 +3071,9 @@ def build_rag_graph(azure_clients: AzureClients):
         "decompose_query": "decompose_query",
     })
 
-    # Discovery path returns document matches, so answer-validation nodes are skipped.
-    workflow.add_edge("discovery_retrieve", "discovery_generate")
+    # Discovery path: retrieve → LLM relevance judge → generate
+    workflow.add_edge("discovery_retrieve", "discovery_validate")
+    workflow.add_edge("discovery_validate", "discovery_generate")
     workflow.add_edge("discovery_generate", END)
 
     # Answer path with validation pipeline

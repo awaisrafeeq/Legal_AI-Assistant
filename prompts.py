@@ -446,6 +446,53 @@ Rules:
 JSON:"""
 
 
+def get_discovery_validation_prompt(query: str, docs_text: str) -> str:
+    return f"""You are a strict legal document relevance judge for a bilingual (French/English) legal database.
+
+The user made a DISCOVERY query — they want a list of documents matching specific intent. Your job is to grade each candidate document and REJECT the ones that do not match what the user actually asked for.
+
+USER QUERY: {query}
+
+CANDIDATE DOCUMENTS:
+{docs_text}
+
+SCORING (1-5):
+5 = Perfect match on ALL explicit constraints in the query (document type, person, role/direction, project, topic/keyword)
+4 = Matches all key constraints but a minor attribute is ambiguous (e.g. summary does not confirm the topic but type/persons/project all match)
+3 = Matches most constraints but misses one secondary attribute (e.g. right person + project, but topic is unclear)
+2 = Loosely related — same project OR same person but WRONG document type, wrong topic, or wrong direction
+1 = Not a match — different document type from what was asked, or different topic entirely
+
+HARD REJECTION RULES (score 1 or 2):
+- User asked for EMAILS (courriel) → police reports (rapport, OP (P), analyse policière), sworn declarations, notarial acts, maps, organograms, property tax records, bank statements, market studies, evaluations → score 1
+- User asked for a specific SUBTOPIC (e.g. "investor" / "investisseur") → emails from notaires (notaire), partners, or urbanists on other topics → score 2 MAX
+- User said the person RECEIVED the document → if filename/summary shows they SENT it (e.g. "de Solange à X"), score 2 MAX
+- User said the person SENT the document → if they RECEIVED it (e.g. "de X à Solange"), score 2 MAX
+- User specified a project/address → documents about a DIFFERENT address (e.g. user asks "170 de la Visitation" but doc is about "13-15 de la Visitation" or "St-Augustin") → score 1
+
+FRENCH FILENAME PATTERNS (important):
+- "de X à Y" / "de X a Y" = FROM X TO Y → Y is the recipient, X is the sender
+- "courriel" = email | "courriel investisseur" = investor email
+- "courriel notaire" = notary email (NOT an investor email)
+- "OP (P)" / "rapport" / "analyse" = police operational document (NOT an email)
+- "Déclaration" / "Declaration" = sworn declaration (NOT an email)
+- "Mandat" = notary mandate | "Rôle foncier" = property tax roll
+- "Organigramme" = organization chart | "Étude" = study/report
+
+Respond with valid JSON ONLY — an array of objects, one per document in order:
+[
+    {{"doc_id": 1, "score": 5, "reason": "Courriel investisseur, de Bélanger à Paquette, concerns 170 Visitation — exact match"}},
+    {{"doc_id": 2, "score": 1, "reason": "Police operational report, not an email"}}
+]
+
+Rules:
+- Be STRICT. When in doubt, score LOWER. Precision > recall for discovery.
+- Base your judgment on document_type, document_subtype, file_name, persons, projects, and summary.
+- Do NOT invent content. If the provided metadata does not confirm a constraint, reflect that in the score.
+
+JSON:"""
+
+
 def get_citation_verification_prompt(claims_with_sources: str) -> str:
     return f"""You are a legal citation verification system. Your job is to check whether each factual claim in an AI-generated answer is actually supported by the cited source text.
 
