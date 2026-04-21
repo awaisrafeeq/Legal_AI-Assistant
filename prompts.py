@@ -201,6 +201,7 @@ The user wants to find/list documents matching certain criteria.
 
 Available filter fields:
 - document_type: one of [Déclaration, Interrogatoire, Courriel, Facture, Contrat, Mandat, Évaluation, Rapport, Hypothèque, Acte notarié, Résolution, Procuration, Quittance, Mise en demeure, Bilan financier, État de compte, Offre de service, Convention, Jugement, Ordonnance, Requête, Avis, Procès-verbal, Certificat, Permis, Sommaire, Pièce justificative, Relevé bancaire, Tableau, Correspondance, Plan, Photo/Image, Annexe, Document technique, Autre]
+- document_subtype: a specific subtype if clearly implied (e.g., investisseur, notaire, police, bancaire, sous_serment)
 - persons: person names mentioned in the document (e.g., "Denise Bélanger", "Jean Tremblay")
 - organizations: organization names (e.g., "Banque Nationale", "Ville de Rawdon")
 - projects: project names (e.g., "Couvent", "St-Augustin", "Brompton")
@@ -208,6 +209,7 @@ Available filter fields:
 From this query, extract the filters. Output valid JSON only:
 {{
     "document_type": "exact type from list above or null",
+    "document_subtype": "specific subtype or null",
     "person": "person name or null",
     "organization": "organization name or null",
     "project": "project name or null",
@@ -253,6 +255,7 @@ Respond with valid JSON ONLY:
     "intent": "DISCOVERY or ANSWER or TASK",
     "task_type": "chronology or contradictions or witness_notes or explain_paragraph or compare_statements or null",
     "document_type": "exact type from list above or null",
+    "document_subtype": "specific subtype if strongly implied by the query, or null",
     "person": "person name or null",
     "organization": "organization name or null",
     "project": "project name or null",

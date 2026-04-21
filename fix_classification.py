@@ -13,6 +13,7 @@ import sys
 import json
 import logging
 import time
+import unicodedata
 from typing import Dict, List, Optional, Tuple
 from urllib.parse import urlparse
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -97,6 +98,46 @@ RULES:
 - If the document is an email ABOUT a topic (plan, bail, cession), classify as "courriel" not the topic
 
 IMPORTANT: Return ONLY valid JSON. No markdown, no explanation, no code blocks."""
+
+
+def normalize_metadata_text(value: str) -> str:
+    text = (value or "").strip().lower()
+    if not text:
+        return ""
+    text = unicodedata.normalize("NFKD", text)
+    text = "".join(ch for ch in text if not unicodedata.combining(ch))
+    cleaned = []
+    previous_space = False
+    for ch in text:
+        if ch.isalnum():
+            cleaned.append(ch)
+            previous_space = False
+        else:
+            if not previous_space:
+                cleaned.append(" ")
+                previous_space = True
+    return "".join(cleaned).strip()
+
+
+def normalize_metadata_list(values: List[str]) -> List[str]:
+    normalized = []
+    seen = set()
+    for value in values or []:
+        item = normalize_metadata_text(value)
+        if item and item not in seen:
+            seen.add(item)
+            normalized.append(item)
+    return normalized
+
+
+def build_normalized_metadata(metadata: Dict) -> Dict:
+    return {
+        "document_type_norm": normalize_metadata_text(metadata.get("document_type", "")),
+        "document_subtype_norm": normalize_metadata_text(metadata.get("document_subtype") or ""),
+        "persons_norm": normalize_metadata_list(metadata.get("persons", [])),
+        "organizations_norm": normalize_metadata_list(metadata.get("organizations", [])),
+        "projects_norm": normalize_metadata_list(metadata.get("projects", [])),
+    }
 
 
 def count_tokens(text: str) -> int:
@@ -330,6 +371,7 @@ def find_unclassified_chunks(search_client: SearchClient) -> Dict[str, List[str]
 
 def merge_metadata_by_ids(search_client: SearchClient, chunk_ids: List[str], metadata: Dict) -> int:
     """Merge metadata directly by chunk IDs — avoids OData blob_path filter issues."""
+    normalized = build_normalized_metadata(metadata)
     batch = []
     for cid in chunk_ids:
         batch.append({
@@ -343,6 +385,11 @@ def merge_metadata_by_ids(search_client: SearchClient, chunk_ids: List[str], met
             "key_dates": metadata.get("key_dates", []),
             "key_amounts": metadata.get("key_amounts", []),
             "summary": metadata.get("summary", ""),
+            "document_type_norm": normalized["document_type_norm"],
+            "document_subtype_norm": normalized["document_subtype_norm"],
+            "persons_norm": normalized["persons_norm"],
+            "organizations_norm": normalized["organizations_norm"],
+            "projects_norm": normalized["projects_norm"],
         })
 
     updated = 0

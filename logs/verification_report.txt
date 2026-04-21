@@ -1,5 +1,5 @@
-[5:57 PM, 4/21/2026] .: Give me the investor emails that Solange Paquette received for 170 from the Visitation St-Charles de Borome
-[5:58 PM, 4/21/2026] +1 (954) 203-2639: Legal AI Assistant
+[6:26 PM, 4/21/2026] .: Give me the investor emails that Solange Paquette received for 170 from the Visitation St-Charles de Borome
+[6:27 PM, 4/21/2026] +1 (954) 203-2639: Legal AI Assistant
 ────────────────────────────
 
 I found 40 documents matching document_type=Courriel, person=Solange Paquette, project=170 Visitation St-Charles de Borome, keyword=investor. Main document types found: courriel, rapport, plan.
@@ -47,7 +47,7 @@ Source: 📗 07003A - 160304 - 170 de la Visitation - OP (P).pdf [Legal Document
 Link: https://legal-ai-backend-axbxfze0a7hxcgcm.canadacentral-01.azurewebsites.net/s/qV_5DzWuAQju
 
 6. 07003A - 190610 - 170 de la Visitation - OP (P).pdf
-[5:58 PM, 4/21/2026] +1 (954) 203-2639: (2/2)
+[6:27 PM, 4/21/2026] +1 (954) 203-2639: (2/2)
 Type: rapport (police)
 Persons: Patrick Laroche, Suzanne Robillard, Isabelle Toupin
 Projects: 170 rue de La Visitation, Saint-Charles-Borromée, Chenoy's
@@ -88,12 +88,278 @@ Source: 📗 160906 - Analyse 170 de la Visitation.PDF [Legal Documents]
 Link: https://legal-ai-backend-axbxfze0a7hxcgcm.canadacentral-01.azurewebsites.net/s/KxiCZHW33_Pq
 
 Reply to this message or tag @AI to ask a follow-up.
-[5:58 PM, 4/21/2026] .: give me other 30 documents as well
-[5:59 PM, 4/21/2026] +1 (954) 203-2639: Legal AI Assistant
+
+[6:28 PM, 4/21/2026] .: give me other 30 documents as well
+[6:28 PM, 4/21/2026] +1 (954) 203-2639: Legal AI Assistant
 ────────────────────────────
 
-I could not find this information in the available documents.
+I found 30 documents matching document_type=Courriel, person=Solange Paquette, project=170 Visitation St-Charles de Borome, keyword=investor. Main document types found: évaluation, organigramme, rapport.
+Source: 📗 Rôle foncier  170 de la visitation.pdf [Legal Documents]
+Link: https://legal-ai-backend-axbxfze0a7hxcgcm.canadacentral-01.azurewebsites.net/s/ReQElmugqc62
 
-[NOT_FOUND]
+1. Rôle foncier  170 de la visitation.pdf
+Type: évaluation
+Persons: Annick Gionest
+Projects: 170 RUE DE LA VISITATION, 4560551
+Why it matches: Ce document est un rôle d'évaluation foncière pour la municipalité de Saint-Charles-Borromée, couvrant les exercices financiers 2014 à 2016. Il concerne la propriété située au 170 rue de la Visitation, appartenant à 9333-9331 Québec Inc., avec une valeur totale de 769 200 $. La propriété est utilisée pour l'hébergement et la restauration, et sa valeur a été révisée à la baisse par rapport au rôle antérieur.
+Source: 📗 Rôle foncier  170 de la visitation.pdf [Legal Documents]
+Link: https://legal-ai-backend-axbxfze0a7hxcgcm.canadacentral-01.azurewebsites.net/s/ReQElmugqc62
+
+2. 161124 - Organigramme 170 de la Visitation.pdf
+Type: organigramme
+Persons: Bertrand Larivière, Olivier Gaudet, Stéphane Lamarche, Isabelle Collette
+Projects: 13-15 de la Visitation, 170 de la Visitation, Lot 2 901 481
+Why it matches: Ce document présente un organigramme détaillant des transactions immobilières et financières liées aux propriétés situées au 13-15 et 170 de la Visitation à St-Charles Borromée. Il inclut des hypothèques, des cessions de créances, des dations en paiement et des radiations, impliquant plusieurs individus et entreprises. Les montants des transactions varient de 5 000 $ à 2 040 000 $, avec des dates clés entre 2014 et 2016. Les créanciers et débiteurs incluent notamment Olivier Gaudet, 9333-9315, 8181772 et Capital Transit.
+Source: 📗 161124 - Organigramme 170 de la Visitation.pdf [Legal Documents]
+Link: https://legal-ai-backend-axbxfze0a7hxcgcm.canadacentral-01.azurewebsites.net/s/CPOJWypKDogG
+
+3. 160303 - Analyse 170 de la Visitation.pdf
+Type: rapport (police)
+Persons: Olivier Gaudet, Lucie Lafontaine, Paul Laskaris, Georges Laskaris
+Projects: 170 rue de la Visitation, 13-15 rue de la Visitation, Lot 4 560 551
+Why it matches: Le rapport de police, rédigé le 3 mars 2016 par Suzanne Robillard, analyse les transactions immobilières liées aux propriétés situées au 170 et 13-15 rue de la Visitation à St-Charles Borromée. Olivier Gaudet a acquis le 13-15 rue de la Visitation en décembre 2014 pour 650 000 $, avec des hypothèques totalisant 1 842 000 $. Une hypothèque de 3e rang de 2 040 000 $ a été publiée en février 2015, impliquant plusieurs créanciers et débiteurs, dont 9034-5521 Québec inc. et Olivier Gaudet.
+Source: 📗 160303 - Analyse 170 de la Visitation.pdf [Legal Documents]
+Link: https://legal-ai-backend-axbxfze0a7hxcgcm.canadacentral-01.azurewebsites.net/s/O1JPy7Sodvka
+
+4. EP2.39 Déclaration du 13 janvier 2017 de Solange Paquette.pdf
+Type: déclaration (sous_serment)
+Persons: Solange Paquette, Laurent Bélanger, Jean-François Désormeaux, Pierre Quan
+Projects: St-Janvier / Mirabel, St-Charles-Borromée, 13-15 rue de la Visitation
+Why it matches: Solange Paquette décrit ses investissements dans des prêts privés et des projets immobiliers, notamment à St-Charles-Borromée, Trois-Rivières, Brompton et Rawdon. Elle mentionne des interactions avec Idéal Finance, Laurent Bélanger et Jean-François Désormeaux, ainsi que des montants investis et des garanties hypothécaires. Elle exprime des doutes sur la gestion des projets et la surévaluation des terrains. Des cessions de créances et des actes notariés sont également évoqués.
+Source: 📗 EP2.39 Déclaration du 13 janvier 2017 de Solange Paquette.pdf [Legal Documents]
+Link: https://legal-ai-backend-axbxfze0a7hxcgcm.canadacentral-01.azurewebsites.net/s/Dz6hhR2hwB9X
+
+5. 07003A - 160705 - 170 de la Visitation - OP (P).pdf
+Type: rapport (police)
+Persons: Annick Gionest, Jean-François Désormeaux, Olivier Gaudet, Isabelle Collette
+[6:28 PM, 4/21/2026] +1 (954) 203-2639: (2/3)
+Projects: 170 rue de la Visitation, Saint-Charles-Borromée, 158 rue de la Visitation, Saint-Charles-Borromée, Lot 4 560 551
+Why it matches: Ce rapport de police, rédigé par Annick Gionest le 16 août 2016, documente une enquête sur des transactions immobilières à Saint-Charles-Borromée, incluant les lots 4 560 551 et 4 560 552. Le lot 4 560 551, propriété de 9333-9331 Québec Inc., abrite le restaurant Deli Chenoy's. Une transaction de dation en paiement a été enregistrée le 15 juin 2016. Des projets de démolition et de construction d'un Shell sur ce terrain ont été évoqués. La valeur foncière de l'immeuble est estimée à 769 200 $.
+Source: 📗 07003A - 160705 - 170 de la Visitation - OP (P).pdf [Legal Documents]
+Link: https://legal-ai-backend-axbxfze0a7hxcgcm.canadacentral-01.azurewebsites.net/s/oDx3VokGvXOK
+
+6. Courriel.pdf
+Type: courriel (investisseur)
+Persons: Sophie Dallaire, Solange Paquette, Denise Bélanger, Jean-François Desormeaux
+Projects: Joliette, Saint-Charles-Borromée, DP-0336 Gaudet
+Why it matches: Courriel transféré concernant le dossier Joliette/Saint-Charles-Borromée. Denise Bélanger informe Sophie Dallaire et Solange Paquette qu'un courriel investisseur révisé a été envoyé au notaire. Le montant de 850k est mentionné dans le contexte du projet Paquette deuxième rang.
+Source: 📗 Courriel.pdf [Legal Documents]
+Link: https://legal-ai-backend-axbxfze0a7hxcgcm.canadacentral-01.azurewebsites.net/s/jIkDUH4TW3ZZ
+
+7. Courriel révisé du 10 décembre 2014 de Denise Bélanger à Solange Paquette cc JFD.pdf
+Type: courriel (investisseur)
+Persons: Denise Bélanger, Solange Paquette, Jean-François Desormeaux, Sophie Dallaire
+Projects: Joliette, Saint-Charles-Borromée
+Why it matches: Courriel envoyé par Denise Bélanger à Solange Paquette le 10 décembre 2014, concernant un dossier d'investissement à Joliette/Saint-Charles-Borromée. Le courriel révisé a été transmis au notaire. Montant mentionné : 850k.
+Source: 📗 Courriel révisé du 10 décembre 2014 de Denise Bélanger à Solange Paquette cc JFD.pdf [Legal Documents]
+Link: https://legal-ai-backend-axbxfze0a7hxcgcm.canadacentral-01.azurewebsites.net/s/JCAzEaITRbSZ
+
+8. 08018.01M - 170113 - Déclaration - PAQUETTE Solange - 13 janvier 2017.pdf
+Type: déclaration (sous_serment)
+Persons: Solange Paquette, Laurent Bélanger, Jean-François Désormeaux, Pierre Aubin
+Projects: St-Janvier / Mirabel, 13-15 rue de la Visitation, St-Charles-Borromée, 170 rue de la Visitation, St-Charles-Borromée
+Why it matches: Solange Paquette décrit ses investissements dans des prêts privés et des terrains, notamment à St-Charles-Borromée, Trois-Rivières, Brompton et Rawdon. Elle mentionne des interactions avec Idéal Finance, Laurent Bélanger et Jean-François Désormeaux, ainsi que des cessions de créances et des hypothèques. Des problèmes de remboursement et de gestion des projets sont évoqués, ainsi que des doutes sur la viabilité de certains investissements.
+Source: 📗 08018.01M - 170113 - Déclaration - PAQUETTE Solange - 13 janvier 2017.pdf [Legal Documents]
+Link: https://legal-ai-backend-axbxfze0a7hxcgcm.canadacentral-01.azurewebsites.net/s/J9KOguW_v2Tt
+
+9. EP3.297. Courriel révisé de Denise Bélanger à Solange Paquette, daté du 10 décembre 2014.pdf
+Type: courriel (investisseur)
+Persons: Denise Bélanger, Solange Paquette, Sophie Dallaire, Jean-François Desormeaux
+Projects: Joliette, Saint-Charles-Borromée
+Why it matches: Courriel envoyé par Denise Bélanger à Solange Paquette le 10 décembre 2014, concernant un dossier d'investissement lié à Joliette/Saint-Charles-Borromée. Le courriel révisé a été transmis au notaire. Montant mentionné : 850k.
+Source: 📗 EP3.297. Courriel révisé de Denise Bélanger à Solange Paquette, daté du 10 décembre 2014.pdf [Legal Documents]
+Link: https://legal-ai-backend-axbxfze0a7hxcgcm.canadacentral-01.azurewebsites.net/s/ikxzt_6Jr6GM
+
+10. EP3.297. Courriel révisé de Denise Bélanger à Solange Paquette, daté du 10 décembre 2014.pdf
+Type: courriel (investisseur)
+Persons: Denise Bélanger, Solange Paquette, Sophie Dallaire, Jean-François Desormeaux
+[6:28 PM, 4/21/2026] +1 (954) 203-2639: (3/3)
+Projects: Joliette, Saint-Charles-Borromée, DP-0336 Gaudet
+Why it matches: Courriel envoyé par Denise Bélanger à Solange Paquette le 10 décembre 2014, concernant un dossier d'investissement lié à Joliette/Saint-Charles-Borromée. Le courriel révisé a été transmis au notaire. Montant mentionné : 850k.
+Source: 📗 EP3.297. Courriel révisé de Denise Bélanger à Solange Paquette, daté du 10 décembre 2014.pdf [Legal Documents]
+Link: https://legal-ai-backend-axbxfze0a7hxcgcm.canadacentral-01.azurewebsites.net/s/T-gPsbvGHnVu
+
+Reply to this message or tag @AI to ask a follow-up.
+
+[6:29 PM, 4/21/2026] .: give me other 20 documents as well
+[6:29 PM, 4/21/2026] +1 (954) 203-2639: Legal AI Assistant
+────────────────────────────
+
+I found 20 documents matching document_type=Courriel, person=Solange Paquette, project=170 Visitation St-Charles de Borome, keyword=investor. Main document types found: courriel, lettre, acte_notarié.
+Source: 📗 Courriel 2014-12-10.pdf [Legal Documents]
+Link: https://legal-ai-backend-axbxfze0a7hxcgcm.canadacentral-01.azurewebsites.net/s/h-0PTSWXFhFw
+
+1. Courriel 2014-12-10.pdf
+Type: courriel (investisseur)
+Persons: Sophie Dallaire, Solange Paquette, Denise Bélanger, Jean-François Desormeaux
+Projects: Joliette, Saint-Charles-Borromée
+Why it matches: Courriel transféré concernant le dossier Joliette/Saint-Charles-Borromée. Mention d'un courriel investisseur révisé envoyé au notaire, avec une somme de 850k évoquée. Participants incluent Sophie Dallaire, Solange Paquette, Denise Bélanger et Jean-François Desormeaux.
+Source: 📗 Courriel 2014-12-10.pdf [Legal Documents]
+Link: https://legal-ai-backend-axbxfze0a7hxcgcm.canadacentral-01.azurewebsites.net/s/h-0PTSWXFhFw
+
+2. Lettre notaire pour cession.pdf
+Type: lettre
+Persons: Solange Paquette, Pierre Aubin, Alain Lamoureux, Lucie Lafontaine
+Projects: 170, Visitation, St-Charles Borromée
+Why it matches: Lettre de Lamoureux, Lamoureux & Associés Notaires adressée à Solange Paquette de 9201-5155 Québec Inc., datée du 4 juillet 2016, concernant la cession d'un bien situé au 170, Visitation, St-Charles Borromée. La lettre confirme la transmission d'une copie conforme de l'acte de cession.
+Source: 📗 Lettre notaire pour cession.pdf [Legal Documents]
+Link: https://legal-ai-backend-axbxfze0a7hxcgcm.canadacentral-01.azurewebsites.net/s/ruOAKM4IBxcf
+
+3. 22 396 170.pdf
+Type: acte_notarié (cession)
+Persons: Olivier Gaudet, Jean-François Desormeaux, Pierre Aubin
+Projects: 170, rue de la Visitation, Ville de St-Charles Borromée, province de Québec, J6E 4N3, lot numéro 4 560 551 au Cadastre du Québec, circonscription foncière de Joliette
+Why it matches: Cet acte notarié, signé devant Me Pierre Aubin à Laval le 14 juin 2016, documente une dation en paiement entre 9034-5521 Quebec Inc. et 9333-9331 Quebec Inc. L'immeuble concerné est situé au 170, rue de la Visitation, St-Charles Borromée, et est transféré en règlement d'une dette de 769 200$. Les hypothèques existantes sont radiées, et les obligations fiscales sont assumées par le cessionnaire.
+Source: 📗 22 396 170.pdf [Legal Documents]
+Link: https://legal-ai-backend-axbxfze0a7hxcgcm.canadacentral-01.azurewebsites.net/s/lo4NMNzV5Dbh
+
+4. 170830 - Résumé 170 de la Visitation.PDF
+Type: rapport (police)
+Persons: Olivier Gaudet, Bertrand Larivière, Stéphane Lamarche, Isabelle Collette
+Projects: 13-15 de la Visitation, 170 de la Visitation, St-Lin
+Why it matches: Ce rapport de police, daté du 30 août 2017, résume les transactions immobilières et hypothécaires concernant les propriétés situées au 13-15 et 170 de la Visitation. Il détaille les ventes, hypothèques, cessions de créances et radiations associées, impliquant plusieurs parties, dont Olivier Gaudet, 8181772 Canada inc, et Capital Transit. Des dations en paiement et des modifications de rang hypothécaire sont également documentées. Les montants totaux des créances et hypothèques atteignent plusieurs millions de dollars.
+Source: 📗 170830 - Résumé 170 de la Visitation.PDF [Legal Documents]
+Link: https://legal-ai-backend-axbxfze0a7hxcgcm.canadacentral-01.azurewebsites.net/s/VgZHCCQInXrB
+
+5. 08018.01M - 170113 - Déclaration - PAQUETTE Solange.pdf
+Type: déclaration (sous_serment)
+Persons: Solange Paquette, Laurent Bélanger, Jean-François Désormeaux, Pierre Quan
+Projects: St-Janvier / Mirabel, St-Charles-Borromée, 13-15 rue de la Visitation
+[6:29 PM, 4/21/2026] +1 (954) 203-2639: (2/3)
+Why it matches: Solange Paquette décrit ses investissements dans des prêts privés et des terrains, notamment à St-Charles-Borromée, Trois-Rivières, et Brompton. Elle mentionne des interactions avec Idéal Finance, Laurent Bélanger, et Jean-François Désormeaux. Plusieurs montants importants, comme 240 500 $ et 255 000 $, sont investis dans des projets immobiliers. Des problèmes de remboursement et de gestion des prêts sont évoqués, ainsi que des doutes sur la viabilité de certains projets.
+Source: 📗 08018.01M - 170113 - Déclaration - PAQUETTE Solange.pdf [Legal Documents]
+Link: https://legal-ai-backend-axbxfze0a7hxcgcm.canadacentral-01.azurewebsites.net/s/ffo0wLfidpKR
+
+6. 20_Courriel du 5 décembre 2014 de Denise Bélanger à Solange Paquette cc JFD.pdf
+Type: courriel (investisseur)
+Persons: Denise Bélanger, Solange Paquette, Jean-François Desormeaux, Sophie Dallaire
+Projects: Joliette, Saint-Charles-Borromée, lot 2 901 481
+Why it matches: Courriel de Denise Bélanger à Solange Paquette concernant un investissement de 240 500 $ dans le projet Joliette (lot 2 901 481). Le message mentionne également un rang prioritaire de 1,55M. Le courriel a été transféré par Solange Paquette en 2017.
+Source: 📗 20_Courriel du 5 décembre 2014 de Denise Bélanger à Solange Paquette cc JFD.pdf [Legal Documents]
+Link: https://legal-ai-backend-axbxfze0a7hxcgcm.canadacentral-01.azurewebsites.net/s/9DXHyASU8Nbv
+
+7. 08018.01M - 170113 - Déclaration - PAQUETTE Solange.pdf
+Type: déclaration (sous_serment)
+Persons: Solange Paquette, Laurent Bélanger, Jean-François Désormeaux, Pierre Quan
+Projects: St-Janvier / Mirabel, St-Charles-Borromée, 13-15 rue de la Visitation
+Why it matches: Solange Paquette a investi dans des terrains et des prêts privés via Idéal Finance depuis 2014. Elle a collaboré avec Laurent Bélanger et Jean-François Désormeaux, et a réalisé plusieurs investissements, notamment à St-Charles-Borromée, Trois-Rivières, Brompton et Rawdon. Elle a exprimé des doutes sur la gestion des projets, notamment à cause de retards de développement et de surévaluations des terrains. Des cessions de créances et des actes hypothécaires ont été signés, mais certains remboursements et intérêts restent en suspens.
+Source: 📗 08018.01M - 170113 - Déclaration - PAQUETTE Solange.pdf [Legal Documents]
+Link: https://legal-ai-backend-axbxfze0a7hxcgcm.canadacentral-01.azurewebsites.net/s/fF-ZXniZcucO
+
+8. 230321 - Mise à jour lots 170 de la Visitation.pdf
+Type: rapport (police)
+Persons: Charles Latulippe
+Projects: 0 Rue de la Croix, Bromptonville, 120 Rue St-Isidore, St-Esprit, 170 de la Visitation, St-Charles-Borromée
+Why it matches: Ce rapport de police, rédigé par le Sergent-enquêteur Charles Latulippe le 21 mars 2023, documente une mise à jour des lots associés à plusieurs terrains dans le cadre du projet Oribus. Les recherches ont été effectuées via le site JLR.ca pour vérifier les subdivisions et les transactions immobilières. Les résultats ont été consignés dans un tableau et les actes notariés mis à jour ont été enregistrés dans l'arborescence du projet.
+Source: 📗 230321 - Mise à jour lots 170 de la Visitation.pdf [Legal Documents]
+Link: https://legal-ai-backend-axbxfze0a7hxcgcm.canadacentral-01.azurewebsites.net/s/7DR-7-ZEawwc
+
+9. 150225-ID-VCharton Mandat St-Charles 170.pdf
+Type: courriel (notaire)
+Persons: Lucie Lafontaine, Desoremaux Jean-Francois, Véronique Charton
+Projects: 170, rue de la Visitation, St-Charles-Borromée
+Why it matches: Courriel envoyé par Véronique Charton d'Ideal Finance à Lucie Lafontaine de Lamoureux Notaires le 25 février 2015, concernant un mandat amendé pour une propriété située au 170, rue de la Visitation, St-Charles-Borromée. Des copies de documents sont jointes.
+Source: 🔴 150225-ID-VCharton Mandat St-Charles 170.pdf [Internal (Confidential)]
+Link: https://legal-ai-backend-axbxfze0a7hxcgcm.canadacentral-01.azurewebsites.net/s/CqkOPSK7pcRM
+
+10. 150226-ID-VCharton Mandat St-Charles 170.pdf
+Type: courriel (notaire)
+Persons: Lucie Lafontaine, Véronique Charton
+Projects: 170 de la Visitation, St-Charles-Borromée
+[6:29 PM, 4/21/2026] +1 (954) 203-2639: (3/3)
+Why it matches: Courriel envoyé par Véronique Charton d'Ideal Finance à Lucie Lafontaine de Lamoureux Notaires le 26 février 2015, concernant un mandat amendé pour une propriété située au 170 de la Visitation, St-Charles-Borromée. Une pièce jointe est mentionnée.
+Source: 🔴 150226-ID-VCharton Mandat St-Charles 170.pdf [Internal (Confidential)]
+Link: https://legal-ai-backend-axbxfze0a7hxcgcm.canadacentral-01.azurewebsites.net/s/B5W1k4fRlXLh
+
+Reply to this message or tag @AI to ask a follow-up.
+
+[6:32 PM, 4/21/2026] .: give me other 10 documents as well
+[6:32 PM, 4/21/2026] +1 (954) 203-2639: Legal AI Assistant
+────────────────────────────
+
+I found 10 documents matching document_type=Courriel, person=Solange Paquette, project=170 Visitation St-Charles de Borome, keyword=investor. Main document types found: courriel, relevé, rapport.
+Source: 🔴 150227-ID-VCharton modif au Mandat commission St-Charles 170.pdf [Internal (Confidential)]
+Link: https://legal-ai-backend-axbxfze0a7hxcgcm.canadacentral-01.azurewebsites.net/s/rHV2OJvHmXNZ
+
+1. 150227-ID-VCharton modif au Mandat commission St-Charles 170.pdf
+Type: courriel (notaire)
+Persons: Lucie Lafontaine, Desoremaux Jean-Francois, Véronique Charton
+Projects: 170, rue de la Visitation, St-Charles Borromée
+Why it matches: Courriel envoyé par Véronique Charton d'Ideal Finance à Lucie Lafontaine concernant une modification de commission pour une hypothèque privée liée à la propriété située au 170, rue de la Visitation, St-Charles Borromée. La commission est ajustée de 100 000 $ à 65 000 $. Jean-Francois Desoremaux est en copie.
+Source: 🔴 150227-ID-VCharton modif au Mandat commission St-Charles 170.pdf [Internal (Confidential)]
+Link: https://legal-ai-backend-axbxfze0a7hxcgcm.canadacentral-01.azurewebsites.net/s/rHV2OJvHmXNZ
+
+2. 150226-ID-VCharton Mandat modif St-Charles 170.pdf
+Type: courriel (notaire)
+Persons: Lucie Lafontaine, Véronique Charton
+Projects: 170 de la Visitation, St-Charles Borromée
+Why it matches: Courriel envoyé par IdéalFinance à Lucie Lafontaine concernant un mandat hypothécaire privé pour une propriété située au 170 de la Visitation, St-Charles Borromée. Le montant des frais de dossier est de 150 000$. Le courriel inclut une pièce jointe et est signé par Véronique Charton, adjointe administrative.
+Source: 🔴 150226-ID-VCharton Mandat modif St-Charles 170.pdf [Internal (Confidential)]
+Link: https://legal-ai-backend-axbxfze0a7hxcgcm.canadacentral-01.azurewebsites.net/s/tHFw8HvzjfnY
+
+3. 150225-ID-VCharton Mandat modif St-Charles 170.pdf
+Type: courriel (notaire)
+Persons: Lucie Lafontaine, Jean-Francois Desoremaux, Véronique Charton
+Projects: 170, rue de la Visitation, St-Charles-Borromée (Chenoys)
+Why it matches: Courriel envoyé par Véronique Charton d'Ideal Finance à Lucie Lafontaine concernant une modification dans un mandat notarial pour une propriété située au 170, rue de la Visitation, St-Charles-Borromée. Les frais de dossier doivent être corrigés à 100 000$ au lieu de 3.8%.
+Source: 🔴 150225-ID-VCharton Mandat modif St-Charles 170.pdf [Internal (Confidential)]
+Link: https://legal-ai-backend-axbxfze0a7hxcgcm.canadacentral-01.azurewebsites.net/s/eJTLvSBzQguT
+
+4. 10-19 suivi déboursé Paquette(9201) St-Charles 13-15.xlsx
+Type: relevé (bancaire)
+Persons: Paquette Solange, Gaudet Olivier
+Projects: 13-15 de la Visitation, St-Charles Borromée
+Why it matches: Ce document est un relevé financier lié à un prêt consenti par 9201-5155 QUÉBEC INC. à Olivier Gaudet pour une propriété située au 13-15 de la Visitation, St-Charles Borromée. Le prêt de 240 500 $ a été déboursé le 15 décembre 2014, avec des intérêts mensuels de 0,1 %. Une somme de 2 004,18 $ était due le 11 décembre 2015.
+Source: 🔴 10-19 suivi déboursé Paquette(9201) St-Charles 13-15.xlsx [Internal (Confidential)]
+Link: https://legal-ai-backend-axbxfze0a7hxcgcm.canadacentral-01.azurewebsites.net/s/nUxLjnpwSgj_
+
+5. 150217-ID-VCharton Mandat et Courriel Inv St-Augustin.pdf
+Type: courriel (investisseur)
+Persons: Lucie Lafontaine, Desoremaux Jean-Francois, Véronique Charton, Olivier Gaudet
+Projects: 170 de la Visitation, St-Charles-Borromée
+Why it matches: Courriel envoyé par Véronique Charton d'Ideal Finance à Lucie Lafontaine concernant le projet immobilier 170 de la Visitation à St-Charles-Borromée. Le message inclut un mandat au notaire et un courriel d'investisseur lié au dossier Olivier Gaudet. Une attention particulière est demandée pour une remarque spécifique dans le mandat.
+Source: 🔴 150217-ID-VCharton Mandat et Courriel Inv St-Augustin.pdf [Internal (Confidential)]
+Link: https://legal-ai-backend-axbxfze0a7hxcgcm.canadacentral-01.azurewebsites.net/s/QPz5q3z6jR_s
+
+[6:32 PM, 4/21/2026] +1 (954) 203-2639: (2/3)
+6. 150215-ID-Étude Environnementale  SOLI St-Charles Borromée Chenoys.pdf
+Type: rapport (évaluation)
+Persons: Olivier Gaudet, Olivier Simard, Jacques Janelle, Gérard Marchand
+Projects: 170, rue de la Visitation à Saint-Charles-Borromée, Lot 4 560 551, Deli Chenoy's
+Why it matches: Ce rapport d'évaluation environnementale de site, phase I, commandé par Olivier Gaudet et réalisé par Soli environnement inc., examine la propriété située au 170, rue de la Visitation à Saint-Charles-Borromée. Le site, appartenant à 9034-5521 Québec inc., est un bâtiment commercial et résidentiel utilisé comme restaurant. Aucune contamination potentielle ou réelle n'a été identifiée, et aucune intervention environnementale supplémentaire n'est recommandée.
+Source: 🔴 150215-ID-Étude Environnementale  SOLI St-Charles Borromée Chenoys.pdf [Internal (Confidential)]
+Link: https://legal-ai-backend-axbxfze0a7hxcgcm.canadacentral-01.azurewebsites.net/s/dQhCz0XwefwH
+
+7. 150216-ID-D Bélanger à Paquette 9201-5155 St-Charles 13-15.pdf
+Type: courriel (investisseur)
+Persons: Denise Bélanger, Solange Paquette, Jean-François Desormeaux, Lucie
+Projects: Saint-Charles-Borromée, Joliette, lot 2 901 481
+Why it matches: Ce courriel concerne des échanges entre Denise Bélanger, Solange Paquette et Jean-François Desormeaux au sujet d'investissements dans des projets immobiliers à Saint-Charles-Borromée et Joliette. Solange Paquette demande des nouvelles sur un placement de 200 000$ et mentionne un investissement de 240 500$ lié au lot 2 901 481. Idéal Finance s'engage à payer des intérêts mensuels pour le projet de Saint-Charles-Borromée.
+Source: 🔴 150216-ID-D Bélanger à Paquette 9201-5155 St-Charles 13-15.pdf [Internal (Confidential)]
+Link: https://legal-ai-backend-axbxfze0a7hxcgcm.canadacentral-01.azurewebsites.net/s/CkDf-r10DpBz
+
+8. 160219-ID-Etude de marche PETHEL 13 ET 170 visitation st-Charles.pdf
+Type: rapport (évaluation)
+Projects: 170 rue de la Visitation, 13-15 rue de la Visitation, St-Charles-Borromée
+Why it matches: Ce rapport d'étude de marché, préparé par Pethel Consultants pour Idéal Développement, évalue le potentiel d'affaires de deux sites à St-Charles-Borromée pour un dépanneur, une station-essence et un lave-auto. Les sites sont situés sur la rue de la Visitation et présentent des caractéristiques distinctes en termes d'accessibilité, de superficie et de potentiel de ventes. Le site 1 est mieux adapté pour les ventes d'essence, tandis que le site 2 est plus favorable pour les ventes de dépanneur. Le rapport inclut des analyses de marché, de concurrence et des recommandations d'aménagement.
+Source: 🔴 160219-ID-Etude de marche PETHEL 13 ET 170 visitation st-Charles.pdf [Internal (Confidential)]
+Link: https://legal-ai-backend-axbxfze0a7hxcgcm.canadacentral-01.azurewebsites.net/s/3unpByVXwNAR
+
+9. 150924-ID-Evaluation  BBD St-Charles Borromée Chenoys.pdf
+Type: rapport (évaluation)
+Persons: Marc Bergeron, Jean-Guy Deneault, Philippe Lamarre, Patrick Dorval
+Projects: 170, rue de la Visitation, Saint-Charles-Borromée, Québec, Lot 4 560 551, cadastre du Québec, Chemin du Golf Est
+Why it matches: Ce rapport d'évaluation, daté du 29 septembre 2015, estime la valeur marchande potentielle d'une station-service avec dépanneur et lave-auto à construire au 170, rue de la Visitation, Saint-Charles-Borromée, Québec. La valeur finale est fixée à 3 569 000 $ après travaux. L'évaluation repose sur les méthodes du coût et du revenu, et inclut des analyses détaillées des données municipales, des conditions de marché et des caractéristiques du terrain et des bâtiments projetés.
+Source: 🔴 150924-ID-Evaluation  BBD St-Charles Borromée Chenoys.pdf [Internal (Confidential)]
+Link: https://legal-ai-backend-axbxfze0a7hxcgcm.canadacentral-01.azurewebsites.net/s/_NlYNOpLM_fW
+
+10. 180302-ID-Urbaniste St-Charles à S Patenaude St-Charles 170.pdf
+Type: courriel (partenaire)
+Persons: Stephane Patenaude, Jean-Francois Desormeaux, Marie-Andrée Lapierre, Jonathan Rondeau
+Projects: 170, rue de la Visitation, Plan d'implantation et d'intégration architecturale (PIIA)
+[6:32 PM, 4/21/2026] +1 (954) 203-2639: (3/3)
+Why it matches: Ce courriel concerne le projet immobilier au 170, rue de la Visitation à Saint-Charles-Borromée. Les échanges entre Stéphane Patenaude et Jonathan Rondeau portent sur les délais, les exigences réglementaires, et les étapes nécessaires pour l'approbation du projet par le CCU et le conseil municipal. Les discussions incluent des détails sur les ratios de stationnement et les échéances pour soumettre les documents requis.
+Source: 🔴 180302-ID-Urbaniste St-Charles à S Patenaude St-Charles 170.pdf [Internal (Confidential)]
+Link: https://legal-ai-backend-axbxfze0a7hxcgcm.canadacentral-01.azurewebsites.net/s/HjoOF8AN-rk0
 
 Reply to this message or tag @AI to ask a follow-up.

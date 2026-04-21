@@ -883,37 +883,110 @@ def _build_person_variations(person: str) -> List[str]:
     return list(variations)
 
 
+def _normalize_filter_value(value: str) -> str:
+    value = (value or "").strip().lower()
+    if not value:
+        return ""
+    value = unicodedata.normalize("NFKD", value)
+    value = "".join(ch for ch in value if not unicodedata.combining(ch))
+    cleaned = []
+    previous_space = False
+    for ch in value:
+        if ch.isalnum():
+            cleaned.append(ch)
+            previous_space = False
+        else:
+            if not previous_space:
+                cleaned.append(" ")
+                previous_space = True
+    return "".join(cleaned).strip()
+
+
+def _expand_filter_variations(value: str) -> List[str]:
+    base = (value or "").strip()
+    if not base:
+        return []
+    variations = {
+        base,
+        base.lower(),
+        base.upper(),
+        base.title(),
+        _normalize_filter_value(base),
+    }
+    if "-" in base:
+        variations.add(base.replace("-", " "))
+    return [v for v in variations if v]
+
+
+def _escape_odata(value: str) -> str:
+    return value.replace("'", "''")
+
+
+def _build_string_eq_clause(field_name: str, value: str) -> str:
+    clauses = []
+    seen = set()
+    for variation in _expand_filter_variations(value):
+        escaped = _escape_odata(variation)
+        if escaped and escaped not in seen:
+            seen.add(escaped)
+            clauses.append(f"{field_name} eq '{escaped}'")
+    if not clauses:
+        return ""
+    if len(clauses) == 1:
+        return clauses[0]
+    return f"({' or '.join(clauses)})"
+
+
+def _build_collection_any_clause(field_name: str, values: List[str]) -> str:
+    clauses = []
+    seen = set()
+    for value in values:
+        for variation in _expand_filter_variations(value):
+            escaped = _escape_odata(variation)
+            if escaped and escaped not in seen:
+                seen.add(escaped)
+                clauses.append(f"{field_name}/any(p: p eq '{escaped}')")
+    if not clauses:
+        return ""
+    if len(clauses) == 1:
+        return clauses[0]
+    return f"({' or '.join(clauses)})"
+
+
 def _build_odata_filter(filters: Dict[str, Any]) -> str:
     """Build OData filter string from discovery filter dict."""
     parts = []
 
     doc_type = filters.get("document_type")
     if doc_type:
-        escaped = doc_type.replace("'", "''").lower()
-        parts.append(f"tolower(document_type) eq '{escaped}'")
+        clause = _build_string_eq_clause("document_type", doc_type)
+        if clause:
+            parts.append(clause)
+
+    doc_subtype = filters.get("document_subtype")
+    if doc_subtype:
+        clause = _build_string_eq_clause("document_subtype", doc_subtype)
+        if clause:
+            parts.append(clause)
 
     person = filters.get("person")
     if person:
-        # Build OR filter with all name variations for fuzzy matching (case-insensitive)
         person_variations = _build_person_variations(person)
-        person_clauses = []
-        for v in person_variations:
-            escaped = v.replace("'", "''").lower()
-            person_clauses.append(f"persons/any(p: tolower(p) eq '{escaped}')")
-        if len(person_clauses) == 1:
-            parts.append(person_clauses[0])
-        else:
-            parts.append(f"({' or '.join(person_clauses)})")
+        clause = _build_collection_any_clause("persons", person_variations)
+        if clause:
+            parts.append(clause)
 
     org = filters.get("organization")
     if org:
-        escaped = org.replace("'", "''").lower()
-        parts.append(f"organizations/any(o: tolower(o) eq '{escaped}')")
+        clause = _build_collection_any_clause("organizations", [org])
+        if clause:
+            parts.append(clause)
 
     project = filters.get("project")
     if project:
-        escaped = project.replace("'", "''").lower()
-        parts.append(f"projects/any(p: tolower(p) eq '{escaped}')")
+        clause = _build_collection_any_clause("projects", [project])
+        if clause:
+            parts.append(clause)
 
     return " and ".join(parts) if parts else ""
 
@@ -927,10 +1000,92 @@ def _build_fuzzy_person_filters(person: str) -> List[str]:
 
     filters = []
     for v in variations:
-        escaped = v.replace("'", "''").lower()
-        filters.append(f"persons/any(p: tolower(p) eq '{escaped}')")
+        clause = _build_collection_any_clause("persons", [v])
+        if clause and clause not in filters:
+            filters.append(clause)
 
     return filters
+
+
+def _discovery_structured_filter_count(filters: Dict[str, Any]) -> int:
+    keys = ("document_type", "document_subtype", "person", "organization", "project")
+    return sum(1 for key in keys if filters.get(key))
+
+
+def _result_matches_value(values: List[str], target: str, variations: Optional[List[str]] = None) -> bool:
+    target_norm = _normalize_filter_value(target)
+    if not target_norm:
+        return False
+
+    candidate_norms = {_normalize_filter_value(v) for v in values if _normalize_filter_value(v)}
+    variation_norms = {_normalize_filter_value(v) for v in (variations or [target]) if _normalize_filter_value(v)}
+
+    for candidate in candidate_norms:
+        for variation in variation_norms:
+            if candidate == variation:
+                return True
+            if len(variation) >= 4 and variation in candidate:
+                return True
+            if len(candidate) >= 4 and candidate in variation:
+                return True
+    return False
+
+
+def _result_matches_keyword(result: Dict[str, Any], keyword: str) -> bool:
+    keyword_norm = _normalize_filter_value(keyword)
+    if not keyword_norm:
+        return False
+    haystack = " ".join([
+        result.get("file_name", ""),
+        result.get("document_type", ""),
+        result.get("document_subtype", ""),
+        " ".join(result.get("persons", []) or []),
+        " ".join(result.get("organizations", []) or []),
+        " ".join(result.get("projects", []) or []),
+        result.get("summary", ""),
+        (result.get("content", "") or "")[:1200],
+    ])
+    return keyword_norm in _normalize_filter_value(haystack)
+
+
+def _score_discovery_result(result: Dict[str, Any], filters: Dict[str, Any]) -> int:
+    score = 0
+
+    doc_type = filters.get("document_type")
+    if doc_type:
+        if not _result_matches_value([result.get("document_type", "")], doc_type):
+            return -1
+        score += 3
+
+    doc_subtype = filters.get("document_subtype")
+    if doc_subtype:
+        if not _result_matches_value([result.get("document_subtype", "")], doc_subtype):
+            return -1
+        score += 2
+
+    person = filters.get("person")
+    if person:
+        if not _result_matches_value(result.get("persons", []) or [], person, _build_person_variations(person)):
+            return -1
+        score += 3
+
+    organization = filters.get("organization")
+    if organization:
+        if not _result_matches_value(result.get("organizations", []) or [], organization):
+            return -1
+        score += 2
+
+    project = filters.get("project")
+    if project:
+        if not _result_matches_value(result.get("projects", []) or [], project):
+            return -1
+        score += 3
+
+    keyword = filters.get("keyword")
+    if keyword and _result_matches_keyword(result, keyword):
+        score += 1
+
+    return score
 
 
 def discovery_search(
@@ -954,6 +1109,7 @@ def discovery_search(
     search_text = keyword if keyword else query
 
     all_results = []
+    filter_errors = []
 
     def _run_filtered_search(search_client: SearchClient, filter_str: str, container_label: str):
         """Run a single filtered search and collect results."""
@@ -992,6 +1148,7 @@ def discovery_search(
                     "source_url": None,
                 })
         except Exception as e:
+            filter_errors.append(container_label)
             logger.error(f"Discovery search error on {container_label}: {e}")
 
     # Search with primary OData filter
@@ -1007,10 +1164,24 @@ def discovery_search(
             other_parts = []
             doc_type = filters.get("document_type")
             if doc_type:
-                other_parts.append(f"tolower(document_type) eq '{doc_type.replace(chr(39), chr(39)*2).lower()}'")
+                clause = _build_string_eq_clause("document_type", doc_type)
+                if clause:
+                    other_parts.append(clause)
+            doc_subtype = filters.get("document_subtype")
+            if doc_subtype:
+                clause = _build_string_eq_clause("document_subtype", doc_subtype)
+                if clause:
+                    other_parts.append(clause)
             project = filters.get("project")
             if project:
-                other_parts.append(f"projects/any(p: tolower(p) eq '{project.replace(chr(39), chr(39)*2).lower()}')")
+                clause = _build_collection_any_clause("projects", [project])
+                if clause:
+                    other_parts.append(clause)
+            organization = filters.get("organization")
+            if organization:
+                clause = _build_collection_any_clause("organizations", [organization])
+                if clause:
+                    other_parts.append(clause)
 
             fuzzy_filter = " and ".join([pf] + other_parts) if other_parts else pf
 
@@ -1019,8 +1190,17 @@ def discovery_search(
             if source_mode in ("all", "internal_only"):
                 _run_filtered_search(azure_clients.search_client_internal, fuzzy_filter, "legal-documents-internal")
 
-    # Only do a text-only fallback if OData-filtered search returned 0 results
-    if odata_filter and len(all_results) == 0:
+    structured_filter_count = _discovery_structured_filter_count(filters)
+    allow_text_fallback = (
+        bool(odata_filter)
+        and len(all_results) == 0
+        and not filter_errors
+        and structured_filter_count <= 1
+        and not filters.get("document_subtype")
+    )
+
+    # Only do a text-only fallback for broad / weakly-filtered discovery queries.
+    if allow_text_fallback:
         # Build a keyword-rich search text from the filters
         filter_keywords = []
         if filters.get("document_type"):
@@ -1088,6 +1268,29 @@ def discovery_search(
             best_by_file[file_key] = r
 
     deduped = sorted(best_by_file.values(), key=lambda r: r.get("score", 0), reverse=True)
+
+    strict_results = []
+    for result in deduped:
+        match_score = _score_discovery_result(result, filters)
+        if match_score >= 0:
+            r_copy = dict(result)
+            r_copy["discovery_match_score"] = match_score
+            strict_results.append(r_copy)
+
+    if structured_filter_count:
+        logger.info(
+            f"Discovery strict filter pass: {len(deduped)} → {len(strict_results)} "
+            f"(structured filters: {structured_filter_count})"
+        )
+        deduped = strict_results
+
+    deduped.sort(
+        key=lambda r: (
+            r.get("discovery_match_score", 0),
+            r.get("score", 0),
+        ),
+        reverse=True
+    )
 
     # Generate short redirect URLs
     for r in deduped:
@@ -1602,7 +1805,7 @@ def discovery_generate_node(state: RAGState, azure_clients: AzureClients) -> RAG
     document-by-document entries with inline source metadata.
     """
     query = state.get("query", "")
-    search_results = state.get("search_results", [])
+    search_results = state.get("validated_results") or state.get("search_results", [])
     winning_source = state.get("winning_source", "unknown")
     filters = state.get("discovery_filters", {})
 
@@ -2647,6 +2850,7 @@ def build_rag_graph(azure_clients: AzureClients):
     # Nodes
     workflow.add_node("rewrite_query", lambda state: rewrite_query_node(state, azure_clients))
     workflow.add_node("discovery_retrieve", lambda state: discovery_retrieve_node(state, azure_clients))
+    workflow.add_node("discovery_validate", lambda state: source_validate_node(state, azure_clients))
     workflow.add_node("discovery_generate", lambda state: discovery_generate_node(state, azure_clients))
     workflow.add_node("decompose_query", lambda state: decompose_query_node(state, azure_clients))
     workflow.add_node("retrieve", lambda state: retrieve_node(state, azure_clients))
@@ -2665,7 +2869,8 @@ def build_rag_graph(azure_clients: AzureClients):
     })
 
     # Discovery path (no validation needed — returns document list, not generated answer)
-    workflow.add_edge("discovery_retrieve", "discovery_generate")
+    workflow.add_edge("discovery_retrieve", "discovery_validate")
+    workflow.add_edge("discovery_validate", "discovery_generate")
     workflow.add_edge("discovery_generate", END)
 
     # Answer path with validation pipeline

@@ -144,6 +144,11 @@ def main_internal():
                         "total_chunks": total_chunks,
                         # FIX: was "internal" — now matches what rag_backend.py checks
                         "source_container": "legal-documents-internal",
+                        "document_type_norm": "",
+                        "document_subtype_norm": "",
+                        "persons_norm": [],
+                        "organizations_norm": [],
+                        "projects_norm": [],
                     }
                     documents_buffer.append(doc)
 

@@ -5,6 +5,7 @@ Reads OCR text from blob storage, chunks, generates embeddings, uploads to Azure
 import os
 import hashlib
 import logging
+import unicodedata
 from dataclasses import dataclass
 from typing import List, Optional, Tuple, Dict, Any
 from urllib.parse import urlparse
@@ -35,6 +36,37 @@ from tqdm import tqdm
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
+
+
+def normalize_metadata_text(value: str) -> str:
+    """Normalize metadata values for exact-match filtering at index time."""
+    text = (value or "").strip().lower()
+    if not text:
+        return ""
+    text = unicodedata.normalize("NFKD", text)
+    text = "".join(ch for ch in text if not unicodedata.combining(ch))
+    cleaned = []
+    previous_space = False
+    for ch in text:
+        if ch.isalnum():
+            cleaned.append(ch)
+            previous_space = False
+        else:
+            if not previous_space:
+                cleaned.append(" ")
+                previous_space = True
+    return "".join(cleaned).strip()
+
+
+def normalize_metadata_list(values: List[str]) -> List[str]:
+    normalized = []
+    seen = set()
+    for value in values or []:
+        item = normalize_metadata_text(value)
+        if item and item not in seen:
+            seen.add(item)
+            normalized.append(item)
+    return normalized
 
 
 @dataclass(frozen=True)
@@ -144,13 +176,6 @@ def create_search_index_if_not_exists(
     credential = AzureKeyCredential(key)
     index_client = SearchIndexClient(endpoint=endpoint, credential=credential)
 
-    try:
-        index_client.get_index(index_name)
-        logger.info(f"Index '{index_name}' already exists")
-        return False
-    except Exception:
-        pass
-
     # FIX: SearchableField (not SimpleField) for blob_path, file_name, folder_path
     # SimpleField(searchable=True) does NOT do full-text search — only SearchableField does
     fields = [
@@ -174,15 +199,28 @@ def create_search_index_if_not_exists(
                         filterable=True, facetable=True),
         SearchableField(name="document_subtype", type=SearchFieldDataType.String,
                         filterable=True, facetable=True),
+        SimpleField(name="document_type_norm", type=SearchFieldDataType.String,
+                    filterable=True, facetable=True),
+        SimpleField(name="document_subtype_norm", type=SearchFieldDataType.String,
+                    filterable=True, facetable=True),
         SearchField(name="persons",
                     type=SearchFieldDataType.Collection(SearchFieldDataType.String),
                     filterable=True, searchable=True),
+        SearchField(name="persons_norm",
+                    type=SearchFieldDataType.Collection(SearchFieldDataType.String),
+                    filterable=True, searchable=False),
         SearchField(name="organizations",
                     type=SearchFieldDataType.Collection(SearchFieldDataType.String),
                     filterable=True, searchable=True),
+        SearchField(name="organizations_norm",
+                    type=SearchFieldDataType.Collection(SearchFieldDataType.String),
+                    filterable=True, searchable=False),
         SearchField(name="projects",
                     type=SearchFieldDataType.Collection(SearchFieldDataType.String),
                     filterable=True, searchable=True),
+        SearchField(name="projects_norm",
+                    type=SearchFieldDataType.Collection(SearchFieldDataType.String),
+                    filterable=True, searchable=False),
         SearchField(name="key_dates",
                     type=SearchFieldDataType.Collection(SearchFieldDataType.String),
                     filterable=True, searchable=True),
@@ -212,9 +250,35 @@ def create_search_index_if_not_exists(
         semantic_search=SemanticSearch(configurations=[semantic_config]),
     )
 
-    index_client.create_index(index)
-    logger.info(f"Created index '{index_name}' with {vector_dimensions}d vector search + semantic config")
-    return True
+    try:
+        existing_index = index_client.get_index(index_name)
+        existing_field_names = {field.name for field in existing_index.fields}
+        missing_fields = [field for field in fields if field.name not in existing_field_names]
+
+        updated = False
+        if missing_fields:
+            existing_index.fields.extend(missing_fields)
+            updated = True
+
+        if not existing_index.vector_search:
+            existing_index.vector_search = vector_search
+            updated = True
+
+        if not existing_index.semantic_search:
+            existing_index.semantic_search = SemanticSearch(configurations=[semantic_config])
+            updated = True
+
+        if updated:
+            index_client.create_or_update_index(existing_index)
+            logger.info(f"Updated index '{index_name}' with {len(missing_fields)} new fields")
+            return True
+
+        logger.info(f"Index '{index_name}' already exists")
+        return False
+    except Exception:
+        index_client.create_index(index)
+        logger.info(f"Created index '{index_name}' with {vector_dimensions}d vector search + semantic config")
+        return True
 
 
 # FIX: search_client passed in — created once in main(), not re-instantiated every batch
@@ -368,6 +432,11 @@ def main() -> None:
                         "total_chunks": total_chunks,
                         # FIX: always "legal-documents" — external indexer never tags anything as internal
                         "source_container": "legal-documents",
+                        "document_type_norm": "",
+                        "document_subtype_norm": "",
+                        "persons_norm": [],
+                        "organizations_norm": [],
+                        "projects_norm": [],
                     }
                     documents_buffer.append(doc)
 
