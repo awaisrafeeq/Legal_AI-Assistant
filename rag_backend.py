@@ -1030,6 +1030,30 @@ def _result_matches_text(result: Dict[str, Any], target: str) -> bool:
     return target_norm in _normalize_filter_value(haystack)
 
 
+def _expand_keyword_variations(keyword: str) -> List[str]:
+    base = _normalize_filter_value(keyword)
+    if not base:
+        return []
+
+    variations = {base}
+    synonym_map = {
+        "investor": {"investor", "investors", "investisseur", "investisseurs"},
+        "investors": {"investor", "investors", "investisseur", "investisseurs"},
+        "investisseur": {"investor", "investors", "investisseur", "investisseurs"},
+        "investisseurs": {"investor", "investors", "investisseur", "investisseurs"},
+        "email": {"email", "emails", "e mail", "courriel", "courriels", "correspondance"},
+        "emails": {"email", "emails", "e mail", "courriel", "courriels", "correspondance"},
+        "courriel": {"email", "emails", "e mail", "courriel", "courriels", "correspondance"},
+        "courriels": {"email", "emails", "e mail", "courriel", "courriels", "correspondance"},
+    }
+
+    for term, synonyms in synonym_map.items():
+        if term in base:
+            variations.update(synonyms)
+
+    return [v for v in variations if v]
+
+
 def _result_matches_value(values: List[str], target: str, variations: Optional[List[str]] = None) -> bool:
     target_norm = _normalize_filter_value(target)
     if not target_norm:
@@ -1050,8 +1074,8 @@ def _result_matches_value(values: List[str], target: str, variations: Optional[L
 
 
 def _result_matches_keyword(result: Dict[str, Any], keyword: str) -> bool:
-    keyword_norm = _normalize_filter_value(keyword)
-    if not keyword_norm:
+    keyword_variations = _expand_keyword_variations(keyword)
+    if not keyword_variations:
         return False
     haystack = " ".join([
         result.get("file_name", ""),
@@ -1063,23 +1087,33 @@ def _result_matches_keyword(result: Dict[str, Any], keyword: str) -> bool:
         result.get("summary", ""),
         (result.get("content", "") or "")[:1200],
     ])
-    return keyword_norm in _normalize_filter_value(haystack)
+    haystack_norm = _normalize_filter_value(haystack)
+    return any(variation in haystack_norm for variation in keyword_variations)
 
 
 def _score_discovery_result(result: Dict[str, Any], filters: Dict[str, Any]) -> int:
     score = 0
+    matched_structured = 0
 
     doc_type = filters.get("document_type")
     if doc_type:
-        if not _result_matches_value([result.get("document_type", "")], doc_type):
-            return -1
-        score += 3
+        if (
+            _result_matches_value([result.get("document_type", "")], doc_type)
+            or _result_matches_keyword(result, doc_type)
+            or _result_matches_text(result, doc_type)
+        ):
+            score += 3
+            matched_structured += 1
 
     doc_subtype = filters.get("document_subtype")
     if doc_subtype:
-        if not _result_matches_value([result.get("document_subtype", "")], doc_subtype):
-            return -1
-        score += 2
+        if (
+            _result_matches_value([result.get("document_subtype", "")], doc_subtype)
+            or _result_matches_keyword(result, doc_subtype)
+            or _result_matches_text(result, doc_subtype)
+        ):
+            score += 2
+            matched_structured += 1
 
     person = filters.get("person")
     if person:
@@ -1087,8 +1121,10 @@ def _score_discovery_result(result: Dict[str, Any], filters: Dict[str, Any]) -> 
             _result_matches_value(result.get("persons", []) or [], person, _build_person_variations(person))
             or _result_matches_text(result, person)
         ):
-            return -1
-        score += 3
+            pass
+        else:
+            score += 3
+            matched_structured += 1
 
     organization = filters.get("organization")
     if organization:
@@ -1096,8 +1132,10 @@ def _score_discovery_result(result: Dict[str, Any], filters: Dict[str, Any]) -> 
             _result_matches_value(result.get("organizations", []) or [], organization)
             or _result_matches_text(result, organization)
         ):
-            return -1
-        score += 2
+            pass
+        else:
+            score += 2
+            matched_structured += 1
 
     project = filters.get("project")
     if project:
@@ -1105,12 +1143,28 @@ def _score_discovery_result(result: Dict[str, Any], filters: Dict[str, Any]) -> 
             _result_matches_value(result.get("projects", []) or [], project)
             or _result_matches_text(result, project)
         ):
-            return -1
-        score += 3
+            pass
+        else:
+            score += 3
+            matched_structured += 1
 
     keyword = filters.get("keyword")
-    if keyword and _result_matches_keyword(result, keyword):
+    keyword_match = bool(keyword and _result_matches_keyword(result, keyword))
+    if keyword_match:
         score += 1
+
+    structured_count = _discovery_structured_filter_count(filters)
+    if structured_count >= 3:
+        if matched_structured < 2 and not (matched_structured == 1 and keyword_match):
+            return -1
+    elif structured_count == 2:
+        if matched_structured < 1:
+            return -1
+    elif structured_count == 1:
+        if matched_structured < 1:
+            return -1
+    elif keyword and not keyword_match:
+        return -1
 
     return score
 
