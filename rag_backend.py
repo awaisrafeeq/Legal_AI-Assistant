@@ -1488,6 +1488,20 @@ DISCOVERY_INTENT_TERMS = [
     "fichiers", "liste", "list", "trouve", "montre", "show me documents",
 ]
 
+DOCUMENT_LOOKUP_TERMS = [
+    "pdf", "pdfs", "pièce", "piece", "document original",
+    "documents originaux", "fichier", "fichiers", "source",
+    "sources", "lien", "liens", "trouve les pdf",
+    "retourne les fichiers", "original file", "original files",
+    "exclude interrogatoires", "exclure les interrogatoires",
+]
+
+PROOF_EVIDENCE_TERMS = [
+    "proof", "preuve", "sent", "sending", "envoy", "envoye",
+    "transmis", "transmission", "forwarded", "lender", "preteur",
+    "prêteur", "courriel investisseur", "investor email", "email investor",
+]
+
 
 def _is_analysis_query(query_lower: str) -> bool:
     return any(term in query_lower for term in ANALYSIS_INTENT_TERMS)
@@ -1499,6 +1513,14 @@ def _is_explicit_discovery_query(query_lower: str) -> bool:
             return False
         return True
     return False
+
+
+def _is_document_lookup_query(query_lower: str) -> bool:
+    return any(term in query_lower for term in DOCUMENT_LOOKUP_TERMS)
+
+
+def _is_proof_evidence_query(query_lower: str) -> bool:
+    return any(term in query_lower for term in PROOF_EVIDENCE_TERMS)
 
 
 def _normalize_file_label(name: str) -> str:
@@ -1724,7 +1746,12 @@ def rewrite_query_node(state: RAGState, azure_clients: AzureClients) -> RAGState
         history_text = f"\nRecent conversation:\n{history_text}\n"
 
     ql = query.lower()
-    force_answer_intent = _is_analysis_query(ql) and not _is_explicit_discovery_query(ql)
+    document_lookup = _is_document_lookup_query(ql)
+    force_answer_intent = (
+        _is_analysis_query(ql)
+        and not _is_explicit_discovery_query(ql)
+        and not document_lookup
+    )
 
     query_type = "general legal"
     if any(word in ql for word in [
@@ -1745,17 +1772,9 @@ def rewrite_query_node(state: RAGState, azure_clients: AzureClients) -> RAGState
     elif force_answer_intent:
         query_type = "testimony contradictions"
 
-    lookup_mode = "document" if any(
-        term in ql for term in [
-            "pdf", "pdfs", "pièce", "piece", "document original",
-            "documents originaux", "fichier", "fichiers", "source",
-            "sources", "lien", "liens", "trouve les pdf",
-            "retourne les fichiers", "original file", "original files",
-            "exclude interrogatoires", "exclure les interrogatoires"
-        ]
-    ) else "answer"
+    lookup_mode = "document" if document_lookup else "answer"
 
-    if force_answer_intent:
+    if force_answer_intent and not document_lookup:
         lookup_mode = "answer"
 
     # Generate 3 query variations
@@ -1815,7 +1834,10 @@ def rewrite_query_node(state: RAGState, azure_clients: AzureClients) -> RAGState
         except Exception:
             pass
 
-    if force_answer_intent:
+    if document_lookup:
+        query_intent = "discovery"
+        logger.info("Document lookup detected — forcing DISCOVERY intent")
+    elif force_answer_intent:
         query_intent = "answer"
 
     logger.info(f"Query intent: {query_intent.upper()} | task_type: {task_type} | filters: {discovery_filters}")
@@ -2364,8 +2386,8 @@ def evaluate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
     prompt = prompts.get_evaluate_retrieval_prompt(query, chunks_summary)
     response = azure_clients.llm.invoke([("human", prompt)])
     evaluation = response.content.strip().upper()
-
-    is_sufficient = "SUFFICIENT" in evaluation
+    verdict = evaluation.splitlines()[0].strip() if evaluation else ""
+    is_sufficient = verdict.startswith("SUFFICIENT") and not verdict.startswith("INSUFFICIENT")
     logger.info(f"Evaluate (attempt {attempts}): {evaluation} | sufficient={is_sufficient}")
 
     if not is_sufficient and attempts >= MAX_RETRIEVAL_ATTEMPTS:
@@ -2466,8 +2488,10 @@ def source_validate_node(state: RAGState, azure_clients: AzureClients) -> RAGSta
     5. Quality gate: if too few good chunks, flag for cautious generation
     """
     query = state.get("query", "")
+    query_lower = (query or "").lower()
     search_results = state.get("search_results", [])
     forced_generation = state.get("forced_generation", False)
+    evidence_mode = _is_document_lookup_query(query_lower) or _is_proof_evidence_query(query_lower)
 
     if not search_results:
         return {**state, "validated_results": [], "validation_scores": []}
@@ -2516,8 +2540,10 @@ def source_validate_node(state: RAGState, azure_clients: AzureClients) -> RAGSta
         if isinstance(chunk_id, int) and 1 <= chunk_id <= len(search_results):
             score_map[chunk_id - 1] = score  # Convert to 0-based index
 
-    # Filter: keep only chunks scoring 3+
-    MIN_RELEVANCE_SCORE = 3
+    # Proof/document lookup queries often need multiple corroborating chunks.
+    # Keep borderline supporting evidence instead of requiring each chunk to
+    # independently satisfy the full request.
+    MIN_RELEVANCE_SCORE = 2 if evidence_mode else 3
     validated = []
     rejected_count = 0
     for idx, r in enumerate(search_results[:15]):
@@ -2541,6 +2567,31 @@ def source_validate_node(state: RAGState, azure_clients: AzureClients) -> RAGSta
         r_copy["validation_score"] = 3  # Assume borderline pass
         validated.append(r_copy)
 
+    if evidence_mode and not validated:
+        salvage_terms = {
+            "courriel", "email", "investisseur", "investor", "preuve",
+            "proof", "envoy", "sent", "transmis", "transmission",
+            "lender", "preteur", "prêteur", "9201-5155", "qc inc",
+        }
+        for idx, r in enumerate(search_results[:15]):
+            relevance_score = score_map.get(idx, 0)
+            haystack = " ".join(
+                [
+                    (r.get("file_name", "") or "").lower(),
+                    (r.get("document_type", "") or "").lower(),
+                    (r.get("document_subtype", "") or "").lower(),
+                    ((r.get("content", "") or "")[:800]).lower(),
+                ]
+            )
+            if relevance_score >= 2 and any(term in haystack for term in salvage_terms):
+                r_copy = dict(r)
+                r_copy["validation_score"] = relevance_score
+                validated.append(r_copy)
+        if validated:
+            logger.info(
+                f"Source validation salvage enabled for evidence query: recovered {len(validated)} chunks"
+            )
+
     # Sort validated results: within each file, sort by validation_score desc then CE score desc
     validated.sort(
         key=lambda r: (
@@ -2556,7 +2607,7 @@ def source_validate_node(state: RAGState, azure_clients: AzureClients) -> RAGSta
         if r.get("validation_score", 0) >= 4:
             high_quality_files.add(r.get("file_name", ""))
 
-    if len(high_quality_files) < 1 and not forced_generation:
+    if len(high_quality_files) < 1 and not forced_generation and not evidence_mode:
         logger.warning(
             f"Source validation: no files with score 4+ — "
             f"setting forced_generation for cautious prompt"

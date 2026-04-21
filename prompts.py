@@ -419,6 +419,11 @@ def get_source_validation_prompt(query: str, chunks_text: str) -> str:
 
 This is critical: in a legal system, including irrelevant sources can mislead the lawyer. Only chunks that DIRECTLY relate to the query should pass.
 
+Important nuance:
+- If the user is trying to FIND a document/PDF or assemble documentary proof, a chunk can still be relevant even if it only establishes ONE required facet.
+- Example: one chunk may identify the lender/company, another may show the investor email, another may show sending/transmission proof.
+- In those evidence-building cases, score such chunks at least 3 if they are plausibly useful corroborating evidence for the same requested document set.
+
 USER QUERY: {query}
 
 RETRIEVED CHUNKS:
