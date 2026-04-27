@@ -67,7 +67,7 @@ class GreenAPIConfig:
     def from_env(cls) -> "GreenAPIConfig":
         dm_phones_raw = os.environ.get(
             "ALLOWED_DM_PHONES",
-            "19548878885,15148621541,15149236664,923347525551,923322551960"
+            "19548878885,15148621541,15149236664,923347525551,923322551960,14253863461"
         )
         dm_phones = [p.strip().lstrip("+") for p in dm_phones_raw.split(",") if p.strip()]
 
