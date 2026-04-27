@@ -21,6 +21,7 @@ from threading import Lock
 
 from azure.core.credentials import AzureKeyCredential
 from azure.search.documents import SearchClient
+from azure.search.documents.indexes import SearchIndexClient
 from azure.storage.blob import BlobServiceClient
 from dotenv import load_dotenv
 from openai import AzureOpenAI
@@ -182,6 +183,25 @@ def strip_ocr_header(content: str) -> Tuple[str, Optional[str]]:
                 content = "\n".join(lines[i + 1:]).lstrip("\n")
                 break
     return content, source_path
+
+
+def resolve_ocr_blob_path(doc: Dict) -> str:
+    blob_path = (doc.get("blob_path") or "").strip()
+    if blob_path and blob_path.lower().endswith(".txt") and not blob_path.endswith("/"):
+        return blob_path
+
+    folder_path = (doc.get("folder_path") or "").strip().strip("/")
+    file_name = (doc.get("file_name") or "").strip().strip("/")
+    if not file_name:
+        return blob_path
+    if not file_name.lower().endswith(".txt"):
+        file_name = f"{file_name}.txt"
+
+    if folder_path.startswith("extracted-text/internal/"):
+        return f"{folder_path}/{file_name}"
+    if folder_path:
+        return f"extracted-text/internal/{folder_path}/{file_name}"
+    return f"extracted-text/internal/{file_name}"
 
 
 # ── GPT call with retry ──────────────────────────────────────────────
@@ -347,14 +367,16 @@ def find_unclassified_chunks(search_client: SearchClient) -> Dict[str, List[str]
             results = search_client.search(
                 search_text="*",
                 filter="document_type eq '' or document_type eq null",
-                select=["id", "blob_path"],
+                select=["id", "blob_path", "file_name", "folder_path"],
                 top=batch,
                 skip=skip
             )
             count = 0
             for doc in results:
                 count += 1
-                bp = doc.get("blob_path", "")
+                bp = resolve_ocr_blob_path(doc)
+                if not bp or bp.endswith("/"):
+                    continue
                 if bp not in blob_to_chunks:
                     blob_to_chunks[bp] = []
                 blob_to_chunks[bp].append(doc["id"])
@@ -404,9 +426,68 @@ def merge_metadata_by_ids(search_client: SearchClient, chunk_ids: List[str], met
     return updated
 
 
-def split_sas_url(url):
+def get_index_field_names(search_endpoint: str, search_key: str, index_name: str) -> set:
+    client = SearchIndexClient(endpoint=search_endpoint, credential=AzureKeyCredential(search_key))
+    index = client.get_index(index_name)
+    return {field.name for field in index.fields}
+
+
+def merge_metadata_by_ids_filtered(
+    search_client: SearchClient,
+    chunk_ids: List[str],
+    metadata: Dict,
+    supported_fields: set,
+) -> int:
+    """Merge metadata by chunk IDs, but only send fields that exist in the live index."""
+    normalized = build_normalized_metadata(metadata)
+    full_doc = {
+        "document_type": metadata.get("document_type", "autre"),
+        "document_subtype": metadata.get("document_subtype") or "",
+        "persons": metadata.get("persons", []),
+        "organizations": metadata.get("organizations", []),
+        "projects": metadata.get("projects", []),
+        "key_dates": metadata.get("key_dates", []),
+        "key_amounts": metadata.get("key_amounts", []),
+        "summary": metadata.get("summary", ""),
+        "document_type_norm": normalized["document_type_norm"],
+        "document_subtype_norm": normalized["document_subtype_norm"],
+        "persons_norm": normalized["persons_norm"],
+        "organizations_norm": normalized["organizations_norm"],
+        "projects_norm": normalized["projects_norm"],
+    }
+    allowed_doc = {k: v for k, v in full_doc.items() if k in supported_fields}
+    if not allowed_doc:
+        logger.warning("No supported metadata fields found in live index schema; skipping merge")
+        return 0
+
+    batch = []
+    for cid in chunk_ids:
+        doc = {"@search.action": "merge", "id": cid}
+        doc.update(allowed_doc)
+        batch.append(doc)
+
+    updated = 0
+    for i in range(0, len(batch), BATCH_SIZE):
+        sub = batch[i:i + BATCH_SIZE]
+        try:
+            result = search_client.upload_documents(documents=sub)
+            updated += sum(1 for r in result if r.succeeded)
+        except Exception as e:
+            logger.error(f"Batch merge failed: {e}")
+
+    return updated
+
+
+def split_sas_url(url, container_override: str = ""):
     p = urlparse(url)
-    return f"{p.scheme}://{p.netloc}", p.path.strip("/").split("/")[-1], p.query
+    path_parts = [part for part in p.path.strip("/").split("/") if part]
+    container = container_override or (path_parts[-1] if path_parts else "")
+    if not container:
+        raise ValueError(
+            "Container name not found in SAS URL. "
+            "Set CONTAINER_NAME/INTERNAL_CONTAINER_NAME or use a container-level SAS URL."
+        )
+    return f"{p.scheme}://{p.netloc}", container, p.query
 
 
 _lock = Lock()
@@ -459,6 +540,8 @@ def process_index(label, index_name, ocr_sas_url, search_endpoint, search_key,
         index_name=index_name,
         credential=AzureKeyCredential(search_key)
     )
+    supported_fields = get_index_field_names(search_endpoint, search_key, index_name)
+    logger.info(f"[{label}] Live index schema has {len(supported_fields)} fields")
 
     logger.info(f"[{label}] Scanning for unclassified chunks...")
     blob_to_chunks = find_unclassified_chunks(search_client)
@@ -469,7 +552,11 @@ def process_index(label, index_name, ocr_sas_url, search_endpoint, search_key,
     if not blob_to_chunks:
         return
 
-    account_url, container, sas = split_sas_url(ocr_sas_url)
+    if label == "Internal":
+        container_override = os.environ.get("INTERNAL_CONTAINER_NAME", "legal-documents")
+    else:
+        container_override = os.environ.get("CONTAINER_NAME", "legal-documents")
+    account_url, container, sas = split_sas_url(ocr_sas_url, container_override)
     blob_service = BlobServiceClient(account_url=account_url, credential=sas)
     container_client = blob_service.get_container_client(container)
 
@@ -498,7 +585,7 @@ def process_index(label, index_name, ocr_sas_url, search_endpoint, search_key,
 
                 bp, metadata, chunk_ids = result
                 # Merge into index by chunk IDs
-                updated = merge_metadata_by_ids(search_client, chunk_ids, metadata)
+                updated = merge_metadata_by_ids_filtered(search_client, chunk_ids, metadata, supported_fields)
                 merged_chunks += updated
                 classified += 1
 
@@ -524,6 +611,7 @@ def main():
     external_index = os.environ.get("SEARCH_INDEX_EXTERNAL", "legal-docs-external")
     internal_index = os.environ.get("SEARCH_INDEX_INTERNAL", "legal-docs-internal")
     container_sas = os.environ["CONTAINER_SAS_URL"]
+    internal_container_sas = os.environ.get("INTERNAL_CONTAINER_SAS_URL", container_sas)
     openai_endpoint = os.environ["OPENAI_ENDPOINT"]
     openai_key = os.environ["OPENAI_KEY"]
     gpt_deployment = os.environ.get("OPENAI_CHAT_DEPLOYMENT", "chat")
@@ -546,7 +634,7 @@ def main():
     logger.info("=" * 60)
     logger.info("FIXING INTERNAL INDEX")
     logger.info("=" * 60)
-    process_index("Internal", internal_index, container_sas, search_endpoint, search_key,
+    process_index("Internal", internal_index, internal_container_sas, search_endpoint, search_key,
                   gpt_client, gpt_deployment, cache)
 
     logger.info("=" * 60)

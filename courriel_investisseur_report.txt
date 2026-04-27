@@ -1,0 +1,1639 @@
+Found 273 matching documents.
+
+1. 08002.01F - 160212 - Lot 16-0411 - Documents [p.37 et 38].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_D - Témoins > Idéal développement et Idéal finance_I. Les compagnies Idéal_5. Denise BÉLANGER-FAUTEUX_Pièces_08002.01F - 160212 - Lot 16-0411 Courriel investisseur daté du 5 mars 2015_08002.01F - 160212 - Lot 16-0411 - Documents [p.37 et 38].pdf.txt
+   Type: acte_notarié (hypothèque)
+   Summary: Cet acte notarié documente plusieurs transactions hypothécaires et cessions de créances impliquant des propriétés situées à Trois-Rivières, Brompton et d'autres localités au Québec. Les parties incluent des individus et 
+
+2. 08002.01F - 160212 - Lot 16-0411 - Documents [p.37 et 38].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_E - Témoins > Les projets immobiliers_IV. Les investisseurs_37. Manlio DEL NEGRO_Pièces_08002.01F - 160212 - Lot 16-0411 Courriel investisseur daté du 5 mars 2015_08002.01F - 160212 - Lot 16-0411 - Documents [p.37 et 38].pdf.txt
+   Type: acte_notarié (hypothèque)
+   Summary: Cet acte notarié documente plusieurs transactions immobilières et hypothécaires impliquant des prêts privés, des cessions de créances et des hypothèques sur des propriétés situées à Trois-Rivières, Brompton et d'autres l
+
+3. 08002.01F - 160212 - Lot 16-0411 - Documents [p.37 et 38].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_16. BÉLANGER-FAUTEUX, Denise_Pièces_08002.01F - 160212 - Lot 16-0411 Courriel investisseur daté du 5 mars 2015_08002.01F - 160212 - Lot 16-0411 - Documents [p.37 et 38].pdf.txt
+   Type: acte_notarié (hypothèque)
+   Summary: Ce document notarié traite de multiples transactions immobilières et hypothécaires impliquant des prêts privés, des cessions de créances et des hypothèques sur des propriétés situées à Trois-Rivières, Brompton et d'autre
+
+4. 08002.01F - 160212 - Lot 16-0411 - Documents [p.37 et 38].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_45. DEL NEGRO, Manlio_Pièces_08002.01F - 160212 - Lot 16-0411 Courriel investisseur daté du 5 mars 2015_08002.01F - 160212 - Lot 16-0411 - Documents [p.37 et 38].pdf.txt
+   Type: acte_notarié (hypothèque)
+   Summary: Cet acte notarié documente plusieurs transactions immobilières et hypothécaires impliquant des propriétés situées à Trois-Rivières et Brompton. Les parties incluent des individus et des entreprises comme 8181772 Canada I
+
+5. 08014.01G - 170117 - Remise volontaire - Documents [p.310 à 311].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_D - Témoins > Idéal développement et Idéal finance_I. Les compagnies Idéal_4. France LARIVIÈRE_Pièces_08014 (Conflit lié au codage Unicode).01G - 170117 Courriel-investisseur daté du 18 juin 2014 envoyé le 4 juillet 2014 par France LARIVIÈRE à Léon Raymond_08014.01G - 170117 - Remise volontaire - Documents [p.310 à 311].pdf.txt
+   Type: remise_volontaire
+   Summary: Ce document contient plusieurs actes notariés et évaluations liés à des prêts hypothécaires privés et des terrains situés principalement à Saint-Alphonse-de-Rodriguez, Rawdon et St-Lin-des-Laurentides. Les parties inclue
+
+6. 08014.01G - 170117 - Remise volontaire - Documents [p.310 à 311].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_18. LARIVIÈRE, France_Documents_08014 (Conflit lié au codage Unicode).01G - 170117 Courriel-investisseur daté du 18 juin 2014 envoyé le 4 juillet 2014 par France LARIVIÈRE à Léon Raymond_08014.01G - 170117 - Remise volontaire - Documents [p.310 à 311].pdf.txt
+   Type: remise_volontaire
+   Summary: Ce document contient plusieurs actes notariés et rapports d'évaluation liés à des prêts hypothécaires privés et des transactions immobilières au Québec. Les parties impliquées incluent des individus et des entreprises, a
+
+7. 08014.01G - 170117 - Remise volontaire - Documents [p.310-311].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_E - Témoins > Les projets immobiliers_IV. Les investisseurs_39. Léon RAYMOND_Pièces_08014.01G – 170117 Courriel-investisseur daté du 18 juin 2014 envoyé le 4 juillet 2014 par France LARIVIÈRE à Léon Raymond_08014.01G - 170117 - Remise volontaire - Documents [p.310-311].pdf.txt
+   Type: remise_volontaire
+   Summary: Ce document est un acte notarié de remise volontaire impliquant plusieurs parties, dont des individus et des entreprises, concernant des prêts hypothécaires et des terrains situés principalement à Saint-Alphonse-de-Rodri
+
+8. 08014.01G - 170117 - Remise volontaire - Documents [p.310-311].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_24. RAYMOND, Léon_Pièces_08014.01G – 170117 Courriel-investisseur daté du 18 juin 2014 envoyé le 4 juillet 2014 par France LARIVIÈRE à Léon Raymond_08014.01G - 170117 - Remise volontaire - Documents [p.310-311].pdf.txt
+   Type: remise_volontaire
+   Summary: Ce document est un acte de remise volontaire et d'analyse de prêts hypothécaires privés, impliquant plusieurs parties, dont des individus et des entreprises. Il détaille des prêts hypothécaires, des montants importants, 
+
+9. 08014.01G - 170117 - Remise volontaire - Documents [p.310-311].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_25. PAQUIN, Gilles_Documents_08014.01G – 170117 Courriel-investisseur daté du 18 juin 2014 envoyé le 4 juillet 2014 par France LARIVIÈRE à Léon Raymond_08014.01G - 170117 - Remise volontaire - Documents [p.310-311].pdf.txt
+   Type: remise_volontaire
+   Summary: Ce document est un acte notarié détaillant plusieurs transactions hypothécaires et évaluations de terrains situés principalement à Saint-Alphonse-de-Rodriguez, Rawdon et St-Lin des Laurentides. Il mentionne des prêts hyp
+
+10. 08014.01G - 170117 - Remise volontaire - Documents [p.324 à 326].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_D - Témoins > Idéal développement et Idéal finance_I. Les compagnies Idéal_4. France LARIVIÈRE_Pièces_08014.01G - 170117 Courriel-investisseur daté du 18 juin 2014 envoyé le 4 juillet 2014 par France LARIVIÈRE à Léon Raymond_08014.01G - 170117 - Remise volontaire - Documents [p.324 à 326].pdf.txt
+   Type: remise_volontaire
+   Summary: Ce document contient plusieurs actes notariés relatifs à des prêts hypothécaires et des évaluations immobilières. Il mentionne des transactions impliquant des montants importants, des propriétés situées principalement à 
+
+11. 08014.01G - 170117 - Remise volontaire - Documents [p.324 à 326].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_E - Témoins > Les projets immobiliers_IV. Les investisseurs_39. Léon RAYMOND_Pièces_08014.01G – 170117 Courriel-investisseur daté du 27 janvier 2015 de France LARIVIÈRE à Léon Raymond_08014.01G - 170117 - Remise volontaire - Documents [p.324 à 326].pdf.txt
+   Type: hypothèque
+   Summary: Ce document est un acte notarié détaillant plusieurs hypothèques privées et conventions de prêt entre diverses parties, incluant des individus et des entreprises, pour des montants allant jusqu'à 5 525 000 $. Les proprié
+
+12. 08014.01G - 170117 - Remise volontaire - Documents [p.324 à 326].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_18. LARIVIÈRE, France_Documents_08014.01G - 170117 Courriel-investisseur daté du 18 juin 2014 envoyé le 4 juillet 2014 par France LARIVIÈRE à Léon Raymond_08014.01G - 170117 - Remise volontaire - Documents [p.324 à 326].pdf.txt
+   Type: remise_volontaire
+   Summary: Ce document est un acte de remise volontaire et d'analyse de prêts hypothécaires privés, impliquant plusieurs parties, dont des individus et des entreprises. Il détaille des prêts hypothécaires, des montants importants, 
+
+13. 08014.01G - 170117 - Remise volontaire - Documents [p.324 à 326].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_24. RAYMOND, Léon_Pièces_08014.01G – 170117 Courriel-investisseur daté du 27 janvier 2015 de France LARIVIÈRE à Léon Raymond_08014.01G - 170117 - Remise volontaire - Documents [p.324 à 326].pdf.txt
+   Type: remise_volontaire
+   Summary: Ce document détaille plusieurs transactions et hypothèques impliquant des prêts hypothécaires privés, des évaluations de terrains et des conventions de gestion. Les parties incluent des individus et des entreprises, avec
+
+14. 08014.01G - 170117 - Remise volontaire - Documents [p.324 à 326].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_25. PAQUIN, Gilles_Documents_08014.01G – 170117 Courriel-investisseur daté du 27 janvier 2015 de France LARIVIÈRE à Léon Raymond_08014.01G - 170117 - Remise volontaire - Documents [p.324 à 326].pdf.txt
+   Type: remise_volontaire
+   Summary: Ce document contient plusieurs actes notariés relatifs à des prêts hypothécaires et des évaluations de terrains situés principalement à Saint-Alphonse-de-Rodriguez et Rawdon. Les parties incluent des individus et des ent
+
+15. 08021.01G - 170123 - Remise volontaire - Documents [p.165 à 167].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_E - Témoins > Les projets immobiliers_IV. Les investisseurs_44. Patrick MORYOUSSEF_Pièces_08021.01G - 170123 Courriel-investisseur du 18 juin 2015 de Véronique Charton à Patrick Moryoussef pour le dossier de Brompton, en liasse_08021.01G - 170123 - Remise volontaire - Documents [p.165 à 167].pdf.txt
+   Type: remise_volontaire
+   Summary: Ce document contient des informations sur divers projets immobiliers au Québec, notamment à Brompton, Saint-Lin-Laurentides et Trois-Rivières. Il inclut des détails sur des prêts hypothécaires, des évaluations de proprié
+
+16. 08021.01G - 170123 - Remise volontaire - Documents [p.165 à 167].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_17. MORYOUSSEF, Patrick_Documents_08021.01G - 170123 Courriel-investisseur du 18 juin 2015 de Véronique Charton à Patrick Moryoussef pour le dossier de Brompton, en liasse_08021.01G - 170123 - Remise volontaire - Documents [p.165 à 167].pdf.txt
+   Type: remise_volontaire
+   Summary: Ce document contient des informations sur divers projets immobiliers au Québec, notamment à Brompton, Saint-Lin-Laurentides et Rawdon. Il inclut des détails sur des prêts hypothécaires, des évaluations de propriétés, des
+
+17. 08021.01G - 170123 - Remise volontaire - Documents [p.368 à 370].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_E - Témoins > Les projets immobiliers_IV. Les investisseurs_44. Patrick MORYOUSSEF_Pièces_08021.01G - 170123 Courriel-investisseur du 26 février 2015 de Denise Bélanger à Patrick Moryoussef au sujet de St-Lin-Laurentides sollicitant 400 000 $_08021.01G - 170123 - Remise volontaire - Documents [p.368 à 370].pdf.txt
+   Type: mise_en_demeure
+   Summary: Ce document contient des informations sur divers projets immobiliers et des transactions financières, notamment des hypothèques, des cessions de créances et des évaluations de propriétés. Il inclut des mises en demeure e
+
+18. 08021.01G - 170123 - Remise volontaire - Documents [p.368 à 370].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_17. MORYOUSSEF, Patrick_Documents_08021.01G - 170123 Courriel-investisseur du 26 février 2015 de Denise Bélanger à Patrick Moryoussef au sujet de St-Lin-Laurentides sollicitant 400 000 $_08021.01G - 170123 - Remise volontaire - Documents [p.368 à 370].pdf.txt
+   Type: remise_volontaire
+   Summary: Ce document concerne une remise volontaire impliquant des prêts hypothécaires et des projets immobiliers à Rawdon et Brompton. Il détaille les montants prêtés, les garanties hypothécaires, les conditions de remboursement
+
+19. 08021.01G - 170123 - Remise volontaire - Documents [p.465 à 467].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_E - Témoins > Les projets immobiliers_IV. Les investisseurs_44. Patrick MORYOUSSEF_Pièces_08021.01G - 170123 Courriel-investisseur du 2 septembre 2015 de Véronique Charton à Patrick Moryoussef au sujet du projet de Trois-Rivières, en liasse_08021.01G - 170123 - Remise volontaire - Documents [p.465 à 467].pdf.txt
+   Type: remise_volontaire
+   Summary: Ce document concerne une remise volontaire liée à des projets immobiliers et des financements hypothécaires au Québec, notamment à Brompton et Saint-Lin-Laurentides. Il inclut des informations sur des transactions, des h
+
+20. 08021.01G - 170123 - Remise volontaire - Documents [p.465 à 467].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_17. MORYOUSSEF, Patrick_Documents_08021.01G - 170123 Courriel-investisseur du 2 septembre 2015 de Véronique Charton à Patrick Moryoussef au sujet du projet de Trois-Rivières, en liasse_08021.01G - 170123 - Remise volontaire - Documents [p.465 à 467].pdf.txt
+   Type: remise_volontaire
+   Summary: Ce document concerne une remise volontaire liée à des projets immobiliers et des financements hypothécaires au Québec, notamment à Brompton et Saint-Lin-Laurentides. Il inclut des informations sur des prêts, des hypothèq
+
+21. 08021.01G - 170123 - Remise volontaire - Documents [p.74 à 91].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_E - Témoins > Les projets immobiliers_IV. Les investisseurs_44. Patrick MORYOUSSEF_Pièces_08021.01G - 170123 Courriel-investisseur de Denise Bélanger à Patrick MORYOUSSEF, au sujet du terrain de Rawdon, daté du 4 mai 2015_08021.01G - 170123 - Remise volontaire - Documents [p.74 à 91].pdf.txt
+   Type: remise_volontaire
+   Summary: Ce document concerne divers projets immobiliers et hypothécaires au Québec, incluant des transactions à Saint-Lin-Laurentides, Brompton et Trois-Rivières. Il inclut des évaluations de propriétés, des ententes de bail, de
+
+22. 08021.01G - 170123 - Remise volontaire - Documents [p.74 à 91].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_17. MORYOUSSEF, Patrick_Documents_08021.01G - 170123 Courriel-investisseur de Denise Bélanger à Patrick MORYOUSSEF, au sujet du terrain de Rawdon, daté du 4 mai 2015_08021.01G - 170123 - Remise volontaire - Documents [p.74 à 91].pdf.txt
+   Type: remise_volontaire
+   Summary: Ce document contient des informations détaillées sur divers projets immobiliers et des transactions financières associées, notamment des hypothèques, des cessions de créances et des évaluations de propriétés. Il inclut d
+
+23. 08031.01G - 170331 - Remise volontaire - Documents [p.1 à 3].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_D - Témoins > Idéal développement et Idéal finance_I. Les compagnies Idéal_5. Denise BÉLANGER-FAUTEUX_Pièces_08031.01G - 170331 Courriel investisseur du 5 décembre 2014 de Denise Bélanger à Guy Tremblay_08031.01G - 170331 - Remise volontaire - Documents [p.1 à 3].pdf.txt
+   Type: remise_volontaire
+   Summary: Ce document regroupe des courriels, rapports d'évaluation et conventions liés à des projets immobiliers à Joliette, Sainte-Julienne et Saint-Lin-Laurentides. Il inclut des évaluations de propriétés, des montants de prêts
+
+24. 08031.01G - 170331 - Remise volontaire - Documents [p.1 à 3].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_E - Témoins > Les projets immobiliers_IV. Les investisseurs_31. Guy TREMBLAY_Pièces_08031.01G - 170331 Courriel investisseur du 5 décembre 2014 de Denise Bélanger à Guy Tremblay_08031.01G - 170331 - Remise volontaire - Documents [p.1 à 3].pdf.txt
+   Type: remise_volontaire
+   Summary: Ce document contient des échanges et des rapports liés à des projets immobiliers et financiers à Joliette, Saint-Charles-Borromée, Sainte-Julienne et Saint-Lin-Laurentides. Il inclut des évaluations de propriétés, des co
+
+25. 08031.01G - 170331 - Remise volontaire - Documents [p.1 à 3].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_16. BÉLANGER-FAUTEUX, Denise_Pièces_08031.01G - 170331 Courriel investisseur du 5 décembre 2014 de Denise Bélanger à Guy Tremblay_08031.01G - 170331 - Remise volontaire - Documents [p.1 à 3].pdf.txt
+   Type: évaluation (financier)
+   Summary: Ce document contient plusieurs évaluations immobilières et rapports financiers liés à des projets de développement immobilier à Saint-Lin-Laurentides et Sainte-Julienne. Les évaluations incluent des propriétés commercial
+
+26. 08031.01G - 170331 - Remise volontaire - Documents [p.1 à 3].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_21. TREMBLAY, Guy_Documents_08031.01G - 170331 Courriel investisseur du 5 décembre 2014 de Denise Bélanger à Guy Tremblay_08031.01G - 170331 - Remise volontaire - Documents [p.1 à 3].pdf.txt
+   Type: remise_volontaire
+   Summary: Ce document contient des échanges de courriels, des conventions entre actionnaires, des rapports d'évaluation immobilière et des résolutions d'actionnaires. Il traite de projets immobiliers à Joliette, Saint-Charles-Borr
+
+27. 08031.01G - 170331 - Remise volontaire - Documents [p.1 à 3].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_43. TREMBLAY, Vincent_Pièces_08031.01G - 170331 Courriel investisseur du 5 décembre 2014 de Denise Bélanger à Guy Tremblay_08031.01G - 170331 - Remise volontaire - Documents [p.1 à 3].pdf.txt
+   Type: évaluation (financier)
+   Summary: Ce document contient plusieurs évaluations immobilières et financières pour des projets situés à Saint-Lin-Laurentides, incluant des terrains et bâtiments commerciaux. Les valeurs marchandes potentielles sont estimées en
+
+28. 08031.01G - 170331 - Remise volontaire - Documents [p.1 à 3].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_D - Témoins > Idéal développement et Idéal finance_I. Les compagnies Idéal_5. Denise BÉLANGER-FAUTEUX_Pièces_08031.01G - 170331 Courriel investisseur du 5 décembre 2014 de Denise Bélanger à Guy Tremblay_08031.01G - 170331 - Remise volontaire - Documents [p.1 à 3].pdf.txt
+   Type: rapport (évaluation)
+   Summary: Ce rapport d'évaluation immobilière, commandé par Jean-François Desormeaux, estime la valeur marchande potentielle de propriétés situées à Saint-Lin-Laurentides. Les évaluations, basées sur les méthodes du coût, de compa
+
+29. 08031.01G - 170331 - Remise volontaire - Documents [p.1 à 3].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_E - Témoins > Les projets immobiliers_IV. Les investisseurs_31. Guy TREMBLAY_Pièces_08031.01G - 170331 Courriel investisseur du 5 décembre 2014 de Denise Bélanger à Guy Tremblay_08031.01G - 170331 - Remise volontaire - Documents [p.1 à 3].pdf.txt
+   Type: évaluation (financier)
+   Summary: Ce document contient plusieurs évaluations immobilières pour des projets à Saint-Lin-Laurentides et Joliette, incluant des terrains et bâtiments commerciaux. Les valeurs marchandes potentielles sont estimées entre 3,47 M
+
+30. 08031.01G - 170331 - Remise volontaire - Documents [p.1 à 3].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_16. BÉLANGER-FAUTEUX, Denise_Pièces_08031.01G - 170331 Courriel investisseur du 5 décembre 2014 de Denise Bélanger à Guy Tremblay_08031.01G - 170331 - Remise volontaire - Documents [p.1 à 3].pdf.txt
+   Type: évaluation (financier)
+   Summary: Ce document contient plusieurs évaluations immobilières et rapports financiers liés à des projets de développement immobilier à Saint-Lin-Laurentides et Sainte-Julienne. Les évaluations incluent des propriétés commercial
+
+31. 08031.01G - 170331 - Remise volontaire - Documents [p.1 à 3].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_21. TREMBLAY, Guy_Documents_08031.01G - 170331 Courriel investisseur du 5 décembre 2014 de Denise Bélanger à Guy Tremblay_08031.01G - 170331 - Remise volontaire - Documents [p.1 à 3].pdf.txt
+   Type: remise_volontaire
+   Summary: Ce document contient des informations sur des projets immobiliers à Joliette, Saint-Charles-Borromée, Sainte-Julienne et Saint-Lin-Laurentides, incluant des évaluations de propriétés, des conventions entre actionnaires e
+
+32. 08031.01G - 170331 - Remise volontaire - Documents [p.1 à 3].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_43. TREMBLAY, Vincent_Pièces_08031.01G - 170331 Courriel investisseur du 5 décembre 2014 de Denise Bélanger à Guy Tremblay_08031.01G - 170331 - Remise volontaire - Documents [p.1 à 3].pdf.txt
+   Type: évaluation (financier)
+   Summary: Ce document contient plusieurs évaluations immobilières et financières pour des projets situés à Saint-Lin-Laurentides, incluant des terrains et bâtiments commerciaux. Les valeurs marchandes potentielles sont estimées en
+
+33. 08031.01G - 170331 - Remise volontaire - Documents [p.18 à 21].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_D - Témoins > Idéal développement et Idéal finance_I. Les compagnies Idéal_5. Denise BÉLANGER-FAUTEUX_Pièces_08031.01G - 170331 Courriel investisseur du 21 octobre 2014 de Denise Bélanger à Guy Tremblay_08031.01G - 170331 - Remise volontaire - Documents [p.18 à 21].pdf.txt
+   Type: remise_volontaire
+   Summary: Ce document contient des échanges et des rapports liés à des projets immobiliers et des transactions financières dans plusieurs localités du Québec, notamment Joliette, Saint-Charles-Borromée, Sainte-Julienne et Saint-Li
+
+34. 08031.01G - 170331 - Remise volontaire - Documents [p.18 à 21].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_E - Témoins > Les projets immobiliers_IV. Les investisseurs_31. Guy TREMBLAY_Pièces_08031.01G - 170331 Courriel investisseur du 21 octobre 2014 de Denise Bélanger à Guy Tremblay du projet de Ste-Julienne (1219-1221 route 125)_08031.01G - 170331 - Remise volontaire - Documents [p.18 à 21].pdf.txt
+   Type: remise_volontaire
+   Summary: Ce document contient des échanges de courriels, des conventions d'actionnaires, des rapports d'évaluation immobilière et des résolutions d'actionnaires concernant des projets immobiliers à Joliette, Saint-Charles-Borromé
+
+35. 08031.01G - 170331 - Remise volontaire - Documents [p.18 à 21].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_16. BÉLANGER-FAUTEUX, Denise_Pièces_08031.01G - 170331 Courriel investisseur du 21 octobre 2014 de Denise Bélanger à Guy Tremblay_08031.01G - 170331 - Remise volontaire - Documents [p.18 à 21].pdf.txt
+   Type: remise_volontaire
+   Summary: Ce document regroupe des courriels, rapports d'évaluation et conventions liés à des projets immobiliers à Joliette, Saint-Charles-Borromée, Sainte-Julienne et Saint-Lin-Laurentides. Il inclut des évaluations de propriété
+
+36. 08031.01G - 170331 - Remise volontaire - Documents [p.18 à 21].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_21. TREMBLAY, Guy_Documents_08031.01G - 170331 Courriel investisseur du 21 octobre 2014 de Denise Bélanger à Guy Tremblay du projet de Ste-Julienne (1219-1221 route 125)_08031.01G - 170331 - Remise volontaire - Documents [p.18 à 21].pdf.txt
+   Type: remise_volontaire
+   Summary: Ce document contient des informations sur des projets immobiliers à Joliette, Saint-Charles-Borromée, Sainte-Julienne et Saint-Lin-Laurentides, incluant des évaluations de propriétés et des conventions entre actionnaires
+
+37. 08031.01G - 170331 - Remise volontaire - Documents [p.18 à 21].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_D - Témoins > Idéal développement et Idéal finance_I. Les compagnies Idéal_5. Denise BÉLANGER-FAUTEUX_Pièces_08031.01G - 170331 Courriel investisseur du 21 octobre 2014 de Denise Bélanger à Guy Tremblay_08031.01G - 170331 - Remise volontaire - Documents [p.18 à 21].pdf.txt
+   Type: rapport (évaluation)
+   Summary: Ce document contient plusieurs rapports d'évaluation immobilière pour des propriétés situées à Saint-Lin-Laurentides, Québec. Les évaluations, réalisées par DEVIMO inc., estiment la valeur marchande potentielle des terra
+
+38. 08031.01G - 170331 - Remise volontaire - Documents [p.18 à 21].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_E - Témoins > Les projets immobiliers_IV. Les investisseurs_31. Guy TREMBLAY_Pièces_08031.01G - 170331 Courriel investisseur du 21 octobre 2014 de Denise Bélanger à Guy Tremblay du projet de Ste-Julienne (1219-1221 route 125)_08031.01G - 170331 - Remise volontaire - Documents [p.18 à 21].pdf.txt
+   Type: évaluation (financier)
+   Summary: Ce document est une évaluation immobilière réalisée par DEVIMO inc. pour des propriétés situées à Saint-Lin-Laurentides. Les évaluations incluent des terrains et bâtiments commerciaux, avec des valeurs marchandes estimée
+
+39. 08031.01G - 170331 - Remise volontaire - Documents [p.18 à 21].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_16. BÉLANGER-FAUTEUX, Denise_Pièces_08031.01G - 170331 Courriel investisseur du 21 octobre 2014 de Denise Bélanger à Guy Tremblay_08031.01G - 170331 - Remise volontaire - Documents [p.18 à 21].pdf.txt
+   Type: remise_volontaire
+   Summary: Ce document regroupe des échanges, rapports et conventions liés à des projets immobiliers et de financement à Saint-Lin-Laurentides, Joliette et Sainte-Julienne. Il inclut des évaluations de propriétés, des conventions e
+
+40. 08031.01G - 170331 - Remise volontaire - Documents [p.18 à 21].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_21. TREMBLAY, Guy_Documents_08031.01G - 170331 Courriel investisseur du 21 octobre 2014 de Denise Bélanger à Guy Tremblay du projet de Ste-Julienne (1219-1221 route 125)_08031.01G - 170331 - Remise volontaire - Documents [p.18 à 21].pdf.txt
+   Type: rapport (évaluation)
+   Summary: Ce document est un rapport d'évaluation immobilière réalisé par DEVIMO inc. pour des propriétés situées à Saint-Lin-Laurentides et Sainte-Julienne. Il inclut des analyses détaillées des terrains, bâtiments et projets com
+
+41. 08031.01G - 170331 - Remise volontaire - Documents [p.18 à 21].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_43. TREMBLAY, Vincent_Pièces_08031.01G - 170331 Courriel investisseur du 21 octobre 2014 de Denise Bélanger à Guy Tremblay du projet de Ste-Julienne (1219-1221 route 125)_08031.01G - 170331 - Remise volontaire - Documents [p.18 à 21].pdf.txt
+   Type: rapport (évaluation)
+   Summary: Ce rapport d'évaluation immobilière, commandé par Jean-François Desormeaux, estime la valeur marchande potentielle de propriétés situées à Saint-Lin-Laurentides. Les évaluations incluent des terrains et bâtiments commerc
+
+42. 08031.01G - 170331 - Remise volontaire - Documents [p.382 à 385].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_E - Témoins > Les projets immobiliers_IV. Les investisseurs_31. Guy TREMBLAY_Pièces_08031.01G - 170331 Courriel du 27 octobre 2014 de Denise Bélanger à Guy Tremblay incluant le courriel investisseur pour le projet de St-Lin_08031.01G - 170331 - Remise volontaire - Documents [p.382 à 385].pdf.txt
+   Type: remise_volontaire
+   Summary: Ce document traite de plusieurs projets immobiliers et hypothécaires à Joliette, Saint-Charles-Borromée, Sainte-Julienne et Saint-Lin-Laurentides, impliquant des prêts importants et des évaluations de propriétés. Il incl
+
+43. 08031.01G - 170331 - Remise volontaire - Documents [p.382 à 385].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_21. TREMBLAY, Guy_Documents_08031.01G - 170331 Courriel du 27 octobre 2014 de Denise Bélanger à Guy Tremblay incluant le courriel investisseur pour le projet de St-Lin_08031.01G - 170331 - Remise volontaire - Documents [p.382 à 385].pdf.txt
+   Type: remise_volontaire
+   Summary: Classification partielle: {   "document_type": "remise_volontaire",   "document_subtype": null,   "persons": [     "Denise Bél
+
+44. 08031.01G - 170331 - Remise volontaire - Documents [p.382 à 385].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_E - Témoins > Les projets immobiliers_IV. Les investisseurs_31. Guy TREMBLAY_Pièces_08031.01G - 170331 Courriel du 27 octobre 2014 de Denise Bélanger à Guy Tremblay incluant le courriel investisseur pour le projet de St-Lin_08031.01G - 170331 - Remise volontaire - Documents [p.382 à 385].pdf.txt
+   Type: remise_volontaire
+   Summary: Ce document contient des échanges de courriels, des conventions d'actionnaires, des rapports d'évaluation immobilière et des résolutions d'actionnaires concernant des projets immobiliers à Joliette, Saint-Charles-Borromé
+
+45. 08031.01G - 170331 - Remise volontaire - Documents [p.382 à 385].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_21. TREMBLAY, Guy_Documents_08031.01G - 170331 Courriel du 27 octobre 2014 de Denise Bélanger à Guy Tremblay incluant le courriel investisseur pour le projet de St-Lin_08031.01G - 170331 - Remise volontaire - Documents [p.382 à 385].pdf.txt
+   Type: remise_volontaire
+   Summary: Ce document traite de divers projets immobiliers et hypothécaires, notamment à Joliette, Saint-Charles-Borromée et Saint-Lin-Laurentides. Il inclut des évaluations de propriétés, des conventions entre actionnaires, et de
+
+46. 08031.01G - 170331 - Remise volontaire - Documents [p.382 à 385].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_43. TREMBLAY, Vincent_Pièces_08031.01G - 170331 Courriel du 27 octobre 2014 de Denise Bélanger à Guy Tremblay incluant le courriel investisseur pour le projet de St-Lin_08031.01G - 170331 - Remise volontaire - Documents [p.382 à 385].pdf.txt
+   Type: évaluation (financier)
+   Summary: Ce document contient plusieurs évaluations immobilières et rapports financiers liés à des projets à Saint-Lin-Laurentides, Joliette et Sainte-Julienne. Les évaluations incluent des propriétés commerciales et résidentiell
+
+47. 08031.01G - 170331 - Remise volontaire - Documents [p.4 à 7].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_D - Témoins > Idéal développement et Idéal finance_I. Les compagnies Idéal_5. Denise BÉLANGER-FAUTEUX_Pièces_08031.01G - 170331 Courriel investisseur du 10 décembre 2014 de Denise Bélanger à Guy Tremblay_08031.01G - 170331 - Remise volontaire - Documents [p.4 à 7].pdf.txt
+   Type: remise_volontaire
+   Summary: Ce document contient des échanges de courriels, des conventions entre actionnaires, des rapports d'évaluation immobilière et des résolutions d'actionnaires. Les discussions portent sur des projets immobiliers à Joliette,
+
+48. 08031.01G - 170331 - Remise volontaire - Documents [p.4 à 7].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_E - Témoins > Les projets immobiliers_IV. Les investisseurs_31. Guy TREMBLAY_Pièces_08031.01G - 170331 Courriel de Denise Bélanger à Guy Tremblay daté du 10 décembre 2014, incluant un courriel investisseur_08031.01G - 170331 - Remise volontaire - Documents [p.4 à 7].pdf.txt
+   Type: remise_volontaire
+   Summary: Ce document contient des échanges et des rapports liés à des projets immobiliers et hypothécaires à Joliette, Saint-Charles-Borromée et Saint-Lin-Laurentides. Il inclut des évaluations de propriétés, des conventions entr
+
+49. 08031.01G - 170331 - Remise volontaire - Documents [p.4 à 7].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_16. BÉLANGER-FAUTEUX, Denise_Pièces_08031.01G - 170331 Courriel investisseur du 10 décembre 2014 de Denise Bélanger à Guy Tremblay_08031.01G - 170331 - Remise volontaire - Documents [p.4 à 7].pdf.txt
+   Type: remise_volontaire
+   Summary: Ce document regroupe des échanges et rapports liés à des projets immobiliers et hypothécaires à Joliette, Saint-Lin-Laurentides et Sainte-Julienne. Il inclut des évaluations de propriétés, des conventions entre actionnai
+
+50. 08031.01G - 170331 - Remise volontaire - Documents [p.4 à 7].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_21. TREMBLAY, Guy_Documents_08031.01G - 170331 Courriel de Denise Bélanger à Guy Tremblay daté du 10 décembre 2014, incluant un courriel investisseur_08031.01G - 170331 - Remise volontaire - Documents [p.4 à 7].pdf.txt
+   Type: remise_volontaire
+   Summary: Ce document contient des courriels, des rapports d'évaluation, des conventions d'actionnaires et des résolutions concernant des projets immobiliers à Joliette, Saint-Charles-Borromée, Sainte-Julienne et Saint-Lin-Laurent
+
+51. 08031.01G - 170331 - Remise volontaire - Documents [p.4 à 7].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_43. TREMBLAY, Vincent_Pièces_08031.01G - 170331 Courriel de Denise Bélanger à Guy Tremblay daté du 10 décembre 2014, incluant un courriel investisseur_08031.01G - 170331 - Remise volontaire - Documents [p.4 à 7].pdf.txt
+   Type: remise_volontaire
+   Summary: Ce document contient des informations sur des projets immobiliers et des transactions financières à Joliette, Saint-Charles-Borromée, Sainte-Julienne et Saint-Lin-Laurentides. Il inclut des évaluations de propriétés, des
+
+52. 08031.01G - 170331 - Remise volontaire - Documents [p.4 à 7].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_D - Témoins > Idéal développement et Idéal finance_I. Les compagnies Idéal_5. Denise BÉLANGER-FAUTEUX_Pièces_08031.01G - 170331 Courriel investisseur du 10 décembre 2014 de Denise Bélanger à Guy Tremblay_08031.01G - 170331 - Remise volontaire - Documents [p.4 à 7].pdf.txt
+   Type: rapport (évaluation)
+   Summary: Ce document est un rapport d'évaluation immobilière réalisé par DEVIMO inc. pour des propriétés situées à Saint-Lin-Laurentides, incluant des terrains et bâtiments commerciaux. Les évaluations, basées sur les méthodes du
+
+53. 08031.01G - 170331 - Remise volontaire - Documents [p.4 à 7].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_E - Témoins > Les projets immobiliers_IV. Les investisseurs_31. Guy TREMBLAY_Pièces_08031.01G - 170331 Courriel de Denise Bélanger à Guy Tremblay daté du 10 décembre 2014, incluant un courriel investisseur_08031.01G - 170331 - Remise volontaire - Documents [p.4 à 7].pdf.txt
+   Type: évaluation (financier)
+   Summary: Ce document contient plusieurs évaluations immobilières et financières pour des projets à Saint-Lin-Laurentides et Joliette, incluant des propriétés commerciales et résidentielles. Les évaluations, réalisées par DEVIMO i
+
+54. 08031.01G - 170331 - Remise volontaire - Documents [p.4 à 7].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_16. BÉLANGER-FAUTEUX, Denise_Pièces_08031.01G - 170331 Courriel investisseur du 10 décembre 2014 de Denise Bélanger à Guy Tremblay_08031.01G - 170331 - Remise volontaire - Documents [p.4 à 7].pdf.txt
+   Type: évaluation (financier)
+   Summary: Ce document est une évaluation immobilière réalisée par DEVIMO inc. pour des propriétés situées à Saint-Lin-Laurentides. Les évaluations incluent des terrains et bâtiments commerciaux, avec des valeurs marchandes estimée
+
+55. 08031.01G - 170331 - Remise volontaire - Documents [p.4 à 7].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_21. TREMBLAY, Guy_Documents_08031.01G - 170331 Courriel de Denise Bélanger à Guy Tremblay daté du 10 décembre 2014, incluant un courriel investisseur_08031.01G - 170331 - Remise volontaire - Documents [p.4 à 7].pdf.txt
+   Type: rapport (évaluation)
+   Summary: Ce document contient des rapports d'évaluation immobilière, des conventions entre actionnaires, des courriels et des résolutions d'actionnaires. Les évaluations concernent des propriétés situées à Joliette, Saint-Charles
+
+56. 08031.01G - 170331 - Remise volontaire - Documents [p.4 à 7].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_43. TREMBLAY, Vincent_Pièces_08031.01G - 170331 Courriel de Denise Bélanger à Guy Tremblay daté du 10 décembre 2014, incluant un courriel investisseur_08031.01G - 170331 - Remise volontaire - Documents [p.4 à 7].pdf.txt
+   Type: remise_volontaire
+   Summary: Ce document contient des informations sur des projets immobiliers à Joliette, Saint-Charles-Borromée, Sainte-Julienne et Saint-Lin-Laurentides, incluant des évaluations de propriétés et des conventions entre actionnaires
+
+57. 08031.01G - 170331 - Remise volontaire - Documents [p.638 et 639].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_D - Témoins > Idéal développement et Idéal finance_I. Les compagnies Idéal_5. Denise BÉLANGER-FAUTEUX_Pièces_08031 (Conflit lié au codage Unicode).01G - 170331 Courriel investisseur du 5 décembre 2014 de Denise Bélanger à Guy Tremblay_08031.01G - 170331 - Remise volontaire - Documents [p.638 et 639].pdf.txt
+   Type: évaluation (financier)
+   Summary: Ce document est une évaluation immobilière réalisée par DEVIMO inc. pour des propriétés situées à Saint-Lin-Laurentides, Québec. Les évaluations portent sur des terrains et bâtiments commerciaux, incluant des projets com
+
+58. 08031.01G - 170331 - Remise volontaire - Documents [p.638 et 639].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_16. BÉLANGER-FAUTEUX, Denise_Pièces_08031 (Conflit lié au codage Unicode).01G - 170331 Courriel investisseur du 5 décembre 2014 de Denise Bélanger à Guy Tremblay_08031.01G - 170331 - Remise volontaire - Documents [p.638 et 639].pdf.txt
+   Type: remise_volontaire
+   Summary: Ce document contient des échanges de courriels, des conventions d'actionnaires, des rapports d'évaluation immobilière et des résolutions d'actionnaires. Les discussions portent sur des projets immobiliers à Joliette, Sai
+
+59. 08140.02F - 210917 - Lot 21-1068 - Documents [p.467 et 468].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_15. DELLI FRAINE, Léandro_Pièces_08140.02F - Lot 21-1068 Courriel investisseur du 16 juin 2015 de Denise Bélanger pour le projet de Ste-Julienne_08140.02F - 210917 - Lot 21-1068 - Documents [p.467 et 468].pdf.txt
+   Type: rapport (évaluation)
+   Summary: Ce rapport d'évaluation et d'analyse traite de divers projets immobiliers et de financement à Montréal-Est, incluant des terrains et bâtiments commerciaux. Il mentionne des évaluations de terrains, des transactions immob
+
+60. 08140.02F - 210917 - Lot 21-1068 - Documents [p.467 et 468].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_16. BÉLANGER-FAUTEUX, Denise_Pièces_08140.02F - 210917 - Lot 21-1068 Courriel investisseur du 16 juin 2015 de Denise Bélanger pour le projet de Ste-Julienne_08140.02F - 210917 - Lot 21-1068 - Documents [p.467 et 468].pdf.txt
+   Type: rapport (évaluation)
+   Summary: Ce rapport d'évaluation analyse divers projets immobiliers à Montréal-Est, incluant des terrains et bâtiments commerciaux. Il mentionne des transactions, des évaluations environnementales et des litiges financiers impliq
+
+61. 10-13 Courriel investisseur - DP-0343 - Gaudet (16).pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_E - Témoins > Les projets immobiliers_IV. Les investisseurs_33. Solange PAQUETTE_Déclarations_08018.02G - 170119 - Remise volontaire - Courriels - Documents_Courriel 2015-02-19_10-13 Courriel investisseur - DP-0343 - Gaudet (16).pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel daté du 19 février 2015 concernant un prêt de 1 750 000 $ pour un terrain à Saint-Augustin-de-Desmaures. Plusieurs investisseurs, dont Idéal Finance et 9201-5155 QC inc., participent au financement. Le terrain e
+
+62. 10-13 Courriel investisseur - DP-0343 - Gaudet (16).pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_42. PAQUETTE, Solange_08018.02G - 170119 - Remise volontaire - Courriels - Documents_Courriel 2015-02-19_10-13 Courriel investisseur - DP-0343 - Gaudet (16).pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel daté du 19 février 2015 concernant un prêt de 1 750 000,00 $ pour un terrain à Saint-Augustin-de-Desmaures. Plusieurs investisseurs, dont Idéal Finance et 9201-5155 QC inc., participent au financement. Le terrai
+
+63. 10-13 Courriel investisseur - DP-0343 - Gaudet (16).pdf
+   Container: legal-documents
+   Blob path: extracted-text/Divulgation_  ORIBUS - DIVULGATION 1_08 - PLAIGNANT - VICTIME - TÉMOIN_08018 - PAQUETTE, Solange_08018.02G - 170119 - Remise volontaire - Courriels - Documents_Courriel 2015-02-19_10-13 Courriel investisseur - DP-0343 - Gaudet (16).pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel daté du 19 février 2015 concernant un prêt de 1 750 000 $ pour un terrain à Saint-Augustin-de-Desmaures. Les investisseurs incluent Idéal Finance et 9201-5155 QC inc. Le terrain est évalué à 5 300 000 $ et est d
+
+64. 10-13 Courriel investisseur - DP-0343 - Gaudet (16).pdf
+   Container: legal-documents
+   Blob path: extracted-text/Divulgation_2501 - Janvier 2025_08 Plaignant Victime Témoin_08018 - PAQUETTE, Solange_08018.07J - 241214 - Notes pers. PRATTE Y. (11154)_08018.02G - 170119 - Remise volontaire - Courriels - Documents_Courriel 2015-02-19_10-13 Courriel investisseur - DP-0343 - Gaudet (16).pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel daté du 19 février 2015 concernant un prêt de 1 750 000,00 $ pour un terrain à Saint-Augustin-de-Desmaures. Plusieurs investisseurs, dont Idéal Finance et 9201-5155 QC inc., participent au financement. Le terrai
+
+65. 10-13 Courriel investisseur-Charron Benoît-Chalifoux.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Divulgation_  ORIBUS - DIVULGATION 1_18 - DOSSIER SECONDAIRES_18003A - Dossiers cour civile - Criminelle & pénale_Palais de justice Laval_540-17-012632-179_P-31_DVD P-31_Pièces en demande_P-05_Anciens Prêt Charron_10-13 Courriel investisseur-Charron Benoît-Chalifoux.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel d'Idéal Finance concernant un prêt hypothécaire privé de 1 000 000,00 $ pour l'achat d'une garderie située dans un quartier résidentiel neuf. L'évaluation de la propriété est de 1 900 000,00 $ avec une hypothèqu
+
+66. 12_Courriel du 27 octobre 2014 de Denise Bélanger à Guy Tremblay incluant le document courriel investisseur pour le projet de St-Lin.pdf
+   Container: legal-documents
+   Blob path: extracted-text/  Tableau de preuve - Février 2026/COURRIELS/12_Courriel du 27 octobre 2014 de Denise Bélanger à Guy Tremblay incluant le document courriel investisseur pour le projet de St-Lin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Guy Tremblay le 27 octobre 2014 concernant un prêt hypothécaire pour un projet à Saint-Lin-Laurentides. Le prêt totalise 1 150 000 $ avec des investisseurs incluant Idéal Finance et 
+
+67. 12_Courriel du 27 octobre 2014 de Denise Bélanger à Guy Tremblay incluant le document courriel investisseur pour le projet de St-Lin.pdf
+   Container: legal-documents
+   Blob path: extracted-text/  Tableau de preuve - Février 2026_COURRIELS_12_Courriel du 27 octobre 2014 de Denise Bélanger à Guy Tremblay incluant le document courriel investisseur pour le projet de St-Lin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Guy Tremblay le 27 octobre 2014 concernant un prêt hypothécaire pour un projet à Saint-Lin-Laurentides. Le prêt de 1 150 000 $ est garanti par un terrain évalué à 6 000 000 $. Des né
+
+68. 141021 - 1216 - COURRIEL INVESTISSEUR - 08031.01G - 170331 - RV - TREMBLAYG.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Analyse des projets_Ste-Julienne #1 - 1219-1221, route 125_Investisseurs-prêteurs-partenaires_9119-5610 Québec inc_Guy Tremblay_Courriels_141021 - 1216 - COURRIEL INVESTISSEUR - 08031.01G - 170331 - RV - TREMBLAYG.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger d'Idéal Finance le 21 octobre 2014 concernant un prêt hypothécaire privé de 1 700 000 $ pour des terrains à Sainte-Julienne. Les garanties incluent deux lots évalués à 7 875 000 $ avec
+
+69. 141021 - 1721 - COURRIEL INVESTISSEUR - 08031.01G - 170331 - RV - TREMBLAYG.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Analyse des projets_Ste-Julienne #1 - 1219-1221, route 125_Investisseurs-prêteurs-partenaires_9119-5610 Québec inc_Guy Tremblay_Courriels_141021 - 1721 - COURRIEL INVESTISSEUR - 08031.01G - 170331 - RV - TREMBLAYG.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger d'IdéalFinance concernant un prêt de 1 700 000 $ pour un projet à Sainte-Julienne. Les garanties incluent des terrains évalués à 7 875 000 $ avec des hypothèques existantes. Le projet 
+
+70. 22_Courriel du 10 décembre 2014 de Denise Bélanger à Guy Tremblay cc JFD  incluant courriel investisseur révisé.pdf
+   Container: legal-documents
+   Blob path: extracted-text/  Tableau de preuve - Février 2026/COURRIELS/22_Courriel du 10 décembre 2014 de Denise Bélanger à Guy Tremblay cc JFD  incluant courriel investisseur révisé.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Guy Tremblay le 10 décembre 2014 concernant un projet immobilier à Joliette/Saint-Charles-Borromée. Le courriel mentionne un investissement de 250 000 $ et un prêt total de 850 000 $
+
+71. 22_Courriel du 10 décembre 2014 de Denise Bélanger à Guy Tremblay cc JFD  incluant courriel investisseur révisé.pdf
+   Container: legal-documents
+   Blob path: extracted-text/  Tableau de preuve - Février 2026_COURRIELS_22_Courriel du 10 décembre 2014 de Denise Bélanger à Guy Tremblay cc JFD  incluant courriel investisseur révisé.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Guy Tremblay le 10 décembre 2014, avec copie à Jean-François Desormeaux, concernant un projet immobilier à Joliette/Saint-Charles-Borromée. Le courriel mentionne un investissement de
+
+72. 3-1 - 150225 - RV - Courriel investisseur St-Lin.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Pièces EP_EPDJFD-3_3-1 - 150225 - RV - Courriel investisseur St-Lin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel daté du 25 février 2015 concernant un investissement immobilier à Saint-Lin-Laurentides. Le prêt de 6 000 000 $ est garanti par des terrains évalués à 7,48 M$ et 15,929 M$. Le projet inclut des terrains convoité
+
+73. 3-2 - 150226 - RV - Courriel investisseur St-Lin.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Pièces EP_EPDJFD-3_3-2 - 150226 - RV - Courriel investisseur St-Lin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Patrick Moryoussef concernant un projet immobilier à Saint-Lin-Laurentides. Le projet inclut des terrains évalués à plusieurs millions de dollars, avec des hypothèques en cours et de
+
+74. 3-4 - 150504 - PC - Courriel investisseur - Rawdon.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Pièces EP_EPDJFD-3_3-4 - 150504 - PC - Courriel investisseur - Rawdon.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel daté du 4 mai 2015 concernant un prêt de 600 000 $ pour des terrains situés à Rawdon. Les garanties incluent un terrain résidentiel et un terrain avec fruiterie, avec des projets d'installation de Shell et Subwa
+
+75. 3-7 - 150902 - RV - Courriel investisseur - TR.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Pièces EP_EPDJFD-3_3-7 - 150902 - RV - Courriel investisseur - TR.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Idéal Finance à Patrick Moryoussef concernant un terrain à Trois-Rivières sur la rue Thibeau. Le document mentionne un prêt de 545 000 $ avec une garantie sur des lots spécifiques. Une somme de 250 00
+
+76. 8_Courriel du 16 octobre 2014 de Denise Bélanger à Guy Tremblay incluant le courriel investisseur pour le projet de St-Lin.pdf
+   Container: legal-documents
+   Blob path: extracted-text/  Tableau de preuve - Février 2026_COURRIELS_8_Courriel du 16 octobre 2014 de Denise Bélanger à Guy Tremblay incluant le courriel investisseur pour le projet de St-Lin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Guy Tremblay le 16 octobre 2014 concernant un projet immobilier à Saint-Lin-Laurentides. Le courriel inclut des informations sur un prêt de 1 150 000 $ pour un terrain évalué à 3 569
+
+77. Antérieur_Analyse_43. TREMBLAY, Vincent_Pièces_08031.01G - 170331 Courriel du 27 octobre 2014 de Denise Bélanger à Guy Tremblay incluant le courriel investisseur pour le projet de St-Lin_08031.01G - 170331 - Remise volontaire - Documents [p.382 à 385].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_43. TREMBLAY, Vincent_Pièces_08031.01G - 170331 Courriel du 27 octobre 2014 de Denise Bélanger à Guy Tremblay incluant le courriel investisseur pour le projet de St-Lin_08031.01G - 170331 - Remise volontaire - Documents [p.382 à 385].pdf.txt
+   Type: évaluation (financier)
+   Summary: Ce document contient plusieurs évaluations immobilières et rapports financiers liés à des projets à Saint-Lin-Laurentides, Joliette et Sainte-Julienne. Les évaluations incluent des propriétés commerciales et résidentiell
+
+78. Antérieur_Analyse_43. TREMBLAY, Vincent_Pièces_08031.01G - 170331 Courriel investisseur du 21 octobre 2014 de Denise Bélanger à Guy Tremblay du projet de Ste-Julienne (1219-1221 route 125)_08031.01G - 170331 - Remise volontaire - Documents [p.18 à 21].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_43. TREMBLAY, Vincent_Pièces_08031.01G - 170331 Courriel investisseur du 21 octobre 2014 de Denise Bélanger à Guy Tremblay du projet de Ste-Julienne (1219-1221 route 125)_08031.01G - 170331 - Remise volontaire - Documents [p.18 à 21].pdf.txt
+   Type: remise_volontaire
+   Summary: Ce document compile des échanges et rapports liés à des projets immobiliers et hypothécaires à Joliette, Saint-Charles-Borromée, Sainte-Julienne et Saint-Lin-Laurentides. Il inclut des évaluations de propriétés, des conv
+
+79. Antérieur_Analyse_43. TREMBLAY, Vincent_Pièces_08031.01G - 170331 Courriel investisseur du 5 décembre 2014 de Denise Bélanger à Guy Tremblay_08031.01G - 170331 - Remise volontaire - Documents [p.1 à 3].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_43. TREMBLAY, Vincent_Pièces_08031.01G - 170331 Courriel investisseur du 5 décembre 2014 de Denise Bélanger à Guy Tremblay_08031.01G - 170331 - Remise volontaire - Documents [p.1 à 3].pdf.txt
+   Type: remise_volontaire
+   Summary: Ce document contient des échanges et rapports liés à des projets immobiliers et hypothécaires au Québec, notamment à Joliette, Sainte-Julienne et Saint-Lin-Laurentides. Il inclut des évaluations de propriétés, des conven
+
+80. Autres documents [p.115 et 116].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_D - Témoins > Idéal développement et Idéal finance_I. Les compagnies Idéal_5. Denise BÉLANGER-FAUTEUX_Pièces_08005.01G - 161005 Courriel investisseur daté du 17 novembre 2014 pour le projet au 120, rue Saint-Isidore, Saint-Esprit_Autres documents [p.115 et 116].pdf.txt
+   Type: hypothèque
+   Summary: Ce document est un acte hypothécaire signé devant Me Pierre Aubin, notaire, impliquant plusieurs parties, dont Jean Chalifoux, Monique Rouleau, et Bernhard Friesacher, pour un prêt de 1 925 000 $ garanti par un immeuble 
+
+81. Autres documents [p.115 et 116].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_16. BÉLANGER-FAUTEUX, Denise_Pièces_08005.01G - 161005 Courriel investisseur daté du 17 novembre 2014 pour le projet au 120, rue Saint-Isidore, Saint-Esprit_Autres documents [p.115 et 116].pdf.txt
+   Type: hypothèque
+   Summary: Ce document est un acte hypothécaire complexe impliquant plusieurs parties, dont 8181772 Canada Inc., Jean Chalifoux, Monique Rouleau, Bernhard Friesacher et Olivier Gaudet. Il détaille des prêts hypothécaires, des monta
+
+82. Autres documents [p.115-116].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_D - Témoins > Idéal développement et Idéal finance_I. Les compagnies Idéal_5. Denise BÉLANGER-FAUTEUX_Pièces_08005.01G - 161005 Courriel investisseur du 17 novembre 2014 de Denise Bélanger pour le projet au 120, rue Saint-Isidore à Saint-Esprit_Autres documents [p.115-116].pdf.txt
+   Type: hypothèque
+   Summary: Ce document est un acte hypothécaire signé devant Me Pierre Aubin, notaire, impliquant plusieurs parties, dont Jean Chalifoux, Monique Rouleau, Bernhard Friesacher et Olivier Gaudet. Il détaille un prêt de 1 925 000 $ ga
+
+83. Autres documents [p.115-116].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_E - Témoins > Les projets immobiliers_IV. Les investisseurs_27. Jean CHALIFOUX_Pièces_08005.01G - 161005 Courriel investisseur du 17 novembre 2014 de Denise Bélanger pour le projet au 120, rue Saint-Isidore à Saint-Esprit_Autres documents [p.115-116].pdf.txt
+   Type: hypothèque
+   Summary: Ce document est un acte hypothécaire signé devant Me Pierre Aubin, notaire, impliquant plusieurs parties, dont Jean Chalifoux, Monique Rouleau, Bernhard Friesacher et Olivier Gaudet. Il concerne un prêt de 1 925 000 $ ga
+
+84. Autres documents [p.115-116].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_14. CHALIFOUX, Jean_Documents_08005.01G - 161005 Courriel investisseur du 17 novembre 2014 de Denise Bélanger pour le projet au 120, rue Saint-Isidore à Saint-Esprit_Autres documents [p.115-116].pdf.txt
+   Type: hypothèque
+   Summary: Ce document est un acte notarié détaillant plusieurs hypothèques et prêts liés à des propriétés situées au Québec, notamment au 120, rue St-Isidore, Saint-Esprit. Il mentionne des prêts totalisant plusieurs millions de d
+
+85. Autres documents [p.115-116].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_16. BÉLANGER-FAUTEUX, Denise_Pièces_08005.01G - 161005 Courriel investisseur du 17 novembre 2014 de Denise Bélanger pour le projet au 120, rue Saint-Isidore à Saint-Esprit_Autres documents [p.115-116].pdf.txt
+   Type: hypothèque
+   Summary: Ce document est un acte hypothécaire détaillant un prêt de 1 925 000 $ consenti par plusieurs créanciers, dont Jean Chalifoux, Monique Rouleau et Bernhard Friesacher, à Olivier Gaudet pour un projet immobilier à Saint-Es
+
+86. Autres documents [p.373 à 374].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_D - Témoins > Idéal développement et Idéal finance_I. Les compagnies Idéal_4. France LARIVIÈRE_Pièces_08005.01G – 161005 Courriel investisseur du 3 juin 2014 de France Larivière pour le projet de St-Alphonse_Autres documents [p.373 à 374].pdf.txt
+   Type: hypothèque
+   Summary: Ce document est un acte hypothécaire signé devant Me Pierre Aubin, notaire, impliquant plusieurs parties, dont Jean Chalifoux, Monique Rouleau, Bernhard Friesacher et Olivier Gaudet. Il détaille un prêt de 1 925 000 $ ga
+
+87. Autres documents [p.373 à 374].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_18. LARIVIÈRE, France_Documents_08005.01G – 161005 Courriel investisseur du 3 juin 2014 de France Larivière pour le projet de St-Alphonse_Autres documents [p.373 à 374].pdf.txt
+   Type: hypothèque
+   Summary: Ce document est un acte hypothécaire complexe impliquant plusieurs parties, dont 8181772 Canada Inc., Jean Chalifoux, Monique Rouleau, Bernhard Friesacher et Olivier Gaudet. Il détaille des prêts hypothécaires, des monta
+
+88. Autres documents [p.373-374].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_E - Témoins > Les projets immobiliers_IV. Les investisseurs_27. Jean CHALIFOUX_Pièces_08005.01G – 161005 Courriel investisseur du 3 juin 2014 de France Larivière pour le projet de St-Alphonse_Autres documents [p.373-374].pdf.txt
+   Type: hypothèque
+   Summary: Ce document est un acte hypothécaire signé devant Me Pierre Aubin, notaire, impliquant plusieurs parties, dont Jean Chalifoux, Monique Rouleau, Bernhard Friesacher et Olivier Gaudet. Il détaille des prêts hypothécaires t
+
+89. Autres documents [p.373-374].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_14. CHALIFOUX, Jean_Documents_08005.01G – 161005 Courriel investisseur du 3 juin 2014 de France Larivière pour le projet de St-Alphonse_Autres documents [p.373-374].pdf.txt
+   Type: hypothèque
+   Summary: Ce document est un acte hypothécaire signé devant Me Pierre Aubin, notaire, le 20 novembre 2014, impliquant plusieurs parties, dont Jean Chalifoux, Monique Rouleau, Bernhard Friesacher et Olivier Gaudet. Il détaille un p
+
+90. Courriel 2014-12-10.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_E - Témoins > Les projets immobiliers_IV. Les investisseurs_33. Solange PAQUETTE_Pièces_08018.02G - 170119 Courriel révisé de Denise Bélanger à Solange Paquette, daté du 10 décembre 2014_Courriel 2014-12-10.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel transféré concernant le dossier Joliette/Saint-Charles-Borromée. Denise Bélanger informe que le courriel investisseur révisé a été envoyé au notaire. Montant mentionné : 850k.
+
+91. Courriel 2014-12-10.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_42. PAQUETTE, Solange_Pièces_08018.02G - 170119 Courriel révisé de Denise Bélanger à Solange Paquette, daté du 10 décembre 2014_Courriel 2014-12-10.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel transféré concernant le dossier Joliette/Saint-Charles-Borromée. Mention d'un courriel investisseur révisé envoyé au notaire, avec une somme de 850k évoquée. Participants incluent Sophie Dallaire, Solange Paquet
+
+92. Courriel de Denise Bélanger à Guy Tremblay cc JFD du 16 décembre 2014, incluant un courriel-investisseur cc JFD.pdf
+   Container: legal-documents
+   Blob path: extracted-text/  Tableau de preuve - Février 2026_TÉMOINS_TREMBLAY, GUY_Courriel de Denise Bélanger à Guy Tremblay cc JFD du 16 décembre 2014, incluant un courriel-investisseur cc JFD.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel de Denise Bélanger à Guy Tremblay concernant un investissement de 250 000 $ dans un projet immobilier à Joliette/Saint-Charles-Borromée. Le prêt total s'élève à 850 000 $ avec un rendement de 12 %. Le projet inc
+
+93. Courriel du 16 octobre 2014 de Denise Bélanger à Guy Tremblay incluant le courriel investisseur pour le projet de St-Lin.pdf
+   Container: legal-documents
+   Blob path: extracted-text/  Tableau de preuve - Février 2026_TÉMOINS_TREMBLAY, GUY_Courriel du 16 octobre 2014 de Denise Bélanger à Guy Tremblay incluant le courriel investisseur pour le projet de St-Lin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Guy Tremblay le 16 octobre 2014 concernant un projet immobilier à Saint-Lin-Laurentides. Le prêt de 1 150 000 $ est garanti par une propriété évaluée à 3 569 769 $. Des négociations 
+
+94. Courriel du 27 octobre 2014 de Denise Bélanger à Guy Tremblay incluant le document courriel investisseur pour le projet de St-Lin.pdf
+   Container: legal-documents
+   Blob path: extracted-text/  Tableau de preuve - Février 2026_TÉMOINS_TREMBLAY, GUY_Courriel du 27 octobre 2014 de Denise Bélanger à Guy Tremblay incluant le document courriel investisseur pour le projet de St-Lin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Guy Tremblay le 27 octobre 2014 concernant un prêt hypothécaire pour un projet à Saint-Lin-Laurentides. Le prêt totalise 1 150 000 $ avec des investisseurs incluant Idéal Finance et 
+
+95. Courriel investisseur - DP-0335 Gaudet (15) - Joliette.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_D - Témoins > Idéal développement et Idéal finance_I. Les compagnies Idéal_5. Denise BÉLANGER-FAUTEUX_Pièces_08018.02G - 170119 Courriel du 5 décembre 2014 de Denise Bélanger à Solange Paquette_Courriel 2014-12-05_Courriel investisseur - DP-0335 Gaudet (15) - Joliette.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel d'IdéalFinance concernant un prêt hypothécaire privé de 1 550 000,00 $ pour Olivier Gaudet, avec une garantie sur une propriété à Saint-Charles-Borromée. Le rendement pour les investisseurs est de 10 %, et des n
+
+96. Courriel investisseur - DP-0335 Gaudet (15) - Joliette.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_E - Témoins > Les projets immobiliers_IV. Les investisseurs_33. Solange PAQUETTE_Déclarations_08018.02G - 170119 - Remise volontaire - Courriels - Documents_Courriel 2014-12-05_Courriel investisseur - DP-0335 Gaudet (15) - Joliette.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel d'IdéalFinance concernant un prêt hypothécaire privé de 1 550 000,00 $ pour Olivier Gaudet, garanti par une propriété à Saint-Charles-Borromée. Le rendement pour les investisseurs est de 10 %, avec des intérêts 
+
+97. Courriel investisseur - DP-0335 Gaudet (15) - Joliette.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_E - Témoins > Les projets immobiliers_IV. Les investisseurs_33. Solange PAQUETTE_Pièces_08018.02G - 170119 Courriel investisseur daté du 5 décembre 2014 sollicitant 240 500_Courriel investisseur - DP-0335 Gaudet (15) - Joliette.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel d'IdéalFinance concernant un prêt hypothécaire privé de 1 550 000,00 $ pour Olivier Gaudet, avec une garantie sur une propriété à Saint-Charles-Borromée. Le rendement pour les investisseurs est de 10 %, et des n
+
+98. Courriel investisseur - DP-0335 Gaudet (15) - Joliette.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_16. BÉLANGER-FAUTEUX, Denise_Pièces_08018.02G - 170119 Courriel du 5 décembre 2014 de Denise Bélanger à Solange Paquette_Courriel 2014-12-05_Courriel investisseur - DP-0335 Gaudet (15) - Joliette.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel d'IdéalFinance concernant un prêt hypothécaire privé de 1 550 000,00 $ pour Olivier Gaudet, avec une garantie sur une propriété à Saint-Charles-Borromée. Le rendement pour les investisseurs est de 10 %, avec des
+
+99. Courriel investisseur - DP-0335 Gaudet (15) - Joliette.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_42. PAQUETTE, Solange_08018.02G - 170119 - Remise volontaire - Courriels - Documents_Courriel 2014-12-05_Courriel investisseur - DP-0335 Gaudet (15) - Joliette.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel d'IdéalFinance concernant un prêt hypothécaire privé de 1 550 000,00 $ pour Olivier Gaudet, avec une garantie sur une propriété à Saint-Charles-Borromée. Le rendement pour les investisseurs est de 10 %, avec des
+
+100. Courriel investisseur - DP-0335 Gaudet (15) - Joliette.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_42. PAQUETTE, Solange_Pièces_08018.02G - 170119 Courriel investisseur daté du 5 décembre 2014 sollicitant 240 500_Courriel investisseur - DP-0335 Gaudet (15) - Joliette.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel d'IdéalFinance concernant un prêt hypothécaire privé de 1 550 000,00 $ pour Olivier Gaudet, garanti par une propriété à Saint-Charles-Borromée. Le rendement pour les investisseurs est de 10 %. Évaluation de la p
+
+101. Courriel investisseur - DP-0335 Gaudet (15) - Joliette.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Divulgation_  ORIBUS - DIVULGATION 1_08 - PLAIGNANT - VICTIME - TÉMOIN_08018 - PAQUETTE, Solange_08018.02G - 170119 - Remise volontaire - Courriels - Documents_Courriel 2014-12-05_Courriel investisseur - DP-0335 Gaudet (15) - Joliette.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel d'IdéalFinance concernant un prêt hypothécaire privé de 1 550 000,00 $ pour Olivier Gaudet. La propriété garantie est située au 13-15, rue de la Visitation, Saint-Charles-Borromée, avec une évaluation de 2 901 4
+
+102. Courriel investisseur - DP-0335 Gaudet (15) - Joliette.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Divulgation_2501 - Janvier 2025_08 Plaignant Victime Témoin_08018 - PAQUETTE, Solange_08018.07J - 241214 - Notes pers. PRATTE Y. (11154)_08018.02G - 170119 - Remise volontaire - Courriels - Documents_Courriel 2014-12-05_Courriel investisseur - DP-0335 Gaudet (15) - Joliette.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel d'IdéalFinance concernant un prêt hypothécaire privé de 1 550 000,00 $ pour Olivier Gaudet, avec une garantie sur une propriété à Saint-Charles-Borromée. Le prêt est approuvé pour 12 mois avec un rendement de 10
+
+103. Courriel investisseur - DP-0343 - Gaudet (16).pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_E - Témoins > Les projets immobiliers_IV. Les investisseurs_33. Solange PAQUETTE_Déclarations_08018.02G - 170119 - Remise volontaire - Courriels - Documents_Courriel 2015-03-18_Courriel investisseur - DP-0343 - Gaudet (16).pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel daté du 18 mars 2015 concernant un prêt de 1 750 000,00 $ pour un terrain à Saint-Augustin-de-Desmaures. Plusieurs investisseurs, dont Idéal Finance et 9201-5155 QC inc., participent au financement. Le terrain e
+
+104. Courriel investisseur - DP-0343 - Gaudet (16).pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_42. PAQUETTE, Solange_08018.02G - 170119 - Remise volontaire - Courriels - Documents_Courriel 2015-03-18_Courriel investisseur - DP-0343 - Gaudet (16).pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel daté du 18 mars 2015 concernant un prêt de 1 750 000,00 $ pour un terrain à Saint-Augustin-de-Desmaures. Plusieurs investisseurs, dont Idéal Finance et 9201-5155 QC inc., participent au financement. Le terrain e
+
+105. Courriel investisseur - DP-0343 - Gaudet (16).pdf
+   Container: legal-documents
+   Blob path: extracted-text/Divulgation_  ORIBUS - DIVULGATION 1_08 - PLAIGNANT - VICTIME - TÉMOIN_08018 - PAQUETTE, Solange_08018.02G - 170119 - Remise volontaire - Courriels - Documents_Courriel 2015-03-18_Courriel investisseur - DP-0343 - Gaudet (16).pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel daté du 18 mars 2015 concernant un prêt hypothécaire privé de 1 750 000,00 $ pour un terrain à Saint-Augustin-de-Desmaures. Les investisseurs incluent Idéal Finance et 9201-5155 QC inc. (Solange Paquette). Le te
+
+106. Courriel investisseur - DP-0343 - Gaudet (16).pdf
+   Container: legal-documents
+   Blob path: extracted-text/Divulgation_2501 - Janvier 2025_08 Plaignant Victime Témoin_08018 - PAQUETTE, Solange_08018.07J - 241214 - Notes pers. PRATTE Y. (11154)_08018.02G - 170119 - Remise volontaire - Courriels - Documents_Courriel 2015-03-18_Courriel investisseur - DP-0343 - Gaudet (16).pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel daté du 18 mars 2015 concernant un prêt de 1 750 000,00 $ pour un terrain à Saint-Augustin-de-Desmaures. Plusieurs investisseurs, dont Idéal Finance et 9201-5155 QC inc., participent au financement. Le terrain e
+
+107. Courriel investisseur daté du 10 décembre 2014 prêt 240 500$.pdf
+   Container: legal-documents
+   Blob path: extracted-text/  Tableau de preuve - Février 2026_TÉMOINS_PAQUETTTE, SOLANGE_Courriel investisseur daté du 10 décembre 2014 prêt 240 500$.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel daté du 10 décembre 2014 concernant un prêt de 850 000 $ avec des investisseurs, incluant Idéal Finance et 9201-5155 QC inc. La garantie inclut des propriétés à Saint-Charles-Borromée et Saint-Jérôme. Le rendeme
+
+108. Courriel investisseur du 5 décembre 2014 de Denise Bélanger à Guy Tremblay cc JFD.pdf
+   Container: legal-documents
+   Blob path: extracted-text/  Tableau de preuve - Février 2026_TÉMOINS_TREMBLAY, GUY_Courriel investisseur du 5 décembre 2014 de Denise Bélanger à Guy Tremblay cc JFD.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Guy Tremblay le 5 décembre 2014 concernant un investissement de 250 000 $ dans un projet immobilier à Joliette (lot 2 901 481). Le prêt total s'élève à 1 550 000 $ avec un rendement 
+
+109. Courriel-investisseur du 18 juin 2014 envoyé le 4 juillet 2014 par France LARIVIÈRE à Léon Raymond.pdf
+   Container: legal-documents
+   Blob path: extracted-text/  Tableau de preuve - Février 2026_TÉMOINS_RAYMOND, LEON_Courriel-investisseur du 18 juin 2014 envoyé le 4 juillet 2014 par France LARIVIÈRE à Léon Raymond.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par France Larivière à Léon Raymond concernant un prêt hypothécaire privé de 1 725 000,00 $ pour des terrains à Saint-Alphonse-de-Rodriguez. Le prêt inclut des intérêts payés d'avance et une garantie sur 
+
+110. Courriel-investisseur du 26 février 2015_DBélanger_PMoryoussef cc JFD au sujet de St-Lin-Laurentides (3), pour un prêt de 400 000.pdf
+   Container: legal-documents
+   Blob path: extracted-text/  Tableau de preuve - Février 2026_TÉMOINS_MORYOUSSEF, PATRICK_Courriel-investisseur du 26 février 2015_DBélanger_PMoryoussef cc JFD au sujet de St-Lin-Laurentides (3), pour un prêt de 400 000.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Patrick Moryoussef concernant un projet immobilier à Saint-Lin-Laurentides. Le prêt de 400 000 $ est destiné à financer l'achat de terrains évalués à 7,48 M$ et 15,929 M$. Plusieurs 
+
+111. Courriel.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_D - Témoins > Idéal développement et Idéal finance_I. Les compagnies Idéal_5. Denise BÉLANGER-FAUTEUX_Pièces_08018.02G - 170119 Courriel du 10 décembre 2014 de Denise Bélanger à Solange Paquette_Courriel 2014-12-10_Courriel.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel transféré concernant le dossier Joliette/Saint-Charles-Borromée. Denise Bélanger informe que le courriel investisseur révisé a été envoyé au notaire. Mention d'un montant de 850k et d'une communication avec Jean
+
+112. Courriel.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_E - Témoins > Les projets immobiliers_IV. Les investisseurs_33. Solange PAQUETTE_Déclarations_08018.02G - 170119 - Remise volontaire - Courriels - Documents_Courriel 2014-12-10_Courriel.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel transféré concernant le dossier Joliette/Saint-Charles-Borromée. Denise Bélanger informe que le courriel investisseur révisé a été envoyé au notaire le 10 décembre 2014. Montant mentionné : 850k.
+
+113. Courriel.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_16. BÉLANGER-FAUTEUX, Denise_Pièces_08018.02G - 170119 Courriel du 10 décembre 2014 de Denise Bélanger à Solange Paquette_Courriel 2014-12-10_Courriel.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel transféré concernant le dossier Joliette/Saint-Charles-Borromée. Mention d'un courriel investisseur révisé envoyé au notaire en 2014, avec une somme de 850k. Participants incluent Sophie Dallaire, Solange Paquet
+
+114. Courriel.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_42. PAQUETTE, Solange_08018.02G - 170119 - Remise volontaire - Courriels - Documents_Courriel 2014-12-10_Courriel.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel transféré concernant le dossier Joliette/Saint-Charles-Borromée. Denise Bélanger informe que le courriel investisseur révisé a été envoyé au notaire. Montant mentionné : 850k.
+
+115. Courriel.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Divulgation_  ORIBUS - DIVULGATION 1_08 - PLAIGNANT - VICTIME - TÉMOIN_08018 - PAQUETTE, Solange_08018.02G - 170119 - Remise volontaire - Courriels - Documents_Courriel 2014-12-10_Courriel.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel transféré concernant le dossier Joliette/Saint-Charles-Borromée. Mention d'un courriel investisseur révisé envoyé au notaire en lien avec une somme de 850 000 $. Participants incluent Sophie Dallaire, Solange Pa
+
+116. Courriel.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Divulgation_2501 - Janvier 2025_08 Plaignant Victime Témoin_08018 - PAQUETTE, Solange_08018.07J - 241214 - Notes pers. PRATTE Y. (11154)_08018.02G - 170119 - Remise volontaire - Courriels - Documents_Courriel 2014-12-10_Courriel.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel transféré concernant le dossier Joliette/Saint-Charles-Borromée. Denise Bélanger informe Sophie Dallaire et Solange Paquette qu'un courriel investisseur révisé a été envoyé au notaire. Le montant de 850k est men
+
+117. Courriel_investisseur_-_DP-0336_Gaudet.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_42. PAQUETTE, Solange_Pièces_08018.02G - 170119 Courriel investisseur daté du 10 décembre 2014 remplace celui du 5 décembre_Courriel_investisseur_-_DP-0336_Gaudet.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel daté du 10 décembre 2014 concernant un prêt hypothécaire privé de 850 000 $ pour Olivier Gaudet, avec une garantie sur une propriété à Saint-Charles-Borromée. Les investisseurs incluent Idéal Finance et 9201-515
+
+118. Document courriel investisseur du 17 novembre 2014 de Denise Bélanger pour le projet au 120, rue Saint-Isidore à Saint-Esprit.pdf
+   Container: legal-documents
+   Blob path: extracted-text/  Tableau de preuve - Février 2026_TÉMOINS_CHALIFOUX,JEAN_Document courriel investisseur du 17 novembre 2014 de Denise Bélanger pour le projet au 120, rue Saint-Isidore à Saint-Esprit.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel daté du 17 novembre 2014 envoyé par Denise Bélanger concernant un prêt de 1 875 000 $ pour un projet immobilier au 120, rue Saint-Isidore à Saint-Esprit. Le projet inclut des garanties immobilières et des baux c
+
+119. Documents [p.109 à 111].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_E - Témoins > Les projets immobiliers_IV. Les investisseurs_32. Stéphane GOULET_Pièces_08032.01G - 170223 Courriel-investisseur du 5 décembre 2014 de Denise BÉLANGER à Stéphane Goulet pour un prêt de 250 000$_Documents [p.109 à 111].pdf.txt
+   Type: autre
+   Summary: Ce document contient des informations détaillées sur des transactions immobilières et des hypothèques impliquant plusieurs parties, dont Stéphane Goulet, IdéalFinance et DEVIMO inc. Il mentionne des évaluations de propri
+
+120. Documents [p.109 à 111].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_41. GOULET, Stéphane_Pièces_08032.01G - 170223 Courriel-investisseur du 5 décembre 2014 de Denise BÉLANGER à Stéphane Goulet pour un prêt de 250 000$_Documents [p.109 à 111].pdf.txt
+   Type: autre
+   Summary: Ce document complexe regroupe divers actes juridiques et financiers liés à des transactions immobilières et hypothécaires au Québec. Il mentionne plusieurs personnes et entreprises impliquées dans des prêts, hypothèques,
+
+121. EP3.113. Courriel investisseur du 21 octobre 2014 de Denise Bélanger à Guy Tremblay du projet de Ste-Julienne (1219-1221 route 125).pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Pièces EP_EP-3_1 - Pièces à déposer_EP3.113. Courriel investisseur du 21 octobre 2014 de Denise Bélanger à Guy Tremblay du projet de Ste-Julienne (1219-1221 route 125).pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Guy Tremblay concernant un projet immobilier à Sainte-Julienne. Le prêt de 1 700 000 $ est garanti par des terrains évalués à 4 605 000 $ et 3 270 000 $. Possibilité de construire de
+
+122. EP3.113. Courriel investisseur du 21 octobre 2014 de Denise Bélanger à Guy Tremblay du projet de Ste-Julienne (1219-1221 route 125).pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Pièces EP_EPDBC-3_EP-3 - Enquête préliminaire_1 - Pièces à déposer_EP3.113. Courriel investisseur du 21 octobre 2014 de Denise Bélanger à Guy Tremblay du projet de Ste-Julienne (1219-1221 route 125).pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Guy Tremblay concernant un projet immobilier à Sainte-Julienne. Le prêt de 1 700 000 $ est garanti par des terrains évalués à 4 605 000 $ et 3 270 000 $. Possibilité de construire de
+
+123. EP3.117. Courriel du 27 octobre 2014 de Denise Bélanger à Guy Tremblay incluant le courriel investisseur pour le projet de St-Lin (1er.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_21. TREMBLAY, Guy_EP3.117. Courriel du 27 octobre 2014 de Denise Bélanger à Guy Tremblay incluant le courriel investisseur pour le projet de St-Lin (1er.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Guy Tremblay le 27 octobre 2014 concernant un prêt hypothécaire pour un projet à Saint-Lin-Laurentides. Le prêt de 1 150 000 $ est garanti par un terrain évalué à 6 000 000 $. Des né
+
+124. EP3.117. Courriel du 27 octobre 2014 de Denise Bélanger à Guy Tremblay incluant le courriel investisseur pour le projet de St-Lin (1er.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Pièces EP_EP-3_1 - Pièces à déposer_EP3.117. Courriel du 27 octobre 2014 de Denise Bélanger à Guy Tremblay incluant le courriel investisseur pour le projet de St-Lin (1er.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Guy Tremblay le 27 octobre 2014 concernant un prêt hypothécaire pour un projet à Saint-Lin-Laurentides. Le prêt totalise 1 150 000 $ avec des intérêts capitalisés mensuellement. Le p
+
+125. EP3.117. Courriel du 27 octobre 2014 de Denise Bélanger à Guy Tremblay incluant le courriel investisseur pour le projet de St-Lin (1er.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Pièces EP_EPDBC-3_EP-3 - Enquête préliminaire_1 - Pièces à déposer_EP3.117. Courriel du 27 octobre 2014 de Denise Bélanger à Guy Tremblay incluant le courriel investisseur pour le projet de St-Lin (1er.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Guy Tremblay le 27 octobre 2014 concernant un prêt hypothécaire pour un projet à Saint-Lin-Laurentides. Le prêt de 1 150 000 $ est garanti par un terrain évalué à 6 000 000 $. Des né
+
+126. EP3.144. Courriel investisseur du 16 juin 2015 de Denise Bélanger pour le projet de Ste-Julienne.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Pièces EP_EP-3_1 - Pièces à déposer_EP3.144. Courriel investisseur du 16 juin 2015 de Denise Bélanger pour le projet de Ste-Julienne.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger le 16 juin 2015 concernant un projet immobilier à Sainte-Julienne. Le prêt proposé est de 1 600 000 $ avec une hypothèque de premier rang. Le terrain est situé à une intersection strat
+
+127. EP3.144. Courriel investisseur du 16 juin 2015 de Denise Bélanger pour le projet de Ste-Julienne.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Pièces EP_EPDBC-3_EP-3 - Enquête préliminaire_1 - Pièces à déposer_EP3.144. Courriel investisseur du 16 juin 2015 de Denise Bélanger pour le projet de Ste-Julienne.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger le 16 juin 2015 concernant un projet immobilier à Sainte-Julienne. Le prêt proposé est de 1 600 000 $ avec une hypothèque de premier rang. Le terrain, situé à une intersection stratégi
+
+128. EP3.155. Courriel investisseur daté du 5 mars 2015 transmis à Susan Caon pour un terrain à Trois-Rivières.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_45. DEL NEGRO, Manlio_EP3.155. Courriel investisseur daté du 5 mars 2015 transmis à Susan Caon pour un terrain à Trois-Rivières.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel daté du 5 mars 2015 concernant un prêt de 1 750 000 $ pour des terrains à Trois-Rivières. Les investisseurs incluent Idéal Finance et Susan Caon. Les garanties incluent des terrains avec bâtiments existants et u
+
+129. EP3.155. Courriel investisseur daté du 5 mars 2015 transmis à Susan Caon pour un terrain à Trois-Rivières.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Pièces EP_EP-3_1 - Pièces à déposer_EP3.155. Courriel investisseur daté du 5 mars 2015 transmis à Susan Caon pour un terrain à Trois-Rivières.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel daté du 5 mars 2015 concernant un prêt de 1 750 000 $ pour des terrains à Trois-Rivières. Les investisseurs incluent Idéal Finance et Susan Caon. Les garanties incluent des terrains avec bâtiments existants et u
+
+130. EP3.155. Courriel investisseur daté du 5 mars 2015 transmis à Susan Caon pour un terrain à Trois-Rivières.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Pièces EP_EPDBC-3_EP-3 - Enquête préliminaire_1 - Pièces à déposer_EP3.155. Courriel investisseur daté du 5 mars 2015 transmis à Susan Caon pour un terrain à Trois-Rivières.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel daté du 5 mars 2015 concernant un prêt de 1 750 000,00 $ pour des terrains à Trois-Rivières. Les investisseurs incluent Idéal Finance et Susan Caon, avec un rendement de 12%. Les garanties incluent des terrains 
+
+131. EP3.157. Courriel-investisseur daté du 18 juin 2014 envoyé le 4 juillet 2014 par France LARIVIÈRE à Léon Raymond.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_24. RAYMOND, Léon_EP3.157. Courriel-investisseur daté du 18 juin 2014 envoyé le 4 juillet 2014 par France LARIVIÈRE à Léon Raymond.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel daté du 18 juin 2014 et envoyé le 4 juillet 2014 par France Larivière à Léon Raymond concernant un prêt de 1 725 000,00 $ pour des terrains à Saint-Alphonse-de-Rodriguez. Le prêt inclut des intérêts payés d'avan
+
+132. EP3.157. Courriel-investisseur daté du 18 juin 2014 envoyé le 4 juillet 2014 par France LARIVIÈRE à Léon Raymond.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Pièces EP_EP-3_1 - Pièces à déposer_EP3.157. Courriel-investisseur daté du 18 juin 2014 envoyé le 4 juillet 2014 par France LARIVIÈRE à Léon Raymond.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par France Larivière à Léon Raymond concernant un prêt de 1 725 000,00 $ pour des terrains à Saint-Alphonse-de-Rodriguez. Le prêt inclut des intérêts payés d'avance pour un an et une hypothèque de premier
+
+133. EP3.157. Courriel-investisseur daté du 18 juin 2014 envoyé le 4 juillet 2014 par France LARIVIÈRE à Léon Raymond.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Pièces EP_EPDBC-3_EP-3 - Enquête préliminaire_1 - Pièces à déposer_EP3.157. Courriel-investisseur daté du 18 juin 2014 envoyé le 4 juillet 2014 par France LARIVIÈRE à Léon Raymond.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par France Larivière à Léon Raymond concernant un prêt de 1 725 000,00 $ pour des terrains à Saint-Alphonse-de-Rodriguez. Les terrains, évalués à 3 991 500,00 $, sont divisés en plusieurs lots. Le finance
+
+134. EP3.158. Courriel investisseur du 27 janvier 2015 de France LARIVIÈRE à Léon Raymond.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Pièces EP_EP-3_1 - Pièces à déposer_EP3.158. Courriel investisseur du 27 janvier 2015 de France LARIVIÈRE à Léon Raymond.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par France La Rivière à Léon Raymond le 27 janvier 2015 concernant un dossier de financement pour 9303-6234 Québec Inc. Le prêt de 285 000 $ est garanti par des terrains à Saint-Alphonse-de-Rodriguez, éva
+
+135. EP3.158. Courriel investisseur du 27 janvier 2015 de France LARIVIÈRE à Léon Raymond.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Pièces EP_EPDBC-3_EP-3 - Enquête préliminaire_1 - Pièces à déposer_EP3.158. Courriel investisseur du 27 janvier 2015 de France LARIVIÈRE à Léon Raymond.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par France La Rivière à Léon Raymond le 27 janvier 2015 concernant un dossier de financement pour 9303-6234 Québec Inc. Le prêt de 285 000 $ est garanti par des terrains à Saint-Alphonse-de-Rodriguez, éva
+
+136. EP3.170. Courriel-investisseur du 26 février 2015 de Denise Bélanger à Patrick Moryoussef au sujet de St-Lin-Laurentides sollicitant 400 .pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Pièces EP_EP-3_1 - Pièces à déposer_EP3.170. Courriel-investisseur du 26 février 2015 de Denise Bélanger à Patrick Moryoussef au sujet de St-Lin-Laurentides sollicitant 400 .pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Patrick Moryoussef le 26 février 2015 concernant un projet immobilier à Saint-Lin-Laurentides. Le courriel détaille un prêt de 6 000 000 $ avec une somme requise de 400 000 $ et des 
+
+137. EP3.170. Courriel-investisseur du 26 février 2015 de Denise Bélanger à Patrick Moryoussef au sujet de St-Lin-Laurentides sollicitant 400 .pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Pièces EP_EPDBC-3_EP-3 - Enquête préliminaire_1 - Pièces à déposer_EP3.170. Courriel-investisseur du 26 février 2015 de Denise Bélanger à Patrick Moryoussef au sujet de St-Lin-Laurentides sollicitant 400 .pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Patrick Moryoussef le 26 février 2015 concernant un projet immobilier à Saint-Lin-Laurentides. Le courriel détaille un prêt de 6 000 000 $ avec une somme requise de 400 000 $ et des 
+
+138. EP3.174. Courriel-investisseur de Denise Bélanger à Patrick MORYOUSSEF, au sujet du terrain de Rawdon, daté du 4 mai 2015 .pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Pièces EP_EP-3_1 - Pièces à déposer_EP3.174. Courriel-investisseur de Denise Bélanger à Patrick MORYOUSSEF, au sujet du terrain de Rawdon, daté du 4 mai 2015 .pdf.txt
+   Type: courriel (investisseur)
+   Summary: Ce courriel, daté du 4 mai 2015, envoyé par Denise Bélanger à Patrick Moryoussef, concerne un projet immobilier à Rawdon, incluant des terrains situés sur la rue Queen et la 2e Avenue. Des documents joints mentionnent de
+
+139. EP3.174. Courriel-investisseur de Denise Bélanger à Patrick MORYOUSSEF, au sujet du terrain de Rawdon, daté du 4 mai 2015 .pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Pièces EP_EPDBC-3_EP-3 - Enquête préliminaire_1 - Pièces à déposer_EP3.174. Courriel-investisseur de Denise Bélanger à Patrick MORYOUSSEF, au sujet du terrain de Rawdon, daté du 4 mai 2015 .pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel de Denise Bélanger à Patrick Moryoussef concernant le projet immobilier à Rawdon. Le message inclut des documents liés à des terrains situés sur la rue Queen, avec des intérêts exprimés par Subway et Sobeys pour
+
+140. EP3.179. Courriel-investisseur du 2 septembre 2015 de Véronique Charton à Patrick Moryoussef au sujet du projet de Trois-Rivières, en liasse.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Pièces EP_EP-3_1 - Pièces à déposer_EP3.179. Courriel-investisseur du 2 septembre 2015 de Véronique Charton à Patrick Moryoussef au sujet du projet de Trois-Rivières, en liasse.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Véronique Charton à Patrick Moryoussef le 2 septembre 2015 concernant un projet immobilier à Trois-Rivières sur la rue Thibeau. Le courriel mentionne un prêt de 545 000 $ avec une garantie sur des ter
+
+141. EP3.179. Courriel-investisseur du 2 septembre 2015 de Véronique Charton à Patrick Moryoussef au sujet du projet de Trois-Rivières, en liasse.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Pièces EP_EPDBC-3_EP-3 - Enquête préliminaire_1 - Pièces à déposer_EP3.179. Courriel-investisseur du 2 septembre 2015 de Véronique Charton à Patrick Moryoussef au sujet du projet de Trois-Rivières, en liasse.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Véronique Charton à Patrick Moryoussef le 2 septembre 2015 concernant un projet immobilier à Trois-Rivières sur la rue Thibeau. Le courriel mentionne un prêt de 545 000 $ avec une garantie sur des ter
+
+142. EP3.2. Courriel-investisseur du 21 octobre 2014 de Denise Bélanger à Guy Tremblay.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Pièces EP_EP-3_1 - Pièces à déposer_EP3.2. Courriel-investisseur du 21 octobre 2014 de Denise Bélanger à Guy Tremblay.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Guy Tremblay le 21 octobre 2014 concernant un prêt de 1 700 000 $ pour un projet immobilier à Sainte-Julienne. Deux garanties sont mentionnées, avec des évaluations respectives de 3 
+
+143. EP3.2. Courriel-investisseur du 21 octobre 2014 de Denise Bélanger à Guy Tremblay.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Pièces EP_EPDBC-3_EP-3 - Enquête préliminaire_1 - Pièces à déposer_EP3.2. Courriel-investisseur du 21 octobre 2014 de Denise Bélanger à Guy Tremblay.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Guy Tremblay le 21 octobre 2014 concernant un prêt de 1 700 000 $ pour des terrains situés à Sainte-Julienne. Les garanties incluent deux propriétés avec une valeur future estimée à 
+
+144. EP3.219. Courriel-investisseur daté du 27 janvier 2015 de France LARIVIÈRE à Léon Raymond.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_14. CHALIFOUX, Jean_Pièces_EP3.219. Courriel-investisseur daté du 27 janvier 2015 de France LARIVIÈRE à Léon Raymond.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par France La Rivière à Léon Raymond le 27 janvier 2015 concernant un dossier de financement pour 9303-6234 Québec Inc. Le prêt de 285 000 $ est destiné à payer une balance de prix de vente en premier ran
+
+145. EP3.219. Courriel-investisseur daté du 27 janvier 2015 de France LARIVIÈRE à Léon Raymond.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_20. DUBÉ, Harold_EP3.219. Courriel-investisseur daté du 27 janvier 2015 de France LARIVIÈRE à Léon Raymond.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par France La Rivière à Léon Raymond le 27 janvier 2015 concernant un dossier de financement pour 9303-6234 Québec Inc. Le prêt de 285 000 $ est destiné à payer une balance de prix de vente pour des terra
+
+146. EP3.219. Courriel-investisseur daté du 27 janvier 2015 de France LARIVIÈRE à Léon Raymond.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Pièces EP_EP-3_1 - Pièces à déposer_EP3.219. Courriel-investisseur daté du 27 janvier 2015 de France LARIVIÈRE à Léon Raymond.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par France La Rivière à Léon Raymond le 27 janvier 2015 concernant un dossier de financement pour 9303-6234 Québec Inc. Le prêt de 285 000 $ est destiné à payer une balance de prix de vente pour des terra
+
+147. EP3.219. Courriel-investisseur daté du 27 janvier 2015 de France LARIVIÈRE à Léon Raymond.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Pièces EP_EPDBC-3_EP-3 - Enquête préliminaire_1 - Pièces à déposer_EP3.219. Courriel-investisseur daté du 27 janvier 2015 de France LARIVIÈRE à Léon Raymond.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par France La Rivière à Léon Raymond le 27 janvier 2015 concernant un dossier de financement pour 9303-6234 Québec Inc. Le prêt de 285 000 $ est garanti par des terrains à Saint-Alphonse-de-Rodriguez, éva
+
+148. EP3.281. Courriel-investisseur du 5 décembre 2014 de Denise BÉLANGER à Stéphane Goulet pour un prêt de 250 000$.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Pièces EP_EP-3_1 - Pièces à déposer_EP3.281. Courriel-investisseur du 5 décembre 2014 de Denise BÉLANGER à Stéphane Goulet pour un prêt de 250 000$.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Stéphane Goulet le 5 décembre 2014 concernant un investissement de 250 000 $ dans un projet immobilier à Joliette (lot 2 901 481). Le prêt total s'élève à 1 550 000 $ avec un rendeme
+
+149. EP3.281. Courriel-investisseur du 5 décembre 2014 de Denise BÉLANGER à Stéphane Goulet pour un prêt de 250 000$.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Pièces EP_EPDBC-3_EP-3 - Enquête préliminaire_1 - Pièces à déposer_EP3.281. Courriel-investisseur du 5 décembre 2014 de Denise BÉLANGER à Stéphane Goulet pour un prêt de 250 000$.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Stéphane Goulet le 5 décembre 2014 concernant un investissement de 250 000 $ dans un projet à Joliette (lot 2 901 481). Le prêt total s'élève à 1 550 000 $ avec un rendement de 12 %.
+
+150. EP3.294. Courriel investisseur daté du 5 décembre 2014 sollicitant 240 500.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Pièces EP_EP-3_1 - Pièces à déposer_EP3.294. Courriel investisseur daté du 5 décembre 2014 sollicitant 240 500.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel daté du 5 décembre 2014 envoyé par Idéal Finance à des investisseurs concernant un prêt hypothécaire privé de 1 550 000,00 $ pour une propriété commerciale à Saint-Charles-Borromée. La somme requise est de 240 5
+
+151. EP3.294. Courriel investisseur daté du 5 décembre 2014 sollicitant 240 500.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Pièces EP_EPDBC-3_EP-3 - Enquête préliminaire_1 - Pièces à déposer_EP3.294. Courriel investisseur daté du 5 décembre 2014 sollicitant 240 500.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel daté du 5 décembre 2014 envoyé par Idéal Finance à des investisseurs concernant un prêt hypothécaire privé de 1 550 000,00 $ pour une propriété commerciale à Saint-Charles-Borromée. Le rendement proposé est de 1
+
+152. EP3.296. Courriel investisseur daté du 10 décembre 2014 remplace celui du 5 décembre.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Pièces EP_EP-3_1 - Pièces à déposer_EP3.296. Courriel investisseur daté du 10 décembre 2014 remplace celui du 5 décembre.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel daté du 10 décembre 2014 concernant un prêt hypothécaire privé de 850 000 $ approuvé par Idéal Finance. La garantie inclut une propriété semi-commerciale à Saint-Charles-Borromée évaluée à 2 901 481 $. Les inves
+
+153. EP3.296. Courriel investisseur daté du 10 décembre 2014 remplace celui du 5 décembre.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Pièces EP_EPDBC-3_EP-3 - Enquête préliminaire_1 - Pièces à déposer_EP3.296. Courriel investisseur daté du 10 décembre 2014 remplace celui du 5 décembre.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel daté du 10 décembre 2014 concernant un prêt de 850 000 $ pour une propriété à Saint-Charles-Borromée. Les investisseurs incluent Idéal Finance et 9201-5155 QC inc. La garantie inclut une évaluation de 2 901 481 
+
+154. EP3.90. Courriel investisseur du 3 juin 2014 de France Larivière pour le projet de St-Alphonse.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_14. CHALIFOUX, Jean_Pièces_EP3.90. Courriel investisseur du 3 juin 2014 de France Larivière pour le projet de St-Alphonse.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel daté du 3 juin 2014 envoyé par France Larivière concernant un projet immobilier à Saint-Alphonse-de-Rodriguez. Le prêt de 1 725 000 $ est garanti par des terrains évalués à 3 991 500 $. Le projet inclut la vente
+
+155. EP3.90. Courriel investisseur du 3 juin 2014 de France Larivière pour le projet de St-Alphonse.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_24. RAYMOND, Léon_EP3.90. Courriel investisseur du 3 juin 2014 de France Larivière pour le projet de St-Alphonse.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel daté du 3 juin 2014 envoyé par France Larivière concernant un projet immobilier à Saint-Alphonse-de-Rodriguez. Le prêt de 1 725 000 $ est garanti par des terrains évalués à 3 991 500 $. Le projet inclut la vente
+
+156. EP3.90. Courriel investisseur du 3 juin 2014 de France Larivière pour le projet de St-Alphonse.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Pièces EP_EP-3_1 - Pièces à déposer_EP3.90. Courriel investisseur du 3 juin 2014 de France Larivière pour le projet de St-Alphonse.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel daté du 3 juin 2014 envoyé par France Larivière concernant un projet immobilier à Saint-Alphonse-de-Rodriguez. Le prêt de 1 725 000 $ est garanti par des terrains évalués à 3 991 500 $. Le projet inclut la vente
+
+157. EP3.90. Courriel investisseur du 3 juin 2014 de France Larivière pour le projet de St-Alphonse.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Pièces EP_EPDBC-3_EP-3 - Enquête préliminaire_1 - Pièces à déposer_EP3.90. Courriel investisseur du 3 juin 2014 de France Larivière pour le projet de St-Alphonse.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel daté du 3 juin 2014 envoyé par France Larivière concernant un projet immobilier à Saint-Alphonse-de-Rodriguez. Le prêt de 1 725 000 $ est garanti par des terrains évalués à 3 991 500 $. Le projet inclut la vente
+
+158. EP3.96. Courriel investisseur du 17 novembre 2014 de Denise Bélanger pour le projet au 120, rue Saint-Isidore à Saint-Esp.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Pièces EP_EP-3_1 - Pièces à déposer_EP3.96. Courriel investisseur du 17 novembre 2014 de Denise Bélanger pour le projet au 120, rue Saint-Isidore à Saint-Esp.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel daté du 17 novembre 2014 envoyé par Denise Bélanger concernant un prêt de 1 875 000 $ pour un projet au 120, rue Saint-Isidore, Saint-Esprit. Le prêt est garanti par une propriété évaluée à 2 540 230 $ et inclut
+
+159. EP3.96. Courriel investisseur du 17 novembre 2014 de Denise Bélanger pour le projet au 120, rue Saint-Isidore à Saint-Esp.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Pièces EP_EPDBC-3_EP-3 - Enquête préliminaire_1 - Pièces à déposer_EP3.96. Courriel investisseur du 17 novembre 2014 de Denise Bélanger pour le projet au 120, rue Saint-Isidore à Saint-Esp.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel daté du 17 novembre 2014 envoyé par Denise Bélanger d'Idéal Finance concernant un prêt de 1 875 000 $ pour un projet au 120, rue Saint-Isidore, Saint-Esprit. Le projet inclut des négociations avec Tim Hortons et
+
+160. Pièce DA-7 Courriel investisseur - 150128.pdf
+   Container: legal-documents
+   Blob path: extracted-text/Divulgation_  ORIBUS - DIVULGATION 1_18 - DOSSIER SECONDAIRES_18003A - Dossiers cour civile - Criminelle & pénale_Palais de justice Laval_231117 - Dossier cour Laval_540-17-012542-170_Inventaire des pièces du défendeur Pierre Aubin_Pièce DA-7 Courriel investisseur - 150128.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel daté du 28 janvier 2015 concernant un prêt hypothécaire privé de 1 750 000,00 $ avec Idéal Finance. Le prêt est garanti par des terrains à Trois-Rivières et inclut des investisseurs comme Manlio Del Negro. Les l
+
+161. 130711-ID-F Larivière à Beaulieu Lemieux prêt Mille Iles.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/DOCUMENTS DEMANDES PAR JFD/MILLES ILES_Ste-Lucie Beaulieu_Lemieux/130711-ID-F Larivière à Beaulieu Lemieux prêt Mille Iles.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par France La Rivière à Louise Lemieux et M. Beaulieu le 11 juillet 2013 concernant le dossier de 9219-9397 Québec Inc. Des documents liés à des évaluations et un plan de commercialisation sont joints. M.
+
+162. 141021-ID-D Bélanger à Tremblay 9119 Ste-Julienne 1.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-JULIENNE 1- 1219-1221, route 125 (PETRO)/COMMUNICATIONS/1- Communications avec les prêteurs_investisseurs/141021-ID-D Bélanger à Tremblay 9119 Ste-Julienne 1.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger concernant des modifications à un courriel investisseur lié au dossier Idéal Finance à Sainte-Julienne. Le message mentionne une discussion préalable avec Jean-François Desormeaux et i
+
+163. 141022-ID-D Bélanger à Tremblay 9119 St-Lin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-LIN-des-LAURENTIDES- 0,route 135/COMMUNICATIONS/1- Communications avec les prêteurs_investisseurs/141022-ID-D Bélanger à Tremblay 9119 St-Lin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Échange de courriels entre Denise Bélanger, Guy Tremblay et Jean-François Desormeaux concernant un dossier d'Idéal Finance à Saint-Lin-Laurentides. Discussion sur la modification d'un courriel investisseur, incluant le n
+
+164. 141029-ID-D Bélanger à Tremblay 1 9119 St-Lin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-ESPRIT- 120 rue St-ISIDORE/COMMUNICATIONS/141029-ID-D Bélanger à Tremblay 1 9119 St-Lin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel entre Denise Bélanger et Guy Tremblay concernant des évaluations pour un terrain à Saint-Lin-Laurentides. Un document supplémentaire est mentionné, potentiellement lié à des consultants en environnement. La corr
+
+165. 141029-ID-D Bélanger à Tremblay 9119 St-Lin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-ESPRIT- 120 rue St-ISIDORE/COMMUNICATIONS/141029-ID-D Bélanger à Tremblay 9119 St-Lin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel échangé entre Denise Bélanger et Guy Tremblay concernant des évaluations pour un terrain à Saint-Lin-Laurentides. Un document supplémentaire est mentionné par M. Desormeaux. Mme Bélanger transmet un document lié
+
+166. 141029-ID-D Bélanger à Tremblay 9119 St-Lin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-LIN-des-LAURENTIDES- 0,route 135/COMMUNICATIONS/1- Communications avec les prêteurs_investisseurs/141029-ID-D Bélanger à Tremblay 9119 St-Lin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel entre Denise Bélanger et Guy Tremblay concernant des évaluations pour un terrain à Saint-Lin-Laurentides. Un document environnemental est joint. Guy Tremblay mentionne une signature imminente chez le notaire.
+
+167. 141029-ID_D Bélanger à Tremblay 1 9119 St-Lin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-LIN-des-LAURENTIDES- 0,route 135/COMMUNICATIONS/1- Communications avec les prêteurs_investisseurs/141029-ID_D Bélanger à Tremblay 1 9119 St-Lin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Échange de courriels entre Denise Bélanger et Guy Tremblay concernant des évaluations pour un terrain à Saint-Lin-Laurentides. Un document environnemental est joint. Guy Tremblay mentionne une signature imminente chez le
+
+168. 141030-ID-D Bélanger instructions au Notaire Cession St-Lin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-ESPRIT- 120 rue St-ISIDORE/COMMUNICATIONS/141030-ID-D Bélanger instructions au Notaire Cession St-Lin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel de Denise Bélanger à Lucie Lafontaine concernant la cession d'une créance de 295 000 $ sur le lot 3 570 017 à Saint-Lin-Laurentides. Yves Lanctôt, via 9145-3639 Québec inc., rachète la créance de Mikael Voyer av
+
+169. 141030-ID-D Bélanger instructions au Notaire Cession St-Lin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-LIN-des-LAURENTIDES- 0,route 135/COMMUNICATIONS/2- Communications avec le bureau du notaire/141030-ID-D Bélanger instructions au Notaire Cession St-Lin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel de Denise Bélanger à Lucie Lafontaine concernant la cession d'une créance de 295 000 $ sur le lot 3 570 017 à Saint-Lin-Laurentides. Yves Lanctôt, via 9145-3639 Québec inc., rachète la créance de Mikael Voyer av
+
+170. 141030-ID-D Bélanger à Lucie Courriel Inv St-Lin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-ESPRIT- 120 rue St-ISIDORE/COMMUNICATIONS/141030-ID-D Bélanger à Lucie Courriel Inv St-Lin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel de Denise Bélanger à Lucie Lafontaine concernant la cession de créance sur le lot 3 570 017 à Saint-Lin-Laurentides. Yves Lanctôt, via 9145-3639 Québec inc., rachète 295 000 $ de Mikael Voyer avec un taux d'inté
+
+171. 141030-ID-D Bélanger à Lucie Courriel Inv St-Lin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-LIN-des-LAURENTIDES- 0,route 135/COMMUNICATIONS/2- Communications avec le bureau du notaire/141030-ID-D Bélanger à Lucie Courriel Inv St-Lin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel de Denise Bélanger à Lucie Lafontaine concernant le rachat d'une créance de 295 000 $ par Yves Lanctôt via 9145-3639 Québec inc. sur le lot 3 570 017 à Saint-Lin-Laurentides. Le nouveau taux est de 10 %, avec de
+
+172. 141104-ID-D Bélanger à Lanctot St-Lin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-ESPRIT- 120 rue St-ISIDORE/COMMUNICATIONS/141104-ID-D Bélanger à Lanctot St-Lin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Yves Lanctot concernant le dossier Saint-Lin-Laurentides. Il mentionne un acte de prêt notarié en premier rang daté du 29 octobre 2014 et des modifications récentes au dossier. Le co
+
+173. 141104-ID-D Bélanger à Lanctot St-Lin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-LIN-des-LAURENTIDES- 0,route 135/COMMUNICATIONS/1- Communications avec les prêteurs_investisseurs/141104-ID-D Bélanger à Lanctot St-Lin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Yves Lanctot concernant le dossier Saint-Lin-Laurentides. Il mentionne un acte de prêt notarié en premier rang daté du 29 octobre 2014 et inclut des pièces jointes reflétant des modi
+
+174. 141110-ID-D Bélanger instructions Notaire Cession St-Lin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-ESPRIT- 120 rue St-ISIDORE/COMMUNICATIONS/141110-ID-D Bélanger instructions Notaire Cession St-Lin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Ce courriel traite de la cession de créance liée à Saint-Lin-Laurentides. Denise Bélanger communique des instructions pour la répartition des fonds : 50 000 $ à Mikael Voyer, des intérêts à 9145-3639 Québec inc., et le r
+
+175. 141110-ID-D Bélanger instructions Notaire Cession St-Lin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-LIN-des-LAURENTIDES- 0,route 135/COMMUNICATIONS/2- Communications avec le bureau du notaire/141110-ID-D Bélanger instructions Notaire Cession St-Lin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Ce courriel de Denise Bélanger à plusieurs destinataires concerne une cession de créance liée à Saint-Lin-Laurentides. Il détaille la répartition des fonds : 50 000 $ à Mikael Voyer, un an d'intérêts à 9145-3639 Québec i
+
+176. 141113-ID-D Bélanger Courriel Inv Rawdon.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-ESPRIT- 120 rue St-ISIDORE/COMMUNICATIONS/141113-ID-D Bélanger Courriel Inv Rawdon.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel de Denise Bélanger à Lamoureux et Lamoureux concernant le dossier de financement immobilier à Rawdon pour Olivier Gaudet. Le prêt DP-0330 s'élève à 1 100 000 $ en deuxième rang avec une balance de vente de 350 0
+
+177. 141205-ID-D Bélanger à Blache St-Charles 13-15.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-ESPRIT- 120 rue St-ISIDORE/COMMUNICATIONS/141205-ID-D Bélanger à Blache St-Charles 13-15.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel de Denise Bélanger à Yves Blache concernant un investissement de 100 000 $ par 7 327 587 Canada inc. dans un projet à Joliette (lot 2 901 481). Le courriel mentionne également un document joint relatif à un inve
+
+178. 141205-ID-D Bélanger à Goulet St-Charles 13-15.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-ESPRIT- 120 rue St-ISIDORE/COMMUNICATIONS/141205-ID-D Bélanger à Goulet St-Charles 13-15.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel de Denise Bélanger à Monsieur Goulet concernant un investissement de 250 000 $ dans le projet de Joliette (lot 2 901 481). Le courriel mentionne également un document joint relatif à un investissement de 1,55M. 
+
+179. 141205-ID-D Bélanger à Tremblay 9119 St-Charles 13-15.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-ESPRIT- 120 rue St-ISIDORE/COMMUNICATIONS/141205-ID-D Bélanger à Tremblay 9119 St-Charles 13-15.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel de Denise Bélanger à Monsieur Tremblay concernant un investissement de 250 000 $ dans le projet de Joliette (lot 2 901 481). Le courriel mentionne également un document joint relatif à un investissement de 1,55M
+
+180. 141205-ID-D Bélanger à Tremblay 9119 modif St-Charles 13-15.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-ESPRIT- 120 rue St-ISIDORE/COMMUNICATIONS/141205-ID-D Bélanger à Tremblay 9119 modif St-Charles 13-15.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel de Denise Bélanger à Guy Tremblay concernant un investissement de 250 000 $ dans le projet de Joliette (lot 2 901 481). Le courriel inclut une pièce jointe relative à un investissement de 1,55M $ à Joliette/Sain
+
+181. 141210-ID-D Bélanger à Blache St-Charles 13-15.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-ESPRIT- 120 rue St-ISIDORE/COMMUNICATIONS/141210-ID-D Bélanger à Blache St-Charles 13-15.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel de Denise Bélanger à Yves Blache concernant un investissement de 100 000 $ par 7 327 587 Canada inc. dans le projet Joliette (lot 2 901 481). Le courriel investisseur a été révisé et envoyé au notaire le 10 déce
+
+182. 141210-ID-D Bélanger à Goulet St-Charles 13-15.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-ESPRIT- 120 rue St-ISIDORE/COMMUNICATIONS/141210-ID-D Bélanger à Goulet St-Charles 13-15.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Monsieur Goulet concernant un investissement de 250 000 $ dans le projet Joliette (lot 2 901 481). Le courriel mentionne également un document joint relatif à un montant de 850 000 $
+
+183. 141210-ID-D Bélanger à Tremblay 9119 St-Charles 13-15.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-ESPRIT- 120 rue St-ISIDORE/COMMUNICATIONS/141210-ID-D Bélanger à Tremblay 9119 St-Charles 13-15.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Guy Tremblay concernant un investissement de 250 000 $ dans un projet à Joliette (lot 2 901 481). Le courriel mentionne également un document révisé envoyé au notaire le 10 décembre 
+
+184. 141210-ID-D Bélanger à Tremblay 9119 St-Charles B 13-15.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-ESPRIT- 120 rue St-ISIDORE/COMMUNICATIONS/141210-ID-D Bélanger à Tremblay 9119 St-Charles B 13-15.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel de Denise Bélanger à Guy Tremblay concernant un investissement de 250 000 $ dans un projet à Joliette (lot 2 901 481). Le courriel mentionne également un document envoyé au notaire et une somme de 850k liée à Sa
+
+185. 141211-ID-D Bélanger à Paquette 9201-5155 St-Charles 13-15.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-ESPRIT- 120 rue St-ISIDORE/COMMUNICATIONS/141211-ID-D Bélanger à Paquette 9201-5155 St-Charles 13-15.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel de Denise Bélanger à Madame Paquette confirmant les discussions sur un projet à Saint-Charles-Borromée et Joliette. Mention d'un investissement de 240 500 $ et des modalités de paiement des intérêts. Communicati
+
+186. 150127-ID-F Larivière à H Dubé PJ courriel inv St-Alphonse.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/DOCUMENTS DEMANDES PAR JFD/VIEUX DOSSIER MASTERDEV/150127-ID-F Larivière à H Dubé PJ courriel inv St-Alphonse.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel d'Idéal Finance adressé à Harold Dubé concernant un prêt de 285 000 $ pour des terrains situés à Saint-Alphonse-de-Rodriguez. Les terrains, divisés en 7 lots, sont évalués à 3 991 500 $ avec une hypothèque actue
+
+187. 150127-ID-F Larivière à H Dubé courriel inv St-Alphonse.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/DOCUMENTS DEMANDES PAR JFD/VIEUX DOSSIER MASTERDEV/150127-ID-F Larivière à H Dubé courriel inv St-Alphonse.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par France La Rivière à Harold Dubé concernant un nouveau dossier lié à 9303-6234 Québec inc. et un projet à St-Alphonse. Le message mentionne un montant de 285 000 $ pour payer la balance de prix de vent
+
+188. 150205-ID-à Lucie Mandat et Courriel Inv St-Charles 170 .pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/COUVENT ST-PAUL/COMMUNICATIONS/2- Communications avec le bureau du notaire/150205-ID-à Lucie Mandat et Courriel Inv St-Charles 170 .pdf.txt
+   Type: courriel (notaire)
+   Summary: Courriel envoyé par Ideal Finance à Lucie Lafontaine concernant le dossier immobilier de St-Charles-Borromée, incluant des pièces jointes liées au mandat notaire et à un investisseur. Le message mentionne des détails sur
+
+189. 150212-ID-D Bélanger Mandat et Courriel Inv St-Lin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-LIN-des-LAURENTIDES- 0,route 135/COMMUNICATIONS/2- Communications avec le bureau du notaire/150212-ID-D Bélanger Mandat et Courriel Inv St-Lin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel échangé entre Denise Bélanger, Benoit Charron et d'autres parties concernant l'achat de terrains à Saint-Lin. Les lots 33570014 et 3569771 sont mentionnés pour un total de 470 000 pieds carrés, tandis que le lot
+
+190. 150216-ID-D Bélanger à Paquette 9201-5155 St-Charles 13-15.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-ESPRIT- 120 rue St-ISIDORE/COMMUNICATIONS/150216-ID-D Bélanger à Paquette 9201-5155 St-Charles 13-15.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Ce courriel concerne des échanges entre Denise Bélanger, Solange Paquette et Jean-François Desormeaux au sujet d'investissements dans des projets immobiliers à Saint-Charles-Borromée et Joliette. Solange Paquette demande
+
+191. 150217-ID-D Bélanger Mandat et Courriel Inv St-Lin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-LIN-des-LAURENTIDES- 0,route 135/COMMUNICATIONS/2- Communications avec le bureau du notaire/150217-ID-D Bélanger Mandat et Courriel Inv St-Lin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel de Denise Bélanger à Lucie Lafontaine concernant des lots à Saint-Lin. Discussion sur l'achat des lots 33570014 et 3569771 pour un total de 470 000 pieds carrés, et la non-achat du lot 33570015 en raison d'une e
+
+192. 150217-ID-VCharton Mandat et Courriel Inv St-Augustin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-AUGUSTIN DESMAURES/COMMUNICATIONS/2- Communications avec le bureau du notaire/150217-ID-VCharton Mandat et Courriel Inv St-Augustin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Véronique Charton d'Ideal Finance à Lucie Lafontaine concernant le projet immobilier 170 de la Visitation à St-Charles-Borromée. Le message inclut un mandat au notaire et un courriel d'investisseur li
+
+193. 150217-ID-VCharton Mandat et Courriel Inv Trois-Riv Thibeau Resto.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/TROIS-RIVIÈRES-  THIBEAU et DUVERNAY (RESTO)/COMMUNICATIONS/2- Communications avec le bureau du notaire/150217-ID-VCharton Mandat et Courriel Inv Trois-Riv Thibeau Resto.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Idéal Finance à Lucie Lafontaine concernant un projet hypothécaire privé sur la rue Thibeau à Trois-Rivières. Le message inclut des pièces jointes liées au mandat notarial et à un courriel investisseu
+
+194. 150219-ID-D Bélanger Mandat et Courriel Inv St-Augustin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-AUGUSTIN DESMAURES/COMMUNICATIONS/2- Communications avec le bureau du notaire/150219-ID-D Bélanger Mandat et Courriel Inv St-Augustin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Lucie Lamoureux concernant la mise à jour des courriels investisseurs pour des transactions à Saint-Augustin-de-Desmaures et Saint-Charles-Borromée. Les documents joints incluent des
+
+195. 150219-ID-VCharton Mandat Garantie Capital Transit .pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-AUGUSTIN DESMAURES/COMMUNICATIONS/2- Communications avec le bureau du notaire/150219-ID-VCharton Mandat Garantie Capital Transit .pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Véronique Charton d'Ideal Finance à Lucie Lafontaine de Lamoureux Notaires le 19 février 2015. Il contient des mandats notariés pour des projets à Trois-Rivières, St-Charles-Borromée et St-Augustin-de
+
+196. 150225-ID-D Bélanger à Tremblay 9119 St-Lin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-ESPRIT- 120 rue St-ISIDORE/COMMUNICATIONS/150225-ID-D Bélanger à Tremblay 9119 St-Lin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Guy Tremblay concernant un projet à Saint-Lin-Laurentides. Les intérêts acquis pour quatre mois dans un prêt précédent seront inclus dans le calcul des intérêts du nouveau prêt propo
+
+197. 150225-ID-D Bélanger à Tremblay 9119 St-Lin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-LIN-des-LAURENTIDES- 0,route 135/COMMUNICATIONS/1- Communications avec les prêteurs_investisseurs/150225-ID-D Bélanger à Tremblay 9119 St-Lin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Guy Tremblay concernant un projet à Saint-Lin-Laurentides. Les intérêts acquis pour quatre mois dans un prêt précédent seront inclus dans le calcul des intérêts d'un nouveau prêt pro
+
+198. 150225-ID-D Bélanger à Tremblay 9119 modif St-Lin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-ESPRIT- 120 rue St-ISIDORE/COMMUNICATIONS/150225-ID-D Bélanger à Tremblay 9119 modif St-Lin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Guy Tremblay concernant un projet à Saint-Lin-Laurentides. Les intérêts acquis pour un prêt précédent seront inclus dans le calcul des intérêts du nouveau prêt proposé. Jean-Francois
+
+199. 150225-ID-D Bélanger à Tremblay 9119 modif St-Lin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-LIN-des-LAURENTIDES- 0,route 135/COMMUNICATIONS/1- Communications avec les prêteurs_investisseurs/150225-ID-D Bélanger à Tremblay 9119 modif St-Lin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Guy Tremblay concernant un projet à Saint-Lin-Laurentides. Les intérêts acquis pour un prêt précédent seront inclus dans le calcul des intérêts du nouveau prêt proposé. Jean-Francois
+
+200. 150226-ID-D Bélanger à Moryoussef 2 St-Lin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-ESPRIT- 120 rue St-ISIDORE/COMMUNICATIONS/150226-ID-D Bélanger à Moryoussef 2 St-Lin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Patrick Moryoussef concernant le projet immobilier à Saint-Lin-Laurentides. Des documents joints incluent un plan de mise en valeur et une étude de marché. Un courriel pour les inves
+
+201. 150226-ID-D Bélanger à Moryoussef 2 St-Lin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-LIN-des-LAURENTIDES- 0,route 135/COMMUNICATIONS/1- Communications avec les prêteurs_investisseurs/150226-ID-D Bélanger à Moryoussef 2 St-Lin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Patrick Moryoussef concernant le projet immobilier à Saint-Lin-Laurentides. Des documents joints incluent un plan de mise en valeur et une étude de marché. Un courriel pour les inves
+
+202. 150226-ID-D Bélanger à Moryoussef St-Lin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-ESPRIT- 120 rue St-ISIDORE/COMMUNICATIONS/150226-ID-D Bélanger à Moryoussef St-Lin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Patrick Moryoussef concernant un projet à Saint-Lin-Laurentides. Une pièce jointe mentionne le lot 5 deuxième rang et les intérêts aux 12 mois au 25 février 2015. Jean-Francois Desor
+
+203. 150226-ID-D Bélanger à Moryoussef St-Lin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-LIN-des-LAURENTIDES- 0,route 135/COMMUNICATIONS/1- Communications avec les prêteurs_investisseurs/150226-ID-D Bélanger à Moryoussef St-Lin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Patrick Moryoussef concernant un projet à Saint-Lin-Laurentides, avec une pièce jointe sur les intérêts liés au lot 5 deuxième rang. Copie conforme envoyée à Jean-Francois Desormeaux
+
+204. 150226-ID-D Bélanger à Paquin St-Lin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-ESPRIT- 120 rue St-ISIDORE/COMMUNICATIONS/150226-ID-D Bélanger à Paquin St-Lin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Gilles Paquin concernant un projet immobilier à Saint-Lin-Laurentides. Une pièce jointe mentionne le lot 5 deuxième rang et les intérêts pour 12 mois. Le courriel est daté du 26 févr
+
+205. 150226-ID-D Bélanger à Paquin St-Lin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-LIN-des-LAURENTIDES- 0,route 135/COMMUNICATIONS/1- Communications avec les prêteurs_investisseurs/150226-ID-D Bélanger à Paquin St-Lin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Gilles Paquin concernant un projet immobilier à Saint-Lin-Laurentides. Une pièce jointe mentionne le lot 5 deuxième rang et les intérêts pour 12 mois au 25 février 2015.
+
+206. 150227-ID-D Bélanger Courriel Inv St-Lin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-ESPRIT- 120 rue St-ISIDORE/COMMUNICATIONS/150227-ID-D Bélanger Courriel Inv St-Lin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel de Denise Bélanger à Lucie Lamoureux concernant un transfert de prêt pour Guy Tremblay à Saint-Lin-Laurentides. Le prêt précédent (lot 3 570 017) est transféré vers un nouveau prêt de deuxième rang (lot 3 569 76
+
+207. 150227-ID-D Bélanger Courriel Inv St-Lin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-LIN-des-LAURENTIDES- 0,route 135/COMMUNICATIONS/2- Communications avec le bureau du notaire/150227-ID-D Bélanger Courriel Inv St-Lin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel de Denise Bélanger à Lucie Lamoureux concernant un transfert de prêt pour Guy Tremblay à Saint-Lin-Laurentides. Le prêt précédent sur le lot 3 570 017 est transféré vers un nouveau prêt de deuxième rang sur le l
+
+208. 150302-ID-D Bélanger à Paquin St-Lin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-ESPRIT- 120 rue St-ISIDORE/COMMUNICATIONS/150302-ID-D Bélanger à Paquin St-Lin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Gilles Paquin, avec copie à Jean-Francois Desormeaux, concernant un projet à Saint-Lin-Laurentides. Le message inclut un courriel révisé pour un investisseur et une convention de prê
+
+209. 150302-ID-D Bélanger à Paquin St-Lin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-LIN-des-LAURENTIDES- 0,route 135/COMMUNICATIONS/1- Communications avec les prêteurs_investisseurs/150302-ID-D Bélanger à Paquin St-Lin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Gilles Paquin concernant un projet à Saint-Lin-Laurentides. Le message inclut une pièce jointe sur un lot spécifique et une convention de prêt datée du 26 août 2014.
+
+210. 150313-ID-D Bélange à Beaulieu St-Lin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-ESPRIT- 120 rue St-ISIDORE/COMMUNICATIONS/150313-ID-D Bélange à Beaulieu St-Lin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Noël Beaulieu concernant un projet à Saint-Lin-Laurentides. Le message mentionne un document joint relatif à des intérêts pour l'année 2015. Jean-François Desormeaux est en copie con
+
+211. 150313-ID-D Bélange à Beaulieu St-Lin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-LIN-des-LAURENTIDES- 0,route 135/COMMUNICATIONS/1- Communications avec les prêteurs_investisseurs/150313-ID-D Bélange à Beaulieu St-Lin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Noël Beaulieu concernant un projet à Saint-Lin-Laurentides. Une pièce jointe est mentionnée, datée du 3 mars 2015, avec des informations sur des intérêts. Le courriel est adressé à u
+
+212. 150313-ID-D Bélanger à Beaulieu St-Lin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-ESPRIT- 120 rue St-ISIDORE/COMMUNICATIONS/150313-ID-D Bélanger à Beaulieu St-Lin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Noël Beaulieu concernant le projet à Saint-Lin-Laurentides. Des documents joints incluent un plan de mise en valeur et une étude de marché. Un courriel supplémentaire pour les invest
+
+213. 150313-ID-D Bélanger à Beaulieu St-Lin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-LIN-des-LAURENTIDES- 0,route 135/COMMUNICATIONS/1- Communications avec les prêteurs_investisseurs/150313-ID-D Bélanger à Beaulieu St-Lin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Noël Beaulieu, avec copie à Jean-François Desormeaux, concernant un projet à Saint-Lin-Laurentides. Des documents joints incluent un plan de mise en valeur et une étude de marché. Le
+
+214. 150325-ID-D Bélanger Mandat et Courriel Inv St-Augustin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-ESPRIT- 120 rue St-ISIDORE/COMMUNICATIONS/150325-ID-D Bélanger Mandat et Courriel Inv St-Augustin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel de Denise Bélanger à Lucie Lamoureux concernant un projet à Saint-Augustin-de-Desmaures. Mention d'un investissement de 100 000 $ par Solange Paquette et d'un montant total de 1,6 M. Document daté du 25 mars 201
+
+215. 150326-ID-D Bélanger Mandat et Courriel Inv St-Augustin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-AUGUSTIN DESMAURES/COMMUNICATIONS/2- Communications avec le bureau du notaire/150326-ID-D Bélanger Mandat et Courriel Inv St-Augustin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Lucie Lamoureux concernant des documents révisés pour un terrain à Saint-Augustin-de-Desmaures. Mention de plusieurs investisseurs (Solange Paquette, Gaston Leduc, LDFraine) et des m
+
+216. 150414-ID-D Bélanger Cession 3RVS des Prairies.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/TROIS-RIVIÈRES- Des PRAIRIES et Massé (PETRO)/COMMUNICATIONS/2- Communications avec le bureau du notaire/150414-ID-D Bélanger Cession 3RVS des Prairies.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel de Denise Bélanger à Lucie Lamoureux concernant la cession d'une partie de la créance de 2e rang sur le projet Trois-Rivières des Prairies. Les conditions de prêt pour Gaston Leduc et Solange Paquette sont préci
+
+217. 150504-ID-D Bélanger à Lanctot Rawdon.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-ESPRIT- 120 rue St-ISIDORE/COMMUNICATIONS/150504-ID-D Bélanger à Lanctot Rawdon.pdf.txt
+   Type: courriel (interne)
+   Summary: Courriel envoyé par Denise Bélanger à Yves Lanctot le 4 mai 2015, avec copie à Jean-Francois Desormeaux, concernant le site de Rawdon. Plusieurs documents sont joints, incluant des lettres d'intérêt de Subway et Sobeys, 
+
+218. 150504-ID-D Bélanger à Moryoussef Rawdon.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-ESPRIT- 120 rue St-ISIDORE/COMMUNICATIONS/150504-ID-D Bélanger à Moryoussef Rawdon.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Denise Bélanger à Patrick Moryoussef le 4 mai 2015, avec copie à Jean-Francois Desormeaux, concernant le site de Rawdon. Plusieurs documents sont joints, incluant des lettres d'intérêt de Subway et So
+
+219. 150511-ID-D Bélanger Courriel Inv et instructions Couvent.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/COUVENT ST-PAUL/COMMUNICATIONS/2- Communications avec le bureau du notaire/150511-ID-D Bélanger Courriel Inv et instructions Couvent.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Ce courriel de Denise Bélanger, directrice chez Idéal Finance, traite de la cession d'une créance de deuxième rang sur le projet Trois-Rivières des Prairies 2. Les montants et les contributions des investisseurs, dont Je
+
+220. 150513-ID-D Bélanger Mandat Courriel Inv Acceptation et Instruction 3RVS Prairies.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/TROIS-RIVIÈRES- Des PRAIRIES et Massé (PETRO)/COMMUNICATIONS/2- Communications avec le bureau du notaire/150513-ID-D Bélanger Mandat Courriel Inv Acceptation et Instruction 3RVS Prairies.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel de Denise Bélanger à Lucie Lamoureux concernant deux prêts (DP-0378 et DP-0379) pour des propriétés à Rawdon. Les prêts totalisent 600 000 $ chacun, avec des contributions d'Idéal Finance, Yves Lanctôt et Patric
+
+221. 150527-ID-VCharton Courriel Inv Rawdon.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/RAWDON-3511,3515 et 3517 rue Queen/COMUNICATIONS/2- Communications avec le bureau du notaire/150527-ID-VCharton Courriel Inv Rawdon.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Véronique Charton d'Ideal Finance à Lucie Lafontaine de Lamoureux Notaires le 27 mai 2015. Le message concerne un courriel amendé pour l'investisseur Solange Paquette, lié à un projet à Rawdon (3511-3
+
+222. 150601-ID-VCharton Courriel Inv Rawdon.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/RAWDON-3511,3515 et 3517 rue Queen/COMUNICATIONS/2- Communications avec le bureau du notaire/150601-ID-VCharton Courriel Inv Rawdon.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Véronique Charton d'Ideal Finance à Lucie Lafontaine concernant un mandat notarial pour inclure Gaston Leduc dans un projet hypothécaire privé à Rawdon, impliquant des propriétés situées au 3511-3515-
+
+223. 150601-VCharton Courriel Inv ajout Lehous Rawdon.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/RAWDON-3511,3515 et 3517 rue Queen/COMUNICATIONS/2- Communications avec le bureau du notaire/150601-VCharton Courriel Inv ajout Lehous Rawdon.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Véronique Charton d'Ideal Finance à Lucie Lafontaine concernant un projet immobilier à Rawdon, incluant des propriétés situées au 3511-3515-3517, rue Queen. Mention de Gilles Lehoux et Olivier Gaudet.
+
+224. 150601-VCharton Courriel Inv modif Rawdon.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/RAWDON-3511,3515 et 3517 rue Queen/COMUNICATIONS/2- Communications avec le bureau du notaire/150601-VCharton Courriel Inv modif Rawdon.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Véronique Charton d'Ideal Finance à Lucie Lafontaine concernant un projet hypothécaire privé à Rawdon, incluant des propriétés situées au 3511-3515-3517, rue Queen. Le courriel mentionne un taux d'int
+
+225. 150602-ID-VCharton Courriel Inv 2e et 3e rang Rawdon.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/RAWDON-3511,3515 et 3517 rue Queen/COMUNICATIONS/2- Communications avec le bureau du notaire/150602-ID-VCharton Courriel Inv 2e et 3e rang Rawdon.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Idéal Finance à Lucie Lafontaine concernant le dossier d'Olivier Gaudet. Il mentionne un investissement de 100K par Noel Beaulieu et 45K par Idéal Finance pour un projet à Rawdon (3511-3515-3517, rue 
+
+226. 150602-ID-VCharton Courriel Inv ajout Beaulieu Rawdon.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/RAWDON-3511,3515 et 3517 rue Queen/COMUNICATIONS/2- Communications avec le bureau du notaire/150602-ID-VCharton Courriel Inv ajout Beaulieu Rawdon.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Véronique Charton d'Ideal Finance à Lucie Lafontaine concernant un investisseur, M. Noel Beaulieu, et un projet à Rawdon (3511-3515-3517, rue Queen). Le courriel mentionne un montant de 100K et inclut
+
+227. 150903-ID-VCharton Mandat et Courriel Inv 3RVS Thibeau Resto.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/TROIS-RIVIÈRES-  THIBEAU et DUVERNAY (RESTO)/COMMUNICATIONS/2- Communications avec le bureau du notaire/150903-ID-VCharton Mandat et Courriel Inv 3RVS Thibeau Resto.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Véronique Charton d'Ideal Finance à Lucie Lafontaine concernant un projet hypothécaire privé à Trois-Rivières (Thibeau). Le courriel inclut des pièces jointes liées au mandat notarial et au projet de 
+
+228. 150914-ID-VCharton Mandat et Courriel Inv 3RVS Thibeau Resto.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/TROIS-RIVIÈRES-  THIBEAU et DUVERNAY (RESTO)/COMMUNICATIONS/2- Communications avec le bureau du notaire/150914-ID-VCharton Mandat et Courriel Inv 3RVS Thibeau Resto.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Véronique Charton d'Ideal Finance à Lucie Lafontaine concernant le Projet Thibeau à Trois-Rivières. Il mentionne la cession de créances de 8181 772 Canada inc à Henri-Martin Tremblay (200K) et André D
+
+229. 151023-ID-VCharton Mandat et Courriel Inv 3RVS Prairies Resto.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/TROIS-RIVIÈRES- Des PRAIRIES et Massé (PETRO)/COMMUNICATIONS/2- Communications avec le bureau du notaire/151023-ID-VCharton Mandat et Courriel Inv 3RVS Prairies Resto.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Véronique Charton d'Ideal Finance à Lucie Lafontaine concernant un mandat notaire pour un 3e rang hypothécaire lié à un dossier à Trois-Rivières. Les documents joints incluent un mandat notaire et un 
+
+230. 151023-ID-VCharton Mandat et Courriel Inv modif2  3RVS Prairies Resto.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/TROIS-RIVIÈRES- Des PRAIRIES et Massé (PETRO)/COMMUNICATIONS/2- Communications avec le bureau du notaire/151023-ID-VCharton Mandat et Courriel Inv modif2  3RVS Prairies Resto.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Véronique Charton d'Ideal Finance à Lucie Lafontaine de Lamoureux Notaires le 23 octobre 2015. Le message concerne Stéphane Gaudet et Stéphane Goulet, avec des pièces jointes liées à un mandat notaire
+
+231. 160128-ID-L Bélanger Mandat et Courriel Inv St-Augustin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-ESPRIT- 120 rue St-ISIDORE/COMMUNICATIONS/160128-ID-L Bélanger Mandat et Courriel Inv St-Augustin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Laurent Bélanger à Lucie Lafontaine le 28 janvier 2016 concernant un prêt pour un projet à St-Augustin (partie Hotel). Le courriel inclut un mandat au notaire et des courriels d'investisseurs, notamme
+
+232. 170321-ID-à Lucie Mandat et Courriel Inv St-Augustin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-AUGUSTIN DESMAURES/COMMUNICATIONS/170321-ID-à Lucie Mandat et Courriel Inv St-Augustin.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Lucie Lafontaine à Véronique le 21 mars 2017 concernant un prêt pour un projet à St-Augustin (partie Hotel). Le message inclut des pièces jointes liées au mandat notarial et des courriels d'investisse
+
+233. 250212 - Fiches projets ID - Oribus.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/250212 - Fiches projets ID - Oribus.pdf.txt
+   Type: rapport
+   Summary: Ce document est un rapport détaillant plusieurs projets immobiliers au Québec entre 2014 et 2017. Il mentionne des emprunteurs, investisseurs et prêteurs impliqués dans des transactions immobilières, ainsi que des litige
+
+234. 540-01-111050-236 - (2024-12-17) pages 1,45-163.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/Transcriptions/540-01-111050-236 - (2024-12-17) pages 1,45-163.pdf.txt
+   Type: interrogatoire (préliminaire)
+   Summary: L'interrogatoire préliminaire de Jean Chalifoux porte sur des investissements immobiliers via Idéal Finance, incluant des projets à Saint-Alphonse-de-Rodriguez, Saint-Esprit et Saint-Sauveur. Chalifoux décrit des prêts h
+
+235. 540-01-111050-236 - (2024-12-17).pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/Transcriptions/540-01-111050-236 - (2024-12-17).pdf.txt
+   Type: interrogatoire (préliminaire)
+   Summary: L'interrogatoire préliminaire porte sur des investissements immobiliers et des prêts privés impliquant Idéal Finance et Idéal Développement. Plusieurs témoins, dont Harold Dubé, Jean Chalifoux et Yves Blache, décrivent d
+
+236. 540-01-111050-236 2024-12-09 (Benoit Charron et Als).pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/Transcriptions/540-01-111050-236 2024-12-09 (Benoit Charron et Als).pdf.txt
+   Type: interrogatoire (contre_interrogatoire)
+   Summary: Cet interrogatoire et contre-interrogatoire porte sur des prêts hypothécaires et des projets immobiliers impliquant Idéal Finance, Idéal Développement et plusieurs parties, dont Jean-François Désormeaux, Benoit Charron e
+
+237. 540-01-111050-236 2024-12-11 (Benoit Charron et Als).pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/Transcriptions/540-01-111050-236 2024-12-11 (Benoit Charron et Als).pdf.txt
+   Type: transcription
+   Summary: Cette transcription documente une audience judiciaire concernant une affaire de fraude immobilière impliquant plusieurs parties, dont Jean-François Désormeaux, Benoit Charron et d'autres associés. Les témoignages révèlen
+
+238. 540-01-111050-236 2024-12-16 (Benoit Charron et Als).pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/Transcriptions/540-01-111050-236 2024-12-16 (Benoit Charron et Als).pdf.txt
+   Type: transcription
+   Summary: Cette transcription documente une enquête préliminaire au tribunal de Saint-Jérôme le 16 décembre 2024, impliquant des accusations de fraude immobilière. Plusieurs témoins, dont Yves Lanctôt et Denise Bélanger Fauteux, d
+
+239. 540-01-111050-236 2024-12-18 (Benoit Charron et Als) (1) pages 1,222-251.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/Transcriptions/540-01-111050-236 2024-12-18 (Benoit Charron et Als) (1) pages 1,222-251.pdf.txt
+   Type: interrogatoire (examen)
+   Summary: Cet interrogatoire mené par Me Geneviève Robitaille porte sur les activités de financement d'Idéal Finance et les investissements réalisés par Guy Tremblay et François Ménard via leur société 9119. Plusieurs projets immo
+
+240. 540-01-111050-236 2024-12-18 (Benoit Charron et Als) copie.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/Transcriptions/540-01-111050-236 2024-12-18 (Benoit Charron et Als) copie.pdf.txt
+   Type: transcription
+   Summary: Ce document est une transcription d'une audience judiciaire tenue le 18 décembre 2024 dans le district de Terrebonne. Il s'agit d'un interrogatoire et contre-interrogatoire de Patrick Moryoussef et Guy Tremblay, témoins 
+
+241. 540-01-111050-236 2024-12-18 (Benoit Charron et Als).pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/Transcriptions/540-01-111050-236 2024-12-18 (Benoit Charron et Als).pdf.txt
+   Type: interrogatoire (contre_interrogatoire)
+   Summary: Cet interrogatoire porte sur des investissements immobiliers frauduleux impliquant Jean-François Desormeaux et d'autres parties. Les témoins décrivent des projets à Saint-Lin, Brompton, Rawdon, Trois-Rivières et Sainte-J
+
+242. 540-01-111050-236 2024-12-19 (Benoit Charron et Als) pages 1,5-89.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/Transcriptions/540-01-111050-236 2024-12-19 (Benoit Charron et Als) pages 1,5-89.pdf.txt
+   Type: interrogatoire (contre_interrogatoire)
+   Summary: Ce document est un contre-interrogatoire de Guy Tremblay dans une affaire de fraude immobilière impliquant plusieurs projets au Québec, notamment à Sainte-Julienne, Saint-Lin et Saint-Charles-Borromée. Les échanges porte
+
+243. 540-01-111050-236 2024-12-19 (Benoit Charron et Als).pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/Transcriptions/540-01-111050-236 2024-12-19 (Benoit Charron et Als).pdf.txt
+   Type: interrogatoire (contre_interrogatoire)
+   Summary: Ce document est un interrogatoire et contre-interrogatoire dans une affaire de fraude immobilière impliquant plusieurs accusés, dont Benoit Charron et Jean-François Desormeaux. Les témoins, notamment Guy Tremblay, Leandr
+
+244. 540-01-111050-236 2024-12-20 (Benoit Charron et Als).pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/Transcriptions/540-01-111050-236 2024-12-20 (Benoit Charron et Als).pdf.txt
+   Type: cahier_de_preuve
+   Summary: Ce document est un cahier de preuve détaillant les témoignages et les analyses dans une affaire de fraude immobilière impliquant plusieurs accusés, dont Jean-François Desormeaux, Olivier Gaudet, Mickael Voyer, Pierre Aub
+
+245. 540-01-111050-236 2025-01-27 (Benoit Charron et Als) pages 1,11-209.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/Transcriptions/540-01-111050-236 2025-01-27 (Benoit Charron et Als) pages 1,11-209.pdf.txt
+   Type: interrogatoire (contre_interrogatoire)
+   Summary: Cet interrogatoire porte sur une affaire de fraude immobilière impliquant plusieurs prévenus, dont Jean-François Desormeaux, Olivier Gaudet, Mickael Voyer, Pierre Aubin et Benoît Charron. Manlio Del Negro témoigne sur de
+
+246. 540-01-111050-236 2025-01-27 (Benoit Charron et Als).pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/Transcriptions/540-01-111050-236 2025-01-27 (Benoit Charron et Als).pdf.txt
+   Type: interrogatoire (contre_interrogatoire)
+   Summary: Ce document est une transcription d'un interrogatoire et contre-interrogatoire dans une affaire de fraude immobilière impliquant plusieurs accusés, dont Jean-François Desormeaux, Olivier Gaudet, Mickael Voyer, Pierre Aub
+
+247. 705-17-007541-178 Interrogatoire de M. Léon Raymond par Me Alerte.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/INTERRO ST-LIN LEON RAYMOND/INTERROGATOIRE RAYMOND/705-17-007541-178 Interrogatoire de M. Léon Raymond par Me Alerte.pdf.txt
+   Type: interrogatoire (préalable)
+   Summary: L'interrogatoire préalable de M. Léon Raymond, mené par Me Francis Alerte, explore des investissements immobiliers à Saint-Lin, Trois-Rivières, Rawdon et Saint-Alphonse-de-Rodriguez. M. Raymond décrit des prêts privés, d
+
+248. 705-17-007541-178 Interrogatoire de M. Léon Raymond par Me Poulin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/INTERRO ST-LIN LEON RAYMOND/INTERROGATOIRE RAYMOND/705-17-007541-178 Interrogatoire de M. Léon Raymond par Me Poulin.pdf.txt
+   Type: interrogatoire (préalable)
+   Summary: Cet interrogatoire préalable de M. Léon Raymond, mené par Me Dominique Poulin, explore les investissements de M. Raymond dans plusieurs projets immobiliers, notamment à Rawdon, Saint-Lin et Trois-Rivières. M. Raymond déc
+
+249. 705-17-007541-178 Interrogatoire de M. Noël Beaulieu par Me Larocque.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/INTERRO ST-LIN LEON RAYMOND/INERROGATOIRE BEAULIEU/705-17-007541-178 Interrogatoire de M. Noël Beaulieu par Me Larocque.pdf.txt
+   Type: interrogatoire (préalable)
+   Summary: Interrogatoire préalable de M. Noël Beaulieu par Me Bernard Larocque concernant des transactions immobilières et des prêts impliquant Idéal Finance et Idéal Développement. M. Beaulieu a témoigné sur ses relations avec Je
+
+250. 705-17-007541-178 Interrogatoire de M. Noël Beaulieu par Me Poulin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/INTERRO ST-LIN LEON RAYMOND/INERROGATOIRE BEAULIEU/705-17-007541-178 Interrogatoire de M. Noël Beaulieu par Me Poulin.pdf.txt
+   Type: interrogatoire (préalable)
+   Summary: Cet interrogatoire préalable de M. Noël Beaulieu, mené par Me Dominique Poulin, explore les investissements de M. Beaulieu dans plusieurs projets immobiliers à Saint-Lin, Trois-Rivières, Rawdon, Brompton et Sainte-Julien
+
+251. 705-17-007541-178 Interrogatoire de M. Stéphane Goulet par Me Dominique Poulin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/INTERRO ST-LIN LEON RAYMOND/INTÉROGATOIRE GOULET/705-17-007541-178 Interrogatoire de M. Stéphane Goulet par Me Dominique Poulin.pdf.txt
+   Type: interrogatoire (préalable)
+   Summary: Cet interrogatoire préalable de M. Stéphane Goulet, mené par Me Dominique Poulin, explore les investissements immobiliers de M. Goulet, notamment à Saint-Charles-Borromée, Trois-Rivières et Saint-Lin. M. Goulet a prêté d
+
+252. 705-17-007541-178 Interrogatoire de M. Yves Blache par Me Guindon.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/INTERRO ST-LIN LEON RAYMOND/INTERROGATOIRE BLACHE/705-17-007541-178 Interrogatoire de M. Yves Blache par Me Guindon.pdf.txt
+   Type: interrogatoire (préalable)
+   Summary: Cet interrogatoire préalable de M. Yves Blache, mené par Me Benoit Guindon, explore des investissements immobiliers, notamment dans des projets à Saint-Lin et sur la rue Sainte-Catherine à Montréal. M. Blache décrit des 
+
+253. 705-17-007541-178 Interrogatoire de M. Yves Blache par Me Poulin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/INTERRO ST-LIN LEON RAYMOND/INTERROGATOIRE BLACHE/705-17-007541-178 Interrogatoire de M. Yves Blache par Me Poulin.pdf.txt
+   Type: interrogatoire (préalable)
+   Summary: Cet interrogatoire préalable de M. Yves Blache, mené par Me Dominique Poulin, explore les investissements immobiliers de M. Blache dans divers projets au Québec, notamment à Rawdon, Saint-Lin, Couvent Saint-Paul, Sainte-
+
+254. Gaudet 1.jpg
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-JULIENNE 1- 1219-1221, route 125 (PETRO)/GESTION DU PROJETS/4- Dossier de suivi de prêts_prêteurs/Gaudet 1.jpg.txt
+   Type: courriel (investisseur)
+   Summary: Courriel concernant un prêt de 1 250 000 $ pour un projet à Sainte Julienne. Le prêt est ouvert après trois mois avec des intérêts payés d'avance pour 12 mois, un minimum de six mois étant acquis. Un remboursement des in
+
+255. IJFD 3 - Courriel d'investisseur daté du 8 avril 2014.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/INTERRO ST-LIN LEON RAYMOND/INTERROGATOIRE JFD/IJFD 3 - Courriel d'investisseur daté du 8 avril 2014.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel daté du 8 avril 2014 concernant un prêt de 600 000,00 $ accordé par Idéal Finance à Ventilation Lanaudière Inc. avec Marc Larivière comme emprunteur et Claude Charron comme caution. Les garanties incluent plusie
+
+256. Interro Gaston Leduc par Me Dominique Poulin - format multipage.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/INTERRO ST-LIN LEON RAYMOND/INTERROGATOIRE LEDUC/Interro Gaston Leduc par Me Dominique Poulin - format multipage.pdf.txt
+   Type: interrogatoire (préalable)
+   Summary: Cet interrogatoire préalable de Gaston Leduc, mené par Me Dominique Poulin, explore des investissements immobiliers complexes impliquant plusieurs projets au Québec, tels que Saint-Lin, Rawdon et Trois-Rivières. M. Leduc
+
+257. Interro Gaston Leduc par Me Dominique Poulin - format pleine page.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/INTERRO ST-LIN LEON RAYMOND/INTERROGATOIRE LEDUC/Interro Gaston Leduc par Me Dominique Poulin - format pleine page.pdf.txt
+   Type: interrogatoire (préalable)
+   Summary: Cet interrogatoire préalable de M. Gaston Leduc, mené par Me Dominique Poulin, explore les investissements immobiliers de M. Leduc dans divers projets au Québec, notamment le Couvent Saint-Paul, Rawdon, Saint-Lin, Trois-
+
+258. Interrogatoire Moryoussef.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/INTERRO ST-LIN LEON RAYMOND/INTERROGATOIRE MORYOUSSEF/Interrogatoire Moryoussef.pdf.txt
+   Type: interrogatoire (préalable)
+   Summary: Cet interrogatoire préalable de Patrick Moryoussef, mené par Me Dominique Poulin, explore ses investissements dans plusieurs projets immobiliers, notamment à Saint-Lin, Rawdon, Brompton et Trois-Rivières. Moryoussef décr
+
+259. Pièce GL-14_Prêt (Idéal Finance) à 9310-0022 Québec inc (DP-0350)_2.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/INTERRO ST-LIN LEON RAYMOND/INTERROGATOIRE PIÈCES/Pièce GL-14_Prêt (Idéal Finance) à 9310-0022 Québec inc (DP-0350)_2.pdf.txt
+   Type: pièce
+   Summary: Document relatif à un prêt hypothécaire privé de 5 525 000,00 $ accordé par Idéal Finance à 9310-0022 Québec inc., avec Olivier Gaudet comme caution. Le prêt est garanti par des terrains situés sur la Route 335 à Saint-L
+
+260. Pièce ILR-08_Courriel investisseur_3 mars 2015.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/INTERRO ST-LIN LEON RAYMOND/INTERROGATOIRE PIÈCES/Pièce ILR-08_Courriel investisseur_3 mars 2015.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel daté du 3 mars 2015 concernant un prêt de 5 525 000 $ accordé à 9310-0022 Québec inc., avec Olivier Gaudet comme caution. Le prêt est garanti par des terrains situés à Saint-Lin-Laurentides, convoités par plusie
+
+261. Pièce IYB-8.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/INTERRO ST-LIN LEON RAYMOND/INTERROGATOIRE PIÈCES/Pièce IYB-8.pdf.txt
+   Type: pièce
+   Summary: Document relatif à un prêt hypothécaire de 5 525 000,00 $ accordé à 9310-0022 Québec inc., avec Olivier Gaudet comme caution. Le prêt est garanti par des terrains situés sur la Route 335 à Saint-Lin-Laurentides, incluant
+
+262. Pièce NB-1.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/INTERRO ST-LIN LEON RAYMOND/INTERROGATOIRE PIÈCES/Pièce NB-1.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel daté du 3 mars 2015 concernant un prêt de 5 525 000,00 $ pour un projet immobilier à Saint-Lin-Laurentides. Les terrains sont convoités, avec une offre d'achat conditionnelle déposée par Groupe Harden. Les intér
+
+263. Pièce PM-02_Courriel investisseur du 3 mars 2015.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/INTERRO ST-LIN LEON RAYMOND/INTERROGATOIRE PIÈCES/Pièce PM-02_Courriel investisseur du 3 mars 2015.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel daté du 3 mars 2015 concernant un prêt hypothécaire privé de 5 525 000 $ accordé à 9310-0022 Québec inc., avec Olivier Gaudet comme caution. Le prêt est garanti par des terrains situés sur la Route 335 à Saint-L
+
+264. Pièce PM-03_Courriel investisseur du 25 février 2015.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/INTERRO ST-LIN LEON RAYMOND/INTERROGATOIRE PIÈCES/Pièce PM-03_Courriel investisseur du 25 février 2015.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel daté du 25 février 2015 concernant un prêt de 6 000 000 $ pour un projet immobilier à Saint-Lin-Laurentides. Les garanties incluent des terrains évalués à 7,48 M$ et 15,929 M$. Le promoteur Groupe Harden a dépos
+
+265. Pièce PM-09_Courriel Denise Bélanger du 4 mai 2015 - Projet Rawdon.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/INTERRO ST-LIN LEON RAYMOND/INTERROGATOIRE PIÈCES/Pièce PM-09_Courriel Denise Bélanger du 4 mai 2015 - Projet Rawdon.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Ce courriel, daté du 4 mai 2015, concerne le projet immobilier à Rawdon, incluant des terrains situés sur la rue Queen. Des documents joints mentionnent des intérêts de Subway et Sobeys pour des locations commerciales. L
+
+266. Pièce PM-17_Courriel investisseur du 2 septembre 2015.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/INTERRO ST-LIN LEON RAYMOND/INTERROGATOIRE PIÈCES/Pièce PM-17_Courriel investisseur du 2 septembre 2015.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Idéal Finance le 2 septembre 2015 concernant un terrain à Trois-Rivières rue Thibeau. Le message mentionne un prêt de 545 000 $ avec une hypothèque sur des lots spécifiques. Une somme de 250 000 $ est
+
+267. Pièce SG-04_Courriel investisseur_5 décembre 2014.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/INTERRO ST-LIN LEON RAYMOND/INTERROGATOIRE PIÈCES/Pièce SG-04_Courriel investisseur_5 décembre 2014.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel daté du 5 décembre 2014 concernant un prêt de 1 550 000,00 $ accordé à Olivier Gaudet avec une garantie sur une propriété située à Saint-Charles-Borromée. Les intérêts sont payables sur 12 mois. Le document ment
+
+268. Pièce SG-06_courriel investisseur_10 décembre 2014.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/INTERRO ST-LIN LEON RAYMOND/INTERROGATOIRE PIÈCES/Pièce SG-06_courriel investisseur_10 décembre 2014.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel daté du 10 décembre 2014 concernant un prêt de 850 000 $ accordé à Olivier Gaudet, avec une garantie sur une propriété située à Saint-Charles-Borromée. Les investisseurs incluent Idéal Finance et Stéphane Goulet
+
+269. Pièce SG-08_en liasse - Courriel et courriel rartenaire_21 octobre 2.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/INTERRO ST-LIN LEON RAYMOND/INTERROGATOIRE PIÈCES/Pièce SG-08_en liasse - Courriel et courriel rartenaire_21 octobre 2.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel envoyé par Idéal Finance le 21 octobre 2015 concernant le projet immobilier Trois-Rivières des Prairies. Le prêt de 500 000 $ est garanti par un terrain évalué à 1 700 000 $ situé au 1175, boulevard des Prairies
+
+270. Pièce YB-05_Courriel investisseur_27 octobre 2014_Prêt 300 milles dollar....pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/INTERRO ST-LIN LEON RAYMOND/INTERROGATOIRE PIÈCES/Pièce YB-05_Courriel investisseur_27 octobre 2014_Prêt 300 milles dollar....pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel daté du 27 octobre 2014 concernant un prêt de 650 000 $ pour un projet immobilier à Saint-Lin-Laurentides. Le terrain de 400 000 pieds carrés est évalué à 6 000 000 $ et des négociations sont en cours avec Shell
+
+271. Pièce YB-06_Courriel investisseur_27 octobre 2014_Prêt de 250 milles dol....pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/INTERRO ST-LIN LEON RAYMOND/INTERROGATOIRE PIÈCES/Pièce YB-06_Courriel investisseur_27 octobre 2014_Prêt de 250 milles dol....pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel daté du 27 octobre 2014 concernant un prêt de 550 000 $ pour un projet immobilier à Saint-Lin-Laurentides. Les investisseurs incluent Idéal Finance et Yves Blache. Le projet implique l'achat d'un terrain de 400 
+
+272. Pièce-IYB-03.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/INTERRO ST-LIN LEON RAYMOND/INTERROGATOIRE PIÈCES/Pièce-IYB-03.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel d'IdéalFinance daté du 25 février 2015 concernant un prêt de 6 000 000 $ pour un projet immobilier à Saint-Lin-Laurentides. Le prêt est garanti par des terrains évalués à 7,48 M$ et 15,929 M$. Le projet inclut l
+
+273. YL-8.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/INTERRO ST-LIN LEON RAYMOND/INTERROGATOIRE PIÈCES/YL-8.pdf.txt
+   Type: hypothèque (prêt)
+   Summary: Document relatif à une hypothèque privée de 5 525 000,00 $ accordée à 9310-0022 Québec inc., avec Olivier Gaudet comme caution. Les terrains concernés sont situés à Saint-Lin-Laurentides et évalués à plusieurs millions d

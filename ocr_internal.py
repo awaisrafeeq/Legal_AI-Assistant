@@ -1,13 +1,14 @@
 """
 OCR script for internal documents container.
-Handles ALL file types: PDF, Images, Excel, CSV, Word, Text, Audio/Video.
+Handles ALL file types: PDF, Images, Excel, CSV, Word, Text, Audio/Video, MSG email.
 Reads from INTERNAL_CONTAINER_SAS_URL, writes OCR output to CONTAINER_SAS_URL
 under extracted-text/internal/ with Source: header for correct metadata extraction.
 """
 import os
 import sys
 import logging
-from typing import Optional, Tuple
+import tempfile
+from typing import Optional, Tuple, List
 from urllib.parse import quote, urlparse
 from pathlib import Path
 
@@ -39,6 +40,7 @@ AUDIO_EXTS = {'.mp3', '.wav', '.m4a', '.flac', '.aac', '.ogg', '.wma'}
 VIDEO_EXTS = {'.mp4', '.avi', '.mov', '.wmv', '.mkv', '.flv', '.webm'}
 EXCEL_EXTS = {'.xlsx', '.xls', '.xlsm'}
 WORD_EXTS = {'.docx', '.doc'}
+EMAIL_EXTS = {'.msg'}
 IMAGE_EXTS = {'.jpg', '.jpeg', '.png', '.tiff', '.tif', '.bmp', '.gif', '.webp'}
 PDF_EXTS = {'.pdf'}
 CSV_EXTS = {'.csv'}
@@ -72,6 +74,10 @@ def out_blob_name(output_prefix: str, in_blob_name: str) -> str:
     return f"internal/{in_blob_name}.txt"
 
 
+def write_list(path: str, items: List[str]) -> None:
+    Path(path).write_text("\n".join(items) + ("\n" if items else ""), encoding="utf-8")
+
+
 def get_file_category(filename: str) -> str:
     basename = Path(filename).name.lower()
     if basename in {'.ds_store', 'thumbs.db', 'desktop.ini', '.gitkeep'}:
@@ -91,6 +97,8 @@ def get_file_category(filename: str) -> str:
         return 'csv'
     elif ext in WORD_EXTS:
         return 'word'
+    elif ext in EMAIL_EXTS:
+        return 'email'
     elif ext in TEXT_EXTS:
         return 'text'
     elif ext in SKIP_EXTS:
@@ -189,6 +197,88 @@ def process_word(blob_client) -> Optional[str]:
         return None
 
 
+def process_msg(blob_client, blob_name: str) -> Optional[str]:
+    try:
+        import extract_msg
+    except Exception as e:
+        logger.error(f"MSG processing dependency missing for {blob_name}: {e}")
+        return f"[MSG file: {blob_name}. Install extract-msg to extract email content.]"
+
+    temp_path = None
+    try:
+        data = blob_client.download_blob().readall()
+        with tempfile.NamedTemporaryFile(suffix=".msg", delete=False) as tmp:
+            tmp.write(data)
+            temp_path = tmp.name
+
+        msg = extract_msg.Message(temp_path)
+        try:
+            subject = (getattr(msg, "subject", "") or "").strip()
+            sender = (
+                getattr(msg, "sender", "")
+                or getattr(msg, "sender_email", "")
+                or ""
+            ).strip()
+            to_value = (getattr(msg, "to", "") or "").strip()
+            cc_value = (getattr(msg, "cc", "") or "").strip()
+            bcc_value = (getattr(msg, "bcc", "") or "").strip()
+            date_value = str(getattr(msg, "date", "") or "").strip()
+
+            body = (getattr(msg, "body", "") or "").strip()
+            if not body:
+                html_body = getattr(msg, "htmlBody", b"") or b""
+                if isinstance(html_body, bytes):
+                    body = html_body.decode("utf-8", errors="ignore").strip()
+                else:
+                    body = str(html_body).strip()
+
+            attachment_names = []
+            for attachment in getattr(msg, "attachments", []) or []:
+                name = (
+                    getattr(attachment, "longFilename", None)
+                    or getattr(attachment, "shortFilename", None)
+                    or getattr(attachment, "filename", None)
+                    or ""
+                )
+                if name:
+                    attachment_names.append(str(name).strip())
+
+            parts = []
+            if subject:
+                parts.append(f"Subject: {subject}")
+            if sender:
+                parts.append(f"From: {sender}")
+            if to_value:
+                parts.append(f"To: {to_value}")
+            if cc_value:
+                parts.append(f"Cc: {cc_value}")
+            if bcc_value:
+                parts.append(f"Bcc: {bcc_value}")
+            if date_value:
+                parts.append(f"Date: {date_value}")
+            if attachment_names:
+                parts.append("Attachments: " + ", ".join(attachment_names))
+            if body:
+                parts.append("")
+                parts.append("Body:")
+                parts.append(body)
+
+            return "\n".join(parts) if parts else f"[MSG file with no extractable text: {blob_name}]"
+        finally:
+            close_fn = getattr(msg, "close", None)
+            if callable(close_fn):
+                close_fn()
+    except Exception as e:
+        logger.error(f"MSG processing failed for {blob_name}: {e}")
+        return None
+    finally:
+        if temp_path and os.path.exists(temp_path):
+            try:
+                os.remove(temp_path)
+            except OSError:
+                pass
+
+
 def process_text_file(blob_client) -> Optional[str]:
     try:
         data = blob_client.download_blob().readall()
@@ -232,6 +322,7 @@ def main():
     max_files_str = os.environ.get("MAX_FILES", "")
     max_files = int(max_files_str) if max_files_str.strip() else None
     overwrite = os.environ.get("OVERWRITE", "0") == "1"
+    retry_missing_only = os.environ.get("RETRY_MISSING_ONLY", "0") == "1"
 
     # Internal container — source files
     in_account_url, in_container, in_sas = split_container_sas_url(internal_sas_url)
@@ -270,6 +361,32 @@ def main():
         return
 
     logger.info(f"Found {len(all_blobs)} files to process")
+
+    if retry_missing_only and not overwrite:
+        output_prefix_filter = output_prefix.strip("/")
+        output_prefix_filter = f"{output_prefix_filter}/internal/" if output_prefix_filter else "internal/"
+        existing_outputs = {
+            blob.name
+            for blob in out_blob_service.get_container_client(out_container).list_blobs(
+                name_starts_with=output_prefix_filter
+            )
+            if blob.name.endswith(".txt")
+        }
+        missing_blobs = [
+            blob_name
+            for blob_name in all_blobs
+            if out_blob_name(output_prefix, blob_name) not in existing_outputs
+        ]
+        write_list("logs/ocr_internal_missing_retry_list.txt", missing_blobs)
+        logger.info(
+            f"Retry missing only: {len(missing_blobs)} missing OCR outputs; "
+            f"{len(all_blobs) - len(missing_blobs)} already exist"
+        )
+        all_blobs = missing_blobs
+
+        if not all_blobs:
+            logger.info("No missing internal OCR outputs found. Nothing to process.")
+            return
 
     # Show breakdown
     by_category = {}
@@ -313,6 +430,9 @@ def main():
             elif category == 'word':
                 bc = in_container_client.get_blob_client(blob_name)
                 text = process_word(bc)
+            elif category == 'email':
+                bc = in_container_client.get_blob_client(blob_name)
+                text = process_msg(bc, blob_name)
             elif category == 'text':
                 bc = in_container_client.get_blob_client(blob_name)
                 text = process_text_file(bc)

@@ -1,0 +1,109 @@
+Found 18 matching documents.
+
+1. 08031.01G - 170331 - Remise volontaire - Documents [p.1 à 3].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_231219 - Cahier de preuve Oribus_E - Témoins > Les projets immobiliers_IV. Les investisseurs_31. Guy TREMBLAY_Pièces_08031.01G - 170331 Courriel investisseur du 5 décembre 2014 de Denise Bélanger à Guy Tremblay_08031.01G - 170331 - Remise volontaire - Documents [p.1 à 3].pdf.txt
+   Type: remise_volontaire
+   Summary: Ce document contient des échanges et des rapports liés à des projets immobiliers et financiers à Joliette, Saint-Charles-Borromée, Sainte-Julienne et Saint-Lin-Laurentides. Il inclut des évaluations de propriétés, des co
+
+2. 08031.01G - 170331 - Remise volontaire - Documents [p.1 à 3].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_21. TREMBLAY, Guy_Documents_08031.01G - 170331 Courriel investisseur du 5 décembre 2014 de Denise Bélanger à Guy Tremblay_08031.01G - 170331 - Remise volontaire - Documents [p.1 à 3].pdf.txt
+   Type: remise_volontaire
+   Summary: Ce document contient des échanges de courriels, des conventions entre actionnaires, des rapports d'évaluation immobilière et des résolutions d'actionnaires. Il traite de projets immobiliers à Joliette, Saint-Charles-Borr
+
+3. 08031.01G - 170331 - Remise volontaire - Documents [p.1 à 3].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_16. BÉLANGER-FAUTEUX, Denise_Pièces_08031.01G - 170331 Courriel investisseur du 5 décembre 2014 de Denise Bélanger à Guy Tremblay_08031.01G - 170331 - Remise volontaire - Documents [p.1 à 3].pdf.txt
+   Type: évaluation (financier)
+   Summary: Ce document contient plusieurs évaluations immobilières et rapports financiers liés à des projets de développement immobilier à Saint-Lin-Laurentides et Sainte-Julienne. Les évaluations incluent des propriétés commercial
+
+4. 08031.01G - 170331 - Remise volontaire - Documents [p.18 à 21].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_16. BÉLANGER-FAUTEUX, Denise_Pièces_08031.01G - 170331 Courriel investisseur du 21 octobre 2014 de Denise Bélanger à Guy Tremblay_08031.01G - 170331 - Remise volontaire - Documents [p.18 à 21].pdf.txt
+   Type: remise_volontaire
+   Summary: Ce document regroupe des échanges, rapports et conventions liés à des projets immobiliers et de financement à Saint-Lin-Laurentides, Joliette et Sainte-Julienne. Il inclut des évaluations de propriétés, des conventions e
+
+5. 08031.01G - 170331 - Remise volontaire - Documents [p.18 à 21].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_21. TREMBLAY, Guy_Documents_08031.01G - 170331 Courriel investisseur du 21 octobre 2014 de Denise Bélanger à Guy Tremblay du projet de Ste-Julienne (1219-1221 route 125)_08031.01G - 170331 - Remise volontaire - Documents [p.18 à 21].pdf.txt
+   Type: rapport (évaluation)
+   Summary: Ce document est un rapport d'évaluation immobilière réalisé par DEVIMO inc. pour des propriétés situées à Saint-Lin-Laurentides et Sainte-Julienne. Il inclut des analyses détaillées des terrains, bâtiments et projets com
+
+6. 08031.01G - 170331 - Remise volontaire - Documents [p.382 à 385].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_21. TREMBLAY, Guy_Documents_08031.01G - 170331 Courriel du 27 octobre 2014 de Denise Bélanger à Guy Tremblay incluant le courriel investisseur pour le projet de St-Lin_08031.01G - 170331 - Remise volontaire - Documents [p.382 à 385].pdf.txt
+   Type: remise_volontaire
+   Summary: Ce document traite de divers projets immobiliers et hypothécaires, notamment à Joliette, Saint-Charles-Borromée et Saint-Lin-Laurentides. Il inclut des évaluations de propriétés, des conventions entre actionnaires, et de
+
+7. 08031.01G - 170331 - Remise volontaire - Documents [p.4 à 7].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_16. BÉLANGER-FAUTEUX, Denise_Pièces_08031.01G - 170331 Courriel investisseur du 10 décembre 2014 de Denise Bélanger à Guy Tremblay_08031.01G - 170331 - Remise volontaire - Documents [p.4 à 7].pdf.txt
+   Type: évaluation (financier)
+   Summary: Ce document est une évaluation immobilière réalisée par DEVIMO inc. pour des propriétés situées à Saint-Lin-Laurentides. Les évaluations incluent des terrains et bâtiments commerciaux, avec des valeurs marchandes estimée
+
+8. 08031.01G - 170331 - Remise volontaire - Documents [p.638 et 639].pdf
+   Container: legal-documents
+   Blob path: extracted-text/Antérieur_Analyse_16. BÉLANGER-FAUTEUX, Denise_Pièces_08031 (Conflit lié au codage Unicode).01G - 170331 Courriel investisseur du 5 décembre 2014 de Denise Bélanger à Guy Tremblay_08031.01G - 170331 - Remise volontaire - Documents [p.638 et 639].pdf.txt
+   Type: remise_volontaire
+   Summary: Ce document contient des échanges de courriels, des conventions d'actionnaires, des rapports d'évaluation immobilière et des résolutions d'actionnaires. Les discussions portent sur des projets immobiliers à Joliette, Sai
+
+9. 141205-ID-D Bélanger à Blache St-Charles 13-15.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-ESPRIT- 120 rue St-ISIDORE/COMMUNICATIONS/141205-ID-D Bélanger à Blache St-Charles 13-15.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel de Denise Bélanger à Yves Blache concernant un investissement de 100 000 $ par 7 327 587 Canada inc. dans un projet à Joliette (lot 2 901 481). Le courriel mentionne également un document joint relatif à un inve
+
+10. 141210-ID-D Bélanger à Blache St-Charles 13-15.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/PROJETS/ST-ESPRIT- 120 rue St-ISIDORE/COMMUNICATIONS/141210-ID-D Bélanger à Blache St-Charles 13-15.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel de Denise Bélanger à Yves Blache concernant un investissement de 100 000 $ par 7 327 587 Canada inc. dans le projet Joliette (lot 2 901 481). Le courriel investisseur a été révisé et envoyé au notaire le 10 déce
+
+11. 540-01-111050-236 - (2024-12-17).pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/Transcriptions/540-01-111050-236 - (2024-12-17).pdf.txt
+   Type: interrogatoire (préliminaire)
+   Summary: L'interrogatoire préliminaire porte sur des investissements immobiliers et des prêts privés impliquant Idéal Finance et Idéal Développement. Plusieurs témoins, dont Harold Dubé, Jean Chalifoux et Yves Blache, décrivent d
+
+12. 705-17-007541-178 Interrogatoire de M. Yves Blache par Me Guindon.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/INTERRO ST-LIN LEON RAYMOND/INTERROGATOIRE BLACHE/705-17-007541-178 Interrogatoire de M. Yves Blache par Me Guindon.pdf.txt
+   Type: interrogatoire (préalable)
+   Summary: Cet interrogatoire préalable de M. Yves Blache, mené par Me Benoit Guindon, explore des investissements immobiliers, notamment dans des projets à Saint-Lin et sur la rue Sainte-Catherine à Montréal. M. Blache décrit des 
+
+13. 705-17-007541-178 Interrogatoire de M. Yves Blache par Me Poulin.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/INTERRO ST-LIN LEON RAYMOND/INTERROGATOIRE BLACHE/705-17-007541-178 Interrogatoire de M. Yves Blache par Me Poulin.pdf.txt
+   Type: interrogatoire (préalable)
+   Summary: Cet interrogatoire préalable de M. Yves Blache, mené par Me Dominique Poulin, explore les investissements immobiliers de M. Blache dans divers projets au Québec, notamment à Rawdon, Saint-Lin, Couvent Saint-Paul, Sainte-
+
+14. IJFD 3 - Courriel d'investisseur daté du 8 avril 2014.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/INTERRO ST-LIN LEON RAYMOND/INTERROGATOIRE JFD/IJFD 3 - Courriel d'investisseur daté du 8 avril 2014.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel daté du 8 avril 2014 concernant un prêt de 600 000,00 $ accordé par Idéal Finance à Ventilation Lanaudière Inc. avec Marc Larivière comme emprunteur et Claude Charron comme caution. Les garanties incluent plusie
+
+15. Pièce IYB-8.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/INTERRO ST-LIN LEON RAYMOND/INTERROGATOIRE PIÈCES/Pièce IYB-8.pdf.txt
+   Type: pièce
+   Summary: Document relatif à un prêt hypothécaire de 5 525 000,00 $ accordé à 9310-0022 Québec inc., avec Olivier Gaudet comme caution. Le prêt est garanti par des terrains situés sur la Route 335 à Saint-Lin-Laurentides, incluant
+
+16. Pièce YB-05_Courriel investisseur_27 octobre 2014_Prêt 300 milles dollar....pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/INTERRO ST-LIN LEON RAYMOND/INTERROGATOIRE PIÈCES/Pièce YB-05_Courriel investisseur_27 octobre 2014_Prêt 300 milles dollar....pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel daté du 27 octobre 2014 concernant un prêt de 650 000 $ pour un projet immobilier à Saint-Lin-Laurentides. Le terrain de 400 000 pieds carrés est évalué à 6 000 000 $ et des négociations sont en cours avec Shell
+
+17. Pièce YB-06_Courriel investisseur_27 octobre 2014_Prêt de 250 milles dol....pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/INTERRO ST-LIN LEON RAYMOND/INTERROGATOIRE PIÈCES/Pièce YB-06_Courriel investisseur_27 octobre 2014_Prêt de 250 milles dol....pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel daté du 27 octobre 2014 concernant un prêt de 550 000 $ pour un projet immobilier à Saint-Lin-Laurentides. Les investisseurs incluent Idéal Finance et Yves Blache. Le projet implique l'achat d'un terrain de 400 
+
+18. Pièce-IYB-03.pdf
+   Container: legal-documents-internal
+   Blob path: extracted-text/internal/LEGAL 3/INTERRO ST-LIN LEON RAYMOND/INTERROGATOIRE PIÈCES/Pièce-IYB-03.pdf.txt
+   Type: courriel (investisseur)
+   Summary: Courriel d'IdéalFinance daté du 25 février 2015 concernant un prêt de 6 000 000 $ pour un projet immobilier à Saint-Lin-Laurentides. Le prêt est garanti par des terrains évalués à 7,48 M$ et 15,929 M$. Le projet inclut l

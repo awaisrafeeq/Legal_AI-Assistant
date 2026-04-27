@@ -5,6 +5,7 @@ import os
 import sys
 import hashlib
 import logging
+from datetime import datetime, timezone
 sys.path.insert(0, r'e:\Jeff')
 
 from index_to_search import (
@@ -36,15 +37,44 @@ def extract_metadata_from_path(blob_path: str, input_prefix: str) -> dict:
     }
 
 
+def _resolve_account_and_container(sas_url: str, container_override: str = ""):
+    p = urlparse(sas_url)
+    account_url = f"{p.scheme}://{p.netloc}"
+    path_parts = [part for part in p.path.strip("/").split("/") if part]
+    container = container_override or (path_parts[0] if path_parts else "")
+    return account_url, p.query, container
+
+
+def ocr_blob_path_from_source_entry(entry: str, output_prefix: str = "extracted-text") -> str:
+    prefix = output_prefix.strip("/")
+    if prefix:
+        return f"{prefix}/internal/{entry}.txt"
+    return f"internal/{entry}.txt"
+
+
+def parse_modified_since(value: str):
+    raw = (value or "").strip()
+    if not raw:
+        return None
+    normalized = raw.replace("Z", "+00:00")
+    dt = datetime.fromisoformat(normalized)
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    return dt.astimezone(timezone.utc)
+
+
 def main_internal():
     cfg = load_config()
+    list_file = os.environ.get("OCR_SOURCE_LIST_FILE", "").strip()
+    output_prefix = os.environ.get("OUTPUT_PREFIX", "extracted-text")
+    modified_since = parse_modified_since(os.environ.get("MODIFIED_SINCE", ""))
 
-    p = urlparse(cfg.container_sas_url)
-    account_url = f"{p.scheme}://{p.netloc}"
-    sas = p.query
-
+    container_override = os.environ.get("CONTAINER_NAME", "legal-documents")
+    account_url, sas, container = _resolve_account_and_container(
+        cfg.container_sas_url,
+        container_override=container_override,
+    )
     blob_service = BlobServiceClient(account_url=account_url, credential=sas)
-    container = p.path.strip('/').split('/')[-1]
     container_client = blob_service.get_container_client(container)
 
     openai_client = AzureOpenAI(
@@ -70,13 +100,26 @@ def main_internal():
         credential=AzureKeyCredential(cfg.search_key)
     )
 
-    # List only internal .txt files
     txt_files = []
-    prefix = "extracted-text/internal/"
-
-    logging.info(f"Listing blobs with prefix: {prefix}")
-    for blob in container_client.list_blobs(name_starts_with=prefix):
-        if blob.name.lower().endswith(".txt"):
+    if list_file:
+        if not os.path.exists(list_file):
+            raise FileNotFoundError(f"OCR source list file not found: {list_file}")
+        with open(list_file, encoding="utf-8", errors="ignore") as fh:
+            source_entries = [line.strip() for line in fh if line.strip()]
+        txt_files = [ocr_blob_path_from_source_entry(entry, output_prefix) for entry in source_entries]
+        logging.info(
+            f"Loaded {len(txt_files)} target OCR blobs from source list: {list_file}"
+        )
+    else:
+        prefix = f"{output_prefix.strip('/')}/internal/"
+        logging.info(f"Listing blobs with prefix: {prefix}")
+        for blob in container_client.list_blobs(name_starts_with=prefix):
+            if not blob.name.lower().endswith(".txt"):
+                continue
+            if modified_since and getattr(blob, "last_modified", None):
+                blob_modified = blob.last_modified.astimezone(timezone.utc)
+                if blob_modified < modified_since:
+                    continue
             txt_files.append(blob.name)
 
     if not txt_files:
@@ -144,11 +187,6 @@ def main_internal():
                         "total_chunks": total_chunks,
                         # FIX: was "internal" — now matches what rag_backend.py checks
                         "source_container": "legal-documents-internal",
-                        "document_type_norm": "",
-                        "document_subtype_norm": "",
-                        "persons_norm": [],
-                        "organizations_norm": [],
-                        "projects_norm": [],
                     }
                     documents_buffer.append(doc)
 

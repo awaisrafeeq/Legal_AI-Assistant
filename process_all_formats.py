@@ -19,7 +19,15 @@ from dotenv import load_dotenv
 from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
 from tqdm import tqdm
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+os.makedirs("logs", exist_ok=True)
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.StreamHandler(),
+        logging.FileHandler("logs/ocr_external.log", encoding="utf-8"),
+    ],
+)
 logger = logging.getLogger(__name__)
 
 load_dotenv()
@@ -56,6 +64,30 @@ def out_blob_name(output_prefix: str, in_blob_name: str) -> str:
         return f"{op}/{in_blob_name}.txt"
     return f"{in_blob_name}.txt"
 
+def write_list(path: str, items: List[str]) -> None:
+    Path(path).write_text("\n".join(items) + ("\n" if items else ""), encoding="utf-8")
+
+def build_fallback_text(blob_client, blob_name: str, reason: str, category: str = "") -> str:
+    """Return a metadata placeholder so the blob is not left unprocessed forever."""
+    try:
+        props = blob_client.get_blob_properties()
+        content_type = getattr(props.content_settings, "content_type", "") or "unknown"
+        size = getattr(props, "size", "unknown")
+    except Exception as e:
+        content_type = "unknown"
+        size = "unknown"
+        reason = f"{reason}; metadata unavailable: {e}"
+
+    category_label = category.upper() if category else "UNKNOWN"
+    return (
+        f"[OCR fallback placeholder]\n"
+        f"File: {blob_name}\n"
+        f"Category: {category_label}\n"
+        f"Reason: {reason}\n"
+        f"Content-Type: {content_type}\n"
+        f"Size: {size} bytes"
+    )
+
 def get_file_category(filename: str) -> str:
     """Determine file category based on extension"""
     ext = Path(filename).suffix.lower()
@@ -91,7 +123,7 @@ def analyze_with_di(di_client, document_url: str):
     )
     return poller.result(timeout=300)
 
-def process_pdf_image(di_client, blob_url: str, blob_name: str) -> Optional[str]:
+def process_pdf_image(di_client, blob_url: str, blob_name: str, blob_client) -> Optional[str]:
     """Process PDF or Image using Azure DI"""
     try:
         result = analyze_with_di(di_client, blob_url)
@@ -103,9 +135,9 @@ def process_pdf_image(di_client, blob_url: str, blob_name: str) -> Optional[str]
         return text if text else f"[No text extracted from {blob_name}]"
     except Exception as e:
         logger.error(f"DI failed for {blob_name}: {e}")
-        return None
+        return build_fallback_text(blob_client, blob_name, f"Document Intelligence failed: {e}", "pdf-image")
 
-def process_excel(blob_client) -> Optional[str]:
+def process_excel(blob_client, blob_name: str) -> Optional[str]:
     """Extract text from Excel file"""
     try:
         import pandas as pd
@@ -126,9 +158,9 @@ def process_excel(blob_client) -> Optional[str]:
         return "\n".join(text_parts)
     except Exception as e:
         logger.error(f"Excel processing failed: {e}")
-        return None
+        return build_fallback_text(blob_client, blob_name, f"Excel extraction failed: {e}", "excel")
 
-def process_csv(blob_client) -> Optional[str]:
+def process_csv(blob_client, blob_name: str) -> Optional[str]:
     """Extract text from CSV file"""
     try:
         import pandas as pd
@@ -139,9 +171,9 @@ def process_csv(blob_client) -> Optional[str]:
         return df.to_string(index=False)
     except Exception as e:
         logger.error(f"CSV processing failed: {e}")
-        return None
+        return build_fallback_text(blob_client, blob_name, f"CSV extraction failed: {e}", "csv")
 
-def process_word(blob_client) -> Optional[str]:
+def process_word(blob_client, blob_name: str) -> Optional[str]:
     """Extract text from Word document"""
     try:
         from docx import Document
@@ -164,9 +196,9 @@ def process_word(blob_client) -> Optional[str]:
         return "\n".join(text_parts)
     except Exception as e:
         logger.error(f"Word processing failed: {e}")
-        return None
+        return build_fallback_text(blob_client, blob_name, f"Word extraction failed: {e}", "word")
 
-def process_text_file(blob_client) -> Optional[str]:
+def process_text_file(blob_client, blob_name: str) -> Optional[str]:
     """Process plain text files"""
     try:
         data = blob_client.download_blob().readall()
@@ -179,7 +211,7 @@ def process_text_file(blob_client) -> Optional[str]:
         return data.decode('utf-8', errors='ignore')
     except Exception as e:
         logger.error(f"Text file processing failed: {e}")
-        return None
+        return build_fallback_text(blob_client, blob_name, f"Text extraction failed: {e}", "text")
 
 def process_audio_video(blob_client, blob_name: str) -> Optional[str]:
     """
@@ -204,13 +236,13 @@ def process_file(blob_client, blob_name: str, di_client, category: str) -> Optio
         # Need SAS URL for DI
         return None  # Will be handled separately with URL
     elif category == 'excel':
-        return process_excel(blob_client)
+        return process_excel(blob_client, blob_name)
     elif category == 'csv':
-        return process_csv(blob_client)
+        return process_csv(blob_client, blob_name)
     elif category == 'word':
-        return process_word(blob_client)
+        return process_word(blob_client, blob_name)
     elif category == 'text':
-        return process_text_file(blob_client)
+        return process_text_file(blob_client, blob_name)
     elif category in ['audio', 'video']:
         return process_audio_video(blob_client, blob_name)
     else:
@@ -230,6 +262,7 @@ def main():
     max_files_str = os.environ.get("MAX_FILES", "")
     max_files = int(max_files_str) if max_files_str.strip() else None
     overwrite = os.environ.get("OVERWRITE", "0") == "1"
+    retry_missing_only = os.environ.get("RETRY_MISSING_ONLY", "0") == "1"
     
     # Parse storage URL
     container_name = os.environ.get("CONTAINER_NAME", "")
@@ -265,6 +298,30 @@ def main():
         return
     
     logger.info(f"Found {len(all_blobs)} files to process")
+
+    if retry_missing_only and not overwrite:
+        output_prefix_filter = output_prefix.strip("/")
+        output_prefix_filter = f"{output_prefix_filter}/" if output_prefix_filter else ""
+        existing_outputs = {
+            blob.name
+            for blob in container_client.list_blobs(name_starts_with=output_prefix_filter or None)
+            if blob.name.endswith(".txt")
+        }
+        missing_blobs = [
+            blob_name
+            for blob_name in all_blobs
+            if out_blob_name(output_prefix, blob_name) not in existing_outputs
+        ]
+        write_list("logs/ocr_missing_retry_list.txt", missing_blobs)
+        logger.info(
+            f"Retry missing only: {len(missing_blobs)} missing OCR outputs; "
+            f"{len(all_blobs) - len(missing_blobs)} already exist"
+        )
+        all_blobs = missing_blobs
+
+        if not all_blobs:
+            logger.info("No missing OCR outputs found. Nothing to retry.")
+            return
     
     # Categorize files
     by_category = {}
@@ -282,6 +339,9 @@ def main():
     success_count = 0
     skip_count = 0
     fail_count = 0
+    success_files: List[str] = []
+    skipped_files: List[str] = []
+    failed_files: List[str] = []
     
     for blob_name in tqdm(all_blobs, desc="Processing files"):
         try:
@@ -292,13 +352,15 @@ def main():
             # Check if already exists
             if not overwrite and out_client.exists():
                 skip_count += 1
+                skipped_files.append(blob_name)
                 continue
             
             # Process based on category
             if category in ['pdf', 'image']:
                 # Use Azure DI with URL
                 doc_url = blob_url(account_url, container, sas, blob_name)
-                text = process_pdf_image(di_client, doc_url, blob_name)
+                blob_client = container_client.get_blob_client(blob_name)
+                text = process_pdf_image(di_client, doc_url, blob_name, blob_client)
             else:
                 # Download and process
                 blob_client = container_client.get_blob_client(blob_name)
@@ -309,18 +371,26 @@ def main():
                 full_text = f"Source: {blob_name}\nType: {category.upper()}\n{'='*60}\n\n{text}"
                 out_client.upload_blob(full_text.encode("utf-8"), overwrite=True)
                 success_count += 1
+                success_files.append(blob_name)
             else:
                 fail_count += 1
+                failed_files.append(blob_name)
                 
         except Exception as e:
             logger.error(f"Error processing {blob_name}: {e}")
             fail_count += 1
+            failed_files.append(blob_name)
             continue
     
+    write_list("logs/ocr_success_list.txt", success_files)
+    write_list("logs/ocr_skipped_list.txt", skipped_files)
+    write_list("logs/ocr_failed_list.txt", failed_files)
+
     logger.info(f"Processing complete!")
     logger.info(f"  Success: {success_count}")
     logger.info(f"  Skipped: {skip_count}")
     logger.info(f"  Failed:  {fail_count}")
+    logger.info("Lists written: logs/ocr_success_list.txt, logs/ocr_skipped_list.txt, logs/ocr_failed_list.txt")
 
 if __name__ == "__main__":
     main()
