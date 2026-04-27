@@ -1587,22 +1587,40 @@ class WhatsAppHandler:
         return f"{icon} {fname} [{label}]"
 
     def _format_inline_sections(self, sections: List[Dict]) -> str:
-        blocks = []
+        grouped_blocks = []
+        groups = []
+        group_index = {}
+
         for section in sections:
             text = (section.get("text") or "").strip()
             if not text:
                 continue
 
-            block = text
-            source_url = section.get("source_url", "")
+            source_url = (section.get("source_url") or "").strip()
+            blob_path = (section.get("blob_path") or "").strip()
+            source_key = source_url or blob_path or f"__no_source__:{len(groups)}"
+
+            if source_key not in group_index:
+                group_index[source_key] = len(groups)
+                groups.append({
+                    "texts": [],
+                    "source_url": source_url,
+                    "section": section,
+                })
+
+            groups[group_index[source_key]]["texts"].append(text)
+
+        for group in groups:
+            block = "\n\n".join(group["texts"])
+            source_url = group["source_url"]
             if source_url:
                 block += (
-                    f"\nSource: {self._format_source_label(section)}"
+                    f"\nSource: {self._format_source_label(group['section'])}"
                     f"\nLink: {source_url}"
                 )
-            blocks.append(block)
+            grouped_blocks.append(block)
 
-        return "\n\n".join(blocks)
+        return "\n\n".join(grouped_blocks)
 
     def _format_response(
         self,
