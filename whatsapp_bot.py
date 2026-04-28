@@ -1667,9 +1667,9 @@ class WhatsAppHandler:
                 if source_url:
                     sources_text += f"   Link: {source_url}\n"
 
-        footer = "\n\nReply to this message or tag @" + self.green_api.config.bot_name + " to ask a follow-up."
+        # footer = "\n\nReply to this message or tag @" + self.green_api.config.bot_name + " to ask a follow-up."
 
-        return prefix + header + body + sources_text + footer
+        return prefix + header + body + sources_text
 
     # ------------------------------------------------------------------
     # Core Handler
