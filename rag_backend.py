@@ -8,6 +8,8 @@ import logging
 import urllib.request
 import urllib.error
 import smtplib
+import difflib
+import re
 from typing import List, Dict, Any, Optional
 from collections import Counter
 from dataclasses import dataclass, field
@@ -88,6 +90,11 @@ class Config:
     public_base_url: str
     static_email_recipient: str
     short_links_container: str
+    reducto_api_key: str
+    reducto_parse_url: str
+    reducto_cache_container: str
+    reducto_max_sources: int
+    reducto_timeout_seconds: int
 
     @classmethod
     def from_env(cls) -> "Config":
@@ -118,6 +125,11 @@ class Config:
             static_email_recipient=os.environ.get("STATIC_EMAIL_RECIPIENT", ""),
             public_base_url=os.environ.get("PUBLIC_BASE_URL", "").rstrip("/"),
             short_links_container=os.environ.get("SHORT_LINKS_CONTAINER", "short-links"),
+            reducto_api_key=os.environ.get("REDUCTO_API_KEY", ""),
+            reducto_parse_url=os.environ.get("REDUCTO_PARSE_URL", "https://platform.reducto.ai/parse"),
+            reducto_cache_container=os.environ.get("REDUCTO_CACHE_CONTAINER", "reducto-cache"),
+            reducto_max_sources=int(os.environ.get("REDUCTO_MAX_SOURCES", "0")),
+            reducto_timeout_seconds=int(os.environ.get("REDUCTO_TIMEOUT_SECONDS", "120")),
         )
 
 
@@ -257,6 +269,11 @@ class AzureClients:
         self.short_links_container = config.short_links_container
         try:
             self.blob_service.create_container(self.short_links_container)
+        except Exception:
+            pass
+        self.reducto_cache_container = config.reducto_cache_container
+        try:
+            self.blob_service.create_container(self.reducto_cache_container)
         except Exception:
             pass
 
@@ -567,6 +584,389 @@ def generate_short_source_url(
     except Exception as e:
         logger.warning(f"Failed to create short-link token for {blob_path}: {e}")
         return direct_url
+
+
+# ============================================================================
+# REDUCTO CITATION LOCATION SUPPORT
+# ============================================================================
+
+def _source_identity(source: Dict[str, Any]) -> str:
+    return "||".join([
+        source.get("source_container", "") or "",
+        source.get("blob_path", "") or "",
+        source.get("folder_path", "") or "",
+        source.get("file_name", "") or "",
+    ])
+
+
+def _reducto_cache_blob_name(source: Dict[str, Any]) -> str:
+    digest = hashlib.sha256(_source_identity(source).encode("utf-8")).hexdigest()
+    return f"{digest}.json"
+
+
+def _read_reducto_cache(azure_clients: AzureClients, source: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    try:
+        container = azure_clients.blob_service.get_container_client(azure_clients.reducto_cache_container)
+        payload = container.download_blob(_reducto_cache_blob_name(source)).readall()
+        return json.loads(payload.decode("utf-8"))
+    except Exception:
+        return None
+
+
+def _write_reducto_cache(azure_clients: AzureClients, source: Dict[str, Any], payload: Dict[str, Any]) -> None:
+    try:
+        container = azure_clients.blob_service.get_container_client(azure_clients.reducto_cache_container)
+        container.upload_blob(
+            name=_reducto_cache_blob_name(source),
+            data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+            overwrite=True,
+        )
+    except Exception as e:
+        logger.warning(f"Reducto cache write failed for {source.get('file_name', '')}: {e}")
+
+
+def _post_json(url: str, payload: Dict[str, Any], headers: Dict[str, str], timeout: int) -> Dict[str, Any]:
+    request = urllib.request.Request(
+        url=url,
+        data=json.dumps(payload).encode("utf-8"),
+        headers=headers,
+        method="POST",
+    )
+    with urllib.request.urlopen(request, timeout=timeout) as response:
+        raw = response.read().decode("utf-8")
+        return json.loads(raw) if raw else {}
+
+
+def _download_json_url(url: str, timeout: int) -> Optional[Dict[str, Any]]:
+    try:
+        with urllib.request.urlopen(url, timeout=timeout) as response:
+            raw = response.read().decode("utf-8")
+            return json.loads(raw) if raw else None
+    except Exception as e:
+        logger.warning(f"Reducto URL-result download failed: {e}")
+        return None
+
+
+def _resolve_reducto_url_result(payload: Dict[str, Any], timeout: int) -> Dict[str, Any]:
+    result = payload.get("result")
+    if isinstance(result, dict):
+        url = result.get("url") or result.get("result_url")
+        if url:
+            downloaded = _download_json_url(url, timeout)
+            if downloaded:
+                payload["result"] = downloaded.get("result", downloaded)
+    return payload
+
+
+def _call_reducto_parse(azure_clients: AzureClients, document_url: str) -> Optional[Dict[str, Any]]:
+    config = azure_clients.config
+    if not config.reducto_api_key:
+        return None
+
+    headers = {
+        "Authorization": f"Bearer {config.reducto_api_key}",
+        "Content-Type": "application/json",
+    }
+    timeout = config.reducto_timeout_seconds
+
+    # Current Reducto API uses `input`; legacy tenants may still require `document_url`.
+    current_payload = {
+        "input": document_url,
+        "retrieval": {
+            "chunking": {"chunk_mode": "variable"},
+            "filter_blocks": [],
+            "embedding_optimized": False,
+        },
+        "formatting": {
+            "add_page_markers": False,
+            "table_output_format": "dynamic",
+            "merge_tables": False,
+            "include": [],
+        },
+        "settings": {
+            "ocr_system": "standard",
+            "extraction_mode": "hybrid",
+            "force_url_result": False,
+            "return_ocr_data": True,
+            "persist_results": False,
+        },
+        "priority": True,
+    }
+    legacy_payload = {
+        "document_url": document_url,
+        "options": {
+            "ocr_mode": "standard",
+            "extraction_mode": "ocr",
+            "chunking": {"chunk_mode": "variable"},
+            "force_url_result": False,
+        },
+        "advanced_options": {
+            "ocr_system": "highres",
+            "keep_line_breaks": False,
+            "return_ocr_data": True,
+            "persist_results": False,
+        },
+        "priority": True,
+    }
+
+    try:
+        payload = _post_json(config.reducto_parse_url, current_payload, headers, timeout)
+        return _resolve_reducto_url_result(payload, timeout)
+    except urllib.error.HTTPError as e:
+        if e.code not in {400, 404, 422}:
+            logger.warning(f"Reducto parse failed ({e.code}): {e}")
+            return None
+        try:
+            payload = _post_json(config.reducto_parse_url, legacy_payload, headers, timeout)
+            return _resolve_reducto_url_result(payload, timeout)
+        except Exception as legacy_error:
+            logger.warning(f"Reducto legacy parse fallback failed: {legacy_error}")
+            return None
+    except Exception as e:
+        logger.warning(f"Reducto parse failed: {e}")
+        return None
+
+
+def _get_reducto_parse_result(azure_clients: AzureClients, source: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    if not azure_clients.config.reducto_api_key:
+        return None
+
+    cached = _read_reducto_cache(azure_clients, source)
+    if cached:
+        return cached
+
+    direct_url = generate_sas_url(
+        azure_clients,
+        source.get("blob_path", ""),
+        source.get("source_container", ""),
+        source.get("folder_path", ""),
+        source.get("file_name", ""),
+    )
+    if not direct_url:
+        return None
+
+    parsed = _call_reducto_parse(azure_clients, direct_url)
+    if parsed:
+        _write_reducto_cache(azure_clients, source, parsed)
+    return parsed
+
+
+def _strip_markup(text: str) -> str:
+    cleaned = re.sub(r"<[^>]+>", " ", text or "")
+    return re.sub(r"\s+", " ", cleaned).strip()
+
+
+def _bbox_page(bbox: Any) -> Optional[int]:
+    if isinstance(bbox, dict):
+        page = bbox.get("page") or bbox.get("original_page") or bbox.get("page_number")
+        return int(page) if str(page).isdigit() else None
+    return None
+
+
+def _flatten_reducto_blocks(payload: Any) -> List[Dict[str, Any]]:
+    blocks = []
+
+    def walk(node: Any, inherited_page: Optional[int] = None) -> None:
+        if isinstance(node, list):
+            for item in node:
+                walk(item, inherited_page)
+            return
+
+        if not isinstance(node, dict):
+            return
+
+        bbox = node.get("bbox") or node.get("bounding_box") or node.get("coordinates")
+        page = (
+            _bbox_page(bbox)
+            or node.get("page")
+            or node.get("page_number")
+            or node.get("original_page")
+            or inherited_page
+        )
+        try:
+            page = int(page) if page is not None else None
+        except Exception:
+            page = inherited_page
+
+        text = (
+            node.get("content")
+            or node.get("text")
+            or node.get("embed")
+            or node.get("enriched")
+            or ""
+        )
+        text = _strip_markup(str(text))
+        if text and (page is not None or bbox):
+            blocks.append({
+                "text": text,
+                "page": page,
+                "bbox": bbox,
+                "type": node.get("type") or node.get("role") or "text",
+            })
+
+        for key in ("result", "chunks", "blocks", "children", "items", "elements", "pages", "lines"):
+            child = node.get(key)
+            if child is not None:
+                walk(child, page)
+
+    walk(payload)
+    return blocks
+
+
+def _normalize_for_match(text: str) -> str:
+    normalized = unicodedata.normalize("NFKD", (text or "").lower())
+    normalized = "".join(ch for ch in normalized if not unicodedata.combining(ch))
+    normalized = re.sub(r"[^a-z0-9]+", " ", normalized)
+    return re.sub(r"\s+", " ", normalized).strip()
+
+
+def _extract_location_needles(section_text: str) -> List[str]:
+    text = section_text or ""
+    needles = []
+
+    labeled_quotes = re.findall(
+        r"(?:French Quote|Quote|Citation|Extrait)\s*:\s*[\"*']?(.{35,900})",
+        text,
+        flags=re.IGNORECASE | re.DOTALL,
+    )
+    needles.extend(q.strip(" \"'*\n") for q in labeled_quotes)
+
+    quoted = re.findall(r"[\"“”']([^\"“”']{35,900})[\"“”']", text)
+    needles.extend(q.strip() for q in quoted)
+
+    lines = [line.strip("* ").strip() for line in text.splitlines() if line.strip()]
+    needles.extend(line for line in lines if len(line) >= 45)
+    if len(text) >= 45:
+        needles.append(text)
+
+    unique = []
+    seen = set()
+    for needle in needles:
+        normalized = _normalize_for_match(needle)
+        if normalized and normalized not in seen:
+            seen.add(normalized)
+            unique.append(needle[:1200])
+    return unique[:5]
+
+
+def _token_overlap_score(needle: str, haystack: str) -> float:
+    needle_tokens = set(_normalize_for_match(needle).split())
+    haystack_tokens = set(_normalize_for_match(haystack).split())
+    if not needle_tokens or not haystack_tokens:
+        return 0.0
+    return len(needle_tokens & haystack_tokens) / max(len(needle_tokens), 1)
+
+
+def _score_location_match(needle: str, block_text: str) -> float:
+    n = _normalize_for_match(needle)
+    b = _normalize_for_match(block_text)
+    if not n or not b:
+        return 0.0
+    if n in b:
+        return 1.0
+    if b in n and len(b) >= 45:
+        return 0.92
+    ratio = difflib.SequenceMatcher(None, n[:1000], b[:1000]).ratio()
+    overlap = _token_overlap_score(n, b)
+    return max(ratio, overlap)
+
+
+def _bbox_position_label(bbox: Any) -> str:
+    if not isinstance(bbox, dict):
+        return "text block"
+
+    left = bbox.get("left")
+    top = bbox.get("top")
+    width = bbox.get("width")
+    height = bbox.get("height")
+    try:
+        left = float(left)
+        top = float(top)
+        width = float(width or 0)
+        height = float(height or 0)
+    except Exception:
+        return "text block"
+
+    if max(left, top, width, height) > 1:
+        return "text block"
+
+    x = left + width / 2
+    y = top + height / 2
+    horizontal = "left" if x < 0.33 else "right" if x > 0.66 else "center"
+    vertical = "top" if y < 0.33 else "bottom" if y > 0.66 else "middle"
+    return f"{vertical}-{horizontal} text block"
+
+
+def _find_reducto_location(section_text: str, parse_result: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    blocks = _flatten_reducto_blocks(parse_result)
+    if not blocks:
+        return None
+
+    best = None
+    for needle in _extract_location_needles(section_text):
+        for block in blocks:
+            score = _score_location_match(needle, block.get("text", ""))
+            if best is None or score > best["score"]:
+                best = {
+                    "score": score,
+                    "page": block.get("page"),
+                    "bbox": block.get("bbox"),
+                    "type": block.get("type") or "text",
+                }
+
+    if not best or best["score"] < 0.28:
+        return None
+
+    page = best.get("page")
+    block_type = str(best.get("type") or "text").lower()
+    position = _bbox_position_label(best.get("bbox"))
+    prefix = "Approx. " if best["score"] < 0.55 else ""
+    note = f"{prefix}Page {page}, {block_type} near {position}" if page else f"{prefix}{block_type} near {position}"
+    return {
+        "page": page,
+        "score": round(float(best["score"]), 3),
+        "location_note": note,
+    }
+
+
+def _attach_reducto_locations_to_sections(
+    sections: List[Dict[str, Any]],
+    azure_clients: AzureClients
+) -> List[Dict[str, Any]]:
+    if not sections or not azure_clients.config.reducto_api_key:
+        return sections
+
+    enriched = [dict(section) for section in sections]
+    parse_cache: Dict[str, Optional[Dict[str, Any]]] = {}
+    parsed_sources = 0
+
+    for section in enriched:
+        if section.get("location_note") or not section.get("blob_path"):
+            continue
+
+        source_key = _source_identity(section)
+        if source_key not in parse_cache:
+            max_sources = azure_clients.config.reducto_max_sources
+            if max_sources > 0 and parsed_sources >= max_sources:
+                continue
+            parsed_sources += 1
+            try:
+                parse_cache[source_key] = _get_reducto_parse_result(azure_clients, section)
+            except Exception as e:
+                logger.warning(f"Reducto location lookup failed for {section.get('file_name', '')}: {e}")
+                parse_cache[source_key] = None
+
+        parse_result = parse_cache.get(source_key)
+        if not parse_result:
+            continue
+
+        location = _find_reducto_location(section.get("text", ""), parse_result)
+        if location:
+            section["location_note"] = location["location_note"]
+            section["citation_page"] = location.get("page")
+            section["citation_location_score"] = location.get("score")
+
+    return enriched
 
 
 # ============================================================================
@@ -2091,6 +2491,8 @@ def discovery_generate_node(state: RAGState, azure_clients: AzureClients) -> RAG
 
         sections.append(_build_inline_section("\n".join(lines), result, "document_match"))
 
+    sections = _attach_reducto_locations_to_sections(sections, azure_clients)
+
     answer = " ".join(summary_lines)
     if len(search_results) > len(top_results):
         answer += f" Showing top {len(top_results)} results."
@@ -2978,6 +3380,8 @@ def generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
                 "document_match"
             ))
 
+        sections = _attach_reducto_locations_to_sections(sections, azure_clients)
+
         return {
             "answer": "I found the most relevant source documents matching your request.",
             "sources": unique_sources[:10],
@@ -3059,6 +3463,7 @@ def generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
 
     cleaned_answer = _strip_source_markers(answer)
     sections = _build_cited_answer_sections(raw_answer, source_catalog)
+    sections = _attach_reducto_locations_to_sections(sections, azure_clients)
 
     if not sections:
         logger.info("Answer generation produced no cited sections — returning not-found response")

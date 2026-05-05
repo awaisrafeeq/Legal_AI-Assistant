@@ -1604,14 +1604,23 @@ class WhatsAppHandler:
                 group_index[source_key] = len(groups)
                 groups.append({
                     "texts": [],
+                    "locations": [],
                     "source_url": source_url,
                     "section": section,
                 })
 
-            groups[group_index[source_key]]["texts"].append(text)
+            group = groups[group_index[source_key]]
+            group["texts"].append(text)
+            location_note = (section.get("location_note") or "").strip()
+            if location_note and location_note not in group["locations"]:
+                group["locations"].append(location_note)
 
         for group in groups:
             block = "\n\n".join(group["texts"])
+            if group["locations"]:
+                block += "\nEvidence location:"
+                for location in group["locations"][:6]:
+                    block += f"\n- {location}"
             source_url = group["source_url"]
             if source_url:
                 block += (

@@ -45,6 +45,7 @@ env/
 
 # Test files
 # Test/*.txt
+Test/
 Test/*.pdf
 test_files/
 
