@@ -95,12 +95,13 @@ DOCUMENT TYPE must be exactly one of:
   relevé, certificat, résolution, mandat, procuration, cession,
   mise_en_demeure, procès_verbal, cahier_de_preuve, remise_volontaire,
   divulgation, bordereau, preuve, pièce, plan, photo, états_financiers,
-  convention, offre, lettre, chèque, reçu, notes, transcription, autre
+  convention, offre, lettre, correspondance, chèque, reçu, notes, transcription, autre
 
 DOCUMENT SUBTYPE examples:
   - déclaration → sous_serment, solennelle, affidavit, assermentation
   - interrogatoire → préalable, contre_interrogatoire, examen
   - courriel → investisseur, interne, notaire, comptable, partenaire
+  - correspondance → message_texte, sms, messagerie_native, lettre
   - contrat → prêt, vente, service, location, cession
   - acte_notarié → prêt, vente, hypothèque, cession_créance, cautionnement
   - rapport → évaluation, expert, police, financier, dépôt
@@ -117,6 +118,10 @@ RULES:
 - Summary must be in French, factual, and cover the key facts of the document
 - If the document contains multiple types (e.g., email forwarding a contract), use the PRIMARY document type
 - If the document is an email ABOUT a topic (plan, bail, cession), classify as "courriel" not the topic
+- Do NOT classify phone/SMS/chat exports as "courriel" just because they contain From/To/Date.
+  If the document shows phone numbers, "native messages", SMS-style short messages, or a chat export
+  converted to PDF from a .msg/native-message source, classify it as document_type "correspondance"
+  with document_subtype "message_texte" or "sms".
 
 IMPORTANT: Return ONLY valid JSON. No markdown, no explanation, no code blocks."""
 

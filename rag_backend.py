@@ -10,6 +10,7 @@ import urllib.error
 import smtplib
 import difflib
 import re
+import time
 from typing import List, Dict, Any, Optional
 from collections import Counter
 from dataclasses import dataclass, field
@@ -95,6 +96,7 @@ class Config:
     reducto_cache_container: str
     reducto_max_sources: int
     reducto_timeout_seconds: int
+    reducto_budget_seconds: int
 
     @classmethod
     def from_env(cls) -> "Config":
@@ -129,7 +131,8 @@ class Config:
             reducto_parse_url=os.environ.get("REDUCTO_PARSE_URL", "https://platform.reducto.ai/parse"),
             reducto_cache_container=os.environ.get("REDUCTO_CACHE_CONTAINER", "reducto-cache"),
             reducto_max_sources=int(os.environ.get("REDUCTO_MAX_SOURCES", "0")),
-            reducto_timeout_seconds=int(os.environ.get("REDUCTO_TIMEOUT_SECONDS", "120")),
+            reducto_timeout_seconds=int(os.environ.get("REDUCTO_TIMEOUT_SECONDS", "600")),
+            reducto_budget_seconds=int(os.environ.get("REDUCTO_BUDGET_SECONDS", "0")),
         )
 
 
@@ -939,10 +942,18 @@ def _attach_reducto_locations_to_sections(
     enriched = [dict(section) for section in sections]
     parse_cache: Dict[str, Optional[Dict[str, Any]]] = {}
     parsed_sources = 0
+    started_at = time.monotonic()
+    budget_seconds = max(0, azure_clients.config.reducto_budget_seconds)
 
     for section in enriched:
         if section.get("location_note") or not section.get("blob_path"):
             continue
+        if budget_seconds and (time.monotonic() - started_at) >= budget_seconds:
+            logger.warning(
+                "Reducto location enrichment stopped after %ss budget; returning answer without remaining locations",
+                budget_seconds,
+            )
+            break
 
         source_key = _source_identity(section)
         if source_key not in parse_cache:
