@@ -823,19 +823,126 @@ def _normalize_for_match(text: str) -> str:
     return re.sub(r"\s+", " ", normalized).strip()
 
 
-def _extract_location_needles(section_text: str) -> List[str]:
-    text = section_text or ""
-    needles = []
+def _short_text(value: str, limit: int = 350) -> str:
+    text = re.sub(r"\s+", " ", (value or "")).strip()
+    if len(text) <= limit:
+        return text
+    return text[:limit].rsplit(" ", 1)[0].strip() + "..."
 
+
+def _extract_query_location_terms(query: str, filters: Optional[Dict[str, Any]] = None) -> List[str]:
+    text = query or ""
+    terms = []
+
+    terms.extend(re.findall(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}", text))
+    terms.extend(re.findall(r"\bDP[-\s]?\d{3,5}\b", text, flags=re.IGNORECASE))
+    terms.extend(re.findall(r"\b\d{4}[-/]\d{1,2}[-/]\d{1,2}\b", text))
+    terms.extend(re.findall(r"\b\d{1,3}(?:[ ,]\d{3})+(?:[,.]\d{2})?\s*\$?\b", text))
+    terms.extend(re.findall(r"[$]\s*\d{1,3}(?:[ ,]\d{3})+(?:[,.]\d{2})?", text))
+
+    quoted = re.findall(r"[\"'“”«»]([^\"'“”«»]{3,120})[\"'“”«»]", text)
+    terms.extend(q.strip() for q in quoted)
+
+    for key in ("keyword", "person", "organization", "project", "document_subtype"):
+        value = (filters or {}).get(key)
+        if isinstance(value, str) and value.strip():
+            terms.append(value.strip())
+
+    unique = []
+    seen = set()
+    for term in terms:
+        normalized = _normalize_for_match(term)
+        if normalized and normalized not in seen:
+            seen.add(normalized)
+            unique.append(term.strip())
+    return unique[:8]
+
+
+def _extract_quoted_anchors(text: str) -> List[str]:
+    if not text:
+        return []
+    anchors = []
     labeled_quotes = re.findall(
-        r"(?:French Quote|Quote|Citation|Extrait)\s*:\s*[\"*']?(.{35,900})",
+        r"(?:French Quote|Quote|Citation|Extrait|Evidence|Preuve)\s*:\s*[\"*«']?(.{35,900})",
         text,
         flags=re.IGNORECASE | re.DOTALL,
     )
-    needles.extend(q.strip(" \"'*\n") for q in labeled_quotes)
+    anchors.extend(q.strip(" \"'*\n«»") for q in labeled_quotes)
+    quoted = re.findall(r"[\"“”«»']([^\"“”«»']{35,900})[\"“”«»']", text)
+    anchors.extend(q.strip() for q in quoted)
+    return anchors
 
-    quoted = re.findall(r"[\"“”']([^\"“”']{35,900})[\"“”']", text)
-    needles.extend(q.strip() for q in quoted)
+
+def _split_source_passages(source_text: str) -> List[str]:
+    text = re.sub(r"\s+", " ", source_text or "").strip()
+    if not text:
+        return []
+    rough = re.split(r"(?<=[.!?])\s+|(?:\s{2,})", text)
+    passages = []
+    buffer = []
+    size = 0
+    for part in rough:
+        part = part.strip()
+        if not part:
+            continue
+        buffer.append(part)
+        size += len(part)
+        if size >= 280:
+            passages.append(" ".join(buffer))
+            buffer = []
+            size = 0
+    if buffer:
+        passages.append(" ".join(buffer))
+    if not passages:
+        passages = [text[:600]]
+    return passages[:80]
+
+
+def _select_source_anchor(section_text: str, source: Optional[Dict[str, Any]], location_terms: List[str]) -> str:
+    if not source:
+        return ""
+
+    for quote in _extract_quoted_anchors(section_text):
+        if len(quote) >= 35:
+            return _short_text(quote, 900)
+
+    source_text = " ".join([
+        source.get("content", "") or "",
+        source.get("summary", "") or "",
+    ]).strip()
+    passages = _split_source_passages(source_text)
+    if not passages:
+        return ""
+
+    needles = [section_text or ""] + location_terms
+    best = None
+    for passage in passages:
+        score = 0.0
+        for needle in needles:
+            if not needle:
+                continue
+            score = max(score, _score_location_match(needle, passage))
+        if best is None or score > best[0]:
+            best = (score, passage)
+
+    if best and best[0] >= 0.12:
+        return _short_text(best[1], 900)
+    return _short_text(passages[0], 900)
+
+
+def _extract_location_needles(section: Dict[str, Any]) -> List[str]:
+    text = section.get("text", "") or ""
+    needles = []
+
+    evidence_anchor = section.get("evidence_anchor") or ""
+    if evidence_anchor:
+        needles.append(str(evidence_anchor))
+
+    for term in section.get("location_terms", []) or []:
+        if isinstance(term, str) and term.strip():
+            needles.append(term.strip())
+
+    needles.extend(_extract_quoted_anchors(text))
 
     lines = [line.strip("* ").strip() for line in text.splitlines() if line.strip()]
     needles.extend(line for line in lines if len(line) >= 45)
@@ -900,35 +1007,92 @@ def _bbox_position_label(bbox: Any) -> str:
     return f"{vertical}-{horizontal} text block"
 
 
-def _find_reducto_location(section_text: str, parse_result: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+def _matched_snippet(block_text: str, needle: str, limit: int = 260) -> str:
+    block = re.sub(r"\s+", " ", block_text or "").strip()
+    if not block:
+        return _short_text(needle, limit)
+    raw_needle = re.sub(r"\s+", " ", needle or "").strip()
+    if raw_needle:
+        idx = block.lower().find(raw_needle.lower())
+        if idx >= 0:
+            start = max(0, idx - 80)
+            end = min(len(block), idx + len(raw_needle) + 80)
+            prefix = "..." if start > 0 else ""
+            suffix = "..." if end < len(block) else ""
+            return prefix + block[start:end].strip() + suffix
+    return _short_text(block, limit)
+
+
+def _find_reducto_location(section: Dict[str, Any], parse_result: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     blocks = _flatten_reducto_blocks(parse_result)
     if not blocks:
         return None
 
     best = None
-    for needle in _extract_location_needles(section_text):
+    matches = []
+    for rank, needle in enumerate(_extract_location_needles(section)):
+        needle_best = None
         for block in blocks:
             score = _score_location_match(needle, block.get("text", ""))
-            if best is None or score > best["score"]:
-                best = {
+            if rank == 0 and section.get("evidence_anchor"):
+                score += 0.05
+            candidate = {
                     "score": score,
                     "page": block.get("page"),
                     "bbox": block.get("bbox"),
                     "type": block.get("type") or "text",
-                }
+                    "needle": needle,
+                    "block_text": block.get("text", ""),
+            }
+            if needle_best is None or score > needle_best["score"]:
+                needle_best = candidate
+            if best is None or score > best["score"]:
+                best = candidate
+
+        if needle_best and needle_best["score"] >= 0.28:
+            matches.append(needle_best)
 
     if not best or best["score"] < 0.28:
         return None
 
+    formatted_matches = []
+    seen_match_keys = set()
+    for match in sorted(matches, key=lambda item: item["score"], reverse=True):
+        page = match.get("page")
+        snippet = _matched_snippet(match.get("block_text", ""), match.get("needle", ""))
+        match_key = (page, _normalize_for_match(snippet)[:80])
+        if match_key in seen_match_keys:
+            continue
+        seen_match_keys.add(match_key)
+
+        block_type = str(match.get("type") or "text").lower()
+        position = _bbox_position_label(match.get("bbox"))
+        match_type = "exact" if match["score"] >= 0.92 else "fuzzy" if match["score"] >= 0.55 else "approx"
+        prefix = "Approx. " if match_type == "approx" else ""
+        note = f"{prefix}Page {page}, {block_type} near {position}" if page else f"{prefix}{block_type} near {position}"
+        formatted_matches.append({
+            "page": page,
+            "score": round(float(match["score"]), 3),
+            "match_type": match_type,
+            "matched_snippet": snippet,
+            "location_note": note,
+        })
+        if len(formatted_matches) >= 3:
+            break
+
     page = best.get("page")
     block_type = str(best.get("type") or "text").lower()
     position = _bbox_position_label(best.get("bbox"))
-    prefix = "Approx. " if best["score"] < 0.55 else ""
+    match_type = "exact" if best["score"] >= 0.92 else "fuzzy" if best["score"] >= 0.55 else "approx"
+    prefix = "Approx. " if match_type == "approx" else ""
     note = f"{prefix}Page {page}, {block_type} near {position}" if page else f"{prefix}{block_type} near {position}"
     return {
         "page": page,
         "score": round(float(best["score"]), 3),
+        "match_type": match_type,
+        "matched_snippet": _matched_snippet(best.get("block_text", ""), best.get("needle", "")),
         "location_note": note,
+        "evidence_matches": formatted_matches,
     }
 
 
@@ -971,11 +1135,14 @@ def _attach_reducto_locations_to_sections(
         if not parse_result:
             continue
 
-        location = _find_reducto_location(section.get("text", ""), parse_result)
+        location = _find_reducto_location(section, parse_result)
         if location:
             section["location_note"] = location["location_note"]
             section["citation_page"] = location.get("page")
             section["citation_location_score"] = location.get("score")
+            section["citation_match_type"] = location.get("match_type")
+            section["matched_snippet"] = location.get("matched_snippet", "")
+            section["evidence_matches"] = location.get("evidence_matches", [])
 
     return enriched
 
@@ -1820,12 +1987,18 @@ def _parse_query_variants(response_text: str) -> List[str]:
 def _build_inline_section(
     text: str,
     source: Optional[Dict[str, Any]] = None,
-    section_type: str = "answer_point"
+    section_type: str = "answer_point",
+    evidence_anchor: str = "",
+    location_terms: Optional[List[str]] = None,
 ) -> Dict[str, Any]:
     section = {
         "section_type": section_type,
         "text": (text or "").strip(),
     }
+    if evidence_anchor:
+        section["evidence_anchor"] = evidence_anchor
+    if location_terms:
+        section["location_terms"] = location_terms
     if source:
         section.update({
             "file_name": source.get("file_name", ""),
@@ -2099,12 +2272,18 @@ def _strip_source_markers(text: str) -> str:
     return cleaned.strip()
 
 
-def _build_cited_answer_sections(answer: str, source_catalog: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+def _build_cited_answer_sections(
+    answer: str,
+    source_catalog: List[Dict[str, Any]],
+    query: str = "",
+    filters: Optional[Dict[str, Any]] = None,
+) -> List[Dict[str, Any]]:
     chunks = _split_answer_sections(answer)
     if not chunks:
         chunks = [answer.strip()] if answer.strip() else []
 
     sections = []
+    location_terms = _extract_query_location_terms(query, filters)
     for chunk in chunks:
         cited_numbers = _extract_source_numbers(chunk)
         source = None
@@ -2116,7 +2295,14 @@ def _build_cited_answer_sections(answer: str, source_catalog: List[Dict[str, Any
 
         cleaned = _strip_source_markers(chunk)
         if cleaned:
-            sections.append(_build_inline_section(cleaned, source, "answer_point"))
+            evidence_anchor = _select_source_anchor(cleaned, source, location_terms)
+            sections.append(_build_inline_section(
+                cleaned,
+                source,
+                "answer_point",
+                evidence_anchor=evidence_anchor,
+                location_terms=location_terms,
+            ))
 
     return sections
 
@@ -2465,6 +2651,7 @@ def discovery_generate_node(state: RAGState, azure_clients: AzureClients) -> RAG
     top_results = search_results[:10]
     filter_desc = ", ".join(f"{k}={v}" for k, v in filters.items()) if filters else "your request"
     summary_lines = [f"I found {len(search_results)} documents matching {filter_desc}."]
+    location_terms = _extract_query_location_terms(query, filters)
 
     highlighted_types = []
     seen_types = set()
@@ -2478,7 +2665,13 @@ def discovery_generate_node(state: RAGState, azure_clients: AzureClients) -> RAG
     if highlighted_types:
         summary_lines.append("Main document types found: " + ", ".join(highlighted_types) + ".")
 
-    sections = [_build_inline_section(" ".join(summary_lines), top_results[0], "discovery_summary")]
+    sections = [_build_inline_section(
+        " ".join(summary_lines),
+        top_results[0],
+        "discovery_summary",
+        evidence_anchor=_select_source_anchor(" ".join(summary_lines), top_results[0], location_terms),
+        location_terms=location_terms,
+    )]
 
     for i, result in enumerate(top_results, 1):
         lines = [f"{i}. {result.get('file_name', 'Unknown document')}"]
@@ -2500,7 +2693,14 @@ def discovery_generate_node(state: RAGState, azure_clients: AzureClients) -> RAG
         else:
             lines.append("Why it matches: This document matched the discovery filters and search terms.")
 
-        sections.append(_build_inline_section("\n".join(lines), result, "document_match"))
+        section_text = "\n".join(lines)
+        sections.append(_build_inline_section(
+            section_text,
+            result,
+            "document_match",
+            evidence_anchor=_select_source_anchor(section_text, result, location_terms),
+            location_terms=location_terms,
+        ))
 
     sections = _attach_reducto_locations_to_sections(sections, azure_clients)
 
@@ -3299,6 +3499,7 @@ def generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
     forced_generation = state.get("forced_generation", False)
     query_lower = (query or "").lower()
     strict_analysis_mode = _is_analysis_query(query_lower)
+    location_terms = _extract_query_location_terms(query, state.get("discovery_filters", {}))
 
     # --- Guard 1: No results at all ---
     if not search_results:
@@ -3381,14 +3582,19 @@ def generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
             _build_inline_section(
                 "I found the most relevant source documents matching your request.",
                 unique_sources[0],
-                "document_summary"
+                "document_summary",
+                evidence_anchor=_select_source_anchor(query, unique_sources[0], location_terms),
+                location_terms=location_terms,
             )
         ]
         for i, source in enumerate(unique_sources[:10], 1):
+            section_text = f"{i}. {source.get('file_name', 'Source document')}"
             sections.append(_build_inline_section(
-                f"{i}. {source.get('file_name', 'Source document')}",
+                section_text,
                 source,
-                "document_match"
+                "document_match",
+                evidence_anchor=_select_source_anchor(section_text, source, location_terms),
+                location_terms=location_terms,
             ))
 
         sections = _attach_reducto_locations_to_sections(sections, azure_clients)
@@ -3473,7 +3679,12 @@ def generate_node(state: RAGState, azure_clients: AzureClients) -> RAGState:
             break
 
     cleaned_answer = _strip_source_markers(answer)
-    sections = _build_cited_answer_sections(raw_answer, source_catalog)
+    sections = _build_cited_answer_sections(
+        raw_answer,
+        source_catalog,
+        query=query,
+        filters=state.get("discovery_filters", {}),
+    )
     sections = _attach_reducto_locations_to_sections(sections, azure_clients)
 
     if not sections:

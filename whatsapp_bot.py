@@ -1604,23 +1604,41 @@ class WhatsAppHandler:
                 group_index[source_key] = len(groups)
                 groups.append({
                     "texts": [],
-                    "locations": [],
+                    "evidence": [],
                     "source_url": source_url,
                     "section": section,
                 })
 
             group = groups[group_index[source_key]]
             group["texts"].append(text)
-            location_note = (section.get("location_note") or "").strip()
-            if location_note and location_note not in group["locations"]:
-                group["locations"].append(location_note)
+            evidence_matches = section.get("evidence_matches") or []
+            if not evidence_matches and section.get("location_note"):
+                evidence_matches = [{
+                    "location_note": section.get("location_note"),
+                    "matched_snippet": section.get("matched_snippet"),
+                    "match_type": section.get("citation_match_type"),
+                }]
+
+            for evidence in evidence_matches:
+                location_note = (evidence.get("location_note") or "").strip()
+                if not location_note:
+                    continue
+                snippet = (evidence.get("matched_snippet") or "").strip()
+                match_type = (evidence.get("match_type") or "").strip()
+                evidence_line = location_note
+                if match_type:
+                    evidence_line += f" ({match_type} match)"
+                if snippet:
+                    evidence_line += f"\n  Matched: \"{snippet[:320]}\""
+                if evidence_line not in group["evidence"]:
+                    group["evidence"].append(evidence_line)
 
         for group in groups:
             block = "\n\n".join(group["texts"])
-            if group["locations"]:
+            if group["evidence"]:
                 block += "\nEvidence location:"
-                for location in group["locations"][:6]:
-                    block += f"\n- {location}"
+                for evidence in group["evidence"][:6]:
+                    block += f"\n- {evidence}"
             source_url = group["source_url"]
             if source_url:
                 block += (

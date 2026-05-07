@@ -379,6 +379,8 @@ CITATION FORMAT:
 - If a point cannot be tied to a specific source number, do not include that point.
 - If you cannot support the answer with source-number citations, say you could not verify it from the available documents.
 - If the user asks for contradictions or inconsistent statements, every contradiction bullet must cite at least two sources or two clearly distinct statements from the same cited source.
+- For every factual claim, include a short verbatim evidence phrase from the source whenever possible. This phrase may be an exact quote, date line, email header, amount line, Q/A passage, or sentence fragment. Do not invent evidence phrases.
+- For contradictions, include the exact French passage for BOTH sides of the contradiction so the system can locate each passage in the original PDF.
 
 DOCUMENT PREFERENCE RULES:
 - If original source files and transcripts both exist, prefer the original source files over transcripts.
