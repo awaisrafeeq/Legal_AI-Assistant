@@ -1670,6 +1670,35 @@ def _result_matches_keyword(result: Dict[str, Any], keyword: str) -> bool:
     return any(variation in haystack_norm for variation in keyword_variations)
 
 
+def _is_strict_discovery_keyword(keyword: str) -> bool:
+    """Keywords like emails, case/loan IDs, quoted phrases, dates, and amounts are mandatory."""
+    if not keyword:
+        return False
+    value = keyword.strip()
+    lower = value.lower()
+
+    generic_terms = {
+        "email", "emails", "courriel", "courriels", "document", "documents",
+        "pdf", "piece", "pièce", "fichier", "files", "source", "sources",
+        "investor", "investors", "investisseur", "investisseurs",
+    }
+    if _normalize_filter_value(value) in {_normalize_filter_value(term) for term in generic_terms}:
+        return False
+
+    strict_patterns = [
+        r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}",
+        r"\bDP[-\s]?\d{3,5}\b",
+        r"\b\d{4}[-/]\d{1,2}[-/]\d{1,2}\b",
+        r"[$]\s*\d|\d\s*\$",
+        r"[\"'“”«»].{3,}[\"'“”«»]",
+    ]
+    if any(re.search(pattern, value, flags=re.IGNORECASE) for pattern in strict_patterns):
+        return True
+
+    # Specific names, addresses, phone numbers, and unique phrases should not be optional.
+    return len(lower) >= 8 and len(lower.split()) <= 8
+
+
 def _score_discovery_result(result: Dict[str, Any], filters: Dict[str, Any]) -> int:
     score = 0
     matched_structured = 0
@@ -1729,6 +1758,8 @@ def _score_discovery_result(result: Dict[str, Any], filters: Dict[str, Any]) -> 
 
     keyword = filters.get("keyword")
     keyword_match = bool(keyword and _result_matches_keyword(result, keyword))
+    if keyword and _is_strict_discovery_keyword(keyword) and not keyword_match:
+        return -1
     if keyword_match:
         score += 1
 
