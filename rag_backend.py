@@ -1596,15 +1596,20 @@ def _result_matches_text(result: Dict[str, Any], target: str) -> bool:
     if not target_norm:
         return False
 
+    def _list_text(value: Any) -> str:
+        if isinstance(value, list):
+            return " ".join(str(item or "") for item in value)
+        return str(value or "")
+
     haystack = " ".join([
-        result.get("file_name", ""),
-        result.get("document_type", ""),
-        result.get("document_subtype", ""),
-        " ".join(result.get("persons", []) or []),
-        " ".join(result.get("organizations", []) or []),
-        " ".join(result.get("projects", []) or []),
-        result.get("summary", ""),
-        (result.get("content", "") or "")[:2000],
+        str(result.get("file_name") or ""),
+        str(result.get("document_type") or ""),
+        str(result.get("document_subtype") or ""),
+        _list_text(result.get("persons")),
+        _list_text(result.get("organizations")),
+        _list_text(result.get("projects")),
+        str(result.get("summary") or ""),
+        str(result.get("content") or "")[:2000],
     ])
     return target_norm in _normalize_filter_value(haystack)
 
@@ -1656,15 +1661,21 @@ def _result_matches_keyword(result: Dict[str, Any], keyword: str) -> bool:
     keyword_variations = _expand_keyword_variations(keyword)
     if not keyword_variations:
         return False
+
+    def _list_text(value: Any) -> str:
+        if isinstance(value, list):
+            return " ".join(str(item or "") for item in value)
+        return str(value or "")
+
     haystack = " ".join([
-        result.get("file_name", ""),
-        result.get("document_type", ""),
-        result.get("document_subtype", ""),
-        " ".join(result.get("persons", []) or []),
-        " ".join(result.get("organizations", []) or []),
-        " ".join(result.get("projects", []) or []),
-        result.get("summary", ""),
-        (result.get("content", "") or "")[:1200],
+        str(result.get("file_name") or ""),
+        str(result.get("document_type") or ""),
+        str(result.get("document_subtype") or ""),
+        _list_text(result.get("persons")),
+        _list_text(result.get("organizations")),
+        _list_text(result.get("projects")),
+        str(result.get("summary") or ""),
+        str(result.get("content") or "")[:1200],
     ])
     haystack_norm = _normalize_filter_value(haystack)
     return any(variation in haystack_norm for variation in keyword_variations)
