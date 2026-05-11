@@ -170,6 +170,91 @@ class GreenAPIClient:
 # RAG Backend Client
 # ============================================================================
 
+class RAGBackendError(Exception):
+    """Typed backend failure so WhatsApp can show a useful user-facing reason."""
+
+    def __init__(self, message: str, status_code: Optional[int] = None, detail: str = ""):
+        super().__init__(message)
+        self.status_code = status_code
+        self.detail = detail or message
+
+    @classmethod
+    def from_exception(cls, exc: requests.exceptions.RequestException) -> "RAGBackendError":
+        response = getattr(exc, "response", None)
+        status_code = getattr(response, "status_code", None)
+        detail = ""
+
+        if response is not None:
+            try:
+                body = response.json()
+                detail = body.get("detail") or body.get("message") or json.dumps(body, ensure_ascii=False)
+            except Exception:
+                detail = response.text[:1000] if getattr(response, "text", "") else ""
+
+        if isinstance(exc, requests.exceptions.Timeout):
+            return cls("The legal search took too long and timed out.", status_code, detail)
+        if isinstance(exc, requests.exceptions.ConnectionError):
+            return cls("The legal search service is currently unreachable.", status_code, detail)
+        if status_code:
+            return cls(f"The legal search service returned HTTP {status_code}.", status_code, detail)
+        return cls(str(exc), status_code, detail)
+
+
+def _format_rag_error_for_whatsapp(error: Exception) -> str:
+    """Return a concise, safe explanation for the end user."""
+    if not isinstance(error, RAGBackendError):
+        return (
+            "❌ I hit an unexpected system error while processing your request.\n\n"
+            "Please try again. If it repeats, send the query text to support so we can trace it."
+        )
+
+    detail = (error.detail or "").lower()
+    status_code = error.status_code
+
+    if status_code == 504 or "gateway timeout" in detail or "timed out" in detail:
+        return (
+            "⏱️ The search took too long and timed out.\n\n"
+            "Please retry with a narrower query, for example a person name + document type + date/project. "
+            "If you need the broad search, ask again and I can continue with a smaller batch."
+        )
+
+    if "content_filter" in detail or "responsibleaipolicyviolation" in detail or "content management policy" in detail:
+        return (
+            "⚠️ Azure OpenAI blocked the generated answer because the wording triggered its safety filter.\n\n"
+            "Please rephrase in neutral legal terms, for example: “credibility issue”, "
+            "“inconsistent testimony”, “alleged conduct”, or “acting as nominee/prête-nom”."
+        )
+
+    if status_code in {502, 503}:
+        return (
+            "⚠️ The legal search backend is temporarily unavailable.\n\n"
+            "Please try again in a minute. The request did not complete."
+        )
+
+    if status_code == 500:
+        return (
+            "❌ The legal search backend hit an internal error while processing this query.\n\n"
+            "Please try a slightly narrower query. If it repeats, share this exact question so we can check the logs."
+        )
+
+    if status_code in {401, 403}:
+        return (
+            "🔐 The request could not access one of the required document/search services.\n\n"
+            "This looks like a configuration or permission issue, not a problem with your query."
+        )
+
+    if status_code == 404:
+        return (
+            "🔎 The backend endpoint or requested resource was not found.\n\n"
+            "Please try again later; this may require a deployment/config check."
+        )
+
+    return (
+        f"❌ The request failed{f' with HTTP {status_code}' if status_code else ''}.\n\n"
+        "Please try again. If it repeats, send the query text so we can trace it."
+    )
+
+
 class RAGBackendClient:
     def __init__(self, base_url: str = "http://localhost:8000"):
         self.base_url = base_url
@@ -212,7 +297,7 @@ class RAGBackendClient:
             return response.json()
         except requests.exceptions.RequestException as e:
             logger.error(f"RAG backend request failed: {e}")
-            raise
+            raise RAGBackendError.from_exception(e) from e
 
     def send_email(
         self,
@@ -2029,7 +2114,7 @@ class WhatsAppHandler:
             logger.error(f"RAG error: {e}", exc_info=True)
             self.green_api.send_text_message(
                 chat_id,
-                "❌ An error occurred while processing your request. Please try again."
+                _format_rag_error_for_whatsapp(e)
             )
 
     def _send_rag_response(
