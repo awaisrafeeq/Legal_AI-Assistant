@@ -14,6 +14,7 @@ import logging
 import tempfile
 import unicodedata
 import requests
+import re
 from typing import Dict, Any, Optional, List
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -382,35 +383,6 @@ class WhisperTranscriber:
         except Exception as e:
             logger.error(f"Whisper transcription failed: {e}")
             return None
-
-
-# ============================================================================
-# Conversation Memory (per sender, in-memory)
-# ============================================================================
-
-# class ConversationMemory:
-#     """
-#     Stores last N messages per sender for context.
-#     In production, replace with Redis or a database.
-#     """
-#     MAX_HISTORY = 6  # Last 3 turns (user + assistant × 3)
-
-#     def __init__(self):
-#         self._store: Dict[str, List[Dict]] = {}
-
-#     def get(self, sender_id: str) -> List[Dict]:
-#         return self._store.get(sender_id, [])
-
-#     def add(self, sender_id: str, role: str, content: str):
-#         if sender_id not in self._store:
-#             self._store[sender_id] = []
-#         self._store[sender_id].append({"role": role, "content": content})
-#         # Keep only last MAX_HISTORY messages
-#         if len(self._store[sender_id]) > self.MAX_HISTORY:
-#             self._store[sender_id] = self._store[sender_id][-self.MAX_HISTORY:]
-
-#     def clear(self, sender_id: str):
-#         self._store[sender_id] = []
 
 class ConversationMemory:
     """
@@ -2210,7 +2182,8 @@ class WhatsAppHandler:
                 label = "Internal" if "internal" in container else "External"
                 sources_summary += f"{i}. {fname} [{label}]\n"
 
-        # Call GPT to extract structured facts
+        # Call GPT to extract structured facts. This is best-effort memory work:
+        # malformed memory JSON must never affect the already-sent WhatsApp answer.
         prompt = prompts.get_extract_case_memory_prompt(query, answer, sources_summary)
         try:
             response = self.gpt_client.chat.completions.create(
@@ -2221,15 +2194,38 @@ class WhatsAppHandler:
                 response_format={"type": "json_object"},
             )
             raw = response.choices[0].message.content.strip()
-            extracted = self._parse_memory_extraction(raw)
-            logger.info(
-                f"Memory extraction: {len(extracted.get('case_facts', []))} facts, "
-                f"{len(extracted.get('persons_mentioned', []))} persons, "
-                f"{len(extracted.get('open_questions', []))} open questions"
-            )
         except Exception as e:
             logger.error(f"Memory extraction GPT call failed: {e}")
             return
+
+        try:
+            extracted = self._parse_memory_extraction(raw)
+        except Exception as parse_error:
+            logger.warning(f"Memory extraction JSON parse failed; retrying repair: {parse_error}")
+            try:
+                repair_prompt = prompts.get_repair_json_prompt(raw[:8000])
+                repair_response = self.gpt_client.chat.completions.create(
+                    model=self.gpt_deployment,
+                    messages=[{"role": "user", "content": repair_prompt}],
+                    temperature=0,
+                    max_tokens=1000,
+                    response_format={"type": "json_object"},
+                )
+                repaired_raw = repair_response.choices[0].message.content.strip()
+                extracted = self._parse_memory_extraction(repaired_raw)
+            except Exception as repair_error:
+                logger.error(
+                    "Memory extraction JSON repair failed "
+                    f"(non-blocking): parse_error={parse_error}; "
+                    f"repair_error={repair_error}; raw_len={len(raw)}"
+                )
+                return
+
+        logger.info(
+            f"Memory extraction: {len(extracted.get('case_facts', []))} facts, "
+            f"{len(extracted.get('persons_mentioned', []))} persons, "
+            f"{len(extracted.get('open_questions', []))} open questions"
+        )
 
         # Resolve which case this belongs to
         case_id = self._resolve_case_id(sender_phone, query)
@@ -2240,17 +2236,32 @@ class WhatsAppHandler:
 
     @staticmethod
     def _parse_memory_extraction(raw: str) -> Dict[str, Any]:
-        """Parse memory extraction JSON with a small repair fallback for malformed model output."""
-        try:
-            parsed = json.loads(raw)
-        except json.JSONDecodeError:
-            start = raw.find("{")
-            end = raw.rfind("}")
-            if start == -1 or end == -1 or end <= start:
-                raise
-            candidate = raw[start:end + 1]
-            parsed = json.loads(candidate)
+        """Parse memory extraction JSON with local repair before falling back to GPT repair."""
+        if not raw or not raw.strip():
+            return WhatsAppHandler._empty_memory_extraction()
 
+        candidates = [
+            raw,
+            WhatsAppHandler._extract_json_object(raw),
+            WhatsAppHandler._repair_common_json_issues(raw),
+        ]
+
+        last_error: Optional[Exception] = None
+        for candidate in candidates:
+            if not candidate:
+                continue
+            try:
+                parsed = json.loads(candidate)
+                return WhatsAppHandler._normalize_memory_extraction(parsed)
+            except json.JSONDecodeError as exc:
+                last_error = exc
+
+        if last_error:
+            raise last_error
+        raise ValueError("Memory extraction did not contain a JSON object")
+
+    @staticmethod
+    def _empty_memory_extraction() -> Dict[str, Any]:
         defaults = {
             "case_facts": [],
             "persons_mentioned": [],
@@ -2262,6 +2273,41 @@ class WhatsAppHandler:
             "action_items": [],
             "evidence_references": [],
         }
+        return defaults
+
+    @staticmethod
+    def _extract_json_object(raw: str) -> str:
+        cleaned = WhatsAppHandler._strip_json_fences(raw)
+        start = cleaned.find("{")
+        end = cleaned.rfind("}")
+        if start == -1 or end == -1 or end <= start:
+            return ""
+        return cleaned[start:end + 1]
+
+    @staticmethod
+    def _strip_json_fences(raw: str) -> str:
+        cleaned = raw.strip()
+        if cleaned.startswith("```"):
+            cleaned = re.sub(r"^```(?:json)?\s*", "", cleaned, flags=re.IGNORECASE)
+            cleaned = re.sub(r"\s*```$", "", cleaned)
+        return cleaned.strip()
+
+    @staticmethod
+    def _repair_common_json_issues(raw: str) -> str:
+        candidate = WhatsAppHandler._extract_json_object(raw)
+        if not candidate:
+            return ""
+
+        # Remove non-JSON comments and trailing commas, which are the most common
+        # model defects when a prompt shows an example object.
+        candidate = re.sub(r"/\*.*?\*/", "", candidate, flags=re.DOTALL)
+        candidate = re.sub(r"(?m)^\s*//.*$", "", candidate)
+        candidate = re.sub(r",\s*([}\]])", r"\1", candidate)
+        return candidate.strip()
+
+    @staticmethod
+    def _normalize_memory_extraction(parsed: Any) -> Dict[str, Any]:
+        defaults = WhatsAppHandler._empty_memory_extraction()
         if not isinstance(parsed, dict):
             raise ValueError("Memory extraction must be a JSON object")
 

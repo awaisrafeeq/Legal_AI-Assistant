@@ -585,42 +585,19 @@ User question: {query}
 AI answer: {answer}
 Sources used: {sources_summary}
 
-Extract the following from this turn. Output valid JSON ONLY:
+Extract the following from this turn. Output valid JSON ONLY.
+Do not include markdown, comments, trailing commas, or explanatory text.
+Use this exact JSON shape:
 {{
-    "case_facts": [
-        // Key factual findings from this turn. Each fact should be self-contained and referenceable.
-        // Examples: "Loan DP-0372 has a principal amount of $700,000", "Property at 123 Rue Principale was evaluated on 2023-05-15"
-        // Only include facts that are EXPLICITLY stated in the answer with source backing. Do NOT infer or speculate.
-    ],
-    "persons_mentioned": [
-        // Names of people discussed in this turn
-    ],
-    "documents_discussed": [
-        // Document names or types that were central to the answer
-    ],
-    "open_questions": [
-        // Questions that remain unanswered or partially answered
-        // Questions the lawyer might logically ask next
-    ],
+    "case_facts": [],
+    "persons_mentioned": [],
+    "documents_discussed": [],
+    "open_questions": [],
     "topic_summary": "A 1-2 sentence summary of what this turn was about",
-    "key_contradictions": [
-        // Any contradictions or inconsistencies found between sources (if any)
-    ],
-    "timeline_events": [
-        // Date-anchored events extracted, format: {{"date": "YYYY-MM-DD or approximate", "event": "description"}}
-    ],
-    "action_items": [
-        // Next steps, things to investigate, tasks for the lawyer
-        // Format: {{"task": "description of what to do next", "priority": "high or medium or low"}}
-        // Examples: "Investigate discrepancy in loan DP-0372 amount", "Get declaration from witness X about the 2023-05-15 meeting"
-        // Only include action items that logically follow from this turn's findings
-    ],
-    "evidence_references": [
-        // Key pieces of evidence found in this turn — exact quotes with source identification
-        // Format: {{"quote": "exact French quote from source", "source_file": "document name", "relevance": "why this matters"}}
-        // Only include the most important evidence that the lawyer would want to recall later
-        // Maximum 5 per turn — quality over quantity
-    ]
+    "key_contradictions": [],
+    "timeline_events": [],
+    "action_items": [],
+    "evidence_references": []
 }}
 
 Rules:
@@ -631,8 +608,25 @@ Rules:
 - case_facts, persons_mentioned, documents_discussed, open_questions, and key_contradictions must be arrays of plain strings only.
 - Action items should be specific and actionable — not vague suggestions.
 - Evidence references should preserve the EXACT French quote — do not paraphrase.
+- timeline_events must be an array of objects with "date" and "event".
+- action_items must be an array of objects with "task" and "priority".
+- evidence_references must be an array of objects with "quote", "source_file", and "relevance".
+- If a field has no useful information, return an empty array or empty string for that field.
 
 JSON:"""
+
+
+def get_repair_json_prompt(raw_json: str) -> str:
+    return f"""Fix the following malformed JSON.
+
+Return ONLY valid JSON. Do not add markdown, comments, or explanation.
+Preserve the same keys and values as much as possible.
+If a value cannot be repaired safely, use an empty array or empty string.
+
+Malformed JSON:
+{raw_json}
+
+Valid JSON:"""
 
 
 def get_case_memory_context_prompt(case_facts: str, open_questions: str, topic_history: str) -> str:

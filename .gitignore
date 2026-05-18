@@ -63,3 +63,8 @@ test_files/
 Thumbs.db
 # Added by code-review-graph
 .code-review-graph/
+archive/
+*.md
+*.zip
+*.pdf
+*.docx
